@@ -1,10 +1,10 @@
 West Oakland Environmental Indicators Project website  |Travis|_ |Codecov|_
-===================================================
-.. |Travis| image:: https://travis-ci.org/TODO/woeip.svg?branch=master
-.. _Travis: https://travis-ci.org/TODO/woeip
+===========================================================================
+.. |Travis| image:: https://travis-ci.org/openoakland/woeip.svg?branch=master
+.. _Travis: https://travis-ci.org/openoakland/woeip
 
-.. |Codecov| image:: http://codecov.io/gh/TODO/woeip/branch/master/graph/badge.svg
-.. _Codecov: http://codecov.io/gh/TODO/woeip
+.. |Codecov| image:: https://codecov.io/gh/openoakland/woeip/branch/master/graph/badge.svg
+.. _Codecov: https://codecov.io/gh/openoakland/woeip
 
 TODO The ``README.rst`` file should start with a brief description of the project.
 
