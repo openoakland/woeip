@@ -1,6 +1,5 @@
 resource "aws_s3_bucket" "terraform" {
-  // TODO Add a prefix to the bucket name (e.g. com.example.myproject.terraform). This should also be in terraform.tf.
-  bucket = "<prefix>.woeip.terraform"
+  bucket = "openoakland.woeip.terraform"
 
   tags {
     Name = "woeip Terraform State Store"
