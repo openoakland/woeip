@@ -5,8 +5,7 @@ services:
       context: ./
       dockerfile: Dockerfile
     container_name: woeip.app
-    # TODO Update this with the appropriate prefix
-    image: woeip:latest
+    image: openoakland/woeip:latest
     restart: always
     stdin_open: true
     tty: true

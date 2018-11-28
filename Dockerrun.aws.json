@@ -1,8 +1,7 @@
 {
   "AWSEBDockerrunVersion": 1,
   "Image": {
-    // TODO Update this with the appropriate prefix, and remove this comment
-    "Name": "woeip:latest",
+    "Name": "openoakland/woeip:latest",
     "Update": true
   },
   "Ports": [
