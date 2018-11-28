@@ -1,0 +1,24 @@
+{
+  "AWSEBDockerrunVersion": 1,
+  "Image": {
+    // TODO Update this with the appropriate prefix, and remove this comment
+    "Name": "woeip:latest",
+    "Update": true
+  },
+  "Ports": [
+    {
+      "ContainerPort": 8000
+    }
+  ],
+  "Volumes": [
+    {
+      "HostDirectory": "/public/media",
+      "ContainerDirectory": "/public/media"
+    },
+    {
+      "HostDirectory": "/public/static",
+      "ContainerDirectory": "/public/static"
+    }
+  ],
+  "Logging": "/logs"
+}

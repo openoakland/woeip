@@ -1,0 +1,46 @@
+sudo: required
+
+services:
+  - docker
+
+language: python
+
+python:
+  - 3.6
+
+cache: pip
+
+install:
+  - make docker.build
+  - make local.up
+  - bash .travis/install_terraform.sh
+
+script:
+  - docker exec -t woeip.app make quality
+  - docker exec -t woeip.app make static
+  - docker exec -t woeip.app make test
+  - make validate_terraform
+
+after_success:
+  - pip install -U codecov
+  - docker exec -t woeip.app coverage xml
+  - codecov
+
+before_deploy:
+  - pip install -U awsebcli
+
+# TODO Follow steps at https://docs.travis-ci.com/user/environment-variables#encrypting-environment-variables
+# to define the following environment variables:
+# - DOCKER_USERNAME
+# - DOCKER_PASSWORD
+# - AWS_ACCESS_KEY_ID
+# - AWS_SECRET_ACCESS_KEY
+#deploy:
+#  - provider: script
+#    script: bash .travis/docker_push.sh
+#    on:
+#      branch: master
+#  - provider: script
+#    script: bash .travis/eb_deploy.sh
+#    on:
+#      branch: master

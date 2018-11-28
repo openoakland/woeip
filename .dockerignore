@@ -1,0 +1,6 @@
+.ebextensions/
+.elasticbeanstalk/
+.travis/
+terraform/
+.ebignore
+Dockerrun.aws.json

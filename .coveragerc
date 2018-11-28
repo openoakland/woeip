@@ -1,0 +1,12 @@
+[run]
+branch=True
+source=woeip
+omit =
+    woeip/settings*
+    woeip/conf*
+    *conftest.py
+    *wsgi.py
+    *migrations*
+    *admin.py
+    *static*
+    *templates*
