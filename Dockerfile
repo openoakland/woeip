@@ -4,6 +4,7 @@ WORKDIR /app/woeip
 
 ENV DJANGO_SETTINGS_MODULE woeip.settings
 ENV PIPENV_DONT_USE_PYENV 1
+ENV PIPENV_SYSTEM 1
 
 RUN apk add --update \
     coreutils \
@@ -20,8 +21,7 @@ COPY Makefile /app/woeip
 COPY Pipfile /app/woeip
 COPY Pipfile.lock /app/woeip
 
-# TODO Switch to environment variable when https://github.com/pypa/pipenv/issues/3278 is resolved.
-RUN pipenv install --dev --system
+RUN make requirements
 
 COPY . /app/woeip
 
