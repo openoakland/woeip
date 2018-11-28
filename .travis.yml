@@ -11,9 +11,9 @@ python:
 cache: pip
 
 install:
+  - bash .travis/install_terraform.sh
   - make docker.build
   - make local.up
-  - bash .travis/install_terraform.sh
 
 script:
   - docker exec -t woeip.app make quality
