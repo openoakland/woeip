@@ -22,6 +22,8 @@ How To Contribute
 -----------------
 There are several ways to contribute to WOAQ, including product design, community engagement, project management, and engineering. A general project overview is available in the `WOAQ Google Document <https://docs.google.com/document/d/1nMpRN8zOn-Sq9ocrVcOY0HZI2JnL5R7wEKje_YgVwRk/edit>`_. Current project issues and goals are organized on the `WOAQ Trello board <https://trello.com/invite/b/EBnxZHmx/6e43b909891f622463a67da64dbb8101/west-oakland-air-quality>`_. Please review the `Instructions Card <https://trello.com/c/msbASe3F>`_ before editing the Trello Board. 
 
+**TODO:** create a full contributing document
+
 Reporting Security Issues
 -------------------------
 Please do not report security issues in public. Instead, please contact Tim Miller at miller.tim108@gmail.com
