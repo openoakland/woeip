@@ -1,4 +1,4 @@
-West Oakland Environmental Indicators Project website  |Travis|_ |Codecov|_
+West Oakland Air Quality (WOAQ) project  |Travis|_ |Codecov|_
 ===========================================================================
 .. |Travis| image:: https://travis-ci.org/openoakland/woeip.svg?branch=master
 .. _Travis: https://travis-ci.org/openoakland/woeip
@@ -6,7 +6,27 @@ West Oakland Environmental Indicators Project website  |Travis|_ |Codecov|_
 .. |Codecov| image:: https://codecov.io/gh/openoakland/woeip/branch/master/graph/badge.svg
 .. _Codecov: https://codecov.io/gh/openoakland/woeip
 
-TODO The ``README.rst`` file should start with a brief description of the project.
+WOAQ is a platform for West Oakland residents to collect, visualize, and act on the air quality data which affects their neighborhood.
+
+Organizations
+-------------
+`OpenOakland <https://www.openoakland.org/>`_ is a brigade in the Code for America network. Our mission is to bridge technology and community for a thriving and equitable Oakland. We are a welcoming and inclusive volunteer group of developers, designers, data geeks, and citizen activists who use creative technology to solve civic and social problems.
+
+`West Oakland Environmental Indicators Project (WOEIP) <http://www.woeip.org/>`_ is an environmental justice nonprofit. Their mission is to help residents understand and influence the political and natural forces which impact their lives. WOEIP's overall goal is to empower West Oakland residents to revitalize the environment and economy of their neighborhood.
+
+Project Description
+-------------------
+WOEIP has collected Air Quality (AQ) data over several years. The current AQ database is difficult to interact with and manage. A team within OpenOakland has partnered with WOEIP in order to build a replacement. The project, known as WOAQ, will allow WOEIP to intuitively store, process, and visualize their data. Ultimately, this will empower local residents to drive change in their community.
+
+How To Contribute
+-----------------
+There are several ways to contribute to WOAQ, including product design, community engagement, project management, and engineering. A general project overview is available in the `WOAQ Google Document <https://docs.google.com/document/d/1nMpRN8zOn-Sq9ocrVcOY0HZI2JnL5R7wEKje_YgVwRk/edit>`_. Current project issues and goals are organized on the `WOAQ Trello board <https://trello.com/invite/b/EBnxZHmx/6e43b909891f622463a67da64dbb8101/west-oakland-air-quality>`_. Please review the `Instructions Card <https://trello.com/c/msbASe3F>`_ before editing the Trello Board. 
+
+**TODO:** create a full contributing document
+
+Reporting Security Issues
+-------------------------
+Please do not report security issues in public. Instead, please contact Tim Miller at miller.tim108@gmail.com
 
 Getting Started
 ---------------
@@ -140,24 +160,3 @@ Note that this process will take at least 10 minutes for the initial database se
 may also take up to 20 minutes.
 
 The resulting state information will be saved to S3.
-
-
-How To Contribute
------------------
-
-TODO Describe how others can contribute to this project.
-Contributions are welcome. Do this...
-
-
-Reporting Security Issues
--------------------------
-
-TODO Describe how people can report security issues.
-Please do not report security issues in public. Please email...
-
-
-Get Help
---------
-
-TODO Describe where/how others can get support for running, or contributing to, this project.
-Ask questions and discuss this project on Slack or a mailing list...
