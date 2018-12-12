@@ -1,4 +1,4 @@
-FROM python:3.6-alpine
+FROM python:3.6-jessie
 
 WORKDIR /app/woeip
 
@@ -6,16 +6,14 @@ ENV DJANGO_SETTINGS_MODULE woeip.settings
 ENV PIPENV_DONT_USE_PYENV 1
 ENV PIPENV_SYSTEM 1
 
-RUN apk add --update \
-    coreutils \
-    gcc \
-    libffi-dev \
-    make \
-    musl-dev \
-    postgresql-dev \
-    python3-dev \
-  && pip install pipenv \
-  && rm -rf /var/cache/apk/*
+RUN apt-get update && \
+    apt-get install --no-install-recommends -y \
+        build-essential \
+        gettext \
+        libffi-dev \
+        libssl-dev \
+    && rm -rf /var/lib/apt/lists/* \
+    && pip install pipenv
 
 COPY Makefile /app/woeip
 COPY Pipfile /app/woeip
