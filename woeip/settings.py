@@ -26,6 +26,7 @@ DJANGO_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.flatpages',
+    'django.contrib.gis',
 ]
 
 THIRD_PARTY_APPS = [
