@@ -6,7 +6,7 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=woeip
-    image: mdillon/postgis:11
+    image: postgres:11.1-alpine
     volumes:
       - db-data:/var/lib/postgresql/data
     # NOTE: If you need to access the database from an external tool,
@@ -22,7 +22,7 @@ services:
     environment:
       - DEBUG=true
       - SECRET_KEY=replace-me
-      - DATABASE_URL=postgis://postgres:postgres@woeip.db:5432/woeip?connect_timeout=60
+      - DATABASE_URL=psql://postgres:postgres@woeip.db:5432/woeip?connect_timeout=60
     ports:
       # This port is primarily exposed for debugging. Use the web service's port to properly access the service.
       - 8000:8000
