@@ -2,9 +2,8 @@ import datetime
 import json
 from unittest import mock
 
-import pytz
-
 import pytest
+import pytz
 from django.db import DatabaseError
 from django.urls import reverse
 
