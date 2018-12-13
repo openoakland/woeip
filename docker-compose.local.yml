@@ -20,7 +20,7 @@ services:
     environment:
       - DEBUG=true
       - SECRET_KEY=replace-me
-      - DATABASE_URL=psql://postgres:postgres@woeip.db:5432/woeip?connect_timeout=60
+      - DATABASE_URL=postgis://postgres:postgres@woeip.db:5432/woeip?connect_timeout=60
     links:
       - db
     ports:
