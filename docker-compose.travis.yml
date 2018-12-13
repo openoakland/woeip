@@ -1,0 +1,20 @@
+version: "3"
+services:
+  db:
+    container_name: woeip.db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=woeip
+    image: postgres:11.1-alpine
+  app:
+    # NOTE: A command should be passed to the container via docker-compose run. This ensures we don't start
+    # gunicorn unnecessarily, and run out of memory.
+    entrypoint:
+      - bash
+      - -c
+    environment:
+      - SECRET_KEY=replace-me
+      - DATABASE_URL=postgres://postgres:postgres@woeip.db:5432/woeip?connect_timeout=60
+    links:
+      - db
