@@ -17,12 +17,12 @@ services:
   app:
     # Instruct Gunicorn to reload code when it is changed locally.
     command: --reload
-    links:
-      - db
     environment:
       - DEBUG=true
       - SECRET_KEY=replace-me
       - DATABASE_URL=psql://postgres:postgres@woeip.db:5432/woeip?connect_timeout=60
+    links:
+      - db
     ports:
       # This port is primarily exposed for debugging. Use the web service's port to properly access the service.
       - 8000:8000

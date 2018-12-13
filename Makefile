@@ -36,7 +36,7 @@ production-requirements: ## Install requirements for production
 	pipenv install
 
 test: clean ## Run tests and generate coverage report
-	SECRET_KEY=fake DATABASE_URL="sqlite://:memory:" coverage run -m pytest --durations=25 -v
+	coverage run -m pytest --durations=25 -v
 	coverage report -m
 
 quality: ## Run pep8 and Pylint

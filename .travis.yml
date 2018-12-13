@@ -1,5 +1,3 @@
-sudo: required
-
 services:
   - docker
 
@@ -13,12 +11,11 @@ cache: pip
 install:
   - bash .travis/install_terraform.sh
   - make docker.build
-  - make local.up
 
 script:
-  - docker exec -t woeip.app make quality
-  - docker exec -t woeip.app make static
-  - docker exec -t woeip.app make test
+  - docker-compose -f docker-compose.yml -f docker-compose.travis.yml run app "make quality"
+  - docker-compose -f docker-compose.yml -f docker-compose.travis.yml run app "make static"
+  - docker-compose -f docker-compose.yml -f docker-compose.travis.yml run app "make test"
   - make validate_terraform
 
 after_success:
