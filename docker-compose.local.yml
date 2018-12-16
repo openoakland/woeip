@@ -6,7 +6,7 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=woeip
-    image: postgres:11.1-alpine
+    image: mdillon/postgis:11
     volumes:
       - db-data:/var/lib/postgresql/data
     # NOTE: If you need to access the database from an external tool,
@@ -17,6 +17,8 @@ services:
   app:
     # Instruct Gunicorn to reload code when it is changed locally.
     command: --reload
+    depends_on:
+      - db
     environment:
       - DEBUG=true
       - SECRET_KEY=replace-me
