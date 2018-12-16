@@ -45,7 +45,6 @@ class RoleEnum(models.Model):
 
 
 class Participant(models.Model):
-    """A participant"""
     name = models.CharField(max_length=256)
     email = models.CharField(max_length=256)
     organization = models.ForeignKey(Organization, on_delete=models.SET_NULL, blank=True, null=True)
@@ -85,7 +84,7 @@ class Device(models.Model):
     firmware_version = models.CharField(max_length=256)
 
     def __str__(self):
-        return f"{self.name} {self.manufacturer} {self.model_number} {self.firmware_version}"
+        return f"{self.name} {self.model_number} {self.serial_number}"
 
 
 class Sensor(models.Model):
