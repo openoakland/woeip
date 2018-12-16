@@ -17,6 +17,8 @@ services:
   app:
     # Instruct Gunicorn to reload code when it is changed locally.
     command: --reload
+    depends_on:
+      - db
     environment:
       - DEBUG=true
       - SECRET_KEY=replace-me
@@ -28,7 +30,5 @@ services:
       - 8000:8000
     volumes:
       - .:/app/woeip:cached
-    depends_on: 
-      - db
 volumes:
   db-data:
