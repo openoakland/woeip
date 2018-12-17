@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := test
 
-.PHONY: clean help requirements test validate quality production-requirements migrate static clean_static
+.PHONY: clean detect_missing_migrations help requirements test validate quality production-requirements migrate static clean_static
 
 # Generates a help message. Borrowed from https://github.com/pydanny/cookiecutter-djangopackage.
 help: ## Display this help message
