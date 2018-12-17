@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from woeip.apps.database.models import (
+from woeip.apps.data_collection.models import (
     Data, Device, Organization, Participant, RoleEnum, RouteEnum, Sensor, Session, SessionData
 )
 

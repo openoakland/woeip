@@ -2,8 +2,8 @@
 
 import django.contrib.gis.db.models.fields
 import django.contrib.postgres.fields.jsonb
-from django.db import migrations, models
 import django.db.models.deletion
+from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
@@ -50,7 +50,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=256)),
                 ('email', models.CharField(max_length=256)),
-                ('organization', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='database.Organization')),
+                ('organization', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='data_collection.Organization')),
             ],
         ),
         migrations.CreateModel(
@@ -78,7 +78,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=256)),
                 ('unit', models.CharField(max_length=256)),
-                ('device', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='database.Device')),
+                ('device', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='data_collection.Device')),
             ],
         ),
         migrations.CreateModel(
@@ -87,8 +87,8 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('date_collected', models.DateTimeField(auto_now_add=True)),
                 ('metadata', django.contrib.postgres.fields.jsonb.JSONField(blank=True, null=True)),
-                ('collected_by', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='database.Participant')),
-                ('route', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='database.RouteEnum')),
+                ('collected_by', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='data_collection.Participant')),
+                ('route', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='data_collection.RouteEnum')),
             ],
         ),
         migrations.CreateModel(
@@ -98,24 +98,24 @@ class Migration(migrations.Migration):
                 ('uri', models.CharField(max_length=256)),
                 ('upload_time', models.DateTimeField(auto_now_add=True)),
                 ('hash', models.CharField(max_length=256)),
-                ('sensor', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='database.Sensor')),
-                ('session', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='database.Session')),
-                ('uploaded_by', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='database.Participant')),
+                ('sensor', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='data_collection.Sensor')),
+                ('session', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='data_collection.Session')),
+                ('uploaded_by', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='data_collection.Participant')),
             ],
         ),
         migrations.AddField(
             model_name='participant',
             name='role',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='database.RoleEnum'),
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='data_collection.RoleEnum'),
         ),
         migrations.AddField(
             model_name='organization',
             name='contact',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='contact', related_query_name='contact', to='database.Participant'),
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='contact', related_query_name='contact', to='data_collection.Participant'),
         ),
         migrations.AddField(
             model_name='data',
             name='session_data',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='database.SessionData'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='data_collection.SessionData'),
         ),
     ]

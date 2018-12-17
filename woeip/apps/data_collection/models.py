@@ -51,13 +51,12 @@ class Participant(models.Model):
 
 
 class RouteEnum(models.Model):
-    """Named routes
-    """
+    """Named routes"""
     name = models.CharField(max_length=256)
     latlon = LineStringField()
 
     def __str__(self):
-        return f"{self.name}"
+        return self.name
 
 
 class Session(models.Model):
@@ -88,7 +87,8 @@ class Sensor(models.Model):
     at a time.
     """
     name = models.CharField(max_length=256)
-    unit = models.CharField(max_length=256)
+    unit = models.CharField(max_length=256,
+                            help_text="""Measurement unit, e.g., mg/m3, ppm, etc.""")
     device = models.ForeignKey(Device, on_delete=models.CASCADE)
 
     def __str__(self):
