@@ -16,44 +16,19 @@ class Organization(models.Model):
         return f"{self.name} <{self.email}>"
 
 
-class RoleEnum(models.Model):
-    """Create, read, update, delete permissions"""
-    name = models.CharField(max_length=256)
-    can_create = models.BooleanField()
-    can_read = models.BooleanField()
-    can_update = models.BooleanField()
-    can_delete = models.BooleanField()
-
-    def __str__(self):
-        crud = []
-        if self.can_create:
-            crud.append('create')
-        if self.can_read:
-            crud.append('read')
-        if self.can_update:
-            crud.append('update')
-        if self.can_delete:
-            crud.append('delete')
-
-        crud = '/'.join(crud)
-
-        return f"{self.name} ({crud})"
-
-
 class Participant(models.Model):
     name = models.CharField(max_length=256)
     email = models.CharField(max_length=256)
     organization = models.ForeignKey(Organization, on_delete=models.SET_NULL, blank=True, null=True)
-    role = models.ForeignKey(RoleEnum, on_delete=models.SET_NULL, blank=True, null=True)
 
     def __str__(self):
-        return f"{self.name} <{self.email}> {self.organization} {self.role}"
+        return f"{self.name} <{self.email}> {self.organization}"
 
 
-class RouteEnum(models.Model):
+class Route(models.Model):
     """Named routes"""
     name = models.CharField(max_length=256)
-    latlon = LineStringField()
+    path = LineStringField()
 
     def __str__(self):
         return self.name
@@ -62,8 +37,8 @@ class RouteEnum(models.Model):
 class Session(models.Model):
     """A single air quality outing. Can link to several SessionData, e.g., raw data files."""
     date_collected = models.DateTimeField(auto_now_add=True)
-    route = models.ForeignKey(RouteEnum, on_delete=models.SET_NULL, blank=True, null=True)
-    collected_by = models.ForeignKey(Participant, on_delete=models.CASCADE)
+    route = models.ForeignKey(Route, on_delete=models.SET_NULL, blank=True, null=True)
+    collected_by = models.ForeignKey(Participant, on_delete=models.SET_NULL, blank=True, null=True)
     metadata = JSONField(blank=True, null=True)
 
     def __str__(self):
@@ -88,7 +63,7 @@ class Sensor(models.Model):
     """
     name = models.CharField(max_length=256)
     unit = models.CharField(max_length=256,
-                            help_text="""Measurement unit, e.g., mg/m3, ppm, etc.""")
+                            help_text="Measurement unit, e.g., mg/m3, ppm, etc.")
     device = models.ForeignKey(Device, on_delete=models.CASCADE)
 
     def __str__(self):
