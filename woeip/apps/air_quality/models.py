@@ -64,7 +64,7 @@ class Sensor(models.Model):
     name = models.CharField(max_length=256)
     unit = models.CharField(max_length=256,
                             help_text="Measurement unit, e.g., mg/m3, ppm, etc.")
-    device = models.ForeignKey(Device, on_delete=models.CASCADE)
+    device = models.ForeignKey(Device, on_delete=models.SET_NULL, blank=True, null=True)
 
     def __str__(self):
         return f"{self.name} ({self.device.name})"
