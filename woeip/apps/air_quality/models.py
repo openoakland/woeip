@@ -34,17 +34,6 @@ class Route(models.Model):
         return self.name
 
 
-class Session(models.Model):
-    """A single air quality outing. Can link to several SessionData, e.g., raw data files."""
-    date_collected = models.DateTimeField(auto_now_add=True)
-    route = models.ForeignKey(Route, on_delete=models.SET_NULL, blank=True, null=True)
-    collected_by = models.ForeignKey(Participant, on_delete=models.SET_NULL, blank=True, null=True)
-    metadata = JSONField(blank=True, null=True)
-
-    def __str__(self):
-        return f"{self.date_collected} {self.collected_by}"
-
-
 class Device(models.Model):
     name = models.CharField(max_length=256)
     manufacturer = models.CharField(max_length=256)
@@ -68,6 +57,17 @@ class Sensor(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.device.name})"
+
+
+class Session(models.Model):
+    """A single air quality outing. Can link to several SessionData, e.g., raw data files."""
+    date_collected = models.DateTimeField(auto_now_add=True)
+    route = models.ForeignKey(Route, on_delete=models.SET_NULL, blank=True, null=True)
+    collected_by = models.ForeignKey(Participant, on_delete=models.SET_NULL, blank=True, null=True)
+    metadata = JSONField(blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.date_collected} {self.collected_by}"
 
 
 class SessionData(models.Model):
