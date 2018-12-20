@@ -9,4 +9,3 @@ class UserFactory(factory.DjangoModelFactory):
 
     name = factory.Faker('name')
     email = factory.Faker('email')
-    organization = factory.SubFactory('woeip.apps.air_quality.factories.OrganizationFactory')

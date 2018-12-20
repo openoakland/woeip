@@ -2,32 +2,12 @@ from django.contrib.gis.db.models import LineStringField, PointField
 from django.contrib.postgres.fields import JSONField
 from django.db import models
 
-
-class Organization(models.Model):
-    """An organization, e.g., WOEIP, OpenOakland"""
-    name = models.CharField(max_length=256)
-    website = models.CharField(max_length=256)
-    email = models.CharField(max_length=256)
-    contact = models.ForeignKey('Participant',
-                                related_name='contact', related_query_name='contact',
-                                on_delete=models.SET_NULL, blank=True, null=True)
-
-    def __str__(self):
-        return f"{self.name} <{self.email}>"
-
-
-class Participant(models.Model):
-    name = models.CharField(max_length=256)
-    email = models.CharField(max_length=256)
-    organization = models.ForeignKey(Organization, on_delete=models.SET_NULL, blank=True, null=True)
-
-    def __str__(self):
-        return f"{self.name} <{self.email}> {self.organization}"
+from woeip.apps.core.models import User
 
 
 class Route(models.Model):
     """Named routes"""
-    name = models.CharField(max_length=256)
+    name = models.CharField(max_length=256, unique=True)
     path = LineStringField()
 
     def __str__(self):
@@ -63,7 +43,7 @@ class Session(models.Model):
     """A single air quality outing. Can link to several SessionData, e.g., raw data files."""
     date_collected = models.DateTimeField(auto_now_add=True)
     route = models.ForeignKey(Route, on_delete=models.SET_NULL, blank=True, null=True)
-    collected_by = models.ForeignKey(Participant, on_delete=models.SET_NULL, blank=True, null=True)
+    collected_by = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
     metadata = JSONField(blank=True, null=True)
 
     def __str__(self):
@@ -77,7 +57,7 @@ class SessionData(models.Model):
     sensor = models.ForeignKey(Sensor, on_delete=models.SET_NULL, blank=True, null=True)
     session = models.ForeignKey(Session, on_delete=models.CASCADE)
     upload_time = models.DateTimeField(auto_now_add=True)
-    uploaded_by = models.ForeignKey(Participant, on_delete=models.SET_NULL, blank=True, null=True)
+    uploaded_by = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
     hash = models.CharField(max_length=256)
 
     def __str__(self):
