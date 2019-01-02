@@ -1,6 +1,6 @@
 import factory
 
-from ..models import User
+from .models import User
 
 USER_PASSWORD = 'password'
 
