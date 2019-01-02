@@ -39,7 +39,7 @@ class Sensor(models.Model):
 
 class Session(models.Model):
     """A single air quality outing. Can link to several SessionData, e.g., raw data files."""
-    date_collected = models.DateTimeField(auto_now_add=True)
+    date_collected = models.DateTimeField()
     route = models.ForeignKey(Route, on_delete=models.SET_NULL, blank=True, null=True)
     collected_by = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
 
@@ -55,7 +55,9 @@ class SessionData(models.Model):
     session = models.ForeignKey(Session, on_delete=models.CASCADE)
     upload_time = models.DateTimeField(auto_now_add=True)
     uploaded_by = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
-    hash = models.CharField(max_length=256)
+
+    class Meta:
+        unique_together = ('sensor', 'session')
 
     def __str__(self):
         return f"{self.session.date_collected} {self.uri}"
