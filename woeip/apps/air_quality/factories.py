@@ -32,7 +32,7 @@ class RouteFactory(factory.DjangoModelFactory):
     class Meta:
         model = Route
 
-    name = factory.Faker('word')
+    name = factory.Sequence(lambda n: 'Route %d' % n)
     path = FuzzyLineString()
 
 
@@ -49,10 +49,9 @@ class SessionFactory(factory.DjangoModelFactory):
     class Meta:
         model = Session
 
-    date_collected = factory.Faker('post_datetime')
+    date_collected = factory.Faker('past_datetime')
     route = factory.SubFactory(RouteFactory)
     collected_by = factory.SubFactory(UserFactory)
-    metadata = factory.Faker('pydict')
 
 
 class SessionDataFactory(factory.DjangoModelFactory):
@@ -60,11 +59,9 @@ class SessionDataFactory(factory.DjangoModelFactory):
         model = SessionData
 
     uri = factory.Faker('uri')
-    sensor = factory.SubFactory(Sensor)
-    session = factory.SubFactory(Session)
-    upload_time = factory.Faker('past_datetime')
+    sensor = factory.SubFactory(SensorFactory)
+    session = factory.SubFactory(SessionFactory)
     uploaded_by = factory.SubFactory(UserFactory)
-    hash = factory.Faker('md5')
 
 
 class DataFactory(factory.DjangoModelFactory):
