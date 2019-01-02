@@ -1,18 +1,19 @@
 import random
 
 import factory
+import factory.fuzzy
 from django.contrib.gis import geos
 
 from woeip.apps.air_quality.models import Data, Device, Route, Sensor, Session, SessionData
 from woeip.apps.core.factories import UserFactory
 
 
-def generate_route(n):
-    points = []
-    for _ in range(n):
-        points.append(geos.Point(random.random(), random.random()))
+class FuzzyLineString(factory.fuzzy.BaseFuzzyAttribute):
+    def fuzz(self):
+        points = [(random.random(), random.random())
+                  for _ in range(20)]
 
-    return geos.LineString(points)
+        return geos.LineString(points)
 
 
 class DeviceFactory(factory.DjangoModelFactory):
@@ -32,7 +33,7 @@ class RouteFactory(factory.DjangoModelFactory):
         model = Route
 
     name = factory.Faker('word')
-    path = generate_route(10)
+    path = FuzzyLineString()
 
 
 class SensorFactory(factory.DjangoModelFactory):
