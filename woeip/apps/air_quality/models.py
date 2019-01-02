@@ -1,12 +1,10 @@
 from django.contrib.gis.db.models import LineStringField, PointField
-from django.contrib.postgres.fields import JSONField
 from django.db import models
 
 from woeip.apps.core.models import User
 
 
 class Route(models.Model):
-    """Named routes"""
     name = models.CharField(max_length=256, unique=True)
     path = LineStringField()
 
@@ -44,7 +42,6 @@ class Session(models.Model):
     date_collected = models.DateTimeField(auto_now_add=True)
     route = models.ForeignKey(Route, on_delete=models.SET_NULL, blank=True, null=True)
     collected_by = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
-    metadata = JSONField(blank=True, null=True)
 
     def __str__(self):
         return f"{self.date_collected} {self.collected_by}"
