@@ -1,3 +1,5 @@
+import os.path as op
+
 from django.contrib.gis.db.models import LineStringField, PointField
 from django.db import models
 
@@ -50,7 +52,7 @@ class Session(models.Model):
 class SessionData(models.Model):
     """The raw data file generated during a session. Assumes one and only one file per sensor,
     although multiple sensors can be linked to one session"""
-    uri = models.CharField(max_length=256)
+    upload = models.FileField(upload_to='session_data/')
     sensor = models.ForeignKey(Sensor, on_delete=models.SET_NULL, blank=True, null=True)
     session = models.ForeignKey(Session, on_delete=models.CASCADE)
     upload_time = models.DateTimeField(auto_now_add=True)
@@ -60,7 +62,8 @@ class SessionData(models.Model):
         unique_together = ('sensor', 'session')
 
     def __str__(self):
-        return f"{self.session.date_collected} {self.uri}"
+        name = op.basename(self.upload.name)
+        return f"{self.session.date_collected} {name}"
 
 
 class Data(models.Model):

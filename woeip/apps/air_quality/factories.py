@@ -58,7 +58,7 @@ class SessionDataFactory(factory.DjangoModelFactory):
     class Meta:
         model = SessionData
 
-    uri = factory.Faker('uri')
+    upload = factory.django.FileField()
     sensor = factory.SubFactory(SensorFactory)
     session = factory.SubFactory(SessionFactory)
     uploaded_by = factory.SubFactory(UserFactory)
