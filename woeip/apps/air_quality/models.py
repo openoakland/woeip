@@ -2,6 +2,7 @@ import os.path as op
 
 from django.contrib.gis.db.models import LineStringField, PointField
 from django.db import models
+from django_extensions.db.models import TimeStampedModel
 
 from woeip.apps.core.models import User
 
@@ -49,13 +50,12 @@ class Session(models.Model):
         return f"{self.date_collected} {self.collected_by}"
 
 
-class SessionData(models.Model):
+class SessionData(TimeStampedModel):
     """The raw data file generated during a session. Assumes one and only one file per sensor,
     although multiple sensors can be linked to one session"""
     upload = models.FileField(upload_to='session_data/')
     sensor = models.ForeignKey(Sensor, on_delete=models.SET_NULL, blank=True, null=True)
     session = models.ForeignKey(Session, on_delete=models.CASCADE)
-    upload_time = models.DateTimeField(auto_now_add=True)
     uploaded_by = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
 
     class Meta:
