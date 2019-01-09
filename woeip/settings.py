@@ -41,13 +41,14 @@ LOCAL_APPS = [
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 
-AWS_S3_HOST = 's3.us-east-2.amazonaws.com'
-AWS_S3_ACCESS_KEY_ID = env('AWS_S3_ACCESS_KEY_ID')
-AWS_S3_SECRET_ACCESS_KEY = env('AWS_S3_SECRET_ACCESS_KEY')
-AWS_STORAGE_BUCKET_NAME = 'woaq'
-AWS_DEFAULT_ACL = None
+if len(env('AWS_S3_ACCESS_KEY_ID')) > 10:
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+    AWS_S3_HOST = 's3.us-east-2.amazonaws.com'
+    AWS_S3_ACCESS_KEY_ID = env('AWS_S3_ACCESS_KEY_ID')
+    AWS_S3_SECRET_ACCESS_KEY = env('AWS_S3_SECRET_ACCESS_KEY')
+    AWS_STORAGE_BUCKET_NAME = 'woaq'
+    AWS_DEFAULT_ACL = None
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
