@@ -23,6 +23,7 @@ services:
       - DEBUG=true
       - SECRET_KEY=replace-me
       - DATABASE_URL=postgis://postgres:postgres@woeip.db:5432/woeip?connect_timeout=60
+      - DEFAULT_FILE_STORAGE=django.core.files.storage.FileSystemStorage
     links:
       - db
     ports:

@@ -53,7 +53,7 @@ class Session(models.Model):
 class SessionData(TimeStampedModel):
     """The raw data file generated during a session. Assumes one and only one file per sensor,
     although multiple sensors can be linked to one session"""
-    upload = models.FileField(upload_to='session_data/')
+    upload = models.FileField(upload_to='session_data')
     sensor = models.ForeignKey(Sensor, on_delete=models.SET_NULL, blank=True, null=True)
     session = models.ForeignKey(Session, on_delete=models.CASCADE)
     uploaded_by = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
