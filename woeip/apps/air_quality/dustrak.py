@@ -1,9 +1,9 @@
 #!/usr/bin/env python
-import argparse
 import datetime
 import itertools
 import warnings
 
+import numpy as np
 import pandas as pd
 import pynmea2
 import pytz
@@ -122,20 +122,22 @@ def degree_minute_to_decimal(degmin):
     return degrees + minutes / 60
 
 
-def load_dustrak(path, tz):
+def load_dustrak(file_handle, tz):
     """Load and condition data from a DusTrak raw data file
 
     Parameters
     ----------
-    path : str
+    file_handle : str
 
     Returns
     -------
     A pandas DataFrame
     """
-    with open(path, 'r') as f:
-        header = parse_header(f)
-        data = pd.read_csv(f)
+    header = parse_header(file_handle)
+    data = pd.read_csv(file_handle)
+
+    if data.columns[0] != 'Elapsed Time [s]':
+        raise ValueError('First column must be elapsed time in seconds')
 
     start_time = ' '.join([header['Test Start Date'],
                            header['Test Start Time']])
@@ -144,15 +146,15 @@ def load_dustrak(path, tz):
 
     local_timezone = pytz.timezone(tz)
     start_time = local_timezone.localize(start_time)
-
     start_time = start_time.astimezone(pytz.timezone('UTC'))
 
-    sample_interval_minutes, sample_interval_seconds = header['Test Interval [M:S]'].split(':')
+    sample_interval_minutes = header['Test Interval [M:S]'].split(':')[0]
     if sample_interval_minutes != '0':
         raise NotImplementedError('Minute sampling intervals not supported')
 
-    sample_freq = sample_interval_seconds + 'S'
-    sample_times = pd.date_range(start_time, freq=sample_freq, periods=len(data), tz='UTC')
+    sample_offsets = np.array(data['Elapsed Time [s]'], dtype='timedelta64[s]')
+    sample_times = pd.Timestamp(start_time) + pd.to_timedelta(sample_offsets)
+    sample_times = sample_times.tz_localize('UTC')
 
     data['time'] = sample_times
     data.sort_values(by='time', inplace=True)
@@ -160,24 +162,23 @@ def load_dustrak(path, tz):
     return data
 
 
-def load_gps(path):
+def load_gps(file_handle):
     """Load and condition data from a GPS raw data file
 
     Parameters
     ----------
-    path : str
+    file_handle : file stream
 
     Returns
     -------
     A pandas DataFrame
     """
-    with open(path, 'r') as f:
-        gps = []
-        for sample in f:
-            if sample.startswith('$GPRMC'):
-                gps_sample = parse_gps_sentence(sample)
-                gps_dict = sentence_to_dict(gps_sample)
-                gps.append(gps_dict)
+    gps = []
+    for sample in file_handle:
+        if sample.startswith('$GPRMC'):
+            gps_sample = parse_gps_sentence(sample)
+            gps_dict = sentence_to_dict(gps_sample)
+            gps.append(gps_dict)
 
     gps = pd.DataFrame(gps)
 
@@ -212,7 +213,7 @@ def load_gps(path):
     return gps
 
 
-def join(dustrak_path, gps_path, tz='America/Los_Angeles', tolerance=3.):
+def join(dustrak_file_handle, gps_file_handle, tz='America/Los_Angeles', tolerance=3.):
     """Join a DusTrak file and a GPS file into a single table.
 
     The DusTrak device collects time stamps and air quality measurements, but no geospatial
@@ -221,8 +222,8 @@ def join(dustrak_path, gps_path, tz='America/Los_Angeles', tolerance=3.):
 
     Parameters
     ----------
-    dustrak_path : str
-    gps_path : str
+    dustrak_file_handle : file handle
+    gps_file_handle : file handle
     tz : str
     tolerance : numeric
         How far away (in seconds) can a air quality measurement be from a GPS measurement to be
@@ -232,8 +233,8 @@ def join(dustrak_path, gps_path, tz='America/Los_Angeles', tolerance=3.):
     -------
     A pandas DataFrame containing the sample time (in UTC), latitude, longitude, and measurement
     """
-    data = load_dustrak(dustrak_path, tz)
-    gps = load_gps(gps_path)
+    data = load_dustrak(dustrak_file_handle, tz)
+    gps = load_gps(gps_file_handle)
 
     joined_data = pd.merge_asof(data, gps, on='time', direction='nearest',
                                 tolerance=pd.Timedelta(f'{tolerance}s'))
@@ -244,9 +245,7 @@ def join(dustrak_path, gps_path, tz='America/Los_Angeles', tolerance=3.):
     n_dropped = invalid_indices.sum()
 
     if n_dropped > 0:
-        message = (f"""{n_dropped} air quality samples dropped that were """
-                   f"""not within {tolerance} seconds of a GPS sample.""")
-
+        message = f"{n_dropped} air quality samples dropped that were not within {tolerance} seconds of a GPS sample."
         warnings.warn(message)
 
     joined_data = joined_data[['time', 'Mass [mg/m3]', 'lat', 'lon']]
@@ -269,27 +268,3 @@ def save(joined_data, session_data):
                            time=row['time'],
                            latlon=geos.Point(row['lon'], row['lat']))
         data.save()
-
-
-def parse_args():
-    parser = argparse.ArgumentParser(description="Process DusTrak files.")
-    parser.add_argument('dustrak_path', type=str, help="Path to the DusTrak file")
-    parser.add_argument('gps_path', type=str, help="Path to the GPS file")
-    parser.add_argument('output_path', type=str, help="Path to save joined table to")
-    parser.add_argument('-t', '--tz', type=str, default="America/Los_Angeles",
-                        help="Time zone, e.g., America/Los_Angeles")
-    parser.add_argument('--tolerance', type=float, default=3.,
-                        help="How far away (in seconds) can a air quality measurement be from a "
-                             "GPS measurement to be linked to it")
-
-    return parser.parse_args()
-
-
-def main():
-    args = parse_args()
-    joined_data = join(args.dustrak_path, args.gps_path, args.tz, args.tolerance)
-    joined_data.to_csv(args.output_path, index=False, float_format="%.6f")
-
-
-if __name__ == "__main__":
-    main()
