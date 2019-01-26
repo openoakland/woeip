@@ -262,9 +262,12 @@ def save(joined_data, session_data):
     joined_data : pandas DataFrame
     session_data : woeip.apps.air_quality.models.SessionData
     """
+    data = []
     for _, row in joined_data.iterrows():
-        data = models.Data(session_data=session_data,
-                           value=row['measurement'],
-                           time=row['time'],
-                           latlon=geos.Point(row['lon'], row['lat']))
-        data.save()
+        dat = models.Data(session_data=session_data,
+                          value=row['measurement'],
+                          time=row['time'],
+                          latlon=geos.Point(row['lon'], row['lat']))
+        data.append(dat)
+
+    models.Data.objects.bulk_create(data)
