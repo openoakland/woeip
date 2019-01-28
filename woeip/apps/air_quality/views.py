@@ -9,6 +9,10 @@ from woeip.apps.core.models import User
 logger = logging.getLogger(__name__)
 
 
+def home(request):
+    return render(request, 'air_quality/home.html')
+
+
 def upload_dustrak(request):
     if request.user.is_authenticated:
         if request.method == 'POST':
@@ -31,13 +35,18 @@ def upload_dustrak(request):
                 air_quality.save()
                 gps.save()
 
+                joined_data = dustrak.join(request.FILES['air_quality'].file,
+                                           request.FILES['gps'].file)
+                dustrak.save(joined_data, air_quality)
+
                 return render(request, 'air_quality/success_dustrak.html')
+
             else:
                 return render(request, 'air_quality/error_dustrak.html',
                               {'errors': form.errors})
 
         else:
-            form = forms.DustrakSessionForm()
+            form = forms.DustrakSessionForm(initial={'collected_by': request.user})
 
             return render(request, 'air_quality/upload_dustrak.html',
                           {'user': request.user, 'form': form})
