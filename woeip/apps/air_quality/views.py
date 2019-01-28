@@ -14,6 +14,10 @@ def home(request):
 
 
 def upload_dustrak(request):
+    """Upload data for a session collected using the Dustrak air quality device and a separate GPS 
+    log file. Creates a new Session instance, two SessionData instances, and Data instances for
+    each sample.
+    """
     if request.user.is_authenticated:
         if request.method == 'POST':
             form = forms.DustrakSessionForm(request.POST, request.FILES)
