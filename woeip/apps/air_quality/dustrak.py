@@ -26,10 +26,10 @@ def parse_header(f):
     """
     header = {}
 
-    lines = itertools.takewhile(lambda x: x != '\n', f)
+    lines = itertools.takewhile(lambda x: x not in (b'\n', b'\r', b'\r\n'), f)
     for line in lines:
-        line = line.rstrip('\n')
-        key, value = line.split(',')
+        line = line.rstrip(b'\n\r')
+        key, value = line.split(b',')
         header[key] = value
 
     return header
