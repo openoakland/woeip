@@ -236,8 +236,15 @@ def join(dustrak_file_handle, gps_file_handle, tz='America/Los_Angeles', toleran
     """
     dustrak_file_handle.seek(0)
     gps_file_handle.seek(0)
-    data = load_dustrak(dustrak_file_handle, tz)
-    gps = load_gps(gps_file_handle)
+    try:
+        data = load_dustrak(dustrak_file_handle, tz)
+    except Exception as e:
+        raise ValueError(f"Dustrak file format not recognized. {e}")
+
+    try:
+        gps = load_gps(gps_file_handle)
+    except Exception as e:
+        raise ValueError(f"GPS file format not recognized. {e}")
 
     joined_data = pd.merge_asof(data, gps, on='time', direction='nearest',
                                 tolerance=pd.Timedelta(f'{tolerance}s'))

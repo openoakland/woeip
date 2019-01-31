@@ -36,11 +36,15 @@ def upload_dustrak(request):
                                          session=form.instance,
                                          uploaded_by=request.user)
 
+                try:
+                    joined_data = dustrak.join(request.FILES['air_quality'].file,
+                                               request.FILES['gps'].file)
+                except Exception as e:
+                    return render(request, 'air_quality/error_dustrak.html',
+                                  {'errors': e})
+
                 air_quality.save()
                 gps.save()
-
-                joined_data = dustrak.join(request.FILES['air_quality'].file,
-                                           request.FILES['gps'].file)
                 dustrak.save(joined_data, air_quality)
 
                 return render(request, 'air_quality/success_dustrak.html')
