@@ -2,6 +2,7 @@ import random
 
 import factory
 import factory.fuzzy
+import pytz
 from django.contrib.gis import geos
 
 from woeip.apps.air_quality.models import Data, Device, Route, Sensor, Session, SessionData
@@ -24,7 +25,7 @@ class DeviceFactory(factory.DjangoModelFactory):
     manufacturer = factory.Faker('word')
     serial_number = factory.Faker('pystr', max_chars=10)
     model_number = factory.Faker('pyint')
-    calibration_date = factory.Faker('past_date')
+    calibration_date = factory.Faker('past_date', tzinfo=pytz.utc)
     firmware_version = factory.Faker('pyint')
 
 
@@ -49,7 +50,7 @@ class SessionFactory(factory.DjangoModelFactory):
     class Meta:
         model = Session
 
-    date_collected = factory.Faker('past_datetime')
+    date_collected = factory.Faker('past_datetime', tzinfo=pytz.utc)
     route = factory.SubFactory(RouteFactory)
     collected_by = factory.SubFactory(UserFactory)
 
@@ -70,5 +71,5 @@ class DataFactory(factory.DjangoModelFactory):
 
     session_data = factory.SubFactory(SessionDataFactory)
     value = factory.Faker('pyfloat')
-    time = factory.Faker('past_datetime')
+    time = factory.Faker('past_datetime', tzinfo=pytz.utc)
     latlon = factory.Faker('latlng')
