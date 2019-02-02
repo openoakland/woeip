@@ -10,8 +10,7 @@ from woeip.apps.air_quality.tests import factories
 test_data_directory = Path(__file__).parent / 'data'
 
 
-@pytest.fixture
-def target_data():
+def get_target_data():
     """Load the target output"""
     target_output = pd.read_csv(test_data_directory / 'joined.csv', parse_dates=['time'])
     target_output.set_index('time', inplace=True)
@@ -21,7 +20,10 @@ def target_data():
     return target_output
 
 
-def test_joiner(target_data):  # pylint: disable=W0621
+target_data = get_target_data()
+
+
+def test_joiner():
     """Test the output of the function that joins GPS and air quality measurements based on time stamps"""
     dustrak_file_handle = open(test_data_directory / 'dustrak.csv', 'r')
     gps_file_handle = open(test_data_directory / 'gps.log', 'r')
@@ -40,7 +42,7 @@ def test_joiner(target_data):  # pylint: disable=W0621
 
 
 @pytest.mark.django_db
-def test_save(target_data):  # pylint: disable=W0621
+def test_save():
     """Test ability to save a session of joined GPS/air quality data to the database, based on measurement/value"""
     session_data = factories.SessionDataFactory()
     dustrak.save(target_data, session_data)
