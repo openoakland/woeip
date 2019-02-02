@@ -41,7 +41,7 @@ def test_joiner(target_data):  # pylint: disable=W0621
 
 @pytest.mark.django_db
 def test_save(target_data):  # pylint: disable=W0621
-    """Test ability to save a session of joined GPS/air quality measurement data to the database based on measurement/value"""
+    """Test ability to save a session of joined GPS/air quality data to the database, based on measurement/value"""
     session_data = factories.SessionDataFactory()
     dustrak.save(target_data, session_data)
     assert np.allclose(target_data['measurement'], models.Data.objects.values_list('value', flat=True))
