@@ -1,4 +1,3 @@
-# pylint: disable=W0621
 from pathlib import Path
 
 import numpy as np
@@ -14,15 +13,15 @@ test_data_directory = Path(__file__).parent / 'data'
 @pytest.fixture
 def target_data():
     """Load the target output"""
-    target_data = pd.read_csv(test_data_directory / 'joined.csv', parse_dates=['time'])
-    target_data.set_index('time', inplace=True)
-    target_data = target_data.tz_localize('UTC')
-    target_data.reset_index(inplace=True)
+    target_output = pd.read_csv(test_data_directory / 'joined.csv', parse_dates=['time'])
+    target_output.set_index('time', inplace=True)
+    target_output = target_output.tz_localize('UTC')
+    target_output.reset_index(inplace=True)
 
-    return target_data
+    return target_output
 
 
-def test_joiner(target_data):
+def test_joiner(target_data):  # pylint: disable=W0621
     """Test the output of the function that joins GPS and air quality measurements based on time stamps"""
     dustrak_file_handle = open(test_data_directory / 'dustrak.csv', 'r')
     gps_file_handle = open(test_data_directory / 'gps.log', 'r')
@@ -41,11 +40,8 @@ def test_joiner(target_data):
 
 
 @pytest.mark.django_db
-def test_save(target_data):
-    """Test ability to save a session of joined GPS/air quality measurement data to the database"""
+def test_save(target_data):  # pylint: disable=W0621
+    """Test ability to save a session of joined GPS/air quality data to the database, based on measurement/value"""
     session_data = factories.SessionDataFactory()
-    session_data.save()
-
     dustrak.save(target_data, session_data)
-
-    assert len(models.Data.objects.all()) == len(target_data)
+    assert np.allclose(target_data['measurement'], models.Data.objects.values_list('value', flat=True))
