@@ -26,10 +26,10 @@ def parse_header(f):
     """
     header = {}
 
-    lines = itertools.takewhile(lambda x: x not in (b'\n', b'\r', b'\r\n'), f)
+    lines = itertools.takewhile(lambda x: x not in ('\n', '\r', '\r\n'), f)
     for line in lines:
-        line = line.rstrip(b'\n\r')
-        key, value = line.split(b',')
+        line = line.rstrip('\n\r')
+        key, value = line.split(',')
         header[key] = value
 
     return header
@@ -127,7 +127,7 @@ def load_dustrak(file_handle, tz):
 
     Parameters
     ----------
-    file_handle : file handle, mode='rb'
+    file_handle : file handle
 
     Returns
     -------
@@ -139,17 +139,16 @@ def load_dustrak(file_handle, tz):
     if data.columns[0] != 'Elapsed Time [s]':
         raise ValueError('First column must be elapsed time in seconds')
 
-    start_time = b' '.join([header[b'Test Start Date'],
-                            header[b'Test Start Time']])
-    start_time = datetime.datetime.strptime(start_time.decode('utf-8'),
-                                            '%m/%d/%Y %I:%M:%S %p')
+    start_time = ' '.join([header['Test Start Date'],
+                           header['Test Start Time']])
+    start_time = datetime.datetime.strptime(start_time, '%m/%d/%Y %I:%M:%S %p')
 
     local_timezone = pytz.timezone(tz)
     start_time = local_timezone.localize(start_time)
     start_time = start_time.astimezone(pytz.timezone('UTC'))
 
-    sample_interval_minutes = header[b'Test Interval [M:S]'].split(b':')[0]
-    if sample_interval_minutes != b'0':
+    sample_interval_minutes = header['Test Interval [M:S]'].split(':')[0]
+    if sample_interval_minutes != '0':
         raise NotImplementedError('Minute sampling intervals not supported')
 
     sample_offsets = np.array(data['Elapsed Time [s]'], dtype='timedelta64[s]')
@@ -167,7 +166,7 @@ def load_gps(file_handle):
 
     Parameters
     ----------
-    file_handle : file handle, mode='rb'
+    file_handle : file handle
 
     Returns
     -------
@@ -175,7 +174,6 @@ def load_gps(file_handle):
     """
     gps = []
     for sample in file_handle:
-        sample = sample.decode('utf-8')
         if sample.startswith('$GPRMC'):
             gps_sample = parse_gps_sentence(sample)
             gps_dict = sentence_to_dict(gps_sample)
@@ -223,8 +221,8 @@ def join(dustrak_file_handle, gps_file_handle, tz='America/Los_Angeles', toleran
 
     Parameters
     ----------
-    dustrak_file_handle : file handle, mode='rb'
-    gps_file_handle : file handle, mode='rb'
+    dustrak_file_handle : file handle
+    gps_file_handle : file handle
     tz : str
     tolerance : numeric
         How far away (in seconds) can a air quality measurement be from a GPS measurement to be
