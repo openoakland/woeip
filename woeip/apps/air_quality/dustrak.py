@@ -127,7 +127,7 @@ def load_dustrak(file_handle, tz):
 
     Parameters
     ----------
-    file_handle : str
+    file_handle : file handle, mode='rb'
 
     Returns
     -------
@@ -167,7 +167,7 @@ def load_gps(file_handle):
 
     Parameters
     ----------
-    file_handle : file stream
+    file_handle : file handle, mode='rb'
 
     Returns
     -------
@@ -223,8 +223,8 @@ def join(dustrak_file_handle, gps_file_handle, tz='America/Los_Angeles', toleran
 
     Parameters
     ----------
-    dustrak_file_handle : file handle
-    gps_file_handle : file handle
+    dustrak_file_handle : file handle, mode='rb'
+    gps_file_handle : file handle, mode='rb'
     tz : str
     tolerance : numeric
         How far away (in seconds) can a air quality measurement be from a GPS measurement to be
