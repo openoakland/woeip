@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import datetime
+import io
 import itertools
 import warnings
 
@@ -10,29 +11,6 @@ import pytz
 from django.contrib.gis import geos
 
 from . import models
-
-
-def parse_header(f):
-    """Parse the header for a DusTrak II file.
-
-    Relies on a the presence of an empty line (containing only "\n")
-    to mark the end of the header section. After running the function
-    on a properly formatted DusTrack file, the file handle will point
-    to the line containing the column names of the data.
-
-    Parameters
-    ----------
-    f : file handle
-    """
-    header = {}
-
-    lines = itertools.takewhile(lambda x: x not in ('\n', '\r', '\r\n'), f)
-    for line in lines:
-        line = line.rstrip('\n\r')
-        key, value = line.split(',')
-        header[key] = value
-
-    return header
 
 
 def parse_gps_sentence(sentence):
@@ -122,19 +100,28 @@ def degree_minute_to_decimal(degmin):
     return degrees + minutes / 60
 
 
-def load_dustrak(file_handle, tz):
+def load_dustrak(contents, tz):
     """Load and condition data from a DusTrak raw data file
 
     Parameters
     ----------
-    file_handle : file handle
+    contents : str
+        File contents as string
 
     Returns
     -------
-    A pandas DataFrame
+    A dict of header information and a pandas DataFrame of data
     """
-    header = parse_header(file_handle)
-    data = pd.read_csv(file_handle)
+    contents = io.StringIO(contents)
+
+    header = {}
+    lines = itertools.takewhile(lambda x: x != '\n', contents)
+    for line in lines:
+        line = line.rstrip('\n')
+        key, value = line.split(',')
+        header[key] = value
+
+    data = pd.read_csv(contents)
 
     if data.columns[0] != 'Elapsed Time [s]':
         raise ValueError('First column must be elapsed time in seconds')
@@ -158,22 +145,22 @@ def load_dustrak(file_handle, tz):
     data['time'] = sample_times
     data.sort_values(by='time', inplace=True)
 
-    return data
+    return header, data
 
 
-def load_gps(file_handle):
+def load_gps(contents):
     """Load and condition data from a GPS raw data file
 
     Parameters
     ----------
-    file_handle : file handle
+    contents : str
 
     Returns
     -------
     A pandas DataFrame
     """
     gps = []
-    for sample in file_handle:
+    for sample in contents.split('\n'):
         if sample.startswith('$GPRMC'):
             gps_sample = parse_gps_sentence(sample)
             gps_dict = sentence_to_dict(gps_sample)
@@ -212,17 +199,17 @@ def load_gps(file_handle):
     return gps
 
 
-def join(dustrak_file_handle, gps_file_handle, tz='America/Los_Angeles', tolerance=3.):
-    """Join a DusTrak file and a GPS file into a single table.
+def join(air_quality, gps, tolerance=3.):
+    """Join a DusTrak and a GPS tables into a single table.
 
     The DusTrak device collects time stamps and air quality measurements, but no geospatial
-    information. Scientists will also take a GPS device on their sessions that records time stamps
-    and latitudes/longitudes. Those two data files need to be combined.
+    information. Scientists will also take a GPS device on their sessions that records timestamps
+    and latitudes/longitudes. Merge the two files by matching timestamps.
 
     Parameters
     ----------
-    dustrak_file_handle : file handle
-    gps_file_handle : file handle
+    dustrak : pandas DataFrame
+    gps : pandas DataFrame
     tz : str
     tolerance : numeric
         How far away (in seconds) can a air quality measurement be from a GPS measurement to be
@@ -232,19 +219,7 @@ def join(dustrak_file_handle, gps_file_handle, tz='America/Los_Angeles', toleran
     -------
     A pandas DataFrame containing the sample time (in UTC), latitude, longitude, and measurement
     """
-    dustrak_file_handle.seek(0)
-    gps_file_handle.seek(0)
-    try:
-        data = load_dustrak(dustrak_file_handle, tz)
-    except Exception as e:
-        raise ValueError(f"Dustrak file format not recognized. {e}")
-
-    try:
-        gps = load_gps(gps_file_handle)
-    except Exception as e:
-        raise ValueError(f"GPS file format not recognized. {e}")
-
-    joined_data = pd.merge_asof(data, gps, on='time', direction='nearest',
+    joined_data = pd.merge_asof(air_quality, gps, on='time', direction='nearest',
                                 tolerance=pd.Timedelta(f'{tolerance}s'))
 
     invalid_indices = joined_data[['lat', 'lon', 'Mass [mg/m3]']].isnull().any(1)
