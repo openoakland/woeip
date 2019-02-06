@@ -69,7 +69,7 @@ class DataFactory(factory.DjangoModelFactory):
     class Meta:
         model = Data
 
-    session_data = factory.SubFactory(SessionDataFactory)
+    session = factory.SubFactory(SessionFactory)
     value = factory.Faker('pyfloat')
     time = factory.Faker('past_datetime', tzinfo=pytz.utc)
     latlon = factory.Faker('latlng')
