@@ -9,10 +9,20 @@ from woeip.apps.air_quality.models import Data, Device, Route, Sensor, Session, 
 from woeip.apps.core.tests.factories import UserFactory
 
 
-class FuzzyLineString(factory.fuzzy.BaseFuzzyAttribute):
+def random_latlon():
+    lat = random.random() * 180 - 90
+    lon = random.random() * 360 - 180
+    return lat, lon
+
+
+class FuzzyLatLon(factory.fuzzy.BaseFuzzyAttribute):
     def fuzz(self):
-        points = [(random.random(), random.random())
-                  for _ in range(20)]
+        return geos.Point(random_latlon())
+
+
+class FuzzyRoute(factory.fuzzy.BaseFuzzyAttribute):
+    def fuzz(self):
+        points = [random_latlon() for _ in range(20)]
 
         return geos.LineString(points)
 
@@ -34,7 +44,7 @@ class RouteFactory(factory.DjangoModelFactory):
         model = Route
 
     name = factory.Sequence(lambda n: 'Route %d' % n)
-    path = FuzzyLineString()
+    path = FuzzyRoute()
 
 
 class SensorFactory(factory.DjangoModelFactory):
@@ -72,4 +82,4 @@ class DataFactory(factory.DjangoModelFactory):
     session = factory.SubFactory(SessionFactory)
     value = factory.Faker('pyfloat')
     time = factory.Faker('past_datetime', tzinfo=pytz.utc)
-    latlon = factory.Faker('latlng')
+    latlon = FuzzyLatLon()
