@@ -33,9 +33,9 @@ class Sensor(models.Model):
     """
 
     name = models.CharField(max_length=256)
-    Unit_Choices = (('mg/m3','mg/m3'),('ppm','ppm'),('g/m3','g/m3'),('PM10','PM10'),('PM2.5','PM2.5'),('ug/m3','ug/m3'))
+    unit_choices = (('mg/m3', 'mg/m3'), ('ppm', 'ppm'),('g/m3', 'g/m3'), ('PM10', 'PM10'), ('PM2.5', 'PM2.5'), ('\u03BCg/m3', '\u03BCg/m3'))
 
-    unit = models.CharField(max_length=256, choices=Unit_Choices, default='mg/m3',
+    unit = models.CharField(max_length=256, choices=unit_choices, default='mg/m3',
                             help_text="Measurement unit, e.g., mg/m3, ppm, etc.")
     device = models.ForeignKey(Device, on_delete=models.SET_NULL, blank=True, null=True)
 
