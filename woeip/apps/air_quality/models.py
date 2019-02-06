@@ -31,11 +31,10 @@ class Sensor(models.Model):
     """A sensor is something that measures something, i.e., it produces a single measurement value
     at a time.
     """
-
     name = models.CharField(max_length=256)
-    unit_choices = (('mg/m3', 'mg/m3'), ('ppm', 'ppm'),('g/m3', 'g/m3'), ('PM10', 'PM10'), ('PM2.5', 'PM2.5'), ('\u03BCg/m3', '\u03BCg/m3'))
+    unit_choices = (('mg/m3', 'mg/m3'), ('ppm', 'ppm'),('g/m3', 'g/m3'), ('PM10', 'PM10'), ('PM2.5', 'PM2.5'), ('μg/m3', '\u03BCg/m3'))
 
-    unit = models.CharField(max_length=256, choices=unit_choices, default='mg/m3',
+    unit = models.CharField(max_length=256, choices=unit_choices,
                             help_text="Measurement unit, e.g., mg/m3, ppm, etc.")
     device = models.ForeignKey(Device, on_delete=models.SET_NULL, blank=True, null=True)
 
