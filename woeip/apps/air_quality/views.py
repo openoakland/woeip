@@ -4,6 +4,7 @@ import logging
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.shortcuts import redirect, render
+
 from woeip.apps.air_quality import dustrak, forms, models
 from woeip.apps.core.models import User
 
@@ -15,7 +16,7 @@ def index(request):
 
 
 def files(request):
-    """Upload data for a session collected using the Dustrak air quality device and a separate GPS 
+    """Upload data for a session collected using the Dustrak air quality device and a separate GPS
     log file. Creates a new Session instance, two SessionData instances, and Data instances for
     each sample.
     """
