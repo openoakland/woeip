@@ -1,7 +1,7 @@
 <!-- Navigation Bar -->
 <ul>
     <li><h1><a href="{% url 'index' %}">West Oakland Air Quality</a></h1></li>
-    <li><a href="{% url 'files' %}">File Management</a></li>
+    <li><a href="{% url 'upload' %}">File Upload</a></li>
     <li>
         {% if user.is_authenticated %}
             {{user}}: <a href="{% url 'logout' %}">Logout</a>
