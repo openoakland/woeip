@@ -28,13 +28,13 @@ class Device(models.Model):
 
 
 class Sensor(models.Model):
-    """A sensor is something that measures something, i.e., it produces a single measurement value
-    at a time.
+    """A sensor is something that measures something, i.e., it produces a single
+    measurement value at a time.
     """
     name = models.CharField(max_length=256)
-    unit_choices = (('mg/m3', 'mg/m3'), ('ppm', 'ppm'), ('g/m3', 'g/m3'), ('PM10', 'PM10'), ('PM2.5', 'PM2.5'),
-                    ('μg/m3', 'μg/m3'))
-
+    unit_choices = (('mg/m3', 'mg/m3'), ('ppm', 'ppm'), ('g/m3', 'g/m3'), ('PM10', 'PM10'),
+                    ('PM2.5', 'PM2.5'),
+                    ('μg/m3', 'μg/m3'), ('latitude/longitude', 'latitude/longitude'))
     unit = models.CharField(max_length=256, choices=unit_choices,
                             help_text="Measurement unit, e.g., mg/m3, ppm, etc.")
     device = models.ForeignKey(Device, on_delete=models.SET_NULL, blank=True, null=True)
@@ -51,8 +51,7 @@ class Session(models.Model):
 
     def __str__(self):
         return f"{self.date_collected} {self.collected_by}"
-
-
+      
 class SessionData(TimeStampedModel):
     """The raw data file generated during a session. Assumes one and only one file per sensor,
     although multiple sensors can be linked to one session"""
