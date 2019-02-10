@@ -51,7 +51,8 @@ class Session(models.Model):
 
     def __str__(self):
         return f"{self.date_collected} {self.collected_by}"
-      
+
+
 class SessionData(TimeStampedModel):
     """The raw data file generated during a session. Assumes one and only one file per sensor,
     although multiple sensors can be linked to one session"""
