@@ -1,4 +1,5 @@
 import pytest
+
 from woeip.apps.air_quality.tests import factories
 
 
