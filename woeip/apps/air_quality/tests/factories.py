@@ -1,7 +1,6 @@
-import random
-
 import factory
 import factory.fuzzy
+import faker
 import pytz
 from django.contrib.gis import geos
 
@@ -9,20 +8,17 @@ from woeip.apps.air_quality.models import Data, Device, Route, Sensor, Session, 
 from woeip.apps.core.tests.factories import UserFactory
 
 
-def random_latlon():
-    lat = random.random() * 180 - 90
-    lon = random.random() * 360 - 180
-    return lat, lon
+fake = faker.Faker()
 
 
 class FuzzyLatLon(factory.fuzzy.BaseFuzzyAttribute):
     def fuzz(self):
-        return geos.Point(random_latlon())
+        return geos.Point(fake.latlng())
 
 
 class FuzzyRoute(factory.fuzzy.BaseFuzzyAttribute):
     def fuzz(self):
-        points = [random_latlon() for _ in range(20)]
+        points = [fake.latlng() for _ in range(20)]
 
         return geos.LineString(points)
 
