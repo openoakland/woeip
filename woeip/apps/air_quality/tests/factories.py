@@ -12,12 +12,12 @@ fake = faker.Faker()
 
 class FuzzyLatLon(factory.fuzzy.BaseFuzzyAttribute):
     def fuzz(self):
-        return geos.Point(fake.latlng())
+        return geos.Point(fake.latlng())  # pylint: disable=no-member
 
 
 class FuzzyRoute(factory.fuzzy.BaseFuzzyAttribute):
     def fuzz(self):
-        points = [fake.latlng() for _ in range(20)]
+        points = [fake.latlng() for _ in range(20)]  # pylint: disable=no-member
 
         return geos.LineString(points)
 
