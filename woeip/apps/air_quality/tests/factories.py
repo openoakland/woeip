@@ -7,7 +7,6 @@ from django.contrib.gis import geos
 from woeip.apps.air_quality.models import Data, Device, Route, Sensor, Session, SessionData
 from woeip.apps.core.tests.factories import UserFactory
 
-
 fake = faker.Faker()
 
 
