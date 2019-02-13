@@ -4,15 +4,10 @@ import faker
 import pytz
 from django.contrib.gis import geos
 
-from woeip.apps.air_quality.models import Data, Device, Route, Sensor, Session, SessionData
+from woeip.apps.air_quality.models import Device, Route, Sensor, Session, SessionData
 from woeip.apps.core.tests.factories import UserFactory
 
 fake = faker.Faker()
-
-
-class FuzzyLatLon(factory.fuzzy.BaseFuzzyAttribute):
-    def fuzz(self):
-        return geos.Point(fake.latlng())  # pylint: disable=no-member
 
 
 class FuzzyRoute(factory.fuzzy.BaseFuzzyAttribute):
@@ -68,13 +63,3 @@ class SessionDataFactory(factory.DjangoModelFactory):
     sensor = factory.SubFactory(SensorFactory)
     session = factory.SubFactory(SessionFactory)
     uploaded_by = factory.SubFactory(UserFactory)
-
-
-class DataFactory(factory.DjangoModelFactory):
-    class Meta:
-        model = Data
-
-    session = factory.SubFactory(SessionFactory)
-    value = factory.Faker('pyfloat')
-    time = factory.Faker('past_datetime', tzinfo=pytz.utc)
-    latlon = FuzzyLatLon()
