@@ -46,6 +46,6 @@ def test_joiner():
 @pytest.mark.django_db
 def test_save():
     """Test ability to save a session of joined GPS/air quality data to the database, based on measurement/value"""
-    session_data = factories.SessionDataFactory()
-    dustrak.save(target_data, session_data)
+    session = factories.SessionFactory()
+    dustrak.save(target_data, session)
     assert np.allclose(target_data['measurement'], models.Data.objects.values_list('value', flat=True))

@@ -1,18 +1,18 @@
-import random
-
 import factory
 import factory.fuzzy
+import faker
 import pytz
 from django.contrib.gis import geos
 
-from woeip.apps.air_quality.models import Data, Device, Route, Sensor, Session, SessionData
+from woeip.apps.air_quality.models import Device, Route, Sensor, Session, SessionData
 from woeip.apps.core.tests.factories import UserFactory
 
+fake = faker.Faker()
 
-class FuzzyLineString(factory.fuzzy.BaseFuzzyAttribute):
+
+class FuzzyRoute(factory.fuzzy.BaseFuzzyAttribute):
     def fuzz(self):
-        points = [(random.random(), random.random())
-                  for _ in range(20)]
+        points = [fake.latlng() for _ in range(20)]  # pylint: disable=no-member
 
         return geos.LineString(points)
 
@@ -34,7 +34,7 @@ class RouteFactory(factory.DjangoModelFactory):
         model = Route
 
     name = factory.Sequence(lambda n: 'Route %d' % n)
-    path = FuzzyLineString()
+    path = FuzzyRoute()
 
 
 class SensorFactory(factory.DjangoModelFactory):
@@ -63,13 +63,3 @@ class SessionDataFactory(factory.DjangoModelFactory):
     sensor = factory.SubFactory(SensorFactory)
     session = factory.SubFactory(SessionFactory)
     uploaded_by = factory.SubFactory(UserFactory)
-
-
-class DataFactory(factory.DjangoModelFactory):
-    class Meta:
-        model = Data
-
-    session_data = factory.SubFactory(SessionDataFactory)
-    value = factory.Faker('pyfloat')
-    time = factory.Faker('past_datetime', tzinfo=pytz.utc)
-    latlon = factory.Faker('latlng')

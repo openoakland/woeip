@@ -72,7 +72,7 @@ class SessionData(TimeStampedModel):
 class Data(models.Model):
     """A table of all air quality measurements (all sessions). Individual sessions can be extracted
     by filtering on "session"""
-    session_data = models.ForeignKey(SessionData, on_delete=models.CASCADE)
+    session = models.ForeignKey(Session, on_delete=models.CASCADE)
     value = models.FloatField()
     time = models.DateTimeField()
     latlon = PointField()

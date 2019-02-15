@@ -237,17 +237,17 @@ def join(air_quality, gps, tolerance=3.):
     return joined_data
 
 
-def save(joined_data, session_data):
+def save(joined_data, session):
     """Save a table of joined data to the database
 
     Parameters
     ----------
     joined_data : pandas DataFrame
-    session_data : woeip.apps.air_quality.models.SessionData
+    session : woeip.apps.air_quality.models.Session
     """
     data = []
     for _, row in joined_data.iterrows():
-        dat = models.Data(session_data=session_data,
+        dat = models.Data(session=session,
                           value=row['measurement'],
                           time=row['time'],
                           latlon=geos.Point(row['lon'], row['lat']))
