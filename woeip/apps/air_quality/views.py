@@ -1,20 +1,22 @@
 import datetime
 import logging
 
+from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.shortcuts import redirect, render
+
 from woeip.apps.air_quality import dustrak, forms, models
 from woeip.apps.core.models import User
 
 logger = logging.getLogger(__name__)
 
 
-def home(request):
-    return render(request, 'air_quality/home.html')
+def index(request):
+    return render(request, 'index.html')
 
 
-def upload_dustrak(request):
-    """Upload data for a session collected using the Dustrak air quality device and a separate GPS 
+def upload(request):
+    """Upload data for a session collected using the Dustrak air quality device and a separate GPS
     log file. Creates a new Session instance, two SessionData instances, and Data instances for
     each sample.
     """
@@ -40,24 +42,26 @@ def upload_dustrak(request):
                     joined_data = dustrak.join(request.FILES['air_quality'].file,
                                                request.FILES['gps'].file)
                 except Exception as e:
-                    return render(request, 'air_quality/error_dustrak.html',
-                                  {'errors': e})
+                    messages.add_message(request, messages.ERROR, f'File upload failed, error: {e}')
+                    return redirect('upload')
 
                 air_quality.save()
                 gps.save()
                 dustrak.save(joined_data, air_quality)
 
-                return render(request, 'air_quality/success_dustrak.html')
+                messages.add_message(request, messages.SUCCESS, 'Files successfully uploaded')
+                return redirect('upload')
 
             else:
-                return render(request, 'air_quality/error_dustrak.html',
-                              {'errors': form.errors})
+                messages.add_message(request, messages.ERROR, f'File upload failed, error: {form.errors}')
+                return redirect('upload')
 
         else:
             form = forms.DustrakSessionForm(initial={'collected_by': request.user})
 
-            return render(request, 'air_quality/upload_dustrak.html',
+            return render(request, 'upload.html',
                           {'user': request.user, 'form': form})
 
     else:
+        messages.add_message(request, messages.WARNING, 'Please log in to continue')
         return redirect(f'/accounts/login?next={request.path}')
