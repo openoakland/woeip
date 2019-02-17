@@ -134,8 +134,8 @@ def load_dustrak(contents, tz):
     start_time = local_timezone.localize(start_time)
     start_time = start_time.astimezone(pytz.timezone('UTC'))
 
-    sample_interval_minutes = header['Test Interval [M:S]'].split(':')[0]
-    if sample_interval_minutes != '0':
+    sample_interval_minutes = header[b'Test Interval [M:S]'].split(b':')[0]
+    if sample_interval_minutes != b'0':
         raise NotImplementedError('Minute sampling intervals not supported')
 
     sample_offsets = np.array(data['Elapsed Time [s]'], dtype='timedelta64[s]')
