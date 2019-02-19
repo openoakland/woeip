@@ -1,3 +1,4 @@
+## TODO: imports pylint lists as unused: datetime, authenticate, login, User
 import datetime
 import logging
 
@@ -20,10 +21,13 @@ def upload(request):
     log file. Creates a new Session instance, two SessionData instances, and Data instances for
     each sample.
     """
+    ## TODO: Refractor to decorater '@login-required'
+    ## TODO: Linting message; three no-else-returns
     if request.user.is_authenticated:
         if request.method == 'POST':
             form = forms.DustrakSessionForm(request.POST, request.FILES)
             if form.is_valid():
+                ## TODO: Outsource this air quality and gps object creation to factory file
                 form.save()
 
                 air_sensor = models.Sensor.objects.get(name='Dustrak')
@@ -41,6 +45,7 @@ def upload(request):
                 try:
                     joined_data = dustrak.join(request.FILES['air_quality'].file,
                                                request.FILES['gps'].file)
+                ## TODO: Research possible exceptions. Submit specific error messages
                 except Exception as e:
                     messages.add_message(request, messages.ERROR, f'File upload failed, error: {e}')
                     return redirect('upload')
