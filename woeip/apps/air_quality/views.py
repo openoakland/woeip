@@ -15,21 +15,24 @@ logger = logging.getLogger(__name__)
 def index(request):
     return render(request, 'index.html')
 
-
+## TODO: Refractor to decorater '@login-required'
+## The warning message will no longer appear. However, it will default to the Django security 
+## control. It will also make the view more concise
 def upload(request):
     """Upload data for a session collected using the Dustrak air quality device and a separate GPS
     log file. Creates a new Session instance, two SessionData instances, and Data instances for
     each sample.
     """
-    ## TODO: Refractor to decorater '@login-required'
     ## TODO: Linting message; three no-else-returns
     if request.user.is_authenticated:
         if request.method == 'POST':
             form = forms.DustrakSessionForm(request.POST, request.FILES)
             if form.is_valid():
-                ## TODO: Outsource this air quality and gps object creation to factory file
+                ## TODO: Outsource this air quality and gps object creation to factory file 
+                ## (Unsure about this)
                 form.save()
-
+                ## TODO: Script,from a csv, standardized data for dustrak, gps, and any other
+                ## objects where the values are already known (such as routes)
                 air_sensor = models.Sensor.objects.get(name='Dustrak')
                 gps_sensor = models.Sensor.objects.get(name='GPS')
 
@@ -45,7 +48,7 @@ def upload(request):
                 try:
                     joined_data = dustrak.join(request.FILES['air_quality'].file,
                                                request.FILES['gps'].file)
-                ## TODO: Research possible exceptions. Submit specific error messages
+                ## TODO: Research possible exceptions. Send specific error messages
                 except Exception as e:
                     messages.add_message(request, messages.ERROR, f'File upload failed, error: {e}')
                     return redirect('upload')
