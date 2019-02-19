@@ -23,7 +23,7 @@ def upload(request):
     log file. Creates a new Session instance, two SessionData instances, and Data instances for
     each sample.
     """
-    # TODO: Linting message; two no-else-returns
+
     if request.method == 'POST':
         form = forms.DustrakSessionForm(request.POST, request.FILES)
         if form.is_valid():
@@ -32,19 +32,23 @@ def upload(request):
             form.save()
             # TODO: Script,from a csv, standardized data for dustrak, gps, and any other
             # objects where the values are already known (such as routes)
-            air_sensor = models.Sensor.objects.get(name='Dustrak')
-            gps_sensor = models.Sensor.objects.get(name='GPS')
-
-            air_quality = models.SessionData(upload=request.FILES['air_quality'],
-                                             sensor=air_sensor,
-                                             session=form.instance,
-                                             uploaded_by=request.user)
-            gps = models.SessionData(upload=request.FILES['gps'],
-                                     sensor=gps_sensor,
-                                     session=form.instance,
-                                     uploaded_by=request.user)
-
             try:
+                # TODO: Rather than hardcode the value of the Sensors, present it as an option in
+                # the form the client sees. However, have it pre-filled with the pre-loaded objects
+                # of Dustrak and GPS. This will also achieve the goal of outsourcing some of the
+                # view code to other modules. ie) The object call will be done in the form, instead
+                air_sensor = models.Sensor.objects.get(name='Dustrak')
+                gps_sensor = models.Sensor.objects.get(name='GPS')
+
+                air_quality = models.SessionData(upload=request.FILES['air_quality'],
+                                                 sensor=air_sensor,
+                                                 session=form.instance,
+                                                 uploaded_by=request.user)
+                gps = models.SessionData(upload=request.FILES['gps'],
+                                         sensor=gps_sensor,
+                                         session=form.instance,
+                                         uploaded_by=request.user)
+
                 joined_data = dustrak.join(request.FILES['air_quality'].file,
                                            request.FILES['gps'].file)
             # TODO: Research possible exceptions. Send specific error messages
@@ -57,10 +61,6 @@ def upload(request):
             dustrak.save(joined_data, air_quality)
 
             messages.add_message(request, messages.SUCCESS, 'Files successfully uploaded')
-            return redirect('upload')
-
-        else:
-            messages.add_message(request, messages.ERROR, f'File upload failed, error: {form.errors}')
             return redirect('upload')
 
     else:

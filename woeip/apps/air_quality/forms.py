@@ -5,6 +5,9 @@ from django.forms.models import BaseInlineFormSet, inlineformset_factory
 from woeip.apps.air_quality import models
 
 
+# TODO: Include Sensor fields that are seen by client when uploading the files.
+# 1) It is more transparent to the user what data is being loaded and why.
+# 2) It is easier to generalize the website, once other sensors are available.
 class SessionForm(forms.ModelForm):
     class Meta:
         model = models.Session
@@ -18,6 +21,4 @@ class DustrakSessionForm(SessionForm):
     gps = forms.FileField()
 
     class Meta(SessionForm.Meta):
-        # TODO: Advise on the client side that the devices are automatically set
-        # to GPS and Dustrak.
         fields = SessionForm.Meta.fields + ('air_quality', 'gps')
