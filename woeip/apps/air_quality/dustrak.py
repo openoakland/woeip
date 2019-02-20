@@ -13,6 +13,42 @@ from django.contrib.gis import geos
 from . import models
 
 
+def get_dustrak_sensor(header):
+    """Use the Dustrak header to query the associated Sensor (or to create it if it does not exist).
+
+    Parameters
+    ----------
+    header : dict
+
+    Returns
+    -------
+    The Sensor associated with the Dustrak device indicated by the information in the header
+    """
+    calibration_date = datetime.datetime.strptime(header['Calibration Date'], '%m/%d/%Y')
+
+    device, _ = models.Device.objects.get_or_create(name=header['Instrument Name'],
+                                                    manufacturer='TSI',
+                                                    serial_number=header['Serial Number'],
+                                                    model_number=header['Model Number'],
+                                                    calibration_date=calibration_date,
+                                                    firmware_version=header['Firmware Version'])
+
+    sensor, _ = models.Sensor.objects.get_or_create(name='Dustrak', unit='mg/m3', device=device)
+
+    return sensor
+
+
+def get_gps_sensor():
+    device, _ = models.Device.objects.get_or_create(name='GPS', manufacturer='GPS',
+                                                    serial_number='00000', model_number='00000',
+                                                    calibration_date=datetime.datetime(1990, 1, 1),
+                                                    firmware_version='0.0.0')
+
+    sensor, _ = models.Sensor.objects.get_or_create(name='GPS', unit='lat/long', device=device)
+
+    return sensor
+
+
 def parse_gps_sentence(sentence):
     """Parse an NMEA 0183 formatted data sample.
 
@@ -117,7 +153,6 @@ def load_dustrak(contents, tz):
     header = {}
     lines = itertools.takewhile(lambda x: x != '\r\n', contents)
     for line in lines:
-        print(line)
         line = line.rstrip('\r\n')
         key, value = line.split(',')
         header[key] = value
