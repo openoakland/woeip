@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
+from django.utils.encoding import force_text
 
 from woeip.apps.air_quality import dustrak, forms, models
 from woeip.apps.core.models import User
@@ -49,10 +50,10 @@ def upload(request):
                                          session=form.instance,
                                          uploaded_by=request.user)
 
-                air_quality_contents = request.FILES['air_quality'].read().decode('utf-8')
+                air_quality_contents = force_text(request.FILES['air_quality'].read())
                 _, air_quality_data = dustrak.load_dustrak(air_quality_contents, 'America/Los_Angeles')
 
-                gps_contents = request.FILES['gps'].read().decode('utf-8')
+                gps_contents = force_text(request.FILES['gps'].read())
                 gps_data = dustrak.load_gps(gps_contents)
                 joined_data = dustrak.join(air_quality_data, gps_data)
 
