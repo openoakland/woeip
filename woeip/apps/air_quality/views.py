@@ -6,7 +6,6 @@ from django.shortcuts import redirect, render
 from django.utils.encoding import force_text
 
 from woeip.apps.air_quality import dustrak, forms, models
-from woeip.apps.core.models import User
 
 logger = logging.getLogger(__name__)
 
