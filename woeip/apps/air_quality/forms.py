@@ -1,6 +1,4 @@
-# TODO: Linting marked as unused... BaseInlineFormSet, inlineFormSet
 from django import forms
-from django.forms.models import BaseInlineFormSet, inlineformset_factory
 
 from woeip.apps.air_quality import models
 
