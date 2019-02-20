@@ -1,9 +1,6 @@
-# TODO: imports pylint lists as unused: datetime, authenticate, login, User
-import datetime
 import logging
 
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 from django.utils.encoding import force_text
