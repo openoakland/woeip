@@ -49,16 +49,22 @@ def upload(request):
                                          session=form.instance,
                                          uploaded_by=request.user)
 
-                joined_data = dustrak.join(request.FILES['air_quality'].file,
-                                           request.FILES['gps'].file)
+                air_quality_contents = request.FILES['air_quality'].read().decode('utf-8')
+                _, air_quality_data = dustrak.load_dustrak(air_quality_contents, 'America/Los_Angeles')
+
+                gps_contents = request.FILES['gps'].read().decode('utf-8')
+                gps_data = dustrak.load_gps(gps_contents)
+                joined_data = dustrak.join(air_quality_data, gps_data)
+
             # TODO: Research possible exceptions. Send specific error messages
             except Exception as e:
                 messages.add_message(request, messages.ERROR, f'File upload failed, error: {e}')
                 return redirect('upload')
 
+            form.save()
             air_quality.save()
             gps.save()
-            dustrak.save(joined_data, air_quality)
+            dustrak.save(joined_data, form.instance)
 
             messages.add_message(request, messages.SUCCESS, 'Files successfully uploaded')
             return redirect('upload')
