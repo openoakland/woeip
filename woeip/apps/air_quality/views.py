@@ -2,6 +2,8 @@ import logging
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ObjectDoesNotExist
+from django.db import Error
 from django.shortcuts import redirect, render
 from django.utils.encoding import force_text
 
@@ -45,8 +47,7 @@ def upload(request):
                 gps_data = dustrak.load_gps(gps_contents)
                 joined_data = dustrak.join(air_quality_data, gps_data)
 
-            # TODO: Research possible exceptions. Send specific error messages
-            except Exception as e:
+            except (UnboundLocalError, ObjectDoesNotExist, Error) as e:
                 messages.add_message(request, messages.ERROR, f'File upload failed, error: {e}')
                 return redirect('upload')
 
