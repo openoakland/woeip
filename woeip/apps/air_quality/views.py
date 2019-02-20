@@ -24,16 +24,8 @@ def upload(request):
     if request.method == 'POST':
         form = forms.DustrakSessionForm(request.POST, request.FILES)
         if form.is_valid():
-            # TODO: Outsource this air quality and gps object creation to factory file
-            # (Unsure about this)
             form.save()
-            # TODO: Script,from a csv, standardized data for dustrak, gps, and any other
-            # objects where the values are already known (such as routes)
             try:
-                # TODO: Rather than hardcode the value of the Sensors, present it as an option in
-                # the form the client sees. However, have it pre-filled with the pre-loaded objects
-                # of Dustrak and GPS. This will also achieve the goal of outsourcing some of the
-                # view code to other modules. ie) The object call will be done in the form, instead
                 air_sensor = models.Sensor.objects.get(name='Dustrak')
                 gps_sensor = models.Sensor.objects.get(name='GPS')
 
