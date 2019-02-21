@@ -117,7 +117,6 @@ def load_dustrak(contents, tz):
     header = {}
     lines = itertools.takewhile(lambda x: x != '\r\n', contents)
     for line in lines:
-        print(line)
         line = line.rstrip('\r\n')
         key, value = line.split(',')
         header[key] = value
