@@ -6,7 +6,7 @@
         {% if user.is_authenticated %}
             {{user}}: <a href="{% url 'logout' %}">Logout</a>
         {% else %}
-            Guest: <a href="{% url 'login' %}">Login</a>
+            <a href="{% url 'login' %}">Login</a>
         {% endif %}
     </li>
     <li><a href="mailto:contact_email">Request Account</a></li>

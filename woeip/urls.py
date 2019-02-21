@@ -6,8 +6,8 @@ from .apps.core.views import health
 
 urlpatterns = [
     path('', index, name='index'),
-    path('health/', health, name='health'),
-    path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
-    path('files/upload/', upload, name='upload')
+    path('admin/', admin.site.urls),
+    path('files/upload/', upload, name='upload'),
+    path('health/', health, name='health'),
 ]

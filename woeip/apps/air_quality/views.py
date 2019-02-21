@@ -19,12 +19,12 @@ def index(request):
 @login_required
 def upload(request):
     """Upload data for a session collected using the Dustrak air quality device and a separate GPS
-    log file. Creates a new Session instance, two SessionData instances, and Data instances for
-    each sample.
+    log file.
     """
-
+    request_user = request.user
     if request.method == 'POST':
         form = forms.DustrakSessionForm(request.POST, request.FILES)
+        form_instance = form.instance
         if form.is_valid():
             form.save()
             try:
@@ -33,12 +33,12 @@ def upload(request):
 
                 air_quality = models.SessionData(upload=request.FILES['air_quality'],
                                                  sensor=air_sensor,
-                                                 session=form.instance,
-                                                 uploaded_by=request.user)
+                                                 session=form_instance,
+                                                 uploaded_by=request_user)
                 gps = models.SessionData(upload=request.FILES['gps'],
                                          sensor=gps_sensor,
-                                         session=form.instance,
-                                         uploaded_by=request.user)
+                                         session=form_instance,
+                                         uploaded_by=request_user)
 
                 air_quality_contents = force_text(request.FILES['air_quality'].read())
                 _, air_quality_data = dustrak.load_dustrak(air_quality_contents, 'America/Los_Angeles')
@@ -51,16 +51,14 @@ def upload(request):
                 messages.add_message(request, messages.ERROR, f'File upload failed, error: {e}')
                 return redirect('upload')
 
-            form.save()
             air_quality.save()
             gps.save()
-            dustrak.save(joined_data, form.instance)
+            dustrak.save(joined_data, form_instance)
 
             messages.add_message(request, messages.SUCCESS, 'Files successfully uploaded')
             return redirect('upload')
 
     else:
-        form = forms.DustrakSessionForm(initial={'collected_by': request.user})
+        form = forms.DustrakSessionForm(initial={'collected_by': request_user})
 
-    return render(request, 'upload.html',
-                  {'user': request.user, 'form': form})
+    return render(request, 'air_quality/upload.html', {'user': request_user, 'form': form})
