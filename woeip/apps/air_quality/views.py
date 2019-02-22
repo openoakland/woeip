@@ -49,6 +49,7 @@ def upload(request):
 
             except (UnboundLocalError, ObjectDoesNotExist, Error) as e:
                 messages.add_message(request, messages.ERROR, f'File upload failed, error: {e}')
+                logger.exception(e)
                 return redirect('upload')
 
             air_quality.save()
