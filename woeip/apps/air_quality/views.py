@@ -41,7 +41,7 @@ def upload(request):
                                          uploaded_by=request_user)
 
                 air_quality_contents = force_text(request.FILES['air_quality'].read())
-                _, air_quality_data = dustrak.load_dustrak(air_quality_contents, 'America/Los_Angeles')
+                _, air_quality_data = dustrak.load_dustrak(air_quality_contents, form.data['timezone'])
 
                 gps_contents = force_text(request.FILES['gps'].read())
                 gps_data = dustrak.load_gps(gps_contents)
