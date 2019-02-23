@@ -24,6 +24,8 @@ services:
       - SECRET_KEY=replace-me
       - DATABASE_URL=postgis://postgres:postgres@woeip.db:5432/woeip?connect_timeout=60
       - DEFAULT_FILE_STORAGE=django.core.files.storage.FileSystemStorage
+      # Uncomment this line, and the volume mapping below, to log to a local file.
+      # - ENABLE_LOGGING_TO_FILE=true
     links:
       - db
     ports:
@@ -31,5 +33,7 @@ services:
       - 8000:8000
     volumes:
       - .:/app/woeip:cached
+      # Uncomment this line to ensure log files are exposed on the host machine.
+      # - ./logs:/logs
 volumes:
   db-data:
