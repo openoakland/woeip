@@ -25,12 +25,12 @@ target_data = get_target_data()
 
 def test_joiner():
     """Test the output of the function that joins GPS and air quality measurements based on time stamps"""
-    with open(test_data_directory / 'dustrak.csv', 'r') as f:
-        contents = f.read()
+    with open(test_data_directory / 'dustrak.csv', 'rb') as f:
+        contents = f.read().decode('utf-8')
     _, air_quality = dustrak.load_dustrak(contents, tz='America/Los_Angeles')
 
-    with open(test_data_directory / 'gps.log', 'r') as f:
-        contents = f.read()
+    with open(test_data_directory / 'gps.log', 'rb') as f:
+        contents = f.read().decode('utf-8')
     gps = dustrak.load_gps(contents)
 
     with pytest.warns(UserWarning):
