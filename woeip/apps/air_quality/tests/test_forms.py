@@ -19,7 +19,7 @@ def get_filefield(filepath):
 
 class DustrakFormTest(TestCase):
 
-    def test_DustrakForm_valid(self):
+    def test_dustrakform_valid(self):
         user = get_user_model().objects.first()
         route = models.Route.objects.first()
         session = factories.SessionFactory.create(
@@ -38,7 +38,7 @@ class DustrakFormTest(TestCase):
         self.assertTrue(form.is_valid())
 
     # Invalid Form Data
-    def test_DustrakFrorm_invalid(self):
+    def test_dustrakform_invalid(self):
         user = get_user_model().objects.first()
         route = models.Route.objects.first()
         form = forms.DustrakSessionForm(
