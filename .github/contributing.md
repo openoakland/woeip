@@ -5,11 +5,11 @@ Welcome to the WOAQ Contributing document!
 Please review the Open Oakland [Code of Conduct](https://github.com/openoakland/woeip/tree/master/.github/code_of_conduct.md)
 
 ## Communication
-WOAQ communinicates primarily through the [OpenOakland Slack Workspace](openoakland.slack.com), in the #woaq channel. Access to the Slack Workspace is granted by attending an [OpenOakland Hacknight](http://openoakland.org/) and onboarding with the community organizers. Once a member of the Slack Workspace, you may navigate to the #woaq channel.
+WOAQ communinicates primarily through the [OpenOakland Slack Workspace](https://openoakland.slack.com), in the #woaq channel. Access to the Slack Workspace is granted by attending an [OpenOakland Hacknight](http://openoakland.org/) and onboarding with the community organizers. Once a member of the Slack Workspace, you may navigate to the #woaq channel.
 
 ## Documentation
 Please reach out in the #woaq Slack Channel or at an OpenOakland Hacknight to request access to any private documents
-- [Project Outline](bit.ly/WOAQoverview) for long term strategy
+- [Project Outline](https://bit.ly/WOAQoverview) for long term strategy
 - [Wireframes](https://slack-files.com/T02FEGG84-FGQFB5NA2-72b7ae10b5) for website design
 - [Trello Board](https://trello.com/b/EBnxZHmx/west-oakland-air-quality) for project management
 - [GitHub Issues](https://github.com/openoakland/woeip/issues) for code management
