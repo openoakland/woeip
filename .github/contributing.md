@@ -1,8 +1,3 @@
----
-name: Contributing
-
----
-
 # Contributing
 Welcome to the WOAQ Contributing document!
 
