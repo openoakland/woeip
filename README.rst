@@ -20,9 +20,7 @@ WOEIP has collected Air Quality (AQ) data over several years. The current AQ dat
 
 How To Contribute
 -----------------
-There are several ways to contribute to WOAQ, including product design, community engagement, project management, and engineering. A general project overview is available in the `WOAQ Google Document <https://docs.google.com/document/d/1nMpRN8zOn-Sq9ocrVcOY0HZI2JnL5R7wEKje_YgVwRk/edit>`_. Current project issues and goals are organized on the `WOAQ Trello board <https://trello.com/invite/b/EBnxZHmx/6e43b909891f622463a67da64dbb8101/west-oakland-air-quality>`_. Please review the `Instructions Card <https://trello.com/c/msbASe3F>`_ before editing the Trello Board. 
-
-**TODO:** create a full contributing document
+There are several ways to contribute to WOAQ, including product design, community engagement, project management, and engineering. Visit `Contributing.md <https://github.com/openoakland/woeip/tree/master/.github/contributing.md>`_ for more information.
 
 Reporting Security Issues
 -------------------------
@@ -160,3 +158,4 @@ Note that this process will take at least 10 minutes for the initial database se
 may also take up to 20 minutes.
 
 The resulting state information will be saved to S3.
+
