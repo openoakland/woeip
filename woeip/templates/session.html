@@ -1,0 +1,74 @@
+{% extends '__base.html' %}
+{% block content %}
+{% load tz %}
+{% timezone "America/Los_Angeles" %}
+<!-- TODO: move all style to static files -->
+<style>
+  #session_map {
+      width: 500px;
+      height: 500px;
+      float: left;
+  }
+</style>
+
+<h2>Air quality for session #{{ session.pk }} on
+{{ session.date_collected | date:'M d, Y' }}</h2>
+
+<div>
+  <div id="session_map">Map goes here <br>
+  Route: {{ session.route }}
+  </div>
+
+  <div id="session_metadata">
+    <b>Average session score:</b> {{ session.average_session_score }}
+    <br>
+    <b>Average score for day:</b> {{ session.average_day_score }}
+    <br>
+    <br>
+    <b>Start:</b> {{ session.session_start | date:'g:i:s A' }}
+    <br>
+    <b>End:</b> {{ session.session_end | date:'g:i:s A' }}
+  </div>
+
+  <br>
+  <div>
+    <b>Device:</b> {{ session.device_name }}
+    <br>
+    <b>Collected by:</b> {{ session.collected_by.first_name }} {{ session.collected_by.last_name }}
+    <br>
+    <a href="">View raw data</a>
+  </div>
+</div>
+
+<br>
+
+<div id="session_list">
+  <b>Other sessions from this day:</b>
+  {% if session.same_day_list_excluding_self %}
+    <ul>
+        {% for sess in session.same_day_list_excluding_self %}
+          <li>
+            <a href="{% url 'session' sess.pk %}">Session {{ sess.pk }}</a>
+          </li>
+        {% endfor %}
+    </ul>
+  {% else %}
+    No other sessions available.
+  {% endif %}
+</div>
+
+<div id="session_nav">
+  {% if session.get_previous_by_date_collected.pk %}
+    <a href="{% url 'session' session.get_previous_by_date_collected.pk %}" role="button">Previous</a>
+  {% else %}
+    Previous
+  {% endif %}
+   |
+  {% if session.get_next_by_date_collected.pk %}
+    <a href="{% url 'session' session.get_next_by_date_collected.pk %}" role="button">Next</a>
+  {% else %}
+    Next
+  {% endif %}
+</div>
+{% endtimezone %}
+{% endblock %}

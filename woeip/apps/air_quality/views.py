@@ -2,9 +2,11 @@ import logging
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import redirect, render
 from django.utils.encoding import force_text
+from django.views import generic
 
 from woeip.apps.air_quality import dustrak, forms, models
 
@@ -62,3 +64,8 @@ def upload(request):
         form = forms.DustrakSessionForm(initial={'collected_by': request_user})
 
     return render(request, 'air_quality/upload.html', {'user': request_user, 'form': form})
+
+
+class SessionView(LoginRequiredMixin, generic.DetailView):
+    template_name = 'session.html'
+    model = models.Session

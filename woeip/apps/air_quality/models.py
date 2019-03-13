@@ -1,4 +1,7 @@
-import os.path as op
+
+import os
+import random
+from datetime import datetime, time, timedelta
 
 from django.contrib.gis.db.models import LineStringField, PointField
 from django.db import models
@@ -52,6 +55,46 @@ class Session(models.Model):
     def __str__(self):
         return f"{self.date_collected} {self.collected_by}"
 
+    class Meta:
+        ordering = ['date_collected']
+
+    @property
+    def device_name(self):
+        # TODO: replace with querying for the Dustrak sensor
+        # instead of getting the first object (placeholder).
+        return self.sessiondata_set.first().sensor.device.name
+
+    @property
+    def session_start(self):
+        return self.data_set.order_by('time').first().time
+
+    @property
+    def session_end(self):
+        return self.data_set.order_by('-time').first().time
+
+    @property
+    def same_day_list(self):
+        # TODO: adjust for the timezone
+        return Session.objects.filter(
+            date_collected__year=self.date_collected.year,
+            date_collected__month=self.date_collected.month,
+            date_collected__day=self.date_collected.day).order_by(
+            'date_collected').all()
+
+    @property
+    def same_day_list_excluding_self(self):
+        return self.same_day_list.exclude(pk=self.pk)
+
+    @property
+    def average_session_score(self):
+        # TODO: replace with calculated session score
+        return random.randint(1, 100)
+
+    @property
+    def average_day_score(self):
+        day_scores = [session.average_session_score for session in self.same_day_list]
+        return int(round(sum(day_scores) / len(day_scores)))
+
 
 class SessionData(TimeStampedModel):
     """The raw data file generated during a session. Assumes one and only one file per sensor,
@@ -65,7 +108,7 @@ class SessionData(TimeStampedModel):
         unique_together = ('sensor', 'session')
 
     def __str__(self):
-        name = op.basename(self.upload.name)
+        name = os.path.basename(self.upload.name)
         return f"{self.session.date_collected} {name}"
 
 
