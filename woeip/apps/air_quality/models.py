@@ -79,7 +79,7 @@ class Session(models.Model):
             date_collected__year=self.date_collected.year,
             date_collected__month=self.date_collected.month,
             date_collected__day=self.date_collected.day).order_by(
-            'date_collected').all()
+                'date_collected').all()
 
     @property
     def same_day_list_excluding_self(self):
