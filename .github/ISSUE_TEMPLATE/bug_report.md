@@ -36,3 +36,18 @@ If applicable, add screenshots to help explain your problem.
 
 **Additional context**
 Add any other context about the problem here.
+
+**Labels**
+- [ ] Add a status label
+  - `backlog`
+  - `discussing`
+  - `ready`
+  - `implementing`
+- [ ] Add a `bug` label
+- [ ] Add additional labels as needed
+
+**Affected Components (For Developers)**
+List what pages or backend files will need to be added, removed, or changed
+
+**Technical Resources (For Developers)**
+Add links to appropriate documentation. Describe possible code implementations. 
