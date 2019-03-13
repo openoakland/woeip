@@ -27,8 +27,12 @@ Add any other context or screenshots about the feature request here.
   - `implementing`
 - [ ] Add additional labels as needed
 
-**Affected Components (For Developers)**
+### For Developers
+**Affected Components**
 List what pages or backend files will need to be added, removed, or changed
 
-**Technical Resources (For Developers)**
-Add links to appropriate documentation. Describe possible code implementations. 
+**Technical Resources**
+Add links to appropriate documentation. Describe possible code implementations.
+
+**Design Documentation**
+Wireframes or other design resources

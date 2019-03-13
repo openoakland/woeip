@@ -5,12 +5,11 @@ Welcome to the WOAQ Contributing document!
 Please review the Open Oakland [Code of Conduct](https://github.com/openoakland/woeip/tree/master/.github/code_of_conduct.md)
 
 ## Communication
-WOAQ communinicates primarily through the [OpenOakland Slack Workspace](https://openoakland.slack.com), in the #woaq channel. Access to the Slack Workspace is granted by attending an [OpenOakland Hacknight](http://openoakland.org/) and onboarding with the community organizers. Once a member of the Slack Workspace, you may navigate to the #woaq channel.
+WOAQ communinicates primarily through the [OpenOakland Slack Workspace](https://openoakland.slack.com), in the #woaq channel. Access to the Slack Workspace is granted by attending an [OpenOakland Hacknight](http://openoakland.org/) and onboarding with the community organizers. Alternatively, complete this [Google Form](https://docs.google.com/forms/d/e/1FAIpQLSee_qdE0qCmhufJC94MmSRVDLPAhhFJO4QMzuC31Kh0lxI_Mg/viewform) to join the OpenOakland community and request access to the Slack. Once a member of the Slack Workspace, you may navigate to the #woaq channel.
 
 ## Documentation
 Please reach out in the #woaq Slack Channel or at an OpenOakland Hacknight to request access to any private documents
 - [Project Outline](https://bit.ly/WOAQoverview) for long term strategy
-- [Wireframes](https://slack-files.com/T02FEGG84-FGQFB5NA2-72b7ae10b5) for website design
 - [Trello Board](https://trello.com/b/EBnxZHmx/west-oakland-air-quality) for project management
 - [GitHub Issues](https://github.com/openoakland/woeip/issues) for code management
 - [Google Drive](https://drive.google.com/drive/folders/1XQ9ckXD4z3G6NWXcd2PO8GtK7zcucBfx) to preserve historical documents
@@ -23,6 +22,7 @@ These are general guidelines on the flow from design to implementation
    - Guidance on contributing to the Trello Board are available on the [Instructions Card](https://trello.com/c/msbASe3F)
 3. The project requirements are translated into wireframe designs
 4. GitHub issues are used to translate project requirements and wireframes into actionable code
+   - Relevant wireframes attached to the GitHub Issue
 5. Github pull requests implement the code agreed upon in the GitHub issues
 
 ## Code Development
@@ -59,7 +59,7 @@ A pull request should simply implement a solution that was already established i
 
 Pull requests must pass the Travis checks before merging into the `master` branch. These checks are a linting check and code tests. They can be accomplished locally by entering the project shell (`make local.shell`) and running them separately (`make quality` and `make test`) or together (`make validate`). Please pass these checks locally, before making a pull request. Other contributors will gladly help with any tests you are struggling to pass.
 
-Only one approving review is required to merge into the `master` branch. However, please leave the pull request open for at least **36 hrs**. As a volunteer project, contributors may not be able to immediately make comments. Adding a slight delay allows for multiple reviewers to provide input. However, this is a soft rule. It is not meant to be applied so rigidly that it creates unnecessary delays and inefficient code development.
+Only one approving review is required to merge into the `master` branch. However, please leave the pull request open for at least **36 hrs**. As a volunteer project, contributors may not be able to immediately make comments. Adding a slight delay allows for multiple reviewers to provide input. However, this is a soft rule. It is not meant to be applied so rigidly applied that it creates unnecessary delays and inefficient code development.
 
 Once the Travis checks are passing, any requested code changes are resolved, and **36 hours** have passed, the developer who opened the pull request should merge their own code.
 
