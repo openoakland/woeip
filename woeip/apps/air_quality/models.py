@@ -1,7 +1,6 @@
 
 import os
 import random
-from datetime import datetime, time, timedelta
 
 from django.contrib.gis.db.models import LineStringField, PointField
 from django.db import models
@@ -60,7 +59,7 @@ class Session(models.Model):
 
     @property
     def device_name(self):
-        # TODO: replace with querying for the Dustrak sensor
+        # Will need to replace with querying for the Dustrak sensor
         # instead of getting the first object (placeholder).
         return self.sessiondata_set.first().sensor.device.name
 
@@ -74,7 +73,7 @@ class Session(models.Model):
 
     @property
     def same_day_list(self):
-        # TODO: adjust for the timezone
+        # Adjust the same day logic for the timezone
         return Session.objects.filter(
             date_collected__year=self.date_collected.year,
             date_collected__month=self.date_collected.month,
@@ -87,7 +86,7 @@ class Session(models.Model):
 
     @property
     def average_session_score(self):
-        # TODO: replace with calculated session score
+        # Replace with calculated session score
         return random.randint(1, 100)
 
     @property
