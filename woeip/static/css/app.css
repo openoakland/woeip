@@ -1,1 +1,19 @@
 /* Hello, World */
+.top-bar {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    padding-left:2rem;
+    padding-right:2rem;
+}
+
+.dropdown.menu li a{
+    padding: 0.3rem 0.5rem;
+}
+
+#burger-menu .menu-text{
+    font-weight: 700;
+}
+
+.menu .menu-text{
+    padding: 0;
+}
