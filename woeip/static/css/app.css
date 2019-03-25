@@ -1,9 +1,10 @@
-/* Hello, World */
 .top-bar {
-    padding-top: 1rem;
+    font-size: 1.25rem;
+    padding: 1rem 2rem;
+    /* padding-top: 1rem;
     padding-bottom: 1rem;
-    padding-left:2rem;
-    padding-right:2rem;
+    padding-left: 2rem;
+    padding-right: 2rem; */
 }
 
 .dropdown.menu li a{
