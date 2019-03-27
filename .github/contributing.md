@@ -38,7 +38,7 @@ Write permissions can be requested by contacting the development team at an Open
 
 
 ### Issues
-Issues are the primary means of coordinating code implementation.<br>
+Issues are the primary means of coordinating code implementation. We use issue comments to explicitly document implementation discussions and decision-making. This allows us to vet our individual assumptions, clarify a shared mental model of the code, outline pseudo-code and other solutions, and pair program. It also documents the design process for future developers. [More Context](https://medium.com/@copyconstruct/effective-mental-models-for-code-and-systems-7c55918f1b3e) <br>
 Issues will have one of four status labels:
 1. `backlog`: The feature is not currently needed or its application is not fully defined
 2. `discussing`: The feature is fully defined and its code design is being outlined
