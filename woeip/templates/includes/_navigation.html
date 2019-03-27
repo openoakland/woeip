@@ -1,21 +1,24 @@
 <div class="top-bar" id="burger-menu" data-responsive-toggle="site-menu" data-hide-for="medium">
-  <div class="menu-text"><a href="{% url 'index' %}">West Oakland Air Quality</a></div>
-  <button class="menu-icon" type="button" data-toggle></button>
+  <button class="menu-icon" type="button" data-toggle="site-menu"></button>
 </div>
 
 <div class="top-bar" id="site-menu">
-    <ul class="dropdown vertical medium-horizontal menu" data-dropdown-menu>
-      <li class="menu-text show-for-medium"><a href="{% url 'index' %}">West Oakland Air Quality</a></li>
+  <div class="top-bar-left">
+    <ul class="menu">
+    <li><h3><a href="{% url 'index' %}">West Oakland Air Quality</a></h3></li>
     </ul>
+  </div>
+  <div class="top-bar-right">
     <ul class="dropdown vertical medium-horizontal menu" >
-        <li><a href="{% url 'upload' %}">Add Data</a></li>
-        <li>
-        {% if user.is_authenticated %}
-          <a href="{% url 'logout' %}">Logout</a>
-        {% else %}
-          <a href="{% url 'login' %}">Login</a>
-        {% endif %}
-      </li>  
+      <li ><a class="button {{ upload_page }}" tabindex="0" aria-label="add data" href="{% url 'upload' %}">Add Data</a></li>
+      <li><a class="button" tabindex="0" aria-label="view maps" href="#">View Maps</a></li>
+      <li>
+      {% if user.is_authenticated %}
+        <a class="button" tabindex="0" aria-label="sign out" href="{% url 'logout' %}">Sign out</a>
+      {% else %}
+        <a class="button" tabindex="0" aria-label="sign in" href="{% url 'login' %}">Sign in</a>
+      {% endif %}
+      </li>
     </ul>
+  </div>
 </div>
-
