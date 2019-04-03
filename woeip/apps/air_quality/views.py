@@ -61,4 +61,5 @@ def upload(request):
     else:
         form = forms.DustrakSessionForm(initial={'collected_by': request_user})
 
-    return render(request, 'air_quality/upload.html', {'user': request_user, 'form': form})
+    return render(request, 'air_quality/upload.html', {
+        'user': request_user, 'form': form, 'upload_page': 'active'})

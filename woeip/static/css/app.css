@@ -1,1 +1,35 @@
-/* Hello, World */
+.top-bar {
+  font-size: 1.25rem;
+  padding: 1rem 2rem;
+}
+
+.button {
+  background-color: white;
+  color: black;
+  line-height: inherit;
+}
+
+.button:hover, .button:focus {
+  background-color: #eee;
+  color: #21b890;
+  border-bottom: 0.125rem solid #21b890;
+  transition: all 0.5s ease;
+}
+
+.button.active {
+  color: #21b890;
+  border-bottom: 0.125rem solid #21b890;
+  transition: all 0.5s ease;
+}
+
+.dropdown.menu li a {
+  padding: 0.3rem 0.5rem;
+}
+
+#burger-menu .menu-text{
+  font-weight: 700;
+}
+
+.menu .menu-text{
+  padding: 0;
+}

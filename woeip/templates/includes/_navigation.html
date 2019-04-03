@@ -1,0 +1,24 @@
+<div class="top-bar" id="burger-menu" data-responsive-toggle="site-menu" data-hide-for="medium">
+  <button class="menu-icon" type="button" data-toggle="site-menu"></button>
+</div>
+
+<div class="top-bar" id="site-menu">
+  <div class="top-bar-left">
+    <ul class="menu">
+    <li><h3><a href="{% url 'index' %}">West Oakland Air Quality</a></h3></li>
+    </ul>
+  </div>
+  <div class="top-bar-right">
+    <ul class="dropdown vertical medium-horizontal menu" >
+      <li ><a class="button {{ upload_page }}" tabindex="0" aria-label="add data" href="{% url 'upload' %}">Add Data</a></li>
+      <li><a class="button" tabindex="0" aria-label="view maps" href="#">View Maps</a></li>
+      <li>
+      {% if user.is_authenticated %}
+        <a class="button" tabindex="0" aria-label="sign out" href="{% url 'logout' %}">Sign out</a>
+      {% else %}
+        <a class="button" tabindex="0" aria-label="sign in" href="{% url 'login' %}">Sign in</a>
+      {% endif %}
+      </li>
+    </ul>
+  </div>
+</div>
