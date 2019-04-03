@@ -27,8 +27,6 @@ These are general guidelines on the flow from design to implementation
 
 ## Code Development
 
-### Running the site locally (Docker)
-
 Start by cloning this repository::
 
 ```bash
