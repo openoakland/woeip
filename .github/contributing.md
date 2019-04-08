@@ -66,7 +66,7 @@ Exit the container by pressing `ctrl-d`.
 
 ### Running the site locally (host machine)
 
-If you would prefer not to use Docker, you also be run the project directly on your machine using [pipenv](https://pipenv.readthedocs.io/en/latest/>). If you develop in this manner, you will be responsible for (a) installing ``pipenv`` and (b) configuring PostgreSQL.
+If you would prefer not to use Docker, you also be run the project directly on your machine using [pipenv](https://pipenv.readthedocs.io/en/latest/). If you develop in this manner, you will be responsible for (a) installing ``pipenv`` and (b) configuring PostgreSQL.
 
 1. Install the requirements:
 
