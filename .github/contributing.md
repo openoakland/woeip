@@ -27,7 +27,7 @@ These are general guidelines on the flow from design to implementation
 
 ## Code Development
 
-Start by cloning this repository::
+Start by cloning this repository:
 
 ```bash
 git clone git@github.com:openoakland/woeip.git
@@ -36,41 +36,53 @@ cd woeip
 
 ### Running the site locally (Docker)
 
-We recommend running the site using our `Docker <https://www.docker.com/>`_ setup. Docker allows full control of the software versions by running everything in containers, which you can think of as virtual machines isolated from your host machine. You can quickly get up and running with the included configuration. First, build the Docker container::
+We recommend running the site using our [Docker](https://www.docker.com/) setup. Docker allows full control of the software versions by running everything in containers, which you can think of as virtual machines isolated from your host machine. You can quickly get up and running with the included configuration. First, build the Docker container:
 
-    make docker.build
+```bash
+make docker.build
+```
 
-Start the containers that run the web app and server services::
+Start the containers that run the web app and server services:
 
-    make local.up
+```bash
+make local.up
+```
 
-When running the service with this command, it will be configured to run using the code on your local machine, rather than the code built in the previous step. Additionally, the `gunicorn <https://gunicorn.org/>`_ application server has been configured to automatically reload when code is changed locally.
+When running the service with this command, it will be configured to run using the code on your local machine, rather than the code built in the previous step. Additionally, the [gunicorn](https://gunicorn.org/) application server has been configured to automatically reload when code is changed locally.
 
-Enter the web app container (`app`). The shell prompt changes indicating subsequent commands will run in the container::
+Enter the web app container (`app`). The shell prompt changes indicating subsequent commands will run in the container:
 
-	root@<container ID>:/app/woeip# make local.shell
+```
+root@<container ID>:/app/woeip# make local.shell
+```
 
-Create a Django superuser::
+Create a Django superuser:
 
-	root@<container ID>:/app/woeip#	./manage.py createsuperuser 
+```
+root@<container ID>:/app/woeip#	./manage.py createsuperuser 
+```
 
 Exit the container by pressing `ctrl-d`.
 
 ### Running the site locally (host machine)
 
-If you would prefer not to use Docker, you also be run the project directly on your machine using `pipenv <https://pipenv.readthedocs.io/en/latest/>`_. If you develop in this manner, you will be responsible for (a) installing ``pipenv`` and (b) configuring PostgreSQL.
+If you would prefer not to use Docker, you also be run the project directly on your machine using [pipenv](https://pipenv.readthedocs.io/en/latest/>). If you develop in this manner, you will be responsible for (a) installing ``pipenv`` and (b) configuring PostgreSQL.
 
-1. Install the requirements::
+1. Install the requirements:
 
-    make requirements
+```bash
+make requirements
+```
 
-2. Start Django::
+2. Start Django:
 
-    DEBUG=true SECRET_KEY=replace-me DATABASE_URL=psql://<db-user>:<db-password>@<db-host>:<db-port>/<db-name> python manage.py runserver
-
+```bash
+DEBUG=true SECRET_KEY=replace-me DATABASE_URL=psql://<db-user>:<db-password>@<db-host>:<db-port>/<db-name> python manage.py runserver
+```
 
 ### Forks and Branches
-Developers generally work on the original OpenOakland WOEIP repository, rather than creating personal forks. <br>
+Developers generally work on the original OpenOakland WOEIP repository, rather than creating personal forks.
+
 Some developers identify their branches with a personal code, followed by a slash, and then the branch name. This practice is encouraged but not enforced.
 - ie) [initials of developer]/[branch name] 
 - ex) ty/add-index
