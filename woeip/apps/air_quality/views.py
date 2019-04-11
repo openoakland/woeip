@@ -12,7 +12,10 @@ logger = logging.getLogger(__name__)
 
 
 def index(request):
-    return render(request, 'index.html')
+    """Logged in users are directed to the upload page. Signed out users are directed to the login,
+    which then directs to the upload page
+    """
+    return redirect('upload')
 
 
 @login_required
