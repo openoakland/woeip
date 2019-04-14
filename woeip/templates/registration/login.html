@@ -1,25 +1,49 @@
 {% extends '__base.html' %}
 {% block content %}
-<div class="signin-page">
-  <h1>Welcome to WOAQ</h1>
-  <p>West Oakland Air Quality supports the
+<div class="grid-container large-offset-1 signin-page">
+  <div class="grid-x">
+    <div class="cell medium-12"><h1>Welcome to WOAQ</h1></div>
+  </div>
+  <div class="grid-x">
+    <div class="cell medium-12">
+      <p>West Oakland Air Quality supports the
     West Oakland Environmental Indicators Project
     by putting local air quality data in the hands
     of West Oaklanders</p>
-    <div class="signin-form">
-      <h2>Sign in to upload data</h2>
-      <p>Or request an account from the WOAQ team at 
-        <a href="mailto:woaq@openoakland.org">woaq@openoakland.org</a>
-      </p>
-      <form method="post">
-        {% csrf_token %}
-        {{ form.username.label_tag }}
-        {{ form.username }}
-        {{ form.password.label_tag}}
-        {{ form.password }}
-        <p>A mix of at least 8 letters, numbers, and special characters</p>
-        <button class="button" type="submit">Sign In</button>
-      </form>
     </div>
+  </div>
+    <div class="grid-x">
+      <div class="cell medium-12"><h2>Sign in to upload data</h2></div>
+    </div>
+    <div class="grid-x">
+      <div class="cell medium-12">
+        <p>Or request an account from the WOAQ team at 
+          <a href="mailto:woaq@openoakland.org">woaq@openoakland.org</a>
+        </p>
+      </div>
+    </div>
+    <form method="post">
+      {% csrf_token %}
+      <div class="grid x">
+        <div class="cell medium-9">{{ form.username.label_tag }}</div>
+      </div>
+      <div class="grid-x">
+        <div class="cell medium-9">{{ form.username }}</div>
+      </div>
+      <div class="grid x">
+          <div class="cell medium-9">{{ form.password.label_tag }}</div>
+        </div>
+      <div class="grid-x">
+        <div class="cell medium-9">{{ form.password }}</div>
+        <div class="cell medium-3" id="showPassword"><input type="checkbox" onclick="showPassword()"> Show</div>
+      </div>
+      <div class="grid x">
+        <div class="cell medium-9"><p>A mix of at least 8 letters, numbers, and special characters</p></div>
+      </div>
+      <div class="grid-x">
+        <div class="cell medium-12"><button class="button" type="submit">Sign In</button></div>
+      </div>
+    </form>
 </div>
 {% endblock %}
+
