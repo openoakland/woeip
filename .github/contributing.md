@@ -136,5 +136,5 @@ Testing resources include:
 Please open an issue to report any bugs.<br>
 To report or discuss a security concern,
 please send an email to the WOAQ team at:
-[woaq@openoakland.org](mailto:woaq@openoakland.org>).
+[woaq@openoakland.org](mailto:woaq@openoakland.org).
 Or reach out to the #woaq Slack channel
