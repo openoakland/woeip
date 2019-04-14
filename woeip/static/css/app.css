@@ -9,20 +9,20 @@
   line-height: inherit;
 }
 
-.button:hover, .button:focus {
+.top-bar .button:hover, .button:focus {
   background-color: #eee;
   color: #21b890;
   border-bottom: 0.125rem solid #21b890;
   transition: all 0.5s ease;
 }
 
-.button.active {
+.top-bar .button.active {
   color: #21b890;
   border-bottom: 0.125rem solid #21b890;
   transition: all 0.5s ease;
 }
 
-.dropdown.menu li a {
+.top-bar .dropdown.menu li a {
   padding: 0.3rem 0.5rem;
 }
 
@@ -32,4 +32,44 @@
 
 .menu .menu-text{
   padding: 0;
+}
+
+div.signin-page {
+  max-width: 28rem;
+  margin: 3rem;
+  padding: 1rem;
+}
+
+div.signin-page h1 {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+div.signin-form {
+  margin-top: 2rem;
+}
+
+div.signin-form input[type="password"]{
+  margin:0rem;
+}
+
+div.signin-form h2 {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: .1rem;
+}
+
+div.signin-form button{
+  border: solid .1rem black;
+  border-radius: .3rem;
+  width: 12rem;
+}
+
+div.signin-form .button:hover, .button:focus {
+  background-color:black;
+  color:white;
+}
+
+.button.active {
+  color: black;
 }

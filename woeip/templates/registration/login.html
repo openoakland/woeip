@@ -1,8 +1,25 @@
 {% extends '__base.html' %}
 {% block content %}
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Login</button>
-</form>
+<div class="signin-page">
+  <h1>Welcome to WOAQ</h1>
+  <p>West Oakland Air Quality supports the
+    West Oakland Environmental Indicators Project
+    by putting local air quality data in the hands
+    of West Oaklanders</p>
+    <div class="signin-form">
+      <h2>Sign in to upload data</h2>
+      <p>Or request an account from the WOAQ team at 
+        <a href="mailto:woaq@openoakland.org">woaq@openoakland.org</a>
+      </p>
+      <form method="post">
+        {% csrf_token %}
+        {{ form.username.label_tag }}
+        {{ form.username }}
+        {{ form.password.label_tag}}
+        {{ form.password }}
+        <p>A mix of at least 8 letters, numbers, and special characters</p>
+        <button class="button" type="submit">Sign In</button>
+      </form>
+    </div>
+</div>
 {% endblock %}
