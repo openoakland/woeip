@@ -123,6 +123,18 @@ Please follow these guidelines during development:
 - Docstrings in [Numpy Stlye](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_numpy.html#example-numpy)
 - [Django Templating](https://oncampus.oberlin.edu/webteam/2012/09/architecture-django-templates)
 
+### Testing
+As the codebase develops, robust testing techniques ensure code integrity. With each new feature, we design and implement
+appropriate tests.
+
+Testing resources include:
+- [Django Testing](https://docs.djangoproject.com/en/2.2/topics/testing/overview/)
+- [Python Faker](https://faker.readthedocs.io/en/master/)
+- [Pytest](https://docs.pytest.org/en/latest/)
+
 ### Reporting Bugs and Security Concerns
 Please open an issue to report any bugs.<br>
-To report or discuss a security concern, email Tim Miller at miller.tim108@gmail.com or reach out to the #woaq Slack channel.
+To report or discuss a security concern,
+please send an email to the WOAQ team at:
+[woaq@openoakland.org](mailto:woaq@openoakland.org>).
+Or reach out to the #woaq Slack channel
