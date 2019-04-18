@@ -11,13 +11,6 @@ from woeip.apps.air_quality import dustrak, forms, models
 logger = logging.getLogger(__name__)
 
 
-def index(request):
-    """Logged in users are directed to the upload page. Signed out users are directed to the login,
-    which then directs to the upload page
-    """
-    return redirect('upload')
-
-
 @login_required
 def upload(request):
     """Upload data for a session collected using the Dustrak air quality device and a separate GPS
