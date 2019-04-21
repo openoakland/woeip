@@ -36,3 +36,6 @@ Add links to appropriate documentation. Describe possible code implementations.
 
 **Design Documentation**
 Wireframes or other design resources
+
+**Testing Outline**
+Describe the testing methods appropriate for this feature
