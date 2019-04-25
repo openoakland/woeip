@@ -1,8 +1,49 @@
 {% extends '__base.html' %}
 {% block content %}
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Login</button>
-</form>
+<div class="grid-container large-offset-1">
+  <div class="grid-x">
+    <div class="cell medium-6"><h2>Welcome to WOAQ</h2></div>
+  </div>
+  <div class="grid-x">
+    <div class="cell medium-6">
+      <p>West Oakland Air Quality supports the
+    West Oakland Environmental Indicators Project
+    by putting local air quality data in the hands
+    of West Oaklanders</p>
+    </div>
+  </div>
+    <div class="grid-x">
+      <div class="cell medium-6"><h3>Sign in to upload data</h3></div>
+    </div>
+    <div class="grid-x">
+      <div class="cell medium-6">
+        <p>Or request an account from the WOAQ team at 
+          <a href="mailto:woaq@openoakland.org">woaq@openoakland.org</a>
+        </p>
+      </div>
+    </div>
+    <form method="post">
+      {% csrf_token %}
+      <div class="grid x">
+        <div class="cell medium-6">{{ form.username.label_tag }}</div>
+      </div>
+      <div class="grid-x">
+        <div class="cell medium-4">{{ form.username }}</div>
+      </div>
+      <div class="grid x">
+          <div class="cell medium-6">{{ form.password.label_tag }}</div>
+        </div>
+      <div class="grid-x">
+        <div class="cell medium-4">{{ form.password }}</div>
+        <div class="cell medium-2" id="containerShowPassword"><input type="checkbox" id="checkboxShowPassword" onclick="showPassword()"><label for="checkboxShowPassword">Show Password</label></div>
+      </div>
+      <div class="grid x">
+        <div class="cell medium-6"><p>A mix of at least 8 letters, numbers, and special characters</p></div>
+      </div>
+      <div class="grid-x">
+        <div class="cell medium-6"><button class="button" type="submit">Sign In</button></div>
+      </div>
+    </form>
+</div>
 {% endblock %}
+
