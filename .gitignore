@@ -1,3 +1,6 @@
+# Test emails
+sent_emails/*.log
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
