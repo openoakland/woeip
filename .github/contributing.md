@@ -122,6 +122,7 @@ Please follow these guidelines during development:
 - [PEP 8](https://www.python.org/dev/peps/pep-0008/) enforced by [pylint]
 - Docstrings in [Numpy Stlye](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_numpy.html#example-numpy)
 - [Django Templating](https://oncampus.oberlin.edu/webteam/2012/09/architecture-django-templates)
+- Visual/CSS styling: [Foundation 6 Global Styles](https://foundation.zurb.com/sites/docs/global.html)
 
 ### Testing
 As the codebase develops, robust testing techniques ensure code integrity. With each new feature, we design and implement
