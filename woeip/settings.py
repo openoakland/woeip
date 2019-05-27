@@ -1,4 +1,5 @@
 import environ
+from django.core.exceptions import ImproperlyConfigured
 
 repo_root = environ.Path(__file__) - 2
 project_root = environ.Path(__file__) - 1
@@ -31,13 +32,30 @@ DJANGO_APPS = [
 
 THIRD_PARTY_APPS = [
     'django_extensions',
+    'storages',
 ]
 
 LOCAL_APPS = [
     'woeip.apps.core',
+    'woeip.apps.air_quality',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
+
+DEFAULT_FILE_STORAGE = env(
+    'DEFAULT_FILE_STORAGE', default='storages.backends.s3boto.S3BotoStorage')
+AWS_S3_ACCESS_KEY_ID = env('AWS_S3_ACCESS_KEY_ID', default=None)
+AWS_S3_SECRET_ACCESS_KEY = env('AWS_S3_SECRET_ACCESS_KEY', default=None)
+AWS_S3_HOST = 's3.us-east-2.amazonaws.com'
+AWS_STORAGE_BUCKET_NAME = 'woaq'
+AWS_DEFAULT_ACL = None
+
+if (DEFAULT_FILE_STORAGE == 'storages.backends.s3boto.S3BotoStorage' and
+        (AWS_S3_ACCESS_KEY_ID is None or AWS_S3_SECRET_ACCESS_KEY is None)):
+    raise ImproperlyConfigured(
+        'Environmental variables AWS_S3_ACCESS_KEY_ID and AWS_S3_SECRET_ACCESS_KEY '
+        'must be configured to use S3 storage')
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -198,3 +216,9 @@ LOGGING = {
         },
     },
 }
+
+LOGIN_REDIRECT_URL = 'upload'
+LOGOUT_REDIRECT_URL = 'login'
+
+EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
+EMAIL_FILE_PATH = str(project_root.path('sent_emails'))

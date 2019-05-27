@@ -1,4 +1,4 @@
-FROM python:3.6-jessie
+FROM python:3.6
 
 WORKDIR /app/woeip
 
@@ -19,6 +19,7 @@ RUN apt-get update && \
 COPY Makefile /app/woeip
 COPY Pipfile /app/woeip
 COPY Pipfile.lock /app/woeip
+COPY conf/wait-for-it.sh /app/woeip
 
 RUN make requirements
 
