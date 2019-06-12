@@ -1,4 +1,4 @@
-West Oakland Air Quality (WOAQ) project  |Travis|_ |Codecov|_
+West Oakland Air Quality Project (WOAQ)  |Travis|_ |Codecov|_
 ===========================================================================
 .. |Travis| image:: https://travis-ci.org/openoakland/woeip.svg?branch=master
 .. _Travis: https://travis-ci.org/openoakland/woeip
@@ -6,53 +6,52 @@ West Oakland Air Quality (WOAQ) project  |Travis|_ |Codecov|_
 .. |Codecov| image:: https://codecov.io/gh/openoakland/woeip/branch/master/graph/badge.svg
 .. _Codecov: https://codecov.io/gh/openoakland/woeip
 
-WOAQ is a platform for West Oakland residents to collect, visualize,
-and act on the air quality data which affects their neighborhood.
+West Oakland Air Quality is a project of [OpenOakland](https://www.openoakland.org/), a nonprofit that bridges technology and community for a thriving and equitable Oakland. The WOAQ team is building a cloud-based tool for managing block-by-block air quality data collected by volunteer citizen scientists. WOAQ supports the nonprofit West Oakland Environmental Indicators Project (WOEIP), who started collecting this data more than a decade ago. WOEIP is a resident led, community-based environmental justice organization dedicated to achieving healthy homes, healthy jobs and healthy neighborhoods for all who live, work, learn and play in West Oakland, California.
 
-Organizations
--------------
-`OpenOakland <https://www.openoakland.org/>`_
-is a brigade in the Code for America network. Our mission is
-to bridge technology and community for a thriving and equitable Oakland.
-We are a welcoming and inclusive volunteer group of developers, designers,
-data geeks, and citizen activists who use creative technology to solve civic
-and social problems.
+Project details
+---------------
+See the [Project Overview](http://bit.ly/WOAQoverview) doc for details about our partner, project history, and more info about air quality issues in West Oakland. 
 
-`West Oakland Environmental Indicators Project <http://www.woeip.org/>`_
-is a resident led, community-based environmental justice organization
-dedicated to achieving healthy homes, healthy jobs and healthy neighborhoods
-for all who live, work, learn and play in West Oakland, California.
-Through our Community-Based Participatory Research projects and
-our Collaborative Problem-Solving Model we build community empowerment
-and help local residents to achieve their own vision for healthy neighborhoods.
+Technology used
+---------------
+- [Django](https://www.djangoproject.com/) (Python 3.0 framework)
+- [MySQL](https://www.mysql.com/) (database)
+- [Zurb Foundation 6](https://foundation.zurb.com/sites.html) (front-end framework)
+- [Docker](https://www.docker.com/) (optional, for running locally)
 
-Project Description
--------------------
-WOEIP has collected Air Quality (AQ) data over several years.
-The original AQ database is no longer accessible to WOEIP,
-leaving them without access to collected data. As a result,
-they've suspended their citizen scientist data collection program.
-A team within OpenOakland has partnered with WOEIP in order to build
-a replacement. The project, known as WOAQ, will allow WOEIP to
-intuitively store, process, and visualize their data. Ultimately,
-this will empower local residents to drive change in their community.
-
-How To Contribute
+How To contribute
 -----------------
-There are several ways to contribute to WOAQ, including product design,
-community engagement, project management, and engineering.
-Visit `Contributing.md <https://github.com/openoakland/woeip/tree/master/.github/contributing.md>`_
-for more information.
+We welcome new contributors and there are several ways you can do so. If you decide to join us, we ask that you agree to adhere to the OpenOakland [Code of Conduct](https://openoakland.org/code-of-conduct/) and the [17 Principles of Environmental Justice](https://www.ejnet.org/ej/principles.html).
 
-Reporting Security Issues
+### Development options
+- Add a comment to any [open issue](https://github.com/openoakland/woeip/issues?utf8=%E2%9C%93&q=is%3Aopen++). Or;
+- Clone the repo, run the site locally, create a branch, and get to work on any open issue labelled MVP and Ready. See [contributing.md](https://github.com/openoakland/woeip/tree/master/.github/contributing.md) for full details. 
+
+### Design & research options
+We use [Trello](https://trello.com/b/EBnxZHmx/west-oakland-air-quality) for project management:
+- Review and add a comment to any light blue “Design & Research” card currently sitting in the [In QA](https://trello.com/b/EBnxZHmx/west-oakland-air-quality) column. Or;
+- Grab any card tagged with the light blue “Design & Research” label in the [Ready to Work On](https://trello.com/b/EBnxZHmx/west-oakland-air-quality) column and get started. 
+
+### Data science/analysis options
+We use [Trello](https://trello.com/b/EBnxZHmx/west-oakland-air-quality) to document and discuss data decisions:
+- Review and add a comment to any yellow “Data Q” card currently sitting in the [Qs About Data Analysis](https://trello.com/b/EBnxZHmx/west-oakland-air-quality) column. Or;
+- Add a new yellow “Data Q” card to the [Qs About Data Analysis](https://trello.com/b/EBnxZHmx/west-oakland-air-quality) column for any new questions you think of that might be important to answer. 
+
+Additional project documentation
+--------------------------------
+- [Project Overview](http://bit.ly/WOAQoverview)
+- [Product Requirements](https://docs.google.com/document/d/1j-R9CQt6dnBwGTDSExlIN68vCmtqXtPMpH2fP5cYSOo/edit?usp=sharing)
+- [Design Research Plan](https://drive.google.com/open?id=1Es6k_gOF0qDgkdEJzhj_3ZBMEkRsVg3ecsRSCqThURs)
+- [Accessibility Guidelines](https://drive.google.com/open?id=1CKf6g1nd_pxdAKHI-9gbqEGoKWdSAW1PrpC1FTiXEUk)
+
+
+Reporting security issues
 -------------------------
-Please do not report security issues in public.
-Instead, please send an email to the WOAQ team at:
-`woaq@openoakland.org <mailto:woaq@openoakland.org>`_.
-Or reach out to the #woaq Slack channel
+Please do not report security issues in public. Instead, send an email to the WOAQ team at [woaq@openoakland.org](mailto:woaq@openoakland.org). Or reach out via the [#woaq Slack channel](https://openoakland.slack.com/) (complete [this form](https://docs.google.com/forms/d/e/1FAIpQLSee_qdE0qCmhufJC94MmSRVDLPAhhFJO4QMzuC31Kh0lxI_Mg/viewform) for access).
 
-Contact Info
+Contact info
 ------------
-For general inquiries about the project, email us at `woaq@openoakland.org <mailto:woaq@openoakland.org>`_.
-Or come visit us on `Tuesday evenings at City Hall <https://www.meetup.com/OpenOakland/>`_.
+- Email: [woaq@openoakland.org](mailto:woaq@openoakland.org)
+- Slack: [#WOAQ channel](https://openoakland.slack.com/) (complete [this form](https://docs.google.com/forms/d/e/1FAIpQLSee_qdE0qCmhufJC94MmSRVDLPAhhFJO4QMzuC31Kh0lxI_Mg/viewform) for access)
+- In person: Join us [Tuesday evenings at City Hall](https://www.meetup.com/OpenOakland/).
 
