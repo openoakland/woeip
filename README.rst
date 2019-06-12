@@ -14,7 +14,7 @@ See the [Project Overview](http://bit.ly/WOAQoverview) doc for details about our
 
 Technology used
 ---------------
-- [Django](https://www.djangoproject.com/) (Python framework)
+- [Django](https://www.djangoproject.com/) (Python 3.0 framework)
 - [MySQL](https://www.mysql.com/) (database)
 - [Zurb Foundation 6](https://foundation.zurb.com/sites.html) (front-end framework)
 - [Docker](https://www.docker.com/) (optional, for running locally)
