@@ -1,10 +1,5 @@
-West Oakland Air Quality Project (WOAQ)  |Travis|_ |Codecov|_
+West Oakland Air Quality Project (WOAQ) [![TravisCI](https://travis-ci.org/openoakland/woeip.svg?branch=master)](https://travis-ci.org/openoakland/woeip) [![Codecov](https://codecov.io/gh/openoakland/woeip/branch/master/graph/badge.svg)](https://codecov.io/gh/openoakland/woeip)
 ===========================================================================
-.. |Travis| image:: https://travis-ci.org/openoakland/woeip.svg?branch=master
-.. _Travis: https://travis-ci.org/openoakland/woeip
-
-.. |Codecov| image:: https://codecov.io/gh/openoakland/woeip/branch/master/graph/badge.svg
-.. _Codecov: https://codecov.io/gh/openoakland/woeip
 
 West Oakland Air Quality is a project of [OpenOakland](https://www.openoakland.org/), a nonprofit that bridges technology and community for a thriving and equitable Oakland. The WOAQ team is building a cloud-based tool for managing block-by-block air quality data collected by volunteer citizen scientists. WOAQ supports the nonprofit West Oakland Environmental Indicators Project (WOEIP), who started collecting this data more than a decade ago. WOEIP is a resident led, community-based environmental justice organization dedicated to achieving healthy homes, healthy jobs and healthy neighborhoods for all who live, work, learn and play in West Oakland, California.
 
@@ -54,4 +49,3 @@ Contact info
 - Email: [woaq@openoakland.org](mailto:woaq@openoakland.org)
 - Slack: [#WOAQ channel](https://openoakland.slack.com/) (complete [this form](https://docs.google.com/forms/d/e/1FAIpQLSee_qdE0qCmhufJC94MmSRVDLPAhhFJO4QMzuC31Kh0lxI_Mg/viewform) for access)
 - In person: Join us [Tuesday evenings at City Hall](https://www.meetup.com/OpenOakland/).
-
