@@ -62,6 +62,7 @@ class SessionData(TimeStampedModel):
     upload_gps = models.FileField(upload_to='session_gps_data', default="")
     sensor = models.ForeignKey(Sensor, on_delete=models.SET_NULL, blank=True, null=True)
     #TODO: Document making session nullable- it allows the files to be uploaded, without needing to create the session, yet
+    # Needed a model to hold the data. Either restructure models, change the user flow, or change the order of parsing through the data and creating the session and sessionData
     session = models.ForeignKey(Session, on_delete=models.CASCADE, blank=True, null=True)
     uploaded_by = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
 
@@ -70,7 +71,9 @@ class SessionData(TimeStampedModel):
 
     def __str__(self):
         name = op.basename(self.upload.name)
-        return f"{self.session.date_collected} {name}"
+        return name
+        # TODO: Document need to remove reference to data_collected
+        # return f"{self.session.date_collected} {name}"
 
 
 class Data(models.Model):
