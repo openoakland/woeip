@@ -54,15 +54,11 @@ class Session(models.Model):
 
 
 class SessionData(TimeStampedModel):
-    """The raw data file generated during a session. Assumes one and only one file per sensor,
-    although multiple sensors can be linked to one session"""
+    """The raw data files generated during a session. Assumes one general and one gps file.
+    Multiple sensors can be linked to one session"""
     upload = models.FileField(upload_to='session_data')
-    ##TODO: Document addition of gps file field
-    ##TODO: When uploaded with blank value, causing cascade of errors. Adding a 'default' value enforces need to upload with file
     upload_gps = models.FileField(upload_to='session_gps_data', default="")
     sensor = models.ForeignKey(Sensor, on_delete=models.SET_NULL, blank=True, null=True)
-    #TODO: Document making session nullable- it allows the files to be uploaded, without needing to create the session, yet
-    # Needed a model to hold the data. Either restructure models, change the user flow, or change the order of parsing through the data and creating the session and sessionData
     session = models.ForeignKey(Session, on_delete=models.CASCADE, blank=True, null=True)
     uploaded_by = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
 
@@ -72,8 +68,6 @@ class SessionData(TimeStampedModel):
     def __str__(self):
         name = op.basename(self.upload.name)
         return name
-        # TODO: Document need to remove reference to data_collected
-        # return f"{self.session.date_collected} {name}"
 
 
 class Data(models.Model):
