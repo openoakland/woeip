@@ -58,10 +58,11 @@ class SessionData(TimeStampedModel):
     although multiple sensors can be linked to one session"""
     upload = models.FileField(upload_to='session_data')
     ##TODO: Document addition of gps file field
-    ##TODO: Make field nullable
-    upload_gps = models.FileField(upload_to='session_gps_data')
+    ##TODO: When uploaded with blank value, causing cascade of errors. Adding a 'default' value enforces need to upload with file
+    upload_gps = models.FileField(upload_to='session_gps_data', default="")
     sensor = models.ForeignKey(Sensor, on_delete=models.SET_NULL, blank=True, null=True)
-    session = models.ForeignKey(Session, on_delete=models.CASCADE)
+    #TODO: Document making session nullable- it allows the files to be uploaded, without needing to create the session, yet
+    session = models.ForeignKey(Session, on_delete=models.CASCADE, blank=True, null=True)
     uploaded_by = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
 
     class Meta:

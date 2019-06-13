@@ -9,4 +9,5 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
     path('health/', health, name='health'),
+    path('view_session_data', views.ViewSessionData.as_view(), name='view_session_data'),
 ]
