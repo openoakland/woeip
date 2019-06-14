@@ -11,7 +11,7 @@
   <div class="top-bar-right">
     <ul class="dropdown vertical medium-horizontal menu" >
       <li ><a class="button {{ upload_page }}" tabindex="0" aria-label="add data" href="{% url 'upload' %}">Add data</a></li>
-      <li><a class="button" tabindex="0" aria-label="view maps" href="{% url 'view_session_data' %}">View maps</a></li>
+      <li><a class="button" tabindex="0" aria-label="view maps" href="{% url 'view' %}">View maps</a></li>
       {% if user.is_authenticated %}
         <li><a class="button" tabindex="0" aria-label="sign out" href="{% url 'password_change' %}">Change password</a></li>
         <li><a class="button" tabindex="0" aria-label="sign out" href="{% url 'logout' %}">Sign out</a></li>

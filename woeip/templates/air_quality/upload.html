@@ -15,19 +15,19 @@
 		{% csrf_token %}
 		<div class="grid-x">
 			<div class="cell medium-4">
-				<label for="{{ form.upload.id_upload }}">Dustrak:</label>
+				<label for="{{ form.sensor_file.id_sensor_file }}">Dustrak:</label>
 			</div>
 		</div>
 		<div class="grid-x">
-			{{form.upload}}
+			{{form.sensor_file}}
 		</div>
 		<div class="grid-x">
 				<div class="cell medium-4">
-					<label for="{{ form.upload_gps.id_upload_gps }}">GPS:</label>
+					<label for="{{ form.gps_file.id_gps_file }}">GPS:</label>
 				</div>
 			</div>
 		<div class="grid-x">
-			{{form.upload_gps}}
+			{{form.gps_file}}
 		</div>
 		<button class="button" type="submit">Submit</button>
 	</form>

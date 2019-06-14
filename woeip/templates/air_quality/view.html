@@ -1,0 +1,10 @@
+{% extends '__base.html' %}
+{% block content %}
+<ul>
+    {% for session_data in session_data_list  %}
+    <li><h3>SessionData ID: {{ session_data.id }}</h3></li>
+    <li><a href="{{ session_data.sensor_file.url }}">{{ session_data.sensor_file }}</a></li>
+    <li><a href="{{ session_data.gps_file.url }}">{{ session_data.gps_file }}</a></li>
+    {% endfor %}
+</ul>
+{% endblock %}

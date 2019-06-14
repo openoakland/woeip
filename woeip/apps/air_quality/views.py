@@ -24,17 +24,19 @@ class Upload(LoginRequiredMixin, View):
         form = SessionDataForm(self.request.POST, files)
         if form.is_valid():
             form.save()
-            path = redirect('view_session_data')
+            path = redirect('view')
         else:
             messages.add_message(self.request, messages.ERROR, 'File upload error')
-            path = redirect('upload')
+            path = render(self.request, 'air_quality/upload.html', {
+                'form': SessionDataForm
+            })
         return path
 
 
 class ViewSessionData(View):
     """Provide temporary development page to view all uploaded SessionDatas."""
     def get(self, request):
-        sessionData_list = SessionData.objects.all()
-        return render(self.request, 'air_quality/view_data.html', {
-            'sessionData': sessionData_list
+        session_data_list = SessionData.objects.all()
+        return render(self.request, 'air_quality/view.html', {
+            'session_data_list': session_data_list
         })
