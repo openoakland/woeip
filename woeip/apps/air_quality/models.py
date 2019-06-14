@@ -56,8 +56,8 @@ class Session(models.Model):
 class SessionData(TimeStampedModel):
     """The raw data files generated during a session. Assumes one general and one gps file.
     Multiple sensors can be linked to one session"""
-    upload = models.FileField(upload_to='session_data')
-    upload_gps = models.FileField(upload_to='session_gps_data', default="")
+    sensor_file = models.FileField(upload_to='sensor_files', default="")
+    gps_file = models.FileField(upload_to='gps_files', default="")
     sensor = models.ForeignKey(Sensor, on_delete=models.SET_NULL, blank=True, null=True)
     session = models.ForeignKey(Session, on_delete=models.CASCADE, blank=True, null=True)
     uploaded_by = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
@@ -66,7 +66,7 @@ class SessionData(TimeStampedModel):
         unique_together = ('sensor', 'session')
 
     def __str__(self):
-        name = op.basename(self.upload.name)
+        name = op.basename(self.sensor_file.name)
         return name
 
 
