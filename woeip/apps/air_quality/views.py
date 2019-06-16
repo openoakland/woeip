@@ -24,13 +24,12 @@ class Upload(LoginRequiredMixin, View):
         form = SessionDataForm(self.request.POST, files)
         if form.is_valid():
             form.save()
-            path = redirect('view')
+            return redirect('view')
         else:
             messages.add_message(self.request, messages.ERROR, 'File upload error')
-            path = render(self.request, 'air_quality/upload.html', {
+            return render(self.request, 'air_quality/upload.html', {
                 'form': SessionDataForm
             })
-        return path
 
 
 class ViewSessionData(View):
