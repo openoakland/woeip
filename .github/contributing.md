@@ -50,8 +50,8 @@ When running the service with this command, it will be configured to run using t
 
 Enter the web app container (`app`). The shell prompt changes indicating subsequent commands will run in the container:
 
-```
-root@<container ID>:/app/woeip# make local.shell
+```bash
+make local.shell
 ```
 
 Create a Django superuser:
