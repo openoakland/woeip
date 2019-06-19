@@ -26,7 +26,7 @@ These are general guidelines on the flow from design to implementation
 ## Code development
 Following the installation steps (including installing docker) takes around 20-35 minutes. 
 
-Make sure you have git installed: Add Install git (May add instructions for git installation: https://docs.gitlab.com/ee/gitlab-basics/start-using-git.html) if not already installed. 
+Make sure you have git installed (Instructions for git installation: https://docs.gitlab.com/ee/gitlab-basics/start-using-git.html if not already installed). 
 
 Run the following code commands in the terminal on your computer. 
 Start by cloning this repository:
