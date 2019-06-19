@@ -24,11 +24,17 @@ These are general guidelines on the flow from design to implementation
 5. Github pull requests implement the code agreed upon in the GitHub issues
 
 ## Code development
+Following the installation steps (including installing docker) takes around 20-35 minutes. 
 
+Make sure you have git installed: Add Install git (May add instructions for git installation: https://docs.gitlab.com/ee/gitlab-basics/start-using-git.html) if not already installed. 
+
+Run the following code commands in the terminal on your computer. 
 Start by cloning this repository:
 
 ```bash
-git clone git@github.com:openoakland/woeip.git
+git clone https://github.com/openoakland/woeip.git
+```
+```bash
 cd woeip
 ```
 
@@ -50,8 +56,8 @@ When running the service with this command, it will be configured to run using t
 
 Enter the web app container (`app`). The shell prompt changes indicating subsequent commands will run in the container:
 
-```
-root@<container ID>:/app/woeip# make local.shell
+```bash
+make local.shell
 ```
 
 Create a Django superuser:
@@ -59,6 +65,11 @@ Create a Django superuser:
 ```
 root@<container ID>:/app/woeip#	./manage.py createsuperuser 
 ```
+Enter a username, password and email. These are for logging into the docker container. 
+
+Then go to 0.0.0.0:8080 on your web browser. 
+
+Login using the username and password created earlier. Put in the username for the email. 
 
 Exit the container by pressing `ctrl-d`.
 
