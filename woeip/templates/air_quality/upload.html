@@ -1,8 +1,35 @@
 {% extends '__base.html' %}
 {% block content %}
-<form method="post" enctype="multipart/form-data">
-	{% csrf_token %}
-	{{form.as_p}}
-	<button type="submit">Submit</button>
-</form>
+<div class="grid-container large-offset-1">
+	<div class="grid-x">
+		<div class="cell medium-6"><h2>Upload your files</h2></div>
+	</div>
+	<div class="grid-x">
+			<div class="cell medium-6">
+			  <p>Below are two fields to upload files. The first field is for the Dustrak file. The second is for the GPS file.
+				You can add files by clicking the buttons below, or dragging files to their associated field.
+			  </p>
+			</div>
+		  </div>
+	<form method="post" enctype="multipart/form-data">
+		{% csrf_token %}
+		<div class="grid-x">
+			<div class="cell medium-4">
+				<label for="{{ form.sensor_file.id_sensor_file }}">Dustrak:</label>
+			</div>
+		</div>
+		<div class="grid-x">
+			{{form.sensor_file}}
+		</div>
+		<div class="grid-x">
+				<div class="cell medium-4">
+					<label for="{{ form.gps_file.id_gps_file }}">GPS:</label>
+				</div>
+			</div>
+		<div class="grid-x">
+			{{form.gps_file}}
+		</div>
+		<button class="button" type="submit">Submit</button>
+	</form>
+</div>
 {% endblock %}

@@ -1,14 +1,19 @@
 from django import forms
-from pytz import common_timezones
 
 from woeip.apps.air_quality import models
 
 
-class DustrakSessionForm(forms.ModelForm):
-    air_quality = forms.FileField()
-    gps = forms.FileField()
-    timezone = forms.ChoiceField(choices=[(x, x) for x in common_timezones], initial='America/Los_Angeles')
-
+class SessionDataForm(forms.ModelForm):
+    """Both an air quality and a gps file are required for initial upload of data"""
     class Meta():
-        model = models.Session
-        fields = ('collected_by', 'date_collected', 'route', 'air_quality', 'gps', 'timezone')
+        model = models.SessionData
+        fields = ('sensor_file', 'gps_file')
+
+    def __init__(self, *args, **kwargs):
+        """Zurb Foundation classes expand the area of the input fields,
+        facilitating simple drag-and-drop functionality"""
+        super(SessionDataForm, self).__init__(*args, **kwargs)
+        for field in ['sensor_file', 'gps_file']:
+            self.fields[field].widget.attrs.update({
+                'class': 'callout primary large text-center'
+                })
