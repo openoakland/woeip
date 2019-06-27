@@ -65,11 +65,11 @@ Create a Django superuser:
 ```
 root@<container ID>:/app/woeip#	./manage.py createsuperuser 
 ```
-Enter a username, password and email. These are for logging into the docker container. 
+Enter a username, password and email. These are for logging into the django admin. 
 
 Then go to 0.0.0.0:8080 on your web browser. 
 
-Login using the username and password created earlier. Put in the username for the email. 
+Login using the username and password created earlier. Put in the username you created for the email. 
 
 Exit the container by pressing `ctrl-d`.
 
