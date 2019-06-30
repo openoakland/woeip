@@ -2,3 +2,55 @@
   padding-left: 0.2rem;
   padding-top: 0.5rem;
 }
+
+footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #e6e6e6;
+}
+
+footer a {
+  margin: 0.1rem;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: auto 2.75rem;
+  display: block;
+  height: 3.0rem;
+  position: relative;
+  width: 1.75rem;
+  padding: 0.2rem;
+}
+
+footer span {
+  display: none;
+}
+
+footer a.github-link {
+  background-image: url( '/static/img/github_logo.png');
+  width:6.0rem;
+  float: right;
+  left: -0.5rem;
+}
+
+footer a.email-link {
+  background-image: url( '/static/img/email_logo.svg');
+  width: 4.0rem;
+  float: right;
+  left: -0.5rem;
+}
+
+footer a.open-oakland-link {
+  background-image: url( '/static/img/open_oakland_logo.png');
+  float: right;
+  left: -0.5rem;
+  width: 11.0rem;
+}
+
+footer a.woeip-link {
+  background-image: url( '/static/img/woeip_logo.jpg');
+  float: right;
+  left: -0.5rem;
+  width: 3.0rem;
+}
