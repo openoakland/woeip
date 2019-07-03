@@ -1,19 +1,20 @@
-<div class="top-bar" id="burger-menu" data-responsive-toggle="site-menu" data-hide-for="medium">
+<div class="top-bar" id="burger-menu" data-responsive-toggle="site-menu" data-hide-for="large">
+  <div class="menu-text">West Oakland Air Quality</div>
   <button class="menu-icon" type="button" data-toggle="site-menu"></button>
 </div>
 
 <div class="top-bar" id="site-menu">
   <div class="top-bar-left">
-    <ul class="menu">
-    <li><h1><a href="{% url 'upload' %}">West Oakland Air Quality</a></h1></li>
+    <ul class="menu show-for-large">
+    <li><h1>West Oakland Air Quality</h1></li>
     </ul>
   </div>
-  <div class="top-bar-right">
+  <div class="top-bar-left">
     <ul class="dropdown vertical medium-horizontal menu" >
       <li ><a class="button {{ upload_page }}" tabindex="0" aria-label="add data" href="{% url 'upload' %}">Add data</a></li>
       <li><a class="button" tabindex="0" aria-label="view maps" href="{% url 'view' %}">View maps</a></li>
       {% if user.is_authenticated %}
-        <li><a class="button" tabindex="0" aria-label="sign out" href="{% url 'password_change' %}">Change password</a></li>
+        <li><a class="button" tabindex="0" aria-label="password change" href="{% url 'password_change' %}">Change password</a></li>
         <li><a class="button" tabindex="0" aria-label="sign out" href="{% url 'logout' %}">Sign out</a></li>
       {% else %}
         <li><a class="button" tabindex="0" aria-label="sign in" href="{% url 'login' %}">Sign in</a></li>
