@@ -30,27 +30,27 @@ footer span {
 footer a.github-link {
   background-image: url( '/static/img/github_logo.png');
   width:6.0rem;
-  float: right;
+  float: left;
   left: -0.5rem;
 }
 
 footer a.email-link {
   background-image: url( '/static/img/email_logo.svg');
   width: 4.0rem;
-  float: right;
-  left: -0.5rem;
+  float: left;
+  left: -1.0rem;
 }
 
 footer a.open-oakland-link {
   background-image: url( '/static/img/open_oakland_logo.png');
-  float: right;
+  float: left;
   left: -0.5rem;
   width: 11.0rem;
 }
 
 footer a.woeip-link {
   background-image: url( '/static/img/woeip_logo.jpg');
-  float: right;
+  float: left;
   left: -0.5rem;
   width: 3.0rem;
 }
