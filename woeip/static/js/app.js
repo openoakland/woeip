@@ -18,8 +18,6 @@ $(document).ready(()=>{
     footerAlign();
 })
 
-$(window).resize(()=>{$(document).ready(()=>{
-    footerAlign();
-})
+$(window).resize(()=>{
     footerAlign();
 })
