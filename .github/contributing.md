@@ -24,6 +24,7 @@ These are general guidelines on the flow from design to implementation
 5. Github pull requests implement the code agreed upon in the GitHub issues
 
 ## Code development
+
 Start by cloning this repository:
 
 ```bash
@@ -113,7 +114,6 @@ Pull requests must pass the Travis checks before merging into the `master` branc
 Only one approving review is required to merge into the `master` branch. However, please leave the pull request open for at least **36 hrs**. As a volunteer project, contributors may not be able to immediately make comments. Adding a slight delay allows for multiple reviewers to provide input. However, this is a soft rule. It is not meant to be applied so rigidly applied that it creates unnecessary delays and inefficient code development.
 
 Once the Travis checks are passing, any requested code changes are resolved, and **36 hours** have passed, the developer who opened the pull request should merge their own code.
-
 
 ### Style guidelines
 Please follow these guidelines during development:
