@@ -1,15 +1,12 @@
 # Contributing
 Welcome to the WOAQ Contributing document!
 
-## Code of Conduct
-Please review the Open Oakland [Code of Conduct](https://github.com/openoakland/woeip/tree/master/.github/code_of_conduct.md)
+## Code of conduct
+Please review the Open Oakland [Code of Conduct](https://github.com/openoakland/woeip/tree/master/.github/code_of_conduct.md) and the [17 Principles of Environmental Justice](https://www.ejnet.org/ej/principles.html).
 
-## Communication
-WOAQ communinicates primarily through the [OpenOakland Slack Workspace](https://openoakland.slack.com), in the #woaq channel. Access to the Slack Workspace is granted by attending an [OpenOakland Hacknight](http://openoakland.org/) and onboarding with the community organizers. Alternatively, complete this [Google Form](https://docs.google.com/forms/d/e/1FAIpQLSee_qdE0qCmhufJC94MmSRVDLPAhhFJO4QMzuC31Kh0lxI_Mg/viewform) to join the OpenOakland community and request access to the Slack. Once a member of the Slack Workspace, you may navigate to the #woaq channel.
-
-## Documentation
+## Additional documentation
 Please reach out in the #woaq Slack Channel or at an OpenOakland Hacknight to request access to any private documents
-- [Project Outline](https://bit.ly/WOAQoverview) for long term strategy
+- [Project Overview](https://bit.ly/WOAQoverview) for product roadmap and project history
 - [Trello Board](https://trello.com/b/EBnxZHmx/west-oakland-air-quality) for project management
 - [GitHub Issues](https://github.com/openoakland/woeip/issues) for code management
 - [Google Drive](https://drive.google.com/drive/folders/1XQ9ckXD4z3G6NWXcd2PO8GtK7zcucBfx) to preserve historical documents
@@ -25,7 +22,8 @@ These are general guidelines on the flow from design to implementation
    - Relevant wireframes attached to the GitHub Issue
 5. Github pull requests implement the code agreed upon in the GitHub issues
 
-## Code Development
+## Code development
+
 
 Start by cloning this repository:
 
@@ -80,14 +78,14 @@ make requirements
 DEBUG=true SECRET_KEY=replace-me DATABASE_URL=psql://<db-user>:<db-password>@<db-host>:<db-port>/<db-name> python manage.py runserver
 ```
 
-### Forks and Branches
+### Forks and branches
 Developers generally work on the original OpenOakland WOEIP repository, rather than creating personal forks.
 
 Some developers identify their branches with a personal code, followed by a slash, and then the branch name. This practice is encouraged but not enforced.
 - ie) [initials of developer]/[branch name] 
 - ex) ty/add-index
 
-### Repository Permissions
+### Repository permissions
 Write permissions can be requested by contacting the development team at an OpenOakland hack night. Contributors without a code review, discussion in an issue, or commit in past 60 days will have their write permissions rescinded.
 
 
@@ -108,7 +106,7 @@ Status and bug labels are mandatory. Other labels are optional.<br>
 Developers looking to make code contributions should assign `ready` issues to themselves and change the label to `implementing`.
 
 
-### Pull Requests
+### Pull requests
 A pull request should simply implement a solution that was already established in an issue, rather than include discussions on how to implement the project design. To the maximum extent possible, it should address only one bug or feature. Limiting the scope of pull requests simplifies the review process and accelerates development.
 
 Pull requests must pass the Travis checks before merging into the `master` branch. These checks are a linting check and code tests. They can be accomplished locally by entering the project shell (`make local.shell`) and running them separately (`make quality` and `make test`) or together (`make validate`). Please pass these checks locally, before making a pull request. Other contributors will gladly help with any tests you are struggling to pass.
@@ -117,7 +115,8 @@ Only one approving review is required to merge into the `master` branch. However
 
 Once the Travis checks are passing, any requested code changes are resolved, and **36 hours** have passed, the developer who opened the pull request should merge their own code.
 
-### Style Guidelines
+
+### Style guidelines
 Please follow these guidelines during development:
 - [PEP 8](https://www.python.org/dev/peps/pep-0008/) enforced by [pylint]
 - Docstrings in [Numpy Stlye](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_numpy.html#example-numpy)
@@ -133,9 +132,8 @@ Testing resources include:
 - [Python Faker](https://faker.readthedocs.io/en/master/)
 - [Pytest](https://docs.pytest.org/en/latest/)
 
-### Reporting Bugs and Security Concerns
-Please open an issue to report any bugs.<br>
-To report or discuss a security concern,
+### Reporting bugs and security concerns
+- Please [open an issue](https://github.com/openoakland/woeip/issues/new?assignees=&labels=&template=bug_report.md&title=) to report any bugs.<br>
+- To report or discuss a security concern,
 please send an email to the WOAQ team at:
-[woaq@openoakland.org](mailto:woaq@openoakland.org).
-Or reach out to the #woaq Slack channel
+[woaq@openoakland.org](mailto:woaq@openoakland.org), or reach out on the [#woaq Slack channel](https://openoakland.slack.com/) (complete [this form](https://docs.google.com/forms/d/e/1FAIpQLSee_qdE0qCmhufJC94MmSRVDLPAhhFJO4QMzuC31Kh0lxI_Mg/viewform) for access).
