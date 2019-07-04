@@ -3,14 +3,16 @@
   padding-top: 0.5rem;
 }
 
-.block-content {
-  padding-bottom: 12rem;
+html {
+  position: relative;
+  min-height: 100%;
 }
 
 footer {
-  position: fixed;
+  position: absolute;
   bottom: 0;
   left: 0;
+  height: auto;
   width: 100%;
   background-color: #e6e6e6;
 }
