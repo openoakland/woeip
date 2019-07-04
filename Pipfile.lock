@@ -127,6 +127,14 @@
             "index": "pypi",
             "version": "==1.7.1"
         },
+        "django-storages": {
+            "hashes": [
+                "sha256:8e35d2c7baeda5dc6f0b4f9a0fc142d25f9a1bf72b8cebfcbc5db4863abc552d",
+                "sha256:b1a63cd5ea286ee5a9fb45de6c3c5c0ae132d58308d06f1ce9865cfcd5e470a7"
+            ],
+            "index": "pypi",
+            "version": "==1.7.1"
+        },
         "gevent": {
             "hashes": [
                 "sha256:0774babec518a24d9a7231d4e689931f31b332c4517a771e532002614e270a64",
@@ -280,6 +288,7 @@
         },
         "pycparser": {
             "hashes": [
+                "sha256:5ee1bce919ea6da9ca3489e3ad18a7e8342f3c568cdb01cd9ad46ad601fd46cb",
                 "sha256:a988718abfad80b6b157acce7bf130a30876d27603738ac39f140993246b25b3"
             ],
             "version": "==2.19"
