@@ -3,6 +3,10 @@
   padding-top: 0.5rem;
 }
 
+.block-content {
+  padding-bottom: 12rem;
+}
+
 footer {
   position: fixed;
   bottom: 0;
@@ -12,15 +16,10 @@ footer {
 }
 
 footer a {
-  margin: 0.1rem;
   background-position: center;
   background-repeat: no-repeat;
   background-size: auto 2.75rem;
-  display: block;
   height: 3.0rem;
-  position: relative;
-  width: 1.75rem;
-  padding: 0.2rem;
 }
 
 footer span {
@@ -29,28 +28,29 @@ footer span {
 
 footer a.github-link {
   background-image: url( '/static/img/github_logo.png');
-  width:6.0rem;
-  float: left;
-  left: -0.5rem;
+  width: 6.0rem;
+  place-self: center;
 }
 
 footer a.email-link {
   background-image: url( '/static/img/email_logo.svg');
   width: 4.0rem;
-  float: left;
-  left: -1.0rem;
+  place-self: center;
 }
 
 footer a.open-oakland-link {
   background-image: url( '/static/img/open_oakland_logo.png');
-  float: left;
-  left: -0.5rem;
   width: 11.0rem;
+  place-self: center;
 }
 
 footer a.woeip-link {
   background-image: url( '/static/img/woeip_logo.jpg');
-  float: left;
-  left: -0.5rem;
   width: 3.0rem;
+  place-self: center;
+}
+
+.footer-grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(3rem, 11rem));
 }
