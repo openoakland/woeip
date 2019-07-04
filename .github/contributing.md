@@ -4,6 +4,7 @@ Welcome to the WOAQ Contributing document!
 ## Code of conduct
 Please review the Open Oakland [Code of Conduct](https://github.com/openoakland/woeip/tree/master/.github/code_of_conduct.md) and the [17 Principles of Environmental Justice](https://www.ejnet.org/ej/principles.html).
 
+
 ## Additional documentation
 Please reach out in the #woaq Slack Channel or at an OpenOakland Hacknight to request access to any private documents
 - [Project Overview](https://bit.ly/WOAQoverview) for product roadmap and project history
@@ -23,8 +24,6 @@ These are general guidelines on the flow from design to implementation
 5. Github pull requests implement the code agreed upon in the GitHub issues
 
 ## Code development
-
-
 Start by cloning this repository:
 
 ```bash
