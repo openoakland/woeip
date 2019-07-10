@@ -19,9 +19,5 @@ footer {
   flex-flow: wrap;
   justify-content: space-around;
   align-items: center;
-}
-
-footer a {
-  padding-top: .5rem;
-  padding-bottom: .5rem;
+  padding: 1.0rem 1.0rem 1.5rem;
 }
