@@ -18,41 +18,10 @@ footer {
 }
 
 footer a {
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: auto 2.75rem;
-  height: 3.0rem;
-}
-
-footer span {
-  display: none;
-}
-
-footer a.github-link {
-  background-image: url( '/static/img/github_logo.png');
-  width: 6.0rem;
-  place-self: center;
-}
-
-footer a.email-link {
-  background-image: url( '/static/img/email_logo.svg');
-  width: 4.0rem;
-  place-self: center;
-}
-
-footer a.open-oakland-link {
-  background-image: url( '/static/img/open_oakland_logo.png');
-  width: 11.0rem;
-  place-self: center;
-}
-
-footer a.woeip-link {
-  background-image: url( '/static/img/woeip_logo.jpg');
-  width: 3.0rem;
-  place-self: center;
+  padding: 0.5rem;
 }
 
 .footer-grid-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(3rem, 11rem));
+  grid-template-columns: repeat(auto-fill, minmax(10rem, 15rem));
 }
