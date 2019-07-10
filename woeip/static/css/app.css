@@ -15,13 +15,13 @@ footer {
   height: auto;
   width: 100%;
   background-color: #e6e6e6;
+  display: flex;
+  flex-flow: wrap;
+  justify-content: space-around;
+  align-items: center;
 }
 
 footer a {
-  padding: 0.5rem;
-}
-
-.footer-grid-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(10rem, 15rem));
+  padding-top: .5rem;
+  padding-bottom: .5rem;
 }
