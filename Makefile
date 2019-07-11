@@ -16,6 +16,9 @@ docker.pull: ## Pull the Docker containers
 %.down: ## Stop the (local|production) Docker containers
 	docker-compose -f docker-compose.yml -f docker-compose.$*.yml down
 
+local.psql:
+    docker-compose -f docker-compose.yml -f docker-compose.local.yml run db psql -h db -U postgres
+
 %.restart: ## Restart the (local|production) Docker containers
 	docker-compose -f docker-compose.yml -f docker-compose.$*.yml restart
 
