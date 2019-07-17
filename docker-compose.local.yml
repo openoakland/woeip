@@ -24,9 +24,5 @@ services:
     ports:
       # This port is primarily exposed for debugging. Use the web service's port to properly access the service.
       - 8000:8000
-    volumes:
-      - ./api/woeip:cached
-      # Uncomment this line to ensure log files are exposed on the host machine.
-      # - ./logs:/logs
 volumes:
   db-data:

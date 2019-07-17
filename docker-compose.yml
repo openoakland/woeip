@@ -7,11 +7,13 @@ services:
         - PYTHON_ENV
     container_name: woaq.api
     image: openoakland/woaq
+    working_dir: /api
     restart: always
     stdin_open: true
     tty: true
     env_file: .env
     volumes:
+      - ./api:/api
       - logs:/logs
   web:
     container_name: woaq.web
