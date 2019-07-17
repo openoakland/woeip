@@ -6,11 +6,14 @@ help: ## Display this help message
 	@echo "Please use \`make <target>\` where <target> is one of"
 	@perl -nle'print $& if m{^[\.a-zA-Z_-]+:.*?## .*$$}' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m  %-25s\033[0m %s\n", $$1, $$2}'
 
-docker.build: ## Build the Docker containers
+docker.build: ## Build all Docker containers
 	docker-compose build
 
 docker.pull: ## Pull the Docker containers
 	docker-compose pull
+
+%.build: ## Build specific service
+	docker-compose build $*	
 
 %.down: ## Stop the (local|production) Docker containers
 	docker-compose -f docker-compose.yml -f docker-compose.$*.yml down
