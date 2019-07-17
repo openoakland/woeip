@@ -5,14 +5,12 @@
 # haven't been properly setup, without a database!
 set -e
 
-# Prepare log files and start outputting logs to stdout
-touch /logs/app.log
-touch /logs/gunicorn.log
+# Output logs to stdout
 tail -n 0 -f /logs/*.log &
 
-mkdir -p /public/static
+# Run migrations
+echo Starting migrations...
 make migrate
-make static
 
 echo Starting Gunicorn...
 gunicorn woeip.wsgi \
