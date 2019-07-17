@@ -16,10 +16,18 @@ services:
       - ./api:/api
       - logs:/logs
   web:
+    build:
+      context: ./web
     container_name: woaq.web
+    working_dir: /web
+    volumes:
+      - ./web:/web
+  proxy:
+    container_name: woaq.proxy
     image: nginx:1.15-alpine
     links:
       - api
+      - web
     ports:
       - 8080:80
     restart: always
