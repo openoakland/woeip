@@ -1,2 +1,5 @@
 Dockerfile
+Dockerfile.ci
 .gitignore
+node_modules
+.dockerignore

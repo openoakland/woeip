@@ -1,12 +1,8 @@
-FROM node:alpine
+FROM node:12.6.0-alpine
 
 WORKDIR /app
+COPY . /app
 
-COPY package.json package-lock.json /
+RUN npm install
 
-RUN npm install && npm run build
-
-COPY build /
-COPY build/public /public
-
-RUN npm run start:prod
+ENTRYPOINT ["npm", "run", "start"]

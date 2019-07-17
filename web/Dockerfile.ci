@@ -1,0 +1,25 @@
+# ---------------------
+# STEP 1
+# Build minified application
+
+FROM node:12.6.0-alpine as build
+
+WORKDIR /src
+COPY . /src
+
+RUN npm ci && npm run build
+
+# ---------------------
+# STEP 2
+# Copy build assets and run server
+
+FROM node:12.6.0-alpine
+
+WORKDIR /app
+
+COPY --from=build /src/build /app
+RUN mv /app/public /public
+
+ENV NODE_ENV=production
+
+ENTRYPOINT ["node", "server.js"]

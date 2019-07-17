@@ -5,9 +5,8 @@ services:
       context: ./api
       args:
         - PYTHON_ENV
-    container_name: woaq.api
-    image: openoakland/woaq
-    working_dir: /api
+    container_name: woaq-api
+    image: openoakland/woaq-api
     restart: always
     stdin_open: true
     tty: true
@@ -15,15 +14,26 @@ services:
     volumes:
       - ./api:/api
       - logs:/logs
+  web-dev:
+    build:
+      context: ./web
+    container_name: woaq-web-dev
+    image: openoakland/woaq-web-dev
+    ports:
+      - 3000:3000
+      - 3001:3001
+    volumes:
+      - ./web/src:/app/src
   web:
     build:
       context: ./web
-    container_name: woaq.web
-    working_dir: /web
-    volumes:
-      - ./web:/web
+      dockerfile: Dockerfile.ci
+    container_name: woaq-web
+    image: openoakland/woaq-web
+    ports:
+      - 3000:3000
   proxy:
-    container_name: woaq.proxy
+    container_name: woaq-proxy
     image: nginx:1.15-alpine
     links:
       - api
