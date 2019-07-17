@@ -20,10 +20,4 @@ const port = process.env.PORT || 3000;
 
 export default express()
   .use((req, res) => app.handle(req, res))
-  .listen(port, (err: Error) => {
-    if (err) {
-      console.error(err);
-      return;
-    }
-    console.log(`> Started on port ${port}`);
-  });
+  .listen(port, () =>  console.log(`> Started on port ${port}`));
