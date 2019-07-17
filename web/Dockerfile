@@ -2,8 +2,11 @@ FROM node:alpine
 
 WORKDIR /app
 
-COPY build package.json package-lock.json /
+COPY package.json package-lock.json /
+
+RUN npm install && npm run build
+
+COPY build /
 COPY build/public /public
 
-RUN npm install && npm run start:prod
-
+RUN npm run start:prod
