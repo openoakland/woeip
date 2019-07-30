@@ -1,5 +1,10 @@
 ARG PYTHON_VERSION=3.6-alpine
 
+# ---------------------
+# STEP 1
+# Install application dependencies
+# -----------------------
+
 FROM python:${PYTHON_VERSION} as builder
 
 # Install build dependencies: argon2 needs libffi-dev, psycopg needs postgresql-dev
@@ -20,11 +25,12 @@ RUN pip install -U pip \
     && pip install --install-option="--prefix=/install" -r /requirements.txt
 
 
-# Final build
+# ---------------------
+# STEP 2
+# Install geodjango dependencies
+# Start gunicorn server
+# -----------------------
 FROM python:${PYTHON_VERSION}
-
-# Install run dependencies
-# gdal-dev geos-dev proj-dev are required by geodjango
 
 RUN apk add --no-cache \
     --upgrade \
@@ -35,16 +41,15 @@ RUN apk add --no-cache \
     proj-dev \
     && rm -rf /var/cache/apk/*
 
+# Copy compiled library binaries
 COPY --from=builder /install /usr/local
 
-COPY . /app
+WORKDIR /usr/src/app
 
-WORKDIR /app
+COPY . ./
 
 RUN mkdir -p /logs \
     && touch /logs/app.log \
     && touch /logs/gunicorn.log
-
-EXPOSE 8000
 
 ENTRYPOINT ["./entrypoint.sh"]

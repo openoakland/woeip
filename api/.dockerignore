@@ -1,5 +1,10 @@
 requirements.in
 .coveragerc
+.dockerignore
+.env
+.env.example
 .gitignore
 Dockerfile
+pylintrc
+pytest.ini
 runtime.txt

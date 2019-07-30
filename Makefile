@@ -6,23 +6,23 @@ help: ## Display this help message
 	@echo "Please use \`make <target>\` where <target> is one of"
 	@perl -nle'print $& if m{^[\.a-zA-Z_-]+:.*?## .*$$}' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m  %-25s\033[0m %s\n", $$1, $$2}'
 
-docker.build: ## Build all Docker containers
-	docker-compose build
-
-docker.pull: ## Pull the Docker containers
+prod.pull: ## Pull the production Docker services
 	docker-compose pull
 
-%.build: ## Build specific service
-	docker-compose build $*	
+local.build: # Build the local Docker services
+	docker-compose build
 
-%.down: ## Stop the (local|production) Docker containers
-	docker-compose -f docker-compose.yml -f docker-compose.$*.yml down
+local.up: ## Start the local Docker services
+	docker-compose up -d	
 
-%.restart: ## Restart the (local|production) Docker containers
-	docker-compose -f docker-compose.yml -f docker-compose.$*.yml restart
+local.down: ## Stop the local Docker services
+	docker-compose down
 
-%.shell: ## Open a shell into the (local|production) app Docker container
-	docker-compose -f docker-compose.yml -f docker-compose.$*.yml exec app /bin/bash
+%.build: ## Build specific production service
+	docker-compose build $*		
 
-%.up: ## Start the (local|production) Docker containers
-	docker-compose -f docker-compose.yml -f docker-compose.$*.yml up -d	
+%.shell: ## Open a shell into specific local Docker service
+	docker-compose exec $* /bin/bash		
+
+local.restart: ## Restart the local Docker services
+	docker-compose restart

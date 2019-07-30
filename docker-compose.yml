@@ -1,52 +1,60 @@
-version: "3"
+version: '3.7'
+
 services:
+
   api:
     build:
       context: ./api
       args:
         - PYTHON_ENV
+    # Instruct Gunicorn to reload code when it is changed locally.
+    command: --reload
+    ports:
+      - 8000
     container_name: woaq-api
     image: openoakland/woaq-api
     restart: always
     stdin_open: true
     tty: true
-    env_file: .env
+    env_file: ./api/.env
     volumes:
-      - ./api:/api
-      - logs:/logs
-  web-dev:
-    build:
-      context: ./web
-    container_name: woaq-web-dev
-    image: openoakland/woaq-web-dev
-    ports:
-      - 3000:3000
-      - 3001:3001
-    volumes:
-      - ./web/src:/app/src
+      - ./api:/usr/src/app
+      - logs:/usr/src/app/logs
+
   web:
     build:
       context: ./web
-      dockerfile: Dockerfile.ci
     container_name: woaq-web
     image: openoakland/woaq-web
     ports:
-      - 3000:3000
-  proxy:
-    container_name: woaq-proxy
-    image: nginx:1.15-alpine
-    links:
-      - api
-      - web
-    ports:
-      - 8080:80
-    restart: always
+      - 3000
+      - 3001:3001
+    env_file: ./web/.env
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
-      - logs:/var/log/nginx
-      - media:/public/media:ro
-      - static:/public/static:ro
+      - ./web/src:/usr/src/app/src
+      - node_modules:/usr/src/app/node_modules
+
+  db:
+    container_name: woaq-db
+    image: mdillon/postgis:11
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=woaq
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    ports:
+      - 5432
+    restart: always
+
+  proxy:
+    image: jwilder/nginx-proxy
+    ports:
+      - 80:80
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+
 volumes:
   logs:
-  media:
-  static:
+  postgres:
+  node_modules:

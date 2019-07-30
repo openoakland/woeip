@@ -1,8 +1,14 @@
 FROM node:12.6.0-alpine
 
-WORKDIR /app
-COPY . /app
+WORKDIR /usr/src/app
 
-RUN npm install
+ENV PATH /usr/src/app/node_modules/.bin:$PATH
 
-ENTRYPOINT ["npm", "run", "start"]
+COPY package.json package-lock.json ./
+RUN npm ci
+
+COPY razzle.config.js tsconfig.json tslint.json ./
+COPY typings ./typings
+COPY public ./public
+
+ENTRYPOINT ["npm", "start"]

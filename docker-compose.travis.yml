@@ -1,11 +1,11 @@
-version: "3"
+version: '3.7'
+
 services:
   db:
-    container_name: woeip.db
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=woeip
+      - POSTGRES_DB=woaq
     image: mdillon/postgis:11
   app:
     # NOTE: A command should be passed to the container via docker-compose run. This ensures we don't start
@@ -13,9 +13,5 @@ services:
     entrypoint:
       - bash
       - -c
-    environment:
-      - SECRET_KEY=replace-me
-      - DATABASE_URL=postgis://postgres:postgres@woeip.db:5432/woeip?connect_timeout=60
-      - DEFAULT_FILE_STORAGE=django.core.files.storage.FileSystemStorage
     links:
       - db

@@ -1,0 +1,50 @@
+version: '3.7'
+
+services:
+  api:
+    build:
+      context: ./api
+      args:
+        - PYTHON_ENV
+    container_name: woaq-api
+    image: openoakland/woaq-api
+    restart: always
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./api:/api
+      - logs:/logs
+  web:
+    build:
+      context: ./web
+      dockerfile: Dockerfile.prod
+      args:
+        - NODE_ENV=production
+    ports:
+      - '${PORT}:${PORT}'
+    container_name: woaq-web
+    image: openoakland/woaq-web
+    environment:
+      - LETSENCRYPT_HOST=${DOMAIN_NAME}
+      - VIRTUAL_HOST=${DOMAIN_NAME}
+      - VIRTUAL_PORT=${PORT}
+
+  proxy:
+    image: jwilder/nginx-proxy
+    ports:
+     - 80:80
+     - 443:443
+    volumes:
+      - '/etc/nginx/certs'
+      - '/etc/nginx/vhost.d'
+      - '/usr/share/nginx/html'
+      - '/var/run/docker.sock:/tmp/docker.sock:ro'
+
+  ssl:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock:ro'
+    environment:
+      - "DEFAULT_EMAIL=${DEFAULT_EMAIL}"
+volumes:
+  logs:
