@@ -9,5 +9,4 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
     path('health/', health, name='health'),
-    path('view/', views.ViewSessionData.as_view(), name='view'),
 ]
