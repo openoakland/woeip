@@ -69,6 +69,7 @@ class Collection(models.Model):
     ends_at = models.DateTimeField()
     route = models.CharField(max_length=256, null=True)
 
+
 class CollectionFile(models.Model):
     """A collection file refers to a single file recorded during a collection
     that captures data from a single sensor. When the file contents are
@@ -80,7 +81,7 @@ class CollectionFile(models.Model):
     file = models.FileField(upload_to='data', default='')
     uploaded_at = models.DateTimeField(auto_now_add=True)
     processor_version = models.CharField(max_length=256)
-    processed_at = models.DateTimeField(auto_now=True)
+    processed_at = models.DateTimeField(auto_now_add=True)
 
 
 class TimeGeo(models.Model):
