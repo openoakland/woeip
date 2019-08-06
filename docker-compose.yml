@@ -31,8 +31,9 @@ services:
       - 3001:3001
     env_file: ./web/.env
     volumes:
-      - ./web/src:/usr/src/app/src
-      - node_modules:/usr/src/app/node_modules
+      - ./web:/usr/src/app
+      - /usr/src/app/node_modules/
+      - /usr/src/app/build/
 
   db:
     container_name: woaq-db
@@ -57,4 +58,3 @@ services:
 volumes:
   logs:
   postgres:
-  node_modules:
