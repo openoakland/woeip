@@ -24,7 +24,7 @@ class Upload(LoginRequiredMixin, View):
         form = CollectionForm(self.request.POST, files)
         if form.is_valid():
             form.save()
-            # return redirect('view')
+            return redirect('view')
         else:
             messages.add_message(self.request, messages.ERROR, 'File upload error')
             return render(self.request, 'air_quality/upload.html', {

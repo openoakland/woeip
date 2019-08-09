@@ -1,8 +1,5 @@
-import os.path as op
-
-from django.contrib.gis.db.models import LineStringField, PointField
+from django.contrib.gis.db.models import PointField
 from django.db import models
-from django_extensions.db.models import TimeStampedModel
 
 from woeip.apps.core.models import User
 
@@ -57,7 +54,7 @@ class Calibration(models.Model):
     calibrated_at = models.DateTimeField(null=True)
 
     def __str__(self):
-        return f'{self.sensor.name} {self.user.name}: {self.calibrated_at}'
+        return f'{self.sensor.name} {self.user.username}: {self.calibrated_at}'
 
 
 class Collection(models.Model):

@@ -1,14 +1,6 @@
 from django.contrib import admin
 
-from woeip.apps.air_quality.models import (
-	Device,
-	Pollutant,
-	Sensor,
-	Calibration,
-	Collection,
-	CollectionFile,
-)
-
+from woeip.apps.air_quality.models import Calibration, Collection, CollectionFile, Device, Pollutant, Sensor
 
 admin.site.register(Device)
 admin.site.register(Pollutant)
