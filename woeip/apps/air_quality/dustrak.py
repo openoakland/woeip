@@ -252,10 +252,12 @@ def save(joined_data, gps_collection_file, pollutant_collection_file, pollutant)
     """
     for _, row in joined_data.iterrows():
         time_geo = models.TimeGeo(
-            collection_file=gps_collection_file, time=row['time'],
+            collection_file=gps_collection_file,
+            time=row['time'],
             location=geos.Point(row['lon'], row['lat']))
         time_geo.save()
         pollutant_value = models.PollutantValue(
-            collection_file=pollutant_collection_file, time_geo=time_geo,
+            collection_file=pollutant_collection_file,
+            time_geo=time_geo,
             pollutant=pollutant, value=row['measurement'])
         pollutant_value.save()
