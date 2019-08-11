@@ -6,7 +6,7 @@ services:
     build:
       context: ./api
       args:
-        - PYTHON_ENV
+        - PYTHON_ENV=dev
     # Instruct Gunicorn to reload code when it is changed locally.
     command: --reload
     ports:

@@ -5,7 +5,7 @@ services:
     build:
       context: ./api
       args:
-        - PYTHON_ENV
+        - PYTHON_ENV=prod
     container_name: woaq-api
     image: openoakland/woaq-api
     restart: always

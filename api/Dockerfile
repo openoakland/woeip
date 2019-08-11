@@ -1,11 +1,9 @@
-ARG PYTHON_VERSION=3.6-alpine
-
 # ---------------------
 # STEP 1
 # Install application dependencies
 # -----------------------
 
-FROM python:${PYTHON_VERSION} as builder
+FROM python:3.6-alpine as builder
 
 # Install build dependencies: argon2 needs libffi-dev, psycopg needs postgresql-dev
 RUN apk add --no-cache \
@@ -30,7 +28,7 @@ RUN pip install -U pip \
 # Install geodjango dependencies
 # Start gunicorn server
 # -----------------------
-FROM python:${PYTHON_VERSION}
+FROM python:3.6-alpine
 
 RUN apk add --no-cache \
     --upgrade \
