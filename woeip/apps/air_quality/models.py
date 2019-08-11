@@ -1,79 +1,101 @@
-import os.path as op
-
-from django.contrib.gis.db.models import LineStringField, PointField
+from django.contrib.gis.db.models import PointField
 from django.db import models
-from django_extensions.db.models import TimeStampedModel
 
 from woeip.apps.core.models import User
 
 
-class Route(models.Model):
-    name = models.CharField(max_length=256, unique=True)
-    path = LineStringField()
-
-    def __str__(self):
-        return self.name
-
-
 class Device(models.Model):
+    """A device is a physical device used for measurement, of e.g.
+    location or pollutants. A device may contain multiple sensors.
+    """
     name = models.CharField(max_length=256)
-    manufacturer = models.CharField(max_length=256)
-    serial_number = models.CharField(max_length=256)
-    model_number = models.CharField(max_length=256)
-    calibration_date = models.DateField()
-    firmware_version = models.CharField(max_length=256)
+    serial = models.CharField(max_length=256)
+    firmware = models.CharField(max_length=256)
 
     def __str__(self):
-        return f"{self.name} {self.model_number} {self.serial_number}"
+        return f'{self.name} {self.serial} {self.firmware}'
+
+
+class Pollutant(models.Model):
+    """Pollutants are measured during air quality data collection.
+    """
+    name = models.CharField(max_length=256)
+    description = models.CharField(max_length=1024)
 
 
 class Sensor(models.Model):
-    """A sensor is something that measures something, i.e., it produces a single
-    measurement value at a time.
+    """A sensor is contained in a device and measures a single pollutant or a
+    latlon location. Multiple sensors may be co-located in a single device.
     """
     name = models.CharField(max_length=256)
-    unit_choices = (('mg/m3', 'mg/m3'), ('ppm', 'ppm'), ('g/m3', 'g/m3'), ('PM10', 'PM10'),
-                    ('PM2.5', 'PM2.5'),
-                    ('μg/m3', 'μg/m3'), ('latlong', 'latitude/longitude'))
+    device = models.ForeignKey(Device, null=True, on_delete=models.SET_NULL)
+    pollutant = models.ForeignKey(Pollutant, null=True, on_delete=models.SET_NULL)
+    unit_choices = (
+        ('mg/m3', 'mg/m3'),
+        ('ppm', 'ppm'),
+        ('g/m3', 'g/m3'),
+        ('PM10', 'PM10'),
+        ('PM2.5', 'PM2.5'),
+        ('μg/m3', 'μg/m3'),
+        ('latlon', 'latlon'),
+    )
     unit = models.CharField(max_length=256, choices=unit_choices,
                             help_text="Measurement unit, e.g., mg/m3, ppm, etc.")
-    device = models.ForeignKey(Device, on_delete=models.SET_NULL, blank=True, null=True)
 
     def __str__(self):
-        return f"{self.name} ({self.device.name})"
+        return f'{self.name} ({self.device.name})'
 
 
-class Session(models.Model):
-    """A single air quality outing. Can link to several SessionData, e.g., raw data files."""
-    date_collected = models.DateTimeField()
-    route = models.ForeignKey(Route, on_delete=models.SET_NULL, blank=True, null=True)
-    collected_by = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
-
-    def __str__(self):
-        return f"{self.date_collected} {self.collected_by}"
-
-
-class SessionData(TimeStampedModel):
-    """The raw data files generated during a session. Assumes one general and one gps file.
-    Multiple sensors can be linked to one session"""
-    sensor_file = models.FileField(upload_to='sensor_files', default="")
-    gps_file = models.FileField(upload_to='gps_files', default="")
-    sensor = models.ForeignKey(Sensor, on_delete=models.SET_NULL, blank=True, null=True)
-    session = models.ForeignKey(Session, on_delete=models.CASCADE, blank=True, null=True)
-    uploaded_by = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
-
-    class Meta:
-        unique_together = ('sensor', 'session')
+class Calibration(models.Model):
+    """A calibration is performed on a sensor by a user.
+    """
+    sensor = models.ForeignKey(Sensor, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+    calibrated_at = models.DateTimeField(null=True)
 
     def __str__(self):
-        name = op.basename(self.sensor_file.name)
-        return name
+        return f'{self.sensor.name} {self.user.username}: {self.calibrated_at}'
 
 
-class Data(models.Model):
-    """A table of all air quality measurements (all sessions). Individual sessions can be extracted
-    by filtering on "session"""
-    session = models.ForeignKey(Session, on_delete=models.CASCADE)
-    value = models.FloatField()
+class Collection(models.Model):
+    """A collection refers to a single data collection outing. During a
+    collection, multiple collection files may be recorded from multiple devices
+    and sensors by one or more users.
+    """
+    starts_at = models.DateTimeField()
+    ends_at = models.DateTimeField()
+    route = models.CharField(max_length=256, null=True)
+
+
+class CollectionFile(models.Model):
+    """A collection file refers to a single file recorded during a collection
+    that captures data from a single sensor. When the file contents are
+    processed, the table is updated with the timestamp and processor version.
+    """
+    collection = models.ForeignKey(Collection, on_delete=models.CASCADE)
+    sensor = models.ForeignKey(Sensor, null=True, on_delete=models.SET_NULL)
+    user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+    file = models.FileField(upload_to='data', default='')
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+    processor_version = models.CharField(max_length=256)
+    processed_at = models.DateTimeField(auto_now_add=True)
+
+
+class TimeGeo(models.Model):
+    """Timegeo location datapoints are timestamped latlon values. Each location
+    is extracted from a single collection file.
+    """
+    collection_file = models.ForeignKey(CollectionFile, on_delete=models.CASCADE)
+    location = PointField()
     time = models.DateTimeField()
-    latlon = PointField()
+
+
+class PollutantValue(models.Model):
+    """Pollutant value datapoints are floating point measurements of specific
+    pollutants. Each pollutant value is associated with a time_geo value
+    (location and timestamp) and is extracted from a single collection file.
+    """
+    collection_file = models.ForeignKey(CollectionFile, on_delete=models.CASCADE)
+    time_geo = models.ForeignKey(TimeGeo, on_delete=models.CASCADE)
+    pollutant = models.ForeignKey(Pollutant, null=True, on_delete=models.SET_NULL)
+    value = models.FloatField()

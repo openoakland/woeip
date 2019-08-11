@@ -13,22 +13,7 @@
 		  </div>
 	<form method="post" enctype="multipart/form-data">
 		{% csrf_token %}
-		<div class="grid-x">
-			<div class="cell medium-4">
-				<label for="{{ form.sensor_file.id_sensor_file }}">Dustrak:</label>
-			</div>
-		</div>
-		<div class="grid-x">
-			{{form.sensor_file}}
-		</div>
-		<div class="grid-x">
-				<div class="cell medium-4">
-					<label for="{{ form.gps_file.id_gps_file }}">GPS:</label>
-				</div>
-			</div>
-		<div class="grid-x">
-			{{form.gps_file}}
-		</div>
+		{{ form }}
 		<button class="button" type="submit">Submit</button>
 	</form>
 </div>
