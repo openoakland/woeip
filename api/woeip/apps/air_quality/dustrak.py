@@ -237,20 +237,27 @@ def join(air_quality, gps, tolerance=3.):
     return joined_data
 
 
-def save(joined_data, session):
+def save(joined_data, gps_collection_file, pollutant_collection_file, pollutant):
     """Save a table of joined data to the database
 
     Parameters
     ----------
     joined_data : pandas DataFrame
-    session : woeip.apps.air_quality.models.Session
+    gps_collection_file : woeip.apps.air_quality.models.CollectionFile
+        CollectionFile object for GPS data
+    pollutant_collection_file : woeip.apps.air_quality.models.CollectionFile
+        CollectionFile object for pollutant data
+    pollutant : woeip.apps.air_quality.models.Pollutant
+        Pollutant that was collected
     """
-    data = []
     for _, row in joined_data.iterrows():
-        dat = models.Data(session=session,
-                          value=row['measurement'],
-                          time=row['time'],
-                          latlon=geos.Point(row['lon'], row['lat']))
-        data.append(dat)
-
-    models.Data.objects.bulk_create(data)
+        time_geo = models.TimeGeo(
+            collection_file=gps_collection_file,
+            time=row['time'],
+            location=geos.Point(row['lon'], row['lat']))
+        time_geo.save()
+        pollutant_value = models.PollutantValue(
+            collection_file=pollutant_collection_file,
+            time_geo=time_geo,
+            pollutant=pollutant, value=row['measurement'])
+        pollutant_value.save()

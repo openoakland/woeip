@@ -1,20 +1,9 @@
+"""Model factories for tests"""
 import factory
-import factory.fuzzy
-import faker
 import pytz
-from django.contrib.gis import geos
 
-from woeip.apps.air_quality.models import Device, Route, Sensor, Session, SessionData
+from woeip.apps.air_quality.models import Calibration, Collection, CollectionFile, Device, Pollutant, Sensor
 from woeip.apps.core.tests.factories import UserFactory
-
-fake = faker.Faker()
-
-
-class FuzzyRoute(factory.fuzzy.BaseFuzzyAttribute):
-    def fuzz(self):
-        points = [fake.latlng() for _ in range(20)]  # pylint: disable=no-member
-
-        return geos.LineString(points)
 
 
 class DeviceFactory(factory.DjangoModelFactory):
@@ -22,19 +11,15 @@ class DeviceFactory(factory.DjangoModelFactory):
         model = Device
 
     name = factory.Faker('sentence', nb_words=3)
-    manufacturer = factory.Faker('word')
-    serial_number = factory.Faker('pystr', max_chars=10)
-    model_number = factory.Faker('pyint')
-    calibration_date = factory.Faker('past_date', tzinfo=pytz.utc)
-    firmware_version = factory.Faker('pyint')
+    serial = factory.Faker('pystr', max_chars=10)
+    firmware = factory.Faker('pyint')
 
 
-class RouteFactory(factory.DjangoModelFactory):
+class PollutantFactory(factory.DjangoModelFactory):
     class Meta:
-        model = Route
-
-    name = factory.Sequence(lambda n: 'Route %d' % n)
-    path = FuzzyRoute()
+        model = Pollutant
+    name = factory.Faker('pystr', max_chars=255)
+    description = factory.Faker('sentence', nb_words=3)
 
 
 class SensorFactory(factory.DjangoModelFactory):
@@ -42,24 +27,36 @@ class SensorFactory(factory.DjangoModelFactory):
         model = Sensor
 
     name = factory.Faker('sentence', nb_words=3)
-    unit = factory.Faker('sentence', nb_words=2)
     device = factory.SubFactory(DeviceFactory)
+    pollutant = factory.SubFactory(PollutantFactory)
+    unit = factory.Faker('sentence', nb_words=2)
 
 
-class SessionFactory(factory.DjangoModelFactory):
+class CalibrationFactory(factory.DjangoModelFactory):
     class Meta:
-        model = Session
-
-    date_collected = factory.Faker('past_datetime', tzinfo=pytz.utc)
-    route = factory.SubFactory(RouteFactory)
-    collected_by = factory.SubFactory(UserFactory)
-
-
-class SessionDataFactory(factory.DjangoModelFactory):
-    class Meta:
-        model = SessionData
-
-    upload = factory.django.FileField()
+        model = Calibration
     sensor = factory.SubFactory(SensorFactory)
-    session = factory.SubFactory(SessionFactory)
-    uploaded_by = factory.SubFactory(UserFactory)
+    user = factory.SubFactory(UserFactory)
+    calibrated_at = factory.Faker('past_datetime', tzinfo=pytz.utc)
+
+
+class CollectionFactory(factory.DjangoModelFactory):
+    class Meta:
+        model = Collection
+
+    starts_at = factory.Faker('past_datetime', tzinfo=pytz.utc)
+    ends_at = factory.Faker('past_datetime', tzinfo=pytz.utc)
+    route = factory.Faker('sentence', nb_words=3)
+
+
+class CollectionFileFactory(factory.DjangoModelFactory):
+    class Meta:
+        model = CollectionFile
+
+    collection = factory.SubFactory(CollectionFactory)
+    sensor = factory.SubFactory(SensorFactory)
+    user = factory.SubFactory(UserFactory)
+    file = factory.django.FileField()
+    uploaded_at = factory.Faker('past_datetime', tzinfo=pytz.utc)
+    processor_version = factory.Faker('pyint')
+    processed_at = factory.Faker('past_datetime', tzinfo=pytz.utc)
