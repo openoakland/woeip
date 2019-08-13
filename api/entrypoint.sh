@@ -5,9 +5,6 @@
 # haven't been properly setup, without a database!
 set -e
 
-# Output logs to stdout
-tail -n 0 -f /logs/*.log &
-
 # Run migrations
 echo Starting migrations...
 make migrate
@@ -17,5 +14,5 @@ gunicorn woeip.wsgi \
     --workers=2 \
     --worker-class=gevent \
     --bind=0.0.0.0:8000 \
-    --log-file=/logs/gunicorn.log \
+    --worker-tmp-dir=/dev/shm \
     "$@"

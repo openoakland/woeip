@@ -1,53 +1,20 @@
-# ---------------------
-# STEP 1
-# Install application dependencies
-# -----------------------
-
-FROM python:3.6-alpine as builder
-
-# Install build dependencies: argon2 needs libffi-dev, psycopg needs postgresql-dev
-RUN apk add --no-cache \
-    --upgrade \
-    --repository http://dl-cdn.alpinelinux.org/alpine/edge/main \
-    build-base \
-    libffi-dev \
-    postgresql-dev
-
-ARG PYTHON_ENV
-
-RUN mkdir /install
-WORKDIR /install
-
-COPY requirements/${PYTHON_ENV}.txt /requirements.txt
-RUN pip install -U pip \
-    && pip install --install-option="--prefix=/install" -r /requirements.txt
-
-
-# ---------------------
-# STEP 2
-# Install geodjango dependencies
-# Start gunicorn server
-# -----------------------
-FROM python:3.6-alpine
-
-RUN apk add --no-cache \
-    --upgrade \
-    --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing \
-    alpine-sdk \
-    gdal-dev \
-    geos-dev \
-    proj-dev \
-    && rm -rf /var/cache/apk/*
-
-# Copy compiled library binaries
-COPY --from=builder /install /usr/local
-
+FROM python:3.6
+ENV PYTHONUNBUFFERED 1 
 WORKDIR /usr/src/app
 
-COPY . ./
+RUN apt-get update \
+    && apt-get install --no-install-recommends -y \
+      build-essential \
+      libffi-dev \
+      libgdal-dev \
+      libssl-dev \
+    && rm -rf /var/lib/apt/lists/* \
+    && pip install -U pip
 
-RUN mkdir -p /logs \
-    && touch /logs/app.log \
-    && touch /logs/gunicorn.log
+ARG PYTHON_ENV
+COPY requirements/${PYTHON_ENV}.txt requirements.txt
+RUN pip install -r requirements.txt
+
+COPY . ./
 
 ENTRYPOINT ["./entrypoint.sh"]
