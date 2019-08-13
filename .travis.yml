@@ -16,7 +16,6 @@ script:
   - docker-compose -f docker-compose.yml -f docker-compose.travis.yml run app "make quality"
   - docker-compose -f docker-compose.yml -f docker-compose.travis.yml run app "make detect_missing_migrations"
   - docker-compose -f docker-compose.yml -f docker-compose.travis.yml run app "make migrate"
-  - docker-compose -f docker-compose.yml -f docker-compose.travis.yml run app "make static"
   - docker-compose -f docker-compose.yml -f docker-compose.travis.yml run app "make test"
 
 after_success:
