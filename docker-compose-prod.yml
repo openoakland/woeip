@@ -30,7 +30,11 @@ services:
       - VIRTUAL_PORT=${PORT}
 
   proxy:
-    image: jwilder/nginx-proxy
+    build:
+      context: ./nginx-proxy
+      args:
+        - CORS_DOMAIN=api.woaq.org
+    container_name: woaq-proxy
     ports:
      - 80:80
      - 443:443

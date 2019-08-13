@@ -49,7 +49,11 @@ services:
     restart: always
 
   proxy:
-    image: jwilder/nginx-proxy
+    build:
+      context: ./nginx-proxy
+      args:
+        - CORS_DOMAIN=api.lvh.me
+    container_name: woaq-proxy
     ports:
       - 80:80
     volumes:
