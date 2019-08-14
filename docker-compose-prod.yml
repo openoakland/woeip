@@ -10,24 +10,49 @@ services:
     image: openoakland/woaq-api
     restart: always
     stdin_open: true
-    tty: true
+    tty: true    
+    ports:
+      - ${API_PORT}
+    environment:
+      - SECRET_KEY=${SECRET_KEY}
+      - DATABASE_URL=${DATABASE_URL}
+      - DEFAULT_FILE_STORAGE=${DEFAULT_FILE_STORAGE}
+      - LETSENCRYPT_HOST=${API_DOMAIN}
+      - VIRTUAL_HOST=${API_DOMAIN}
+      - VIRTUAL_PORT=${API_PORT}      
     volumes:
-      - ./api:/api
-      - logs:/logs
+      - ./api:/usr/src/app
+      - logs:/usr/src/app/logs
+
   web:
     build:
       context: ./web
-      dockerfile: Dockerfile.prod
+      dockerfile: Dockerfile.ci
       args:
         - NODE_ENV=production
     ports:
-      - '${PORT}:${PORT}'
+      - ${WEB_PORT}
     container_name: woaq-web
     image: openoakland/woaq-web
     environment:
-      - LETSENCRYPT_HOST=${DOMAIN_NAME}
-      - VIRTUAL_HOST=${DOMAIN_NAME}
-      - VIRTUAL_PORT=${PORT}
+      - NODE_ENV=production
+      - LETSENCRYPT_HOST=${WEB_DOMAIN}
+      - VIRTUAL_HOST=${WEB_DOMAIN}
+      - VIRTUAL_PORT=${WEB_PORT}
+
+  dataviz:
+    build:
+      context: ./dataviz
+    container_name: woaq-dataviz
+    image: openoakland/woaq-dataviz
+    ports:
+      - ${PORT}
+    environment:
+      - DOCKER_USER=${DOCKER_USER}
+      - DOCKER_PASSWORD=${DOCKER_PASSWORD}
+      - LETSENCRYPT_HOST=${DATAVIZ_DOMAIN}
+      - VIRTUAL_HOST=${DATAVIZ_DOMAIN}
+      - VIRTUAL_PORT=${DATAVIZ_PORT}
 
   proxy:
     build:
@@ -50,5 +75,6 @@ services:
       - '/var/run/docker.sock:/var/run/docker.sock:ro'
     environment:
       - "DEFAULT_EMAIL=${DEFAULT_EMAIL}"
+
 volumes:
   logs:

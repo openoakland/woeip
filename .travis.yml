@@ -1,24 +1,20 @@
 services:
-  - docker
-
+- docker
 language: python
-
 python:
-  - 3.6
-
+- 3.6
 cache: pip
-
 install:
-  - make docker.pull
-  - make docker.build
-
+- docker-compose build
 script:
-  - docker-compose -f docker-compose.yml -f docker-compose.travis.yml run app "make quality"
-  - docker-compose -f docker-compose.yml -f docker-compose.travis.yml run app "make detect_missing_migrations"
-  - docker-compose -f docker-compose.yml -f docker-compose.travis.yml run app "make migrate"
-  - docker-compose -f docker-compose.yml -f docker-compose.travis.yml run app "make test"
-
+- docker-compose -f docker-compose-travis.yml run app "make quality"
+- docker-compose -f docker-compose-travis.yml run app "make detect_missing_migrations"
+- docker-compose -f docker-compose-travis.yml run app "make migrate"
+- docker-compose -f docker-compose-travis.yml run app "make test"
 after_success:
-  - pip install -U codecov
-  - docker exec -t woeip.app coverage xml
-  - codecov
+- pip install -U codecov
+- docker-compose run api coverage xml
+- codecov
+env:
+  matrix:
+    secure: mq/Ba4cVJwSTR1iHAcJzw2SdQmIO5+79fbcJb85gZuUHSgDxsFYD7eHHxuy9To7qLJEZYI2ahBDYcY9HY/HW7ONqXZZFBK2xC1np5Z9tXl/ixh3DfaPkcWFoRaBBXz3iSk+9mZ5hasAf1GZI5ncW3B4s3NJaE0XMPIw9EOJD8ZekZfqXlCZW3NcTbZP8w1S7D21446jtMff5R/ONpiLKAqQ9OfxdkMkOvFeEhoo0ZfDroOLP2zWY51fvtkjKRo4MTKvYCiFkJTF4eLcZMtNi4O/mFsSZ+UA2w3SeB7pv0HtnYTnAIl2V27VyQ/EARPIBkU1q23HTTHiqJoA+vERpw/QDWIdk3/EcEvZAaKCmppNV+U+G00PTAoS+7i+LS0gpzrgaQbdyb4AM4FX8YoCwpWVdGIJHXzAsji/nMuBlukE+anUo+XQO1SsrFKQqCDU7OfdZL+a0xUii1ZzKi3Ow35YlJXhxj5aqVCVV9qZOtpdmjuJvIQ6wGwzGkF6kpuPOKVHO0BhGW4ue8vB2BsR/VaWUU5J3aTkcP+Y3d0L0wEImpTbJr19UH7QXGCOAz63u6VJjg7J3HZ16QvWnsRjIrUtIODBo66Cup2DBZBFyIDLXUoflxO/pl7WpRHmTBUjyS4E4OXoe77bMUqX2gyLK6DQq8gMb6uLQgAL1PchSSUw=

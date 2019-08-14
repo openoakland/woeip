@@ -1,17 +1,56 @@
 version: '3.7'
 
 services:
-  db:
+
+  api:
+    build:
+      context: ./api
+      args:
+        - PYTHON_ENV=prod
+    container_name: woaq-api
+    image: openoakland/woaq-api
+    restart: always
+    stdin_open: true
+    tty: true
+    ports:
+      - ${API_PORT}
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=woaq
-    image: mdillon/postgis:11
-  app:
-    # NOTE: A command should be passed to the container via docker-compose run. This ensures we don't start
-    # gunicorn unnecessarily, and run out of memory.
+      - SECRET_KEY=${SECRET_KEY}
+      - DATABASE_URL=${DATABASE_URL}
+      - DEFAULT_FILE_STORAGE=${DEFAULT_FILE_STORAGE}
+      - VIRTUAL_HOST=${API_DOMAIN}
+      - VIRTUAL_PORT=${API_PORT}         
+    volumes:
+      - ./api:/usr/src/app
+      - logs:/usr/src/app/logs
     entrypoint:
       - bash
-      - -c
-    links:
-      - db
+      - -c    
+
+  db:
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    image: mdillon/postgis:11
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    ports:
+      - 5432
+    restart: always
+
+  proxy:
+    build:
+      context: ./nginx-proxy
+      args:
+        - CORS_DOMAIN=${API_DOMAIN}
+    container_name: woaq-proxy
+    image: openoakland/woaq-proxy
+    ports:
+      - 80:80
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro      
+
+volumes:
+  logs:
+  postgres:      

@@ -41,7 +41,6 @@ services:
     container_name: woaq-dataviz
     image: openoakland/woaq-dataviz
     env_file: ./dataviz/.env
-    command: holoviews --install-examples
     ports:
       - 8000
       - 5006:5006
