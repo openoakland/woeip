@@ -17,7 +17,6 @@ script:
   - docker-compose -f docker-compose.yml -f docker-compose.ci.yml run api "make detect_missing_migrations"
   - docker-compose -f docker-compose.yml -f docker-compose.ci.yml run api "make migrate"
   - docker-compose -f docker-compose.yml -f docker-compose.ci.yml run api "make coverage"
-  - codecov -F api
 
 env:
   matrix:

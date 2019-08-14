@@ -21,6 +21,7 @@ test: clean ## Run tests and generate coverage report
 coverage: clean ## Run the coverage in xml format
 	coverage run -m pytest --durations=25 -v
 	coverage xml
+	codecov
 
 quality: ## Run pep8 and Pylint
 	isort --check-only --recursive woeip/
