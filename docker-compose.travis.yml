@@ -3,15 +3,6 @@ version: '3.7'
 services:
 
   api:
-    build:
-      context: ./api
-      args:
-        - PYTHON_ENV=prod
-    container_name: woaq-api
-    image: openoakland/woaq-api
-    restart: always
-    stdin_open: true
-    tty: true
     ports:
       - ${API_PORT}
     environment:
@@ -20,9 +11,6 @@ services:
       - DEFAULT_FILE_STORAGE=${DEFAULT_FILE_STORAGE}
       - VIRTUAL_HOST=${API_DOMAIN}
       - VIRTUAL_PORT=${API_PORT}         
-    volumes:
-      - ./api:/usr/src/app
-      - logs:/usr/src/app/logs
     entrypoint:
       - bash
       - -c    
@@ -41,15 +29,8 @@ services:
 
   proxy:
     build:
-      context: ./nginx-proxy
       args:
-        - CORS_DOMAIN=${API_DOMAIN}
-    container_name: woaq-proxy
-    image: openoakland/woaq-proxy
-    ports:
-      - 80:80
-    volumes:
-      - /var/run/docker.sock:/tmp/docker.sock:ro      
+        - CORS_DOMAIN=${API_DOMAIN}    
 
 volumes:
   logs:
