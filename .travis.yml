@@ -9,13 +9,18 @@ python:
 cache: pip
 
 install:
+  - mkdir artifacts
   - docker-compose -f docker-compose.yml -f docker-compose.ci.yml build
+  - pip install -U codecov
 
 script:
   - docker-compose -f docker-compose.yml -f docker-compose.ci.yml run api "make quality"
   - docker-compose -f docker-compose.yml -f docker-compose.ci.yml run api "make detect_missing_migrations"
   - docker-compose -f docker-compose.yml -f docker-compose.ci.yml run api "make migrate"
   - docker-compose -f docker-compose.yml -f docker-compose.ci.yml run api "make coverage"
+
+after_success:
+  - codecov -f artifacts/coverage.xml -F api
 
 env:
   matrix:

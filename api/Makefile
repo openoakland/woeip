@@ -20,9 +20,7 @@ test: clean ## Run tests and generate coverage report
 
 coverage: clean ## Run the coverage in xml format
 	coverage run -m pytest --durations=25 -v
-	coverage xml
-	pip install -U codecov
-	codecov
+	coverage xml -o artifacts/coverage.xml
 
 quality: ## Run pep8 and Pylint
 	isort --check-only --recursive woeip/
