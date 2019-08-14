@@ -10,7 +10,6 @@ cache: pip
 
 install:
   - docker-compose -f docker-compose.yml -f docker-compose.ci.yml build
-  - pip install -U codecov
 
 script:
   - docker-compose -f docker-compose.yml -f docker-compose.ci.yml run api "make quality"
