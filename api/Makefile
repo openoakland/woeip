@@ -18,6 +18,9 @@ test: clean ## Run tests and generate coverage report
 	coverage run -m pytest --durations=25 -v
 	coverage report -m
 
+coverage_xml: ## Run the coverage in xml format
+	coverage xml
+
 quality: ## Run pep8 and Pylint
 	isort --check-only --recursive woeip/
 	pycodestyle woeip *.py
