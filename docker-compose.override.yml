@@ -17,6 +17,7 @@ services:
     restart: always
     stdin_open: true
     tty: true
+    entrypoint: dockerize -wait tcp://db:5432 -timeout 1m bash -c
 
   web:
     env_file: ./web/.env

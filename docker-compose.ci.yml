@@ -14,19 +14,15 @@ services:
       - DEFAULT_FILE_STORAGE=${DEFAULT_FILE_STORAGE}
       - VIRTUAL_HOST=${API_DOMAIN}
       - VIRTUAL_PORT=${API_PORT}
-    links:
+    depends_on:
       - db
-    # NOTE: Gunicorn is default entrypoint via Dockerfile.
-    # Override to bash to allow for script commands to be run   
-    entrypoint:
-      - bash
-      - -c      
+    # NOTE: Override entrypoint from gunicorn to bash so CI scripts can be run
+    # Also wait for db to be ready before running scripts
+    entrypoint: dockerize -wait tcp://db:5432 -timeout 1m bash -c     
 
   web:
     build:
       dockerfile: Dockerfile.ci
-      args:
-        - NODE_ENV=production      
 
   db:
     ports:
