@@ -12,14 +12,14 @@ install:
   - docker-compose -f docker-compose.yml -f docker-compose.ci.yml build
 
 script:
-  - docker-compose -f docker-compose.yml -f docker-compose.ci.yml run api "make quality"
-  - docker-compose -f docker-compose.yml -f docker-compose.ci.yml run api "make detect_missing_migrations"
-  - docker-compose -f docker-compose.yml -f docker-compose.ci.yml run api "make migrate"
-  - docker-compose -f docker-compose.yml -f docker-compose.ci.yml run api "make test"
+  - docker-compose -f docker-compose.yml -f docker-compose.ci.yml run api /bin/bash "make quality"
+  - docker-compose -f docker-compose.yml -f docker-compose.ci.yml run api /bin/bash "make detect_missing_migrations"
+  - docker-compose -f docker-compose.yml -f docker-compose.ci.yml run api /bin/bash "make migrate"
+  - docker-compose -f docker-compose.yml -f docker-compose.ci.yml run api /bin/bash "make test"
 
 after_success:
   - pip install -U codecov
-  - docker-compose -f docker-compose.yml -f docker-compose.ci.yml run api "coverage xml"
+  - docker-compose -f docker-compose.yml -f docker-compose.ci.yml run api /bin/bash "coverage xml"
   - codecov
 
 env:

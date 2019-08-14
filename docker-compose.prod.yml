@@ -19,8 +19,6 @@ services:
   web:
     build:
       dockerfile: Dockerfile.ci
-      args:
-        - NODE_ENV=production
     ports:
       - ${WEB_PORT}
     environment:
