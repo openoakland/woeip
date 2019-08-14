@@ -16,6 +16,11 @@ services:
       - VIRTUAL_PORT=${API_PORT}
     links:
       - db
+    # NOTE: Gunicorn is default entrypoint via Dockerfile.
+    # Override to bash to allow for script commands to be run   
+    entrypoint:
+      - bash
+      - -c      
 
   web:
     build:
