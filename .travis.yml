@@ -12,10 +12,10 @@ install:
   - docker-compose -f docker-compose.yml -f docker-compose.travis.yml build
 
 script:
-  - docker-compose -f docker-compose.yml -f docker-compose.travis.yml run app "make quality"
-  - docker-compose -f docker-compose.yml -f docker-compose.travis.yml run app "make detect_missing_migrations"
-  - docker-compose -f docker-compose.yml -f docker-compose.travis.yml run app "make migrate"
-  - docker-compose -f docker-compose.yml -f docker-compose.travis.yml run app "make test"
+  - docker-compose -f docker-compose.yml -f docker-compose.travis.yml run api "make quality"
+  - docker-compose -f docker-compose.yml -f docker-compose.travis.yml run api "make detect_missing_migrations"
+  - docker-compose -f docker-compose.yml -f docker-compose.travis.yml run api "make migrate"
+  - docker-compose -f docker-compose.yml -f docker-compose.travis.yml run api "make test"
 
 after_success:
   - pip install -U codecov
