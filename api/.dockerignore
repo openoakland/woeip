@@ -8,3 +8,4 @@ Dockerfile
 pylintrc
 pytest.ini
 runtime.txt
+__pycache__/

@@ -5,54 +5,24 @@ services:
   api:
     build:
       context: ./api
-    ports:
-      - 8001
     container_name: woaq-api
     image: openoakland/woaq-api
-    restart: always
-    stdin_open: true
-    tty: true
-    volumes:
-      - ./api:/usr/src/app
-      - logs:/usr/src/app/logs
 
   web:
     build:
       context: ./web
     container_name: woaq-web
     image: openoakland/woaq-web
-    ports:
-      - 3000
-      - 3001:3001
-    volumes:
-      - ./web:/usr/src/app
-      - /usr/src/app/node_modules/
-      - /usr/src/app/build/
 
   dataviz:
     build:
       context: ./dataviz
     container_name: woaq-dataviz
     image: openoakland/woaq-dataviz
-    ports:
-      - 8000
-      - 5006:5006
-    volumes:
-      - ./dataviz:/workdir
-      - /workdir/examples
 
   db:
     container_name: woaq-db
     image: mdillon/postgis:11
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=woaq
-    volumes:
-      - postgres:/var/lib/postgresql/data
-    ports:
-      - 5432
-    restart: always
 
   proxy:
     build:
@@ -63,7 +33,3 @@ services:
       - 80:80
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
-
-volumes:
-  logs:
-  postgres:

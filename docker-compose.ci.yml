@@ -13,30 +13,25 @@ services:
       - DATABASE_URL=${DATABASE_URL}
       - DEFAULT_FILE_STORAGE=${DEFAULT_FILE_STORAGE}
       - VIRTUAL_HOST=${API_DOMAIN}
-      - VIRTUAL_PORT=${API_PORT}         
-    entrypoint:
-      - bash
-      - -c
+      - VIRTUAL_PORT=${API_PORT}
     links:
-      - db  
+      - db
+
+  web:
+    build:
+      dockerfile: Dockerfile.ci
+      args:
+        - NODE_ENV=production      
 
   db:
+    ports:
+      - 5432    
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=${POSTGRES_DB}
-    image: mdillon/postgis:11
-    volumes:
-      - postgres:/var/lib/postgresql/data
-    ports:
-      - 5432
-    restart: always
 
   proxy:
     build:
       args:
-        - CORS_DOMAIN=${API_DOMAIN}    
-
-volumes:
-  logs:
-  postgres:      
+        - API_DOMAIN=${API_DOMAIN}

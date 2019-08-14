@@ -9,19 +9,19 @@ python:
 cache: pip
 
 install:
-  - docker-compose -f docker-compose.yml -f docker-compose.travis.yml build
+  - docker-compose -f docker-compose.yml -f docker-compose.ci.yml build
 
 script:
-  - docker-compose -f docker-compose.yml -f docker-compose.travis.yml run api "make quality"
-  - docker-compose -f docker-compose.yml -f docker-compose.travis.yml run api "make detect_missing_migrations"
-  - docker-compose -f docker-compose.yml -f docker-compose.travis.yml run api "make migrate"
-  - docker-compose -f docker-compose.yml -f docker-compose.travis.yml run api "make test"
+  - docker-compose -f docker-compose.yml -f docker-compose.ci.yml run api "make quality"
+  - docker-compose -f docker-compose.yml -f docker-compose.ci.yml run api "make detect_missing_migrations"
+  - docker-compose -f docker-compose.yml -f docker-compose.ci.yml run api "make migrate"
+  - docker-compose -f docker-compose.yml -f docker-compose.ci.yml run api "make test"
 
 after_success:
   - pip install -U codecov
-  - docker-compose run api coverage xml
+  - docker-compose -f docker-compose.yml -f docker-compose.ci.yml run api "coverage xml"
   - codecov
 
 env:
   matrix:
-    secure: X7TwUDKbjesMbgWtit8XwTaWBkvL2+CMbIkNusBMTVnP+Rwg+xFFipotPfcvqRhC6UjqNcOEoZssuSL7bCFSV5DJprMuEgiQuEXdg/kbZtFeDQvRR+Xu96irr//73N45UfERYJguqYtKuYQtVasLf9EJVtwE1SPOrkABIbQFKid6w8kd520QB6+Nr6nZwL+/Pgbn/t1n7XsLQ52IA+G1dfb2c0a47N5hIyIzVIHy/7wya7BzoPn9j6SBIqIVj4Z1sshZCbrBqL/Za1sgviQboNuqS80gJImykLbBY7Ql02eAE9LRQ9yM20zqMBC5pM4Z+XD51GqMksLNaL8RMXbMiFL5b0SPIrWXgUedJqZa1aNM1g6D1FQ4ffCQ9AUhvXNh6/aPwE9aAVCIIFky+CgyIK/yHp2EwHJ3F7QhGsEwkuCK5Tm8bjEoLAnkVEgUWTR2eyTFWywd60bUINmFAXVD4oCYVELvDASLQsJ5aVFnWU8mHNgSlKToeg7pHR6AOK2KPpmZrk1KeVfYfodn0V7PRLsvgnBRZAd32djSY3nlK/D601ziKy/Fiv/bD8tuBrI4x3AufyNtngouYYpGw+idK8yxzJDxhNSsyYJRYyDf/A02t3JVpXz3XeHdF2Ji6qBtw7z5SkKfAx9hFUPxn+P2vE7DjlVs6IkFWhPY5ZaW1T4=
+    secure: tAFix+d0CPAU4k6u3XcAUpDys4VErQXjqSOWP+7UWwt1jbaB0iHbQCjoX93XY0yiFbIMurqIQ7Y6ok3ALnJZ0BA7bRrztnwPiJujZH8EauYWxDfaPVThgc+2iSfHmRBOUC04vy6u5PMpyQamAihBYGITeWDJp5K6ljkYwjh4sdobv+/bVxUW8s6x6DgRDJvlDRWDy7OGwDLWxJo+VfR+7VGBjCDiEaBAgUgX/bg2x4ZhMZw1np0X892rrTnjkd9OJ2N7qbqmad/F/M8D7AKDTaQwVzrSIC1dTyy9Z8/YKM2VYgmyB5Iwnz1tyAHrSOuFISsZgAZ0d1RVbY60mr+BnFmp6yYZ89A3e+UvN0duWh2yKeV+X2/Yy9rZVJX46oWbYNR3bu1p1C1951X8SN8J5109zEdPCi6up+dveGlCDxK4dnNGC6da9bZVU3Z7Lt5qr+A3xvc7Urk3v5/SBFMFsXQDMPlScSDuOnAZ3hdJlrMz3xKHPiLKT7qOBq5ATuDjDn6bxs51Lm7Nc5gn/IF01mrbjhEYB8NHV0o8QEcWr0azYr30RZz4rZYdIBAqqe7UXz4D0cODfK8kR1+r+L0UVxWKuZehi5mhLZrAM2ONGsTyZmIj80cPvdON5e2ahAwLzU+yFwdplH8HKOgzjmzPdU9lI8/2C+vyJiRVIOrJpjo=

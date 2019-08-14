@@ -1,0 +1,58 @@
+version: '3.3'
+
+services:
+
+  api:
+    build:
+      args:
+        - PYTHON_ENV=dev
+    env_file: ./api/.env
+    ports:
+      - 8001
+    volumes:
+      - ./api:/usr/src/app
+      - logs:/usr/src/app/logs
+    links:
+      - db
+    restart: always
+    stdin_open: true
+    tty: true
+
+  web:
+    env_file: ./web/.env
+    ports:
+      - 3000
+      - 3001:3001
+    volumes:
+      - ./web:/usr/src/app
+      - /usr/src/app/node_modules/
+      - /usr/src/app/build/
+
+  dataviz:
+    env_file: ./dataviz/.env
+    ports:
+      - 8000
+      - 5006:5006
+    volumes:
+      - ./dataviz:/workdir
+      - /workdir/examples
+
+  db:
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=woaq
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    ports:
+      - 5432
+    restart: always      
+
+  proxy:
+    build:
+      args:
+        - API_DOMAIN=api.lvh.me
+
+volumes:
+  logs:
+  postgres:        

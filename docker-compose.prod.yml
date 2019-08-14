@@ -1,16 +1,11 @@
 version: '3.3'
 
 services:
+
   api:
     build:
-      context: ./api
       args:
-        - PYTHON_ENV=prod
-    container_name: woaq-api
-    image: openoakland/woaq-api
-    restart: always
-    stdin_open: true
-    tty: true    
+        - PYTHON_ENV=${PYTHON_ENV}  
     ports:
       - ${API_PORT}
     environment:
@@ -20,20 +15,14 @@ services:
       - LETSENCRYPT_HOST=${API_DOMAIN}
       - VIRTUAL_HOST=${API_DOMAIN}
       - VIRTUAL_PORT=${API_PORT}      
-    volumes:
-      - ./api:/usr/src/app
-      - logs:/usr/src/app/logs
 
   web:
     build:
-      context: ./web
       dockerfile: Dockerfile.ci
       args:
         - NODE_ENV=production
     ports:
       - ${WEB_PORT}
-    container_name: woaq-web
-    image: openoakland/woaq-web
     environment:
       - NODE_ENV=production
       - LETSENCRYPT_HOST=${WEB_DOMAIN}
@@ -41,12 +30,8 @@ services:
       - VIRTUAL_PORT=${WEB_PORT}
 
   dataviz:
-    build:
-      context: ./dataviz
-    container_name: woaq-dataviz
-    image: openoakland/woaq-dataviz
     ports:
-      - ${PORT}
+      - ${DATAVIZ_PORT}
     environment:
       - DOCKER_USER=${DOCKER_USER}
       - DOCKER_PASSWORD=${DOCKER_PASSWORD}
@@ -56,12 +41,9 @@ services:
 
   proxy:
     build:
-      context: ./nginx-proxy
       args:
-        - CORS_DOMAIN=api.woaq.org
-    container_name: woaq-proxy
+        - API_DOMAIN=${API_DOMAIN}
     ports:
-     - 80:80
      - 443:443
     volumes:
       - '/etc/nginx/certs'
@@ -75,6 +57,3 @@ services:
       - '/var/run/docker.sock:/var/run/docker.sock:ro'
     environment:
       - "DEFAULT_EMAIL=${DEFAULT_EMAIL}"
-
-volumes:
-  logs:
