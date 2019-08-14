@@ -3,6 +3,7 @@ import datetime
 import io
 import itertools
 import warnings
+import re
 
 import numpy as np
 import pandas as pd
@@ -100,67 +101,71 @@ def degree_minute_to_decimal(degmin):
     return degrees + minutes / 60
 
 
-def load_dustrak(contents, tz):
+def load_dustrak(filepath, tz):
     """Load and condition data from a DusTrak raw data file
 
     Parameters
     ----------
-    contents : str
-        File contents as string
+    filepath : str
+        Dustrak csv file path
 
     Returns
     -------
-    A dict of header information and a pandas DataFrame of data
+    A dict of metadata information and a pandas DataFrame of measurement values
     """
-    contents = io.StringIO(contents)
 
-    header = {}
-    lines = itertools.takewhile(lambda x: x != '\r\n', contents)
-    for line in lines:
-        line = line.rstrip('\r\n')
-        key, value = line.split(',')
-        header[key] = value
+    with open(filepath) as file:
+        meta, values = re.split('\n\n', file.read())
 
-    data = pd.read_csv(contents)
+    metadata = {}
+    for row in meta.splitlines():
+        key, value = row.strip().split(',')
+        metadata[key] = value
+
+    data = pd.read_csv(io.StringIO(values))
 
     if data.columns[0] != 'Elapsed Time [s]':
         raise ValueError('First column must be elapsed time in seconds')
 
-    start_time = ' '.join([header['Test Start Date'],
-                           header['Test Start Time']])
+    start_time = ' '.join([metadata['Test Start Date'],
+                           metadata['Test Start Time']])
     start_time = datetime.datetime.strptime(start_time, '%m/%d/%Y %I:%M:%S %p')
 
     local_timezone = pytz.timezone(tz)
     start_time = local_timezone.localize(start_time)
     start_time = start_time.astimezone(pytz.timezone('UTC'))
 
-    sample_interval_minutes = header['Test Interval [M:S]'].split(':')[0]
+    sample_interval_minutes = metadata['Test Interval [M:S]'].split(':')[0]
     if sample_interval_minutes != '0':
         raise NotImplementedError('Minute sampling intervals not supported')
 
     sample_offsets = np.array(data['Elapsed Time [s]'], dtype='timedelta64[s]')
     sample_times = pd.Timestamp(start_time) + pd.to_timedelta(sample_offsets)
-    sample_times = sample_times.tz_localize('UTC')
 
     data['time'] = sample_times
     data.sort_values(by='time', inplace=True)
 
-    return header, data
+    return metadata, data
 
 
-def load_gps(contents):
+def load_gps(filepath):
     """Load and condition data from a GPS raw data file
 
     Parameters
     ----------
-    contents : str
+    filepath : str
+        GPS file path
 
     Returns
     -------
     A pandas DataFrame
     """
     gps = []
-    for sample in contents.split('\n'):
+
+    with open(filepath) as gps_file:
+        contents = gps_file.read()
+
+    for sample in contents.splitlines():
         if sample.startswith('$GPRMC'):
             gps_sample = parse_gps_sentence(sample)
             gps_dict = sentence_to_dict(gps_sample)

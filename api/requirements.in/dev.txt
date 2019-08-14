@@ -1,4 +1,4 @@
--r base.txt
+-r prod.txt
 astroid
 coverage
 django-debug-toolbar
