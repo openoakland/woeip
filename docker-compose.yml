@@ -10,7 +10,7 @@ services:
     # Instruct Gunicorn to reload code when it is changed locally.
     command: --reload
     ports:
-      - 8000
+      - 8001
     container_name: woaq-api
     image: openoakland/woaq-api
     restart: always
@@ -35,6 +35,20 @@ services:
       - /usr/src/app/node_modules/
       - /usr/src/app/build/
 
+  dataviz:
+    build:
+      context: ./dataviz
+    container_name: woaq-dataviz
+    image: openoakland/woaq-dataviz
+    env_file: ./dataviz/.env
+    command: holoviews --install-examples
+    ports:
+      - 8000
+      - 5006:5006
+    volumes:
+      - ./dataviz:/workdir
+      - /workdir/examples
+
   db:
     container_name: woaq-db
     image: mdillon/postgis:11
@@ -54,6 +68,7 @@ services:
       args:
         - CORS_DOMAIN=api.lvh.me
     container_name: woaq-proxy
+    image: openoakland/woaq-proxy
     ports:
       - 80:80
     volumes:

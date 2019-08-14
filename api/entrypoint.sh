@@ -13,6 +13,6 @@ echo Starting Gunicorn...
 gunicorn woeip.wsgi \
     --workers=2 \
     --worker-class=gevent \
-    --bind=0.0.0.0:8000 \
+    --bind=0.0.0.0:8001 \
     --worker-tmp-dir=/dev/shm \
     "$@"

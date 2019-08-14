@@ -17,7 +17,7 @@ Run the woaq infrastructure with [Docker Compose](https://docs.docker.com/compos
   docker-compose up -d --build
 ```
 
-Browse the client at [lvh.me](http://lvh.me) and ping the api at [api.lvh.me](http://api.lvh.me)
+Browse the client at [lvh.me](http://lvh.me), ping the api at [api.lvh.me](http://api.lvh.me) or explore data visualizations at [dataviz.lvh.me](http://dataviz.lvh.me)
 
 # Services
 
