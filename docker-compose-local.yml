@@ -6,6 +6,8 @@ services:
       args:
         - PYTHON_ENV=dev
     env_file: ./api/.env
+    links:
+      - db      
 
   web:
     env_file: ./web/.env

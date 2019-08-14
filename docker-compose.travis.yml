@@ -16,7 +16,9 @@ services:
       - VIRTUAL_PORT=${API_PORT}         
     entrypoint:
       - bash
-      - -c    
+      - -c
+    links:
+      - db  
 
   db:
     environment:
