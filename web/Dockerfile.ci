@@ -12,7 +12,7 @@ RUN npm ci
 
 COPY . ./
 
-npm run build
+RUN npm run build
 
 # ---------------------
 # STEP 2
