@@ -58,6 +58,7 @@ coverage.xml
 
 # Django stuff:
 *.log
+!woeip/apps/air_quality/tests/data/gps.log
 local_settings.py
 db.sqlite3
 

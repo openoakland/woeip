@@ -1,9 +1,8 @@
 #!/usr/bin/env python
 import datetime
 import io
-import itertools
-import warnings
 import re
+import warnings
 
 import numpy as np
 import pandas as pd

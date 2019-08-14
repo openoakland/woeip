@@ -1,5 +1,4 @@
 requirements.in
-.coveragerc
 .dockerignore
 .env
 .env.example
