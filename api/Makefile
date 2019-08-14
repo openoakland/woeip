@@ -18,7 +18,8 @@ test: clean ## Run tests and generate coverage report
 	coverage run -m pytest --durations=25 -v
 	coverage report -m
 
-coverage_xml: ## Run the coverage in xml format
+coverage: clean ## Run the coverage in xml format
+	coverage run -m pytest --durations=25 -v
 	coverage xml
 
 quality: ## Run pep8 and Pylint
