@@ -29,6 +29,10 @@ services:
       - /usr/src/app/build/
 
   dataviz:
+    build:
+      context: ./dataviz
+    container_name: woaq-dataviz
+    image: openoakland/woaq-dataviz
     env_file: ./dataviz/.env
     ports:
       - 8000

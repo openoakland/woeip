@@ -14,12 +14,6 @@ services:
     container_name: woaq-web
     image: openoakland/woaq-web
 
-  dataviz:
-    build:
-      context: ./dataviz
-    container_name: woaq-dataviz
-    image: openoakland/woaq-dataviz
-
   db:
     container_name: woaq-db
     image: mdillon/postgis:11
