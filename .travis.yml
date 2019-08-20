@@ -13,7 +13,8 @@ install:
   - pip install -U codecov
 
 script:
-  - docker-compose -f docker-compose.yml -f docker-compose.ci.yml run api "make coverage" && docker cp api:/.coverage .coverage
+  - docker-compose -f docker-compose.yml -f docker-compose.ci.yml run --name api api "make coverage"
+  - docker cp api:/.coverage .coverage
 
 after_success:
   - codecov -F api
