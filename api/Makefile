@@ -19,9 +19,7 @@ test: clean ## Run tests and generate coverage report
 	coverage run -m pytest --durations=25 -v
 	coverage report -m
 
-coverage: clean ## Run the coverage in xml format
-	coverage run -m pytest --durations=25 -v
-	coverage xml -o artifacts/coverage.xml
+coverage: quality detect_missing_migrations migrate test ## Run the coverage in xml format
 
 quality: ## Run pep8 and Pylint
 	isort --check-only --recursive woeip/

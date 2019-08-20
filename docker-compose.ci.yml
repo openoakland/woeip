@@ -19,8 +19,6 @@ services:
     # NOTE: Override entrypoint from gunicorn to bash so CI scripts can be run
     # Also wait for db to be ready before running scripts
     entrypoint: dockerize -wait tcp://db:5432 -timeout 1m bash -c
-    volumes:
-      - $PWD/artifacts:/artifacts
 
   web:
     build:
