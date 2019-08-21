@@ -14,7 +14,7 @@ install:
 
 script:
   - docker-compose -f docker-compose.yml -f docker-compose.ci.yml run --name api api "make coverage"
-  - docker cp api:/.coverage .coverage
+  - docker cp api:/usr/src/app/.coverage .coverage
 
 after_success:
   - codecov -F api
