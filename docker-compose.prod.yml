@@ -5,7 +5,7 @@ services:
   api:
     build:
       args:
-        - PYTHON_ENV=${PYTHON_ENV}  
+        - PYTHON_ENV=prod 
     ports:
       - ${API_PORT}
     environment:
