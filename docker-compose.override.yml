@@ -6,7 +6,14 @@ services:
     build:
       args:
         - PYTHON_ENV=dev
-    env_file: ./api/.env
+    environment:
+      VIRTUAL_HOST: api.lvh.me
+      VIRTUAL_PORT: 8001
+      SECRET_KEY: secret_key
+      DEBUG: true
+      DATABASE_URL: postgis://postgres:postgres@db:5432/woaq
+      ENABLE_LOGGING_TO_FILE: false
+      DEFAULT_FILE_STORAGE: django.core.files.storage.FileSystemStorage
     ports:
       - 8001
     volumes:
@@ -19,7 +26,10 @@ services:
     tty: true
 
   web:
-    env_file: ./web/.env
+    environment:
+      NODE_ENV: development
+      VIRTUAL_HOST: lvh.me
+      VIRTUAL_PORT: 3000
     ports:
       - 3000
       - 3001:3001
