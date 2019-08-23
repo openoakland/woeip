@@ -1,8 +1,0 @@
-.dockerignore
-.env
-.env.example
-.ipynb_checkpoints
-profile_default/
-ipython_config.py
-.gitignore
-Dockerfile

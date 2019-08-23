@@ -28,19 +28,6 @@ services:
       - /usr/src/app/node_modules/
       - /usr/src/app/build/
 
-  dataviz:
-    build:
-      context: ./dataviz
-    container_name: woaq-dataviz
-    image: openoakland/woaq-dataviz
-    env_file: ./dataviz/.env
-    ports:
-      - 8000
-      - 5006:5006
-    volumes:
-      - ./dataviz:/workdir
-      - /workdir/examples
-
   db:
     environment:
       - POSTGRES_USER=postgres

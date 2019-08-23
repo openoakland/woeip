@@ -17,7 +17,7 @@ Run the woaq infrastructure with [Docker Compose](https://docs.docker.com/compos
   docker-compose up -d --build
 ```
 
-Browse the client at [lvh.me](http://lvh.me), ping the api at [api.lvh.me](http://api.lvh.me) or explore data visualizations at [dataviz.lvh.me](http://dataviz.lvh.me)
+Browse the client at [lvh.me](http://lvh.me), ping the api at [api.lvh.me](http://api.lvh.me).
 
 # Services
 
@@ -25,8 +25,6 @@ Browse the client at [lvh.me](http://lvh.me), ping the api at [api.lvh.me](http:
  
 - woaq-web:
 [typescript](https://www.typescriptlang.org/), [react](https://reactjs.org/), [razzle](https://github.com/jaredpalmer/razzle), [zurb](https://react.foundation/)
-
-- woaq-dataviz: [holoviews](http://holoviews.org/), [jupyter](https://jupyter.org/)
 
 - woaq-api: [python](https://www.python.org/), [django-rest-framework](https://www.django-rest-framework.org/)
 

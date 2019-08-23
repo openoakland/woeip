@@ -27,16 +27,6 @@ services:
       - VIRTUAL_HOST=${WEB_DOMAIN}
       - VIRTUAL_PORT=${WEB_PORT}
 
-  dataviz:
-    ports:
-      - ${DATAVIZ_PORT}
-    environment:
-      - DOCKER_USER=${DOCKER_USER}
-      - DOCKER_PASSWORD=${DOCKER_PASSWORD}
-      - LETSENCRYPT_HOST=${DATAVIZ_DOMAIN}
-      - VIRTUAL_HOST=${DATAVIZ_DOMAIN}
-      - VIRTUAL_PORT=${DATAVIZ_PORT}
-
   proxy:
     build:
       args:

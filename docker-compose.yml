@@ -4,13 +4,13 @@ services:
 
   api:
     build:
-      context: ./api
+      context: api
     container_name: woaq-api
     image: openoakland/woaq-api
 
   web:
     build:
-      context: ./web
+      context: web
     container_name: woaq-web
     image: openoakland/woaq-web
 
@@ -20,7 +20,7 @@ services:
 
   proxy:
     build:
-      context: ./nginx-proxy
+      context: nginx-proxy
     container_name: woaq-proxy
     image: openoakland/woaq-proxy
     ports:
