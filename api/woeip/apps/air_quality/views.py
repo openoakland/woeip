@@ -4,9 +4,20 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, render
 from django.views import View
+from rest_framework import generics, viewsets
+from rest_framework.decorators import action
 
-from .forms import CollectionForm
-from .models import Collection
+from woeip.apps.air_quality.forms import CollectionForm
+from woeip.apps.air_quality.models import (
+    Collection,
+    Pollutant,
+    Sensor,
+)
+
+from woeip.apps.air_quality.serializers import (
+    PollutantSerializer,
+    SensorSerializer,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -39,3 +50,17 @@ class ViewCollection(View):
         return render(self.request, 'air_quality/view.html', {
             'collection_list': collection_list
         })
+
+
+class SensorViewSet(viewsets.ModelViewSet):
+    """API endpoint that allows users to be viewed or edited."""
+    queryset = Sensor.objects.all()
+    serializer_class = SensorSerializer
+
+    def get_queryset(self):
+        queryset = Sensor.objects.all()
+        sensor_name = self.request.query_params.get("name", None)
+        if sensor_name:
+            queryset = queryset.filter(name=sensor_name)
+
+        return queryset
