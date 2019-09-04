@@ -1,0 +1,11 @@
+.dockerignore
+.env
+.env.example
+.gitignore
+build
+coverage
+Dockerfile
+Dockerfile.ci
+env
+htmlcov
+node_modules

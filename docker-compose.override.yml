@@ -1,0 +1,59 @@
+version: '3.3'
+
+services:
+
+  api:
+    build:
+      args:
+        - PYTHON_ENV=dev
+    environment:
+      VIRTUAL_HOST: api.lvh.me
+      VIRTUAL_PORT: 8000
+      SECRET_KEY: secret_key
+      DEBUG: "True"
+      DATABASE_URL: postgis://postgres:postgres@db:5432/woaq
+      ENABLE_LOGGING_TO_FILE: "False"
+      DEFAULT_FILE_STORAGE: django.core.files.storage.FileSystemStorage
+    ports:
+      - 8000
+    volumes:
+      - ./api:/usr/src/app
+      - logs:/usr/src/app/logs
+    depends_on:
+      - db
+    restart: always
+    stdin_open: true
+    tty: true
+
+  web:
+    environment:
+      NODE_ENV: development
+      VIRTUAL_HOST: lvh.me
+      VIRTUAL_PORT: 3000
+    ports:
+      - 3000
+      - 3001:3001
+    volumes:
+      - ./web:/usr/src/app
+      - /usr/src/app/node_modules/
+      - /usr/src/app/build/
+
+  db:
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=woaq
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    ports:
+      - 5432
+    restart: always      
+
+  proxy:
+    build:
+      args:
+        - API_DOMAIN=api.lvh.me
+
+volumes:
+  logs:
+  postgres:        

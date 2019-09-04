@@ -9,38 +9,16 @@ python:
 cache: pip
 
 install:
-  - bash .travis/install_terraform.sh
-  - make docker.pull
-  - make docker.build
+  - docker-compose -f docker-compose.yml -f docker-compose.ci.yml build
+  - pip install -U codecov
 
 script:
-  - docker-compose -f docker-compose.yml -f docker-compose.travis.yml run app "make quality"
-  - docker-compose -f docker-compose.yml -f docker-compose.travis.yml run app "./wait-for-it.sh db:5432 -- make detect_missing_migrations"
-  - docker-compose -f docker-compose.yml -f docker-compose.travis.yml run app "./wait-for-it.sh db:5432 -- make migrate"
-  - docker-compose -f docker-compose.yml -f docker-compose.travis.yml run app "./wait-for-it.sh db:5432 -- make static"
-  - docker-compose -f docker-compose.yml -f docker-compose.travis.yml run app "./wait-for-it.sh db:5432 -- make test"
-  - make validate_terraform
+  - docker-compose -f docker-compose.yml -f docker-compose.ci.yml run --name api api "make coverage"
+  - docker cp api:/usr/src/app/.coverage .coverage
 
 after_success:
-  - pip install -U codecov
-  - docker exec -t woeip.app coverage xml
-  - codecov
+  - codecov -F api
 
-before_deploy:
-  - pip install -U awsebcli
-
-# TODO Follow steps at https://docs.travis-ci.com/user/environment-variables#encrypting-environment-variables
-# to define the following environment variables:
-# - DOCKER_USERNAME
-# - DOCKER_PASSWORD
-# - AWS_ACCESS_KEY_ID
-# - AWS_SECRET_ACCESS_KEY
-#deploy:
-#  - provider: script
-#    script: bash .travis/docker_push.sh
-#    on:
-#      branch: master
-#  - provider: script
-#    script: bash .travis/eb_deploy.sh
-#    on:
-#      branch: master
+env:
+  matrix:
+    secure: mZAQR7e2soDYDssJGbyN0JMvHnisG3g601VsRa2v/736r9Xi3mJ5KDGBvrt9j69iANduSc31zFjmM3Acg3o/Ss2H4KX3HTCMRM8Y3W3t3oHxvlly4E0K1IRQDNX8ags/N/hjI9JxK9YcWud7uamnlB8HG1w/ziDfX6UbCda5oLphn1B7zUFM2Ui+72r0i3Su9nY0ZWUPQdaBGtcdenjKqsUQXvY3vEoHeSBLrduPQ0OoLQNvhyBR3fDHM3q/zP+1iK0vphT+RJVktOAJWfRN1LukdgSg2DL9txBg1GcP6C23o+wMdjqsDd+DWOo2pREua7qk0cPTGhuxdaXSUJH8gT2dX9yaafCWFbZ5fInx5A2XmB6mJGBPAz+q6BGmvIu/YNEXQPF9dYJArrIuNn2c9KCorANM9AaDf8+tROFx/6f3uGmE+IoZYIzV42lm5KaI82ofVMh5JqilWLHf3TSPWfekzmSsWluUYGj5TynITo3fga1rpotWFfrfvtZHpxdp1zfCp5V1AWUJG4GJ13yDJ/iLUvGtgKeI+mLiUUcImDT27JITmZFmnG2yQHFO7bQJhpGj+QU6mwmAjDkCaBX8/ClqtOOI59S2xGbtGOeXGKxZLjknt4EGz1VVS9rdy7Bzb0nHNvme5vxmryZO5MUl4OGsHQGY0i4IMJfA3kkBH3o=

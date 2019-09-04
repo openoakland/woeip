@@ -1,0 +1,47 @@
+version: '3.3'
+
+services:
+
+  api:
+    build:
+      args:
+        - PYTHON_ENV=prod 
+    ports:
+      - ${API_PORT}
+    environment:
+      - SECRET_KEY=${SECRET_KEY}
+      - DATABASE_URL=${DATABASE_URL}
+      - DEFAULT_FILE_STORAGE=${DEFAULT_FILE_STORAGE}
+      - LETSENCRYPT_HOST=${API_DOMAIN}
+      - VIRTUAL_HOST=${API_DOMAIN}
+      - VIRTUAL_PORT=${API_PORT}      
+
+  web:
+    build:
+      dockerfile: Dockerfile.ci
+    ports:
+      - ${WEB_PORT}
+    environment:
+      - NODE_ENV=production
+      - LETSENCRYPT_HOST=${WEB_DOMAIN}
+      - VIRTUAL_HOST=${WEB_DOMAIN}
+      - VIRTUAL_PORT=${WEB_PORT}
+
+  proxy:
+    build:
+      args:
+        - API_DOMAIN=${API_DOMAIN}
+    ports:
+     - 443:443
+    volumes:
+      - '/etc/nginx/certs'
+      - '/etc/nginx/vhost.d'
+      - '/usr/share/nginx/html'
+      - '/var/run/docker.sock:/tmp/docker.sock:ro'
+
+  ssl:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock:ro'
+    environment:
+      - "DEFAULT_EMAIL=${DEFAULT_EMAIL}"

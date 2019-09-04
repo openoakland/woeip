@@ -7,3 +7,8 @@ coverage:
     project:
       default:
         target: 95
+
+flags:
+  api:  
+    paths:
+      - api/woeip      

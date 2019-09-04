@@ -1,0 +1,38 @@
+version: '3.3'
+
+services:
+
+  api:
+    build:
+      args:
+        - PYTHON_ENV=${PYTHON_ENV}
+    ports:
+      - ${API_PORT}
+    environment:
+      - SECRET_KEY=${SECRET_KEY}
+      - DATABASE_URL=${DATABASE_URL}
+      - DEFAULT_FILE_STORAGE=${DEFAULT_FILE_STORAGE}
+      - VIRTUAL_HOST=${API_DOMAIN}
+      - VIRTUAL_PORT=${API_PORT}
+    depends_on:
+      - db
+    # NOTE: Override entrypoint from gunicorn to bash so CI scripts can be run
+    # Also wait for db to be ready before running scripts
+    entrypoint: dockerize -wait tcp://db:5432 -timeout 1m bash -c
+
+  web:
+    build:
+      dockerfile: Dockerfile.ci
+
+  db:
+    ports:
+      - 5432    
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+
+  proxy:
+    build:
+      args:
+        - API_DOMAIN=${API_DOMAIN}

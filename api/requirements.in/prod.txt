@@ -1,0 +1,13 @@
+argon2-cffi
+django==2.1.11
+django-boto
+django-environ
+django-extensions
+django-model-utils
+django-storages
+gevent
+gunicorn==19.9.0
+numpy
+pandas
+psycopg2-binary
+pynmea2

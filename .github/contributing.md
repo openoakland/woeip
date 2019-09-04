@@ -1,16 +1,5 @@
 # Contributing
-Welcome to the WOAQ Contributing document!
-
-## Code of conduct
-Please review the Open Oakland [Code of Conduct](https://github.com/openoakland/woeip/tree/master/.github/code_of_conduct.md) and the [17 Principles of Environmental Justice](https://www.ejnet.org/ej/principles.html).
-
-
-## Additional documentation
-Please reach out in the #woaq Slack Channel or at an OpenOakland Hacknight to request access to any private documents
-- [Project Overview](https://bit.ly/WOAQoverview) for product roadmap and project history
-- [Trello Board](https://trello.com/b/EBnxZHmx/west-oakland-air-quality) for project management
-- [GitHub Issues](https://github.com/openoakland/woeip/issues) for code management
-- [Google Drive](https://drive.google.com/drive/folders/1XQ9ckXD4z3G6NWXcd2PO8GtK7zcucBfx) to preserve historical documents
+Welcome to the WOAQ Contributing document! Thanks for your desire to contribute to WOAQ. By participating in this project, you agree to abide by the Open Oakland [Code of Conduct](https://github.com/openoakland/woeip/blob/master/.github/code_of_conduct.md) and the [17 Principles of Environmental Justice](https://www.ejnet.org/ej/principles.html).
 
 ## Workflow
 These are general guidelines on the flow from design to implementation
@@ -23,84 +12,30 @@ These are general guidelines on the flow from design to implementation
    - Relevant wireframes attached to the GitHub Issue
 5. Github pull requests implement the code agreed upon in the GitHub issues
 
-## Code development
-Following the installation steps (including installing docker) takes around 20-35 minutes. 
-
-Make sure you have git installed ([view instructions](https://docs.gitlab.com/ee/gitlab-basics/start-using-git.html)). 
-
-Run the following code commands in the terminal on your computer. 
-Start by cloning this repository:
+# Development
+- Add a comment to any [open issue](https://github.com/openoakland/woeip/issues?utf8=%E2%9C%93&q=is%3Aopen++). Or;
+- Work on any open issue labelled MVP and Ready
 
 ```bash
-git clone https://github.com/openoakland/woeip.git
-```
-```bash
-cd woeip
-```
+  # 1. Clone and enter the repo
+  git clone https://github.com/openoakland/woeip.git
+  cd woeip
 
-### Running the site locally (Docker)
+  # 2. Instead of forking the repo, create a feature branch with your initials and a description, e.g. ty/add-index
+  git checkout -b ty/add-index
 
-We recommend running the site using our [Docker](https://www.docker.com/) setup. Docker allows full control of the software versions by running everything in containers, which you can think of as virtual machines isolated from your host machine. You can quickly get up and running with the included configuration. First, build the Docker container:
+  # 3. Build and spin up the docker services
+  docker-compose up -d --build
 
-```bash
-make docker.build
-```
+  # 4. Add your changes
 
-Start the containers that run the web app and server services:
+  # 5. Run tests as described below
 
-```bash
-make local.up
+  # 6. Create a pull request 
 ```
 
-When running the service with this command, it will be configured to run using the code on your local machine, rather than the code built in the previous step. Additionally, the [gunicorn](https://gunicorn.org/) application server has been configured to automatically reload when code is changed locally.
-
-Enter the web app container (`app`). The shell prompt changes indicating subsequent commands will run in the container:
-
-```bash
-make local.shell
-```
-
-Create a Django superuser:
-
-```
-root@<container ID>:/app/woeip#	./manage.py createsuperuser 
-```
-Enter a username, password and email. These are for logging into the django admin. 
-
-Then go to 0.0.0.0:8080 on your web browser. 
-
-Login using the username and password created earlier. Put in the username you created for the email. 
-
-Exit the container by pressing `ctrl-d`.
-
-### Running the site locally (host machine)
-
-If you would prefer not to use Docker, you also be run the project directly on your machine using [pipenv](https://pipenv.readthedocs.io/en/latest/). If you develop in this manner, you will be responsible for (a) installing ``pipenv`` and (b) configuring PostgreSQL.
-
-1. Install the requirements:
-
-```bash
-make requirements
-```
-
-2. Start Django:
-
-```bash
-DEBUG=true SECRET_KEY=replace-me DATABASE_URL=psql://<db-user>:<db-password>@<db-host>:<db-port>/<db-name> python manage.py runserver
-```
-
-### Forks and branches
-Developers generally work on the original OpenOakland WOEIP repository, rather than creating personal forks.
-
-Some developers identify their branches with a personal code, followed by a slash, and then the branch name. This practice is encouraged but not enforced.
-- ie) [initials of developer]/[branch name] 
-- ex) ty/add-index
-
-### Repository permissions
-Write permissions can be requested by contacting the development team at an OpenOakland hack night. Contributors without a code review, discussion in an issue, or commit in past 60 days will have their write permissions rescinded.
-
-
-### Issues
+## Issues
+---------------
 Issues are the primary means of coordinating code implementation. We use issue comments to explicitly document implementation discussions and decision-making. This allows us to vet our individual assumptions, clarify a shared mental model of the code, outline pseudo-code and other solutions, and pair program. It also documents the design process for future developers. [More Context](https://medium.com/@copyconstruct/effective-mental-models-for-code-and-systems-7c55918f1b3e) <br>
 Issues will have one of four status labels:
 1. `backlog`: The feature is not currently needed or its application is not fully defined
@@ -117,23 +52,26 @@ Status and bug labels are mandatory. Other labels are optional.<br>
 Developers looking to make code contributions should assign `ready` issues to themselves and change the label to `implementing`.
 
 
-### Pull requests
+## Pull requests
+---------------
 A pull request should simply implement a solution that was already established in an issue, rather than include discussions on how to implement the project design. To the maximum extent possible, it should address only one bug or feature. Limiting the scope of pull requests simplifies the review process and accelerates development.
 
-Pull requests must pass the Travis checks before merging into the `master` branch. These checks are a linting check and code tests. They can be accomplished locally by entering the project shell (`make local.shell`) and running them separately (`make quality` and `make test`) or together (`make validate`). Please pass these checks locally, before making a pull request. Other contributors will gladly help with any tests you are struggling to pass.
+Pull requests must pass the Travis checks before merging into the `master` branch. These checks are a linting check and code tests. They can be accomplished by running the testing script listed below. Please pass these checks locally, before making a pull request. Other contributors will gladly help with any tests you are struggling to pass.
 
 Only one approving review is required to merge into the `master` branch. However, please leave the pull request open for at least **36 hrs**. As a volunteer project, contributors may not be able to immediately make comments. Adding a slight delay allows for multiple reviewers to provide input. However, this is a soft rule. It is not meant to be applied so rigidly applied that it creates unnecessary delays and inefficient code development.
 
 Once the Travis checks are passing, any requested code changes are resolved, and **36 hours** have passed, the developer who opened the pull request should merge their own code.
 
-### Style guidelines
+## Style guidelines
+---------------
 Please follow these guidelines during development:
 - [PEP 8](https://www.python.org/dev/peps/pep-0008/) enforced by [pylint]
 - Docstrings in [Numpy Stlye](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_numpy.html#example-numpy)
 - [Django Templating](https://oncampus.oberlin.edu/webteam/2012/09/architecture-django-templates)
 - Visual/CSS styling: [Foundation 6 Global Styles](https://foundation.zurb.com/sites/docs/global.html)
 
-### Testing
+## Testing
+---------------
 As the codebase develops, robust testing techniques ensure code integrity. With each new feature, we design and implement
 appropriate tests.
 
@@ -142,7 +80,13 @@ Testing resources include:
 - [Python Faker](https://faker.readthedocs.io/en/master/)
 - [Pytest](https://docs.pytest.org/en/latest/)
 
+```bash
+  # Run migrations, run style and linting quality checks, run tests
+  docker-compose exec api /bin/bash "make validate"
+```
+
 ### Reporting bugs and security concerns
+---------------
 - Please [open an issue](https://github.com/openoakland/woeip/issues/new?assignees=&labels=&template=bug_report.md&title=) to report any bugs.<br>
 - To report or discuss a security concern,
 please send an email to the WOAQ team at:

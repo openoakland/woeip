@@ -1,0 +1,8 @@
+requirements.in
+.dockerignore
+.env
+.env.example
+.gitignore
+Dockerfile
+runtime.txt
+__pycache__/
