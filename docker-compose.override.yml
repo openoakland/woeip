@@ -10,9 +10,9 @@ services:
       VIRTUAL_HOST: api.lvh.me
       VIRTUAL_PORT: 8000
       SECRET_KEY: secret_key
-      DEBUG: true
+      DEBUG: "True"
       DATABASE_URL: postgis://postgres:postgres@db:5432/woaq
-      ENABLE_LOGGING_TO_FILE: false
+      ENABLE_LOGGING_TO_FILE: "False"
       DEFAULT_FILE_STORAGE: django.core.files.storage.FileSystemStorage
     ports:
       - 8000
