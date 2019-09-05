@@ -2,6 +2,7 @@
   "editor.formatOnSave": true,
   "editor.formatOnPaste": true,
   "editor.codeActionsOnSave": {
-    "source.fixAll.tslint": true
+    "source.organizeImports": true,
+    "source.fixAll": true
   }
 }
