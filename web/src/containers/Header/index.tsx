@@ -7,7 +7,7 @@ const StyledContainer = styled(Container)`
   display: flex !important;
   justify-content: space-between;
   align-items: center;
-  padding-top: 16px;
+  padding-top: 32px;
 `
 
 const menuItems = [
@@ -43,6 +43,10 @@ interface State {
 
 class Header extends React.Component<Props> {
   public static displayName = 'Header'
+
+  public static defaultProps = {
+    loggedIn: false
+  }
 
   public readonly state: State = {
     activeItem: 'Sign In'

@@ -1,9 +1,8 @@
+import App from 'components/App'
 import express from 'express'
 import React from 'react'
 import { renderToString } from 'react-dom/server'
 import { StaticRouter } from 'react-router-dom'
-
-import App from 'components/App'
 
 let assets: any
 
@@ -28,7 +27,7 @@ const server = express()
     <head>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta charSet='utf-8' />
-        <title>Razzle TypeScript</title>
+        <title>West Oakland Air Quality Project</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         ${
           assets.client.css

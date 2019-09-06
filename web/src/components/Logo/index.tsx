@@ -2,7 +2,6 @@ import styled from '@emotion/styled'
 import React from 'react'
 
 const LogoContainer = styled.div`
-  font-family: Open Sans;
   font-style: normal;
   font-weight: 600;
   font-size: 32px;
