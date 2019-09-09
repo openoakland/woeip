@@ -31,9 +31,15 @@ class SensorSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class CalibrationSerializer(serializers.HyperlinkedModelSerializer):
+    user = serializers.HyperlinkedRelatedField(
+        many=False,
+        read_only=True,
+        view_name="user-detail",
+    )
+
     class Meta:
         model = Calibration
-        fields = ["calibrated_at"]
+        fields = ["calibrated_at", "user"]
 
 
 class CollectionSerializer(serializers.HyperlinkedModelSerializer):

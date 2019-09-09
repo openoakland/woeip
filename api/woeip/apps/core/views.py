@@ -2,7 +2,12 @@ from django.db import DatabaseError, connection
 from django.http import JsonResponse
 from django.utils import timezone
 
+from rest_framework import generics, viewsets
+from rest_framework.decorators import action
+
 from .constants import Status
+from woeip.apps.core import models, serializers
+
 
 
 def health(_):
@@ -32,3 +37,14 @@ def health(_):
 
     status = 200 if overall_status == Status.OK else 503
     return JsonResponse(data, status=status)
+
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = models.User.objects.all()
+    serializer_class = serializers.UserSerializer
+
+    def get_queryset(self):
+        queryset = models.User.objects.all()
+
+        return queryset

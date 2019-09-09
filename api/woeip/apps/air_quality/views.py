@@ -8,16 +8,7 @@ from rest_framework import generics, viewsets
 from rest_framework.decorators import action
 
 from woeip.apps.air_quality.forms import CollectionForm
-from woeip.apps.air_quality.models import (
-    Collection,
-    Pollutant,
-    Sensor,
-)
-
-from woeip.apps.air_quality.serializers import (
-    PollutantSerializer,
-    SensorSerializer,
-)
+from woeip.apps.air_quality import models, serializers
 
 logger = logging.getLogger(__name__)
 
@@ -46,21 +37,47 @@ class Upload(LoginRequiredMixin, View):
 class ViewCollection(View):
     """Provide temporary development page to view all uploaded SessionDatas."""
     def get(self, request):
-        collection_list = Collection.objects.all()
+        collection_list = models.Collection.objects.all()
         return render(self.request, 'air_quality/view.html', {
             'collection_list': collection_list
         })
 
 
-class SensorViewSet(viewsets.ModelViewSet):
-    """API endpoint that allows users to be viewed or edited."""
-    queryset = Sensor.objects.all()
-    serializer_class = SensorSerializer
+class DeviceViewSet(viewsets.ModelViewSet):
+    queryset = models.Device.objects.all()
+    serializer_class = serializers.DeviceSerializer
 
     def get_queryset(self):
-        queryset = Sensor.objects.all()
+        queryset = models.Device.objects.all()
+        device_name = self.request.query_params.get("name", None)
+        if device_name:
+            queryset = queryset.filter(name=device_name)
+
+        serial = self.request.query_params.get("serial", None)
+        if serial:
+            queryset = queryset.filter(serial=serial)
+
+        return queryset
+
+
+class SensorViewSet(viewsets.ModelViewSet):
+    queryset = models.Sensor.objects.all()
+    serializer_class = serializers.SensorSerializer
+
+    def get_queryset(self):
+        queryset = models.Sensor.objects.all()
         sensor_name = self.request.query_params.get("name", None)
         if sensor_name:
             queryset = queryset.filter(name=sensor_name)
+
+        return queryset
+
+
+class CalibrationViewSet(viewsets.ModelViewSet):
+    queryset = models.Calibration.objects.all()
+    serializer_class = serializers.CalibrationSerializer
+
+    def get_queryset(self):
+        queryset = models.Calibration.objects.all()
 
         return queryset
