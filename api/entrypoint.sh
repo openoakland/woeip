@@ -15,4 +15,5 @@ gunicorn woeip.wsgi \
     --worker-class=gevent \
     --bind=0.0.0.0:8000 \
     --worker-tmp-dir=/dev/shm \
+    --reload
     "$@"
