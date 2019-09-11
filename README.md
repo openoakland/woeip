@@ -41,7 +41,7 @@ Browse the client at [lvh.me](http://lvh.me), ping the api at [api.lvh.me](http:
 
 - woaq-db: [postgis](https://postgis.net/)
 
-# Contributing
+## Contributing workflow and guidelines
 
 See the [Contributing](https://github.com/openoakland/woeip/blob/master/.github/contributing.md) section.
 
