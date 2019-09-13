@@ -5,9 +5,20 @@ West Oakland Air Quality (WOAQ) is a project of [OpenOakland](https://www.openoa
 
 WOAQ partners with [West Oakland Environmental Indicators Project](https://www.woeip.org) (WOEIP), a community-based environmental justice organization that has been collecting air quality data for over a decade. WOEIP is dedicated to achieving healthy homes, healthy jobs and healthy neighborhoods for all who live, work, learn and play in West Oakland, California.
 
-To learn more about the history of WOEIP, the roadmap for this project and more, check out the [About](https://github.com/openoakland/woeip/blob/master/.github/about.md) section.
+# Readme contents
 
-# Quickstart
+- [Code of conduct and values](#code-of-conduct-and-values)
+- [Quickstart for developers](#quickstart-for-developers)
+- [Contributing as a non-developer](#contributing-as-a-non-developer)
+- [Project documentation](#project-documentation)
+- [Contact](#contact)
+- [License](#license)
+
+# Code of conduct and values
+
+To participate in this project, we ask you to abide by the OpenOakland [Code of Conduct](https://github.com/openoakland/woeip/blob/master/.github/code_of_conduct.md), and honor the [17 Principles of Environmental Justice](https://www.ejnet.org/ej/principles.html).
+
+# Quickstart for developers
 
 Run the woaq infrastructure with [Docker Compose](https://docs.docker.com/compose/)
 
@@ -19,7 +30,7 @@ Run the woaq infrastructure with [Docker Compose](https://docs.docker.com/compos
 
 Browse the client at [lvh.me](http://lvh.me), ping the api at [api.lvh.me](http://api.lvh.me).
 
-# Services
+## Services
 
 - woaq-proxy: [nginx-proxy](https://github.com/jwilder/nginx-proxy), [ssl-autogen](https://github.com/JrCs/docker-letsencrypt-nginx-proxy-companion)
  
@@ -30,10 +41,31 @@ Browse the client at [lvh.me](http://lvh.me), ping the api at [api.lvh.me](http:
 
 - woaq-db: [postgis](https://postgis.net/)
 
-# Contributing
+## Contributing workflow and guidelines
 
 See the [Contributing](https://github.com/openoakland/woeip/blob/master/.github/contributing.md) section.
 
+
+# Contributing as a non-developer
+
+## Design & research options
+---------------
+We use [Trello](https://trello.com/b/EBnxZHmx/west-oakland-air-quality) for project management:
+- [ ] Review and add a comment to any light blue “Design & Research” card currently sitting in the [In QA](https://trello.com/b/EBnxZHmx/west-oakland-air-quality) column. Or;
+- [ ] Grab any card tagged with the light blue “Design & Research” label in the [Ready to Work On](https://trello.com/b/EBnxZHmx/west-oakland-air-quality) column and get started. 
+
+## Data science/analysis options
+---------------
+We use [Trello](https://trello.com/b/EBnxZHmx/west-oakland-air-quality) to document and discuss data decisions:
+- [ ] Review and add a comment to any yellow “Data Q” card currently sitting in the [Qs About Data Analysis](https://trello.com/b/EBnxZHmx/west-oakland-air-quality) column. Or;
+- [ ] Add a new yellow “Data Q” card to the [Qs About Data Analysis](https://trello.com/b/EBnxZHmx/west-oakland-air-quality) column for any new questions you think of that might be important to answer. 
+
+# Project documentation
+---------------
+- [Project Overview](https://drive.google.com/open?id=1nMpRN8zOn-Sq9ocrVcOY0HZI2JnL5R7wEKje_YgVwRk)
+- [Product Requirements](https://docs.google.com/document/d/1j-R9CQt6dnBwGTDSExlIN68vCmtqXtPMpH2fP5cYSOo/edit?usp=sharing)
+- [Design Research Plan](https://drive.google.com/open?id=1Es6k_gOF0qDgkdEJzhj_3ZBMEkRsVg3ecsRSCqThURs)
+- [Accessibility Guidelines](https://drive.google.com/open?id=1CKf6g1nd_pxdAKHI-9gbqEGoKWdSAW1PrpC1FTiXEUk)
 
 # Contact
 
