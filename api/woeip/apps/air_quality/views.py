@@ -28,15 +28,9 @@ class CollectionViewSet(viewsets.ModelViewSet):
     queryset = models.Collection.objects.all()
     serializer_class = serializers.CollectionSerializer
 
-    def get_queryset(self):
-        queryset = models.Collection.objects.all()
-
-        return queryset
-
     @action(detail=True, methods=["GET"])
     def geo(self, request, pk=None):
-        queryset = models.Collection.objects.all()
-        collection = get_object_or_404(queryset, pk=pk)
+        collection = get_object_or_404(self.queryset, pk=pk)
         pollutant_values = models.PollutantValue.objects.filter(
             collection_file__collection=collection,
         )
