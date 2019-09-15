@@ -1,14 +1,25 @@
 """Model factories for tests"""
+from django.contrib.gis.geos import Point
 import factory
+import factory.fuzzy
 import pytz
+import random
 
-from woeip.apps.air_quality.models import Calibration, Collection, CollectionFile, Device, Pollutant, Sensor
+from woeip.apps.air_quality import models
 from woeip.apps.core.tests.factories import UserFactory
+
+
+class FuzzyPoint(factory.fuzzy.BaseFuzzyAttribute):
+    def fuzz(self):
+        return Point(
+            random.random() * 180 - 90,
+            random.random() * 360 - 180
+        )
 
 
 class DeviceFactory(factory.DjangoModelFactory):
     class Meta:
-        model = Device
+        model = models.Device
 
     name = factory.Faker('sentence', nb_words=3)
     serial = factory.Faker('pystr', max_chars=10)
@@ -17,14 +28,15 @@ class DeviceFactory(factory.DjangoModelFactory):
 
 class PollutantFactory(factory.DjangoModelFactory):
     class Meta:
-        model = Pollutant
-    name = factory.Faker('pystr', max_chars=255)
+        model = models.Pollutant
+
+    name = factory.Faker('pystr', max_chars=64)
     description = factory.Faker('sentence', nb_words=3)
 
 
 class SensorFactory(factory.DjangoModelFactory):
     class Meta:
-        model = Sensor
+        model = models.Sensor
 
     name = factory.Faker('sentence', nb_words=3)
     device = factory.SubFactory(DeviceFactory)
@@ -34,7 +46,7 @@ class SensorFactory(factory.DjangoModelFactory):
 
 class CalibrationFactory(factory.DjangoModelFactory):
     class Meta:
-        model = Calibration
+        model = models.Calibration
     sensor = factory.SubFactory(SensorFactory)
     user = factory.SubFactory(UserFactory)
     calibrated_at = factory.Faker('past_datetime', tzinfo=pytz.utc)
@@ -42,7 +54,7 @@ class CalibrationFactory(factory.DjangoModelFactory):
 
 class CollectionFactory(factory.DjangoModelFactory):
     class Meta:
-        model = Collection
+        model = models.Collection
 
     starts_at = factory.Faker('past_datetime', tzinfo=pytz.utc)
     ends_at = factory.Faker('past_datetime', tzinfo=pytz.utc)
@@ -50,7 +62,7 @@ class CollectionFactory(factory.DjangoModelFactory):
 
 class CollectionFileFactory(factory.DjangoModelFactory):
     class Meta:
-        model = CollectionFile
+        model = models.CollectionFile
 
     collection = factory.SubFactory(CollectionFactory)
     sensor = factory.SubFactory(SensorFactory)
@@ -59,3 +71,22 @@ class CollectionFileFactory(factory.DjangoModelFactory):
     uploaded_at = factory.Faker('past_datetime', tzinfo=pytz.utc)
     processor_version = factory.Faker('pyint')
     processed_at = factory.Faker('past_datetime', tzinfo=pytz.utc)
+
+
+class TimeGeoFactory(factory.DjangoModelFactory):
+    class Meta:
+        model = models.TimeGeo
+
+    collection_file = factory.SubFactory(CollectionFileFactory)
+    location = FuzzyPoint()
+    time = factory.Faker('past_datetime', tzinfo=pytz.utc)
+
+
+class PollutantValueFactory(factory.DjangoModelFactory):
+    class Meta:
+        model = models.PollutantValue
+
+    collection_file = factory.SubFactory(CollectionFileFactory)
+    time_geo = factory.SubFactory(TimeGeoFactory)
+    pollutant = factory.SubFactory(PollutantFactory)
+    value = factory.Faker("pyfloat")

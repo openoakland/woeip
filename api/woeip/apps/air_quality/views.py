@@ -2,10 +2,11 @@ import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.views import View
 from rest_framework import generics, viewsets
 from rest_framework.decorators import action
+from rest_framework.response import Response
 
 from woeip.apps.air_quality.forms import CollectionForm
 from woeip.apps.air_quality import models, serializers
@@ -13,34 +14,47 @@ from woeip.apps.air_quality import models, serializers
 logger = logging.getLogger(__name__)
 
 
-class Upload(LoginRequiredMixin, View):
-    def get(self, request):
-        """Present file upload form to user"""
-        return render(self.request, 'air_quality/upload.html', {
-            'form': CollectionForm
-        })
+class CalibrationViewSet(viewsets.ModelViewSet):
+    queryset = models.Calibration.objects.all()
+    serializer_class = serializers.CalibrationSerializer
 
-    def post(self, request):
-        """Save files to SessionData table"""
-        files = self.request.FILES
-        form = CollectionForm(self.request.POST, files)
-        if form.is_valid():
-            form.save()
-            return redirect('view')
-        else:
-            messages.add_message(self.request, messages.ERROR, 'File upload error')
-            return render(self.request, 'air_quality/upload.html', {
-                'form': CollectionForm
-            })
+    def get_queryset(self):
+        queryset = models.Calibration.objects.all()
+
+        return queryset
 
 
-class ViewCollection(View):
-    """Provide temporary development page to view all uploaded SessionDatas."""
-    def get(self, request):
-        collection_list = models.Collection.objects.all()
-        return render(self.request, 'air_quality/view.html', {
-            'collection_list': collection_list
-        })
+class CollectionViewSet(viewsets.ModelViewSet):
+    queryset = models.Collection.objects.all()
+    serializer_class = serializers.CollectionSerializer
+
+    def get_queryset(self):
+        queryset = models.Collection.objects.all()
+
+        return queryset
+
+    @action(detail=True, methods=["GET"])
+    def geo(self, request, pk=None):
+        queryset = models.Collection.objects.all()
+        collection = get_object_or_404(queryset, pk=pk)
+        pollutant_values = models.PollutantValue.objects.filter(
+            collection_file__collection=collection,
+        )
+        serializer = serializers.CollectionGeoSerializer(
+            {"pollutant_values": pollutant_values},
+        )
+
+        return Response(serializer.data)
+
+
+class CollectionFileViewSet(viewsets.ModelViewSet):
+    queryset = models.CollectionFile.objects.all()
+    serializer_class = serializers.CollectionFileSerializer
+
+    def get_queryset(self):
+        queryset = models.CollectionFile.objects.all()
+
+        return queryset
 
 
 class DeviceViewSet(viewsets.ModelViewSet):
@@ -60,6 +74,16 @@ class DeviceViewSet(viewsets.ModelViewSet):
         return queryset
 
 
+class PollutantViewSet(viewsets.ModelViewSet):
+    queryset = models.Pollutant.objects.all()
+    serializer_class = serializers.PollutantSerializer
+
+
+class PollutantValueViewSet(viewsets.ModelViewSet):
+    queryset = models.PollutantValue.objects.all()
+    serializer_class = serializers.PollutantValueSerializer
+
+
 class SensorViewSet(viewsets.ModelViewSet):
     queryset = models.Sensor.objects.all()
     serializer_class = serializers.SensorSerializer
@@ -73,11 +97,6 @@ class SensorViewSet(viewsets.ModelViewSet):
         return queryset
 
 
-class CalibrationViewSet(viewsets.ModelViewSet):
-    queryset = models.Calibration.objects.all()
-    serializer_class = serializers.CalibrationSerializer
-
-    def get_queryset(self):
-        queryset = models.Calibration.objects.all()
-
-        return queryset
+class TimeGeoViewSet(viewsets.ModelViewSet):
+    queryset = models.TimeGeo.objects.all()
+    serializer_class = serializers.TimeGeoSerializer
