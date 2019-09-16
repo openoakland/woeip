@@ -8,30 +8,18 @@ from woeip.apps.air_quality.models import (
     TimeGeo,
     PollutantValue,
 )
+from woeip.apps.core.serializers import UserSerializer
 
 from rest_framework import serializers
 
 
 class CalibrationSerializer(serializers.HyperlinkedModelSerializer):
-    user = serializers.HyperlinkedRelatedField(
-        many=False,
-        read_only=True,
-        view_name="user-detail",
-    )
-
     class Meta:
         model = Calibration
-        fields = ["calibrated_at", "user"]
+        fields = ["sensor", "user", "calibrated_at"]
 
 
 class CollectionFileSerializer(serializers.ModelSerializer):
-    collection = serializers.HyperlinkedRelatedField(
-        read_only=True,
-        view_name="collection-detail",
-    )
-    sensor = serializers.StringRelatedField()
-    user = serializers.StringRelatedField()
-
     class Meta:
         model = CollectionFile
         fields = [
@@ -79,7 +67,7 @@ class CollectionGeoSerializer(serializers.Serializer):
 class SensorSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Sensor
-        fields = ["name", "unit"]
+        fields = ["name", "device", "pollutant", "unit"]
 
 
 class TimeGeoSerializer(serializers.HyperlinkedModelSerializer):
