@@ -1,14 +1,7 @@
 from django.contrib import admin
 
 from woeip.apps.air_quality.models import (
-    Calibration,
-    Collection,
-    CollectionFile,
-    Device,
-    Pollutant,
-    PollutantValue,
-    Sensor,
-    TimeGeo,
+    Calibration, Collection, CollectionFile, Device, Pollutant, PollutantValue, Sensor, TimeGeo
 )
 
 admin.site.register(Calibration)

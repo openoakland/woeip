@@ -1,13 +1,12 @@
 from django.db import DatabaseError, connection
 from django.http import JsonResponse
 from django.utils import timezone
-
 from rest_framework import generics, viewsets
 from rest_framework.decorators import action
 
-from .constants import Status
 from woeip.apps.core import models, serializers
 
+from .constants import Status
 
 
 def health(_):

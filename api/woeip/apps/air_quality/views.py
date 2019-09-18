@@ -2,14 +2,14 @@ import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import redirect, render, get_object_or_404
+from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
 from rest_framework import generics, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from woeip.apps.air_quality.forms import CollectionForm
 from woeip.apps.air_quality import models, serializers
+from woeip.apps.air_quality.forms import CollectionForm
 
 logger = logging.getLogger(__name__)
 

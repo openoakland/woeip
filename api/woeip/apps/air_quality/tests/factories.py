@@ -1,9 +1,10 @@
 """Model factories for tests"""
-from django.contrib.gis.geos import Point
+import random
+
 import factory
 import factory.fuzzy
 import pytz
-import random
+from django.contrib.gis.geos import Point
 
 from woeip.apps.air_quality import models
 from woeip.apps.core.tests.factories import UserFactory

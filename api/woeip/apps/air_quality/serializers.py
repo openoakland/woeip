@@ -1,16 +1,9 @@
+from rest_framework import serializers
+
 from woeip.apps.air_quality.models import (
-    Device,
-    Pollutant,
-    Sensor,
-    Calibration,
-    Collection,
-    CollectionFile,
-    TimeGeo,
-    PollutantValue,
+    Calibration, Collection, CollectionFile, Device, Pollutant, PollutantValue, Sensor, TimeGeo
 )
 from woeip.apps.core.serializers import UserSerializer
-
-from rest_framework import serializers
 
 
 class CalibrationSerializer(serializers.HyperlinkedModelSerializer):
