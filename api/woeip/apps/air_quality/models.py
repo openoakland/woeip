@@ -64,7 +64,6 @@ class Collection(models.Model):
     """
     starts_at = models.DateTimeField()
     ends_at = models.DateTimeField()
-    route = models.CharField(max_length=256, null=True)
 
     @property
     def counter(self):
