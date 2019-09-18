@@ -4,5 +4,4 @@ coverage
 django-debug-toolbar
 factory-boy
 mypy
-pre-commit
 pytest-django

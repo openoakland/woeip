@@ -24,9 +24,7 @@ gevent==1.4.0
 greenlet==0.4.15          # via gevent
 gunicorn==19.9.0
 importlib-metadata==0.18  # via pluggy, pytest
-isort==4.3.21
 lazy-object-proxy==1.4.1  # via astroid
-mccabe==0.6.1             # via pylint
 more-itertools==7.1.0     # via pytest
 mypy-extensions==0.4.1    # via mypy
 mypy==0.720
@@ -36,11 +34,7 @@ pandas==0.24.2
 pluggy==0.12.0            # via pytest
 psycopg2-binary==2.8.3
 py==1.8.0                 # via pytest
-pycodestyle==2.5.0
 pycparser==2.19           # via cffi
-pylint-django==2.0.11
-pylint-plugin-utils==0.5  # via pylint-django
-pylint==2.3.1
 pynmea2==1.15.0
 pyparsing==2.4.0          # via packaging
 pytest-django==3.5.1
