@@ -1,5 +1,5 @@
 West Oakland Air Quality Project (WOAQ) [![TravisCI](https://travis-ci.org/openoakland/woeip.svg?branch=master)](https://travis-ci.org/openoakland/woeip) [![Codecov](https://codecov.io/gh/openoakland/woeip/branch/master/graph/badge.svg)](https://codecov.io/gh/openoakland/woeip)
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://git
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
 ===========================================================================
 
 West Oakland Air Quality (WOAQ) is a project of [OpenOakland](https://www.openoakland.org/) focused on building digital advocacy tools around air quality data collected by volunteers and citizen scientists.
