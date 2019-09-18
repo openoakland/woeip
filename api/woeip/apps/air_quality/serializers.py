@@ -61,6 +61,7 @@ class CollectionSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class CollectionGeoSerializer(serializers.Serializer):
+    metadata = CollectionSerializer()
     pollutant_values = serializers.ListField(child=PollutantValueSerializer())
 
 

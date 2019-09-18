@@ -35,7 +35,11 @@ class CollectionViewSet(viewsets.ModelViewSet):
             collection_file__collection=collection,
         )
         serializer = serializers.CollectionGeoSerializer(
-            {"pollutant_values": pollutant_values},
+            {
+                "metadata": collection,
+                "pollutant_values": pollutant_values
+            },
+            context={"request": request},
         )
 
         return Response(serializer.data)
