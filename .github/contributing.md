@@ -56,7 +56,7 @@ Developers looking to make code contributions should assign `ready` issues to th
 ---------------
 A pull request should simply implement a solution that was already established in an issue, rather than include discussions on how to implement the project design. To the maximum extent possible, it should address only one bug or feature. Limiting the scope of pull requests simplifies the review process and accelerates development.
 
-Pull requests must pass the Travis checks before merging into the `master` branch. These checks are a linting check and code tests. They can be accomplished by running the testing script listed below. Please pass these checks locally, before making a pull request. Other contributors will gladly help with any tests you are struggling to pass.
+Pull requests must pass the Travis checks before merging into the `master` branch. These involve code tests. They can be accomplished by running the testing script listed below. Please pass these checks locally, before making a pull request. Other contributors will gladly help with any tests you are struggling to pass.
 
 Only one approving review is required to merge into the `master` branch. However, please leave the pull request open for at least **36 hrs**. As a volunteer project, contributors may not be able to immediately make comments. Adding a slight delay allows for multiple reviewers to provide input. However, this is a soft rule. It is not meant to be applied so rigidly applied that it creates unnecessary delays and inefficient code development.
 
@@ -65,7 +65,6 @@ Once the Travis checks are passing, any requested code changes are resolved, and
 ## Style guidelines
 ---------------
 Please follow these guidelines during development:
-- [PEP 8](https://www.python.org/dev/peps/pep-0008/) enforced by [pylint]
 - Docstrings in [Numpy Stlye](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_numpy.html#example-numpy)
 - [Django Templating](https://oncampus.oberlin.edu/webteam/2012/09/architecture-django-templates)
 - Visual/CSS styling: [Foundation 6 Global Styles](https://foundation.zurb.com/sites/docs/global.html)
@@ -81,7 +80,7 @@ Testing resources include:
 - [Pytest](https://docs.pytest.org/en/latest/)
 
 ```bash
-  # Run migrations, run style and linting quality checks, run tests
+  # Run migrations and code tests
   docker-compose exec api /bin/bash "make validate"
 ```
 
