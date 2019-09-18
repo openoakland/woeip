@@ -6,7 +6,6 @@ from rest_framework import routers
 
 from .apps.air_quality import views
 from .apps.core import views as core_views
-from .apps.core.views import health
 
 router = routers.DefaultRouter(trailing_slash=False)
 router.register(r'calibrations', views.CalibrationViewSet)
