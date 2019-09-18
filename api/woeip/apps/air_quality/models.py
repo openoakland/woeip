@@ -66,6 +66,18 @@ class Collection(models.Model):
     ends_at = models.DateTimeField()
     route = models.CharField(max_length=256, null=True)
 
+    @property
+    def counter(self):
+        collections = Collection.objects.filter(
+            starts_at__year=self.starts_at.year,
+            starts_at__month=self.starts_at.month,
+            starts_at__day=self.starts_at.day).order_by('starts_at')
+        return collections.filter(
+            starts_at__lt=self.starts_at).count()
+
+    def __str__(self):
+        return f'Collection {self.counter + 1} on {self.starts_at.strftime("%b %d %Y")}'
+
 
 class CollectionFile(models.Model):
     """A collection file refers to a single file recorded during a collection
