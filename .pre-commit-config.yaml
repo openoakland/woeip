@@ -1,0 +1,34 @@
+default_language_version:
+  python: python3.6
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v2.2.3
+    hooks:
+      - id: trailing-whitespace
+        files: "^api/.*"
+
+  - repo: https://github.com/python/black
+    rev: 19.3b0
+    hooks:
+      - id: black
+        language_version: python
+        files: "^api/.*"
+
+  - repo: https://github.com/asottile/reorder_python_imports
+    rev: v1.5.0
+    hooks:
+      - id: reorder-python-imports
+        files: "^api/.*"
+
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v0.710
+    hooks:
+      - id: mypy
+        files: "^api/.*"
+
+  - repo: https://gitlab.com/pycqa/flake8
+    rev: 3.7.7
+    hooks:
+      - id: flake8
+        files: "^api/.*"
