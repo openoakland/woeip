@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := test
 
-.PHONY: clean detect_missing_migrations help requirements test validate coverage quality production-requirements migrate static clean_static
+.PHONY: clean detect_missing_migrations help requirements test validate coverage migrate static
 
 # Generates a help message. Borrowed from https://github.com/pydanny/cookiecutter-djangopackage.
 help: ## Display this help message
@@ -19,14 +19,9 @@ test: clean ## Run tests and generate coverage report
 	coverage run -m pytest --durations=25 -v
 	coverage report -m
 
-coverage: quality detect_missing_migrations migrate test ## Run the coverage in xml format
+coverage: detect_missing_migrations migrate test ## Run the coverage in xml format
 
-quality: ## Run pep8 and Pylint
-	isort --check-only --recursive woeip/
-	pycodestyle woeip *.py
-	pylint --rcfile=pylintrc woeip *.py
-
-validate: migrate quality test ## Run tests and quality checks
+validate: migrate test ## Run migration and tests
 
 detect_missing_migrations:  ## Determine if any apps are missing generated migrations
 	python manage.py makemigrations --check --dry-run || (echo "Migration files are missing. Please run the "makemigrations" management command, and commit the migrations." && false)

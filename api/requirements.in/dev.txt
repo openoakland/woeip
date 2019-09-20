@@ -3,9 +3,5 @@ astroid
 coverage
 django-debug-toolbar
 factory-boy
-isort
 mypy
-pycodestyle
-pylint
-pylint-django
 pytest-django

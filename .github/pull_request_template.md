@@ -10,8 +10,6 @@ reviewers: ''
 ## Checklist
 - [ ] Add description
 - [ ] Reference open issue pull request addresses
-- [ ] Pass linting check
-  - complete on the local machine with `make local.shell` `make quality`
 - [ ] Pass functional tests
   - complete on the local machine with `make local.shell` `make test`
 - [ ] Request code review
