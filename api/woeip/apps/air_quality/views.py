@@ -29,7 +29,7 @@ class CollectionViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.CollectionSerializer
 
     @action(detail=True, methods=["GET"])
-    def geo(self, request, pk=None):
+    def data(self, request, pk=None):
         collection = get_object_or_404(self.queryset, pk=pk)
         pollutant_values = models.PollutantValue.objects.filter(
             collection_file__collection=collection,
