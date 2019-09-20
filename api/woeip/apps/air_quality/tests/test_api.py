@@ -14,7 +14,7 @@ def test_collection():
 
     n_values = 10
     test_values = []
-    for i in range(n_values):
+    for _ in range(n_values):
         pollutant_value = factories.PollutantValueFactory(
             collection_file=collection_file,
             pollutant=pollutant,

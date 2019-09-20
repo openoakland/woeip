@@ -1,9 +1,9 @@
+# pylint: disable=abstract-method
 from rest_framework import serializers
 
 from woeip.apps.air_quality.models import (
     Calibration, Collection, CollectionFile, Device, Pollutant, PollutantValue, Sensor, TimeGeo
 )
-from woeip.apps.core.serializers import UserSerializer
 
 
 class CalibrationSerializer(serializers.HyperlinkedModelSerializer):

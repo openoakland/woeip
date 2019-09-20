@@ -107,7 +107,7 @@ class TimeGeo(models.Model):
     time = models.DateTimeField()
 
     def __str__(self):
-        return (
+        return (  # pylint: disable=no-member
             f"{self.time.strftime('%Y-%m-%d %H:%M:%S')} "
             f"({self.location.coords[0]}, {self.location.coords[1]})"
         )
