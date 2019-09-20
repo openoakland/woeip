@@ -64,7 +64,14 @@ class Collection(models.Model):
     """
     starts_at = models.DateTimeField()
     ends_at = models.DateTimeField()
-    route = models.CharField(max_length=256, null=True)
+
+    def get_sequence(self):
+        sequence = Collection.objects.filter(
+            starts_at__year=self.starts_at.year,
+            starts_at__month=self.starts_at.month,
+            starts_at__day=self.starts_at.day
+            ).filter(starts_at__lt=self.starts_at).count()
+        return sequence
 
 
 class CollectionFile(models.Model):

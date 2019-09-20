@@ -46,7 +46,6 @@ class CollectionFactory(factory.DjangoModelFactory):
 
     starts_at = factory.Faker('past_datetime', tzinfo=pytz.utc)
     ends_at = factory.Faker('past_datetime', tzinfo=pytz.utc)
-    route = factory.Faker('sentence', nb_words=3)
 
 
 class CollectionFileFactory(factory.DjangoModelFactory):
