@@ -66,14 +66,12 @@ class Collection(models.Model):
     ends_at = models.DateTimeField()
 
     def get_sequence(self):
-        return Collection.objects.filter(
+        sequence = Collection.objects.filter(
             starts_at__year=self.starts_at.year,
             starts_at__month=self.starts_at.month,
-            starts_at__day=self.starts_at.day).filter(
-            starts_at__lt=self.starts_at).count()
-
-    def __str__(self):
-        return f'Collection {self.counter + 1} on {self.starts_at.strftime("%b %d %Y")}'
+            starts_at__day=self.starts_at.day
+            ).filter(starts_at__lt=self.starts_at).count()
+        return sequence
 
 
 class CollectionFile(models.Model):
