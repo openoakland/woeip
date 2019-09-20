@@ -65,8 +65,7 @@ class Collection(models.Model):
     starts_at = models.DateTimeField()
     ends_at = models.DateTimeField()
 
-    @property
-    def counter(self):
+    def get_sequence(self):
         return Collection.objects.filter(
             starts_at__year=self.starts_at.year,
             starts_at__month=self.starts_at.month,
