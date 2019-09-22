@@ -22,6 +22,9 @@ class Pollutant(models.Model):
     name = models.CharField(max_length=256)
     description = models.CharField(max_length=1024)
 
+    def __str__(self):
+        return self.name
+
 
 class Sensor(models.Model):
     """A sensor is contained in a device and measures a single pollutant or a
@@ -79,13 +82,20 @@ class CollectionFile(models.Model):
     that captures data from a single sensor. When the file contents are
     processed, the table is updated with the timestamp and processor version.
     """
-    collection = models.ForeignKey(Collection, on_delete=models.CASCADE)
+    collection = models.ForeignKey(
+        Collection,
+        related_name="collection_files",
+        on_delete=models.CASCADE,
+    )
     sensor = models.ForeignKey(Sensor, null=True, on_delete=models.SET_NULL)
     user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
     file = models.FileField(upload_to='data', default='')
     uploaded_at = models.DateTimeField(auto_now_add=True)
     processor_version = models.CharField(max_length=256)
     processed_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.file.name
 
 
 class TimeGeo(models.Model):
@@ -96,6 +106,12 @@ class TimeGeo(models.Model):
     location = PointField()
     time = models.DateTimeField()
 
+    def __str__(self):
+        return (  # pylint: disable=no-member
+            f"{self.time.strftime('%Y-%m-%d %H:%M:%S')} "
+            f"({self.location.coords[0]}, {self.location.coords[1]})"
+        )
+
 
 class PollutantValue(models.Model):
     """Pollutant value datapoints are floating point measurements of specific
@@ -104,5 +120,16 @@ class PollutantValue(models.Model):
     """
     collection_file = models.ForeignKey(CollectionFile, on_delete=models.CASCADE)
     time_geo = models.ForeignKey(TimeGeo, on_delete=models.CASCADE)
-    pollutant = models.ForeignKey(Pollutant, null=True, on_delete=models.SET_NULL)
+    pollutant = models.ForeignKey(
+        Pollutant,
+        related_name="pollutant_values",
+        null=True,
+        on_delete=models.SET_NULL,
+    )
     value = models.FloatField()
+
+    def __str__(self):
+        return (
+            f"{str(self.time_geo)} "
+            f"{str(self.value)}"
+        )

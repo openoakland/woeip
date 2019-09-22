@@ -5,6 +5,7 @@ django-environ
 django-extensions
 django-model-utils
 django-storages
+djangorestframework
 gevent
 gunicorn==19.9.0
 numpy
