@@ -19,7 +19,7 @@ class TestCollection(APITestCase):
             )
             self.test_values.append(pollutant_value.value)
 
-    def test_get_collection_list(self):
+    def test_get_collection_list(self):  # pylint: disable=no-self-use
         request = request_factory.get("/collection")
         view = views.CollectionViewSet.as_view({"get": "list"})
         response = view(request)
