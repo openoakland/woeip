@@ -1,4 +1,5 @@
 class Status:
     """Health statuses."""
-    OK = 'OK'
-    UNAVAILABLE = 'UNAVAILABLE'
+
+    OK = "OK"
+    UNAVAILABLE = "UNAVAILABLE"

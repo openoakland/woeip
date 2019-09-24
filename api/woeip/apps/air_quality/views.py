@@ -5,8 +5,8 @@ from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
-
-from woeip.apps.air_quality import models, serializers
+from woeip.apps.air_quality import models
+from woeip.apps.air_quality import serializers
 
 logger = logging.getLogger(__name__)
 
@@ -29,13 +29,10 @@ class CollectionViewSet(viewsets.ModelViewSet):
     def data(self, request, pk=None):
         collection = get_object_or_404(self.queryset, pk=pk)
         pollutant_values = models.PollutantValue.objects.filter(
-            collection_file__collection=collection,
+            collection_file__collection=collection
         )
         serializer = serializers.CollectionGeoSerializer(
-            {
-                "metadata": collection,
-                "pollutant_values": pollutant_values
-            },
+            {"metadata": collection, "pollutant_values": pollutant_values},
             context={"request": request},
         )
 

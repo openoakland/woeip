@@ -2,4 +2,4 @@ from django.apps import AppConfig
 
 
 class AirQualityConfig(AppConfig):
-    name = 'air_quality'
+    name = "air_quality"

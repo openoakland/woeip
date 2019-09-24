@@ -1,5 +1,5 @@
-from rest_framework.test import APIRequestFactory, APITestCase
-
+from rest_framework.test import APIRequestFactory
+from rest_framework.test import APITestCase
 from woeip.apps.air_quality import views
 from woeip.apps.air_quality.tests import factories
 
@@ -14,8 +14,7 @@ class TestCollection(APITestCase):
         self.test_values = []
         for _ in range(self.n_values):
             pollutant_value = factories.PollutantValueFactory(
-                collection_file=self.collection_file,
-                pollutant=self.pollutant,
+                collection_file=self.collection_file, pollutant=self.pollutant
             )
             self.test_values.append(pollutant_value.value)
 

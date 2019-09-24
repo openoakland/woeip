@@ -3,24 +3,24 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 import pytest
-
-from woeip.apps.air_quality import dustrak, models
+from woeip.apps.air_quality import dustrak
+from woeip.apps.air_quality import models
 from woeip.apps.air_quality.tests import factories
 
-TEST_DATA_DIRECTORY = Path(__file__).parent / 'data'
-JOINED_PATH = (TEST_DATA_DIRECTORY / 'joined.csv')
-GPS_PATH = (TEST_DATA_DIRECTORY / 'gps.log')
-DUSTRAK_PATH = (TEST_DATA_DIRECTORY / 'dustrak.csv')
+TEST_DATA_DIRECTORY = Path(__file__).parent / "data"
+JOINED_PATH = TEST_DATA_DIRECTORY / "joined.csv"
+GPS_PATH = TEST_DATA_DIRECTORY / "gps.log"
+DUSTRAK_PATH = TEST_DATA_DIRECTORY / "dustrak.csv"
 
 
 def get_target_data(target_path):
     """Load the target output"""
-    return pd.read_csv(target_path, infer_datetime_format=True, parse_dates=['time'])
+    return pd.read_csv(target_path, infer_datetime_format=True, parse_dates=["time"])
 
 
 def test_joiner():
     """Test the output of the function that joins GPS and air quality measurements based on time stamps"""
-    _, air_quality = dustrak.load_dustrak(DUSTRAK_PATH, tz='America/Los_Angeles')
+    _, air_quality = dustrak.load_dustrak(DUSTRAK_PATH, tz="America/Los_Angeles")
     gps = dustrak.load_gps(GPS_PATH)
 
     with pytest.warns(UserWarning):
@@ -28,7 +28,7 @@ def test_joiner():
 
     target_data = get_target_data(target_path=JOINED_PATH)
     for column in target_data:
-        if column == 'time':
+        if column == "time":
             assert all(target_data[column] == joined_data[column])
         else:
             assert np.allclose(target_data[column], joined_data[column])
@@ -43,6 +43,12 @@ def test_save():
     pollutant = factories.PollutantFactory()
     target_data = get_target_data(target_path=JOINED_PATH)
     dustrak.save(
-        target_data, gps_collection_file=gps_collection_file,
-        pollutant_collection_file=pollutant_collection_file, pollutant=pollutant)
-    assert np.allclose(target_data['measurement'], models.PollutantValue.objects.values_list('value', flat=True))
+        target_data,
+        gps_collection_file=gps_collection_file,
+        pollutant_collection_file=pollutant_collection_file,
+        pollutant=pollutant,
+    )
+    assert np.allclose(
+        target_data["measurement"],
+        models.PollutantValue.objects.values_list("value", flat=True),
+    )

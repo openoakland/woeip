@@ -1,5 +1,5 @@
 FROM python:3.6
-ENV PYTHONUNBUFFERED 1 
+ENV PYTHONUNBUFFERED 1
 WORKDIR /usr/src/app
 
 RUN apt-get update \
