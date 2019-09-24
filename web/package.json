@@ -22,10 +22,13 @@
     "@types/react-dom": "^16.8.4",
     "@types/react-router-dom": "^4.3.4",
     "@types/webpack-env": "^1.13.9",
+    "prettier": "^1.18.2",
     "razzle": "^3.0.0",
     "razzle-plugin-typescript": "^3.0.0",
     "ts-jest": "^24.0.2",
     "tslint": "^5.18.0",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-plugin-prettier": "^2.0.1",
     "tslint-react": "^4.0.0",
     "typescript": "^3.5.2"
   },

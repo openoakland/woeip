@@ -32,3 +32,11 @@ repos:
     hooks:
       - id: flake8
         files: "^api/.*"
+
+  - repo: https://github.com/awebdeveloper/pre-commit-tslint
+    rev: 0.0.2
+    hooks:
+      - id: tslint
+        description: Lint and format client files
+        args: [--fix]
+        files: '^web/src/*.+(js|jsx|ts|tsx)'        
