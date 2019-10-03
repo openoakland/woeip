@@ -56,6 +56,22 @@ class CollectionSerializer(serializers.HyperlinkedModelSerializer):
         model = Collection
         fields = ["starts_at", "ends_at", "collection_files"]
 
+    def create(self, validated_data):
+        files_data = self.context.get('view').request.FILES
+        collection = models.Collection.objects.create(
+            starts_at=validated_data.get('starts_at'),
+            ends_at=validated_data.get('ends_at'),
+        )
+        sensor_ids = validated_data.get('sensor_ids')
+        for file_index, file in files_data:
+            sensor = Sensor.objects.get(pk=sensor_ids[file_index])
+            CollectionFile.objects.create(
+                collection=collection,
+                sensor=sensor,
+                file=file,
+            )
+        return collection
+
 
 class CollectionGeoSerializer(serializers.Serializer):
     metadata = CollectionSerializer()
