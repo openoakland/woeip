@@ -63,7 +63,7 @@ class CollectionSerializer(serializers.HyperlinkedModelSerializer):
             ends_at=validated_data.get('ends_at'),
         )
         sensor_ids = validated_data.get('sensor_ids')
-        for file_index, file in files_data:
+        for file_index, file in enumerate(files_data):
             sensor = Sensor.objects.get(pk=sensor_ids[file_index])
             CollectionFile.objects.create(
                 collection=collection,
