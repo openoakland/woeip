@@ -101,8 +101,8 @@ class CollectionFile(models.Model):
     user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
     file = models.FileField(upload_to="data", default="")
     uploaded_at = models.DateTimeField(auto_now_add=True)
-    processor_version = models.CharField(max_length=256)
-    processed_at = models.DateTimeField(auto_now_add=True)
+    processor_version = models.CharField(max_length=256, null=True)
+    processed_at = models.DateTimeField(null=True)
 
     def __str__(self):
         return self.file.name
