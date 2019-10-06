@@ -1,7 +1,7 @@
 # pylint: disable=too-many-ancestors
 from rest_framework import viewsets
-
-from woeip.apps.core import models, serializers
+from woeip.apps.core import models
+from woeip.apps.core import serializers
 
 
 class UserViewSet(viewsets.ModelViewSet):
