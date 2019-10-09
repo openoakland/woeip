@@ -58,16 +58,13 @@ class CollectionSerializer(serializers.HyperlinkedModelSerializer):
 
     def create(self, validated_data):
         files_data = self.context.get('view').request.FILES
-        collection = models.Collection.objects.create(
+        collection = Collection.objects.create(
             starts_at=validated_data.get('starts_at'),
             ends_at=validated_data.get('ends_at'),
         )
-        sensor_ids = validated_data.get('sensor_ids')
-        for file_index, file in enumerate(files_data):
-            sensor = Sensor.objects.get(pk=sensor_ids[file_index])
+        for file in files_data:
             CollectionFile.objects.create(
                 collection=collection,
-                sensor=sensor,
                 file=file,
             )
         return collection
