@@ -1,4 +1,6 @@
 # pylint: disable=abstract-method
+from django.conf import settings
+from django.core.files.base import ContentFile
 from rest_framework import serializers
 from woeip.apps.air_quality.models import Calibration
 from woeip.apps.air_quality.models import Collection
@@ -52,22 +54,27 @@ class PollutantValueSerializer(serializers.ModelSerializer):
 
 
 class CollectionSerializer(serializers.HyperlinkedModelSerializer):
+    files = serializers.ListField(write_only=True, required=False)
+
     class Meta:
         model = Collection
-        fields = ["starts_at", "ends_at", "collection_files"]
+        fields = ["starts_at", "ends_at", "collection_files", "files"]
+        extra_kwargs = {'collection_files': {'required': False}}
+
 
     def create(self, validated_data):
-        files_data = self.context.get('view').request.FILES
+        data_files = validated_data.pop("files")
         collection = Collection.objects.create(
             starts_at=validated_data.get('starts_at'),
             ends_at=validated_data.get('ends_at'),
         )
-        for file in files_data:
-            CollectionFile.objects.create(
+        for data_file in data_files:
+            collection_file = CollectionFile.objects.create(
                 collection=collection,
-                file=file,
             )
-        return collection
+            collection_file.file.save(
+                data_file['file_name'], ContentFile(data_file['file_data']))
+        return super().create(validated_data)
 
 
 class CollectionGeoSerializer(serializers.Serializer):
