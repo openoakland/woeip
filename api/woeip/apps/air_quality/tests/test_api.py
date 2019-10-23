@@ -38,7 +38,6 @@ class TestCollection(APITestCase):
         del settings._original_media_root
         self.logger.setLevel(self._original_logger_level)
 
-
     def test_get_collection_list(self):  # pylint: disable=no-self-use
         request = request_factory.get("/collection")
         view = views.CollectionViewSet.as_view({"get": "list"})
@@ -64,7 +63,7 @@ class TestCollection(APITestCase):
         starts_at = datetime.datetime(2019, 1, 1, 10, 15)
         ends_at = datetime.datetime(2019, 1, 1, 14, 15)
         data = {
-                "files": [
+                "upload_files": [
                     {"file_name": "gps_file.log",
                      "file_data": b"gpsfiledata"},
                     {"file_name": "dustrak_file.csv",
@@ -83,7 +82,7 @@ class TestCollection(APITestCase):
         starts_at = (2019, 1, 1, 10, 15)
         ends_at = datetime.datetime(2019, 1, 1, 14, 15)
         data = {
-                "files": [
+                "upload_files": [
                     {"file_name": "gps_file.log",
                      "file_data": b"gpsfiledata"},
                     {"file_name": "dustrak_file.csv",
@@ -95,8 +94,7 @@ class TestCollection(APITestCase):
         response = self.client.post(
             "/collection", data, format='json')
         assert response.status_code == 400
-        assert response.content.startswith(b'{"starts_at":')
-
+        assert response.content.startswith(b"""{"starts_at":""")
 
     def test_create_collection_bad_end(self):
         """Tests that collection creation fails if ends_at is not
@@ -104,7 +102,7 @@ class TestCollection(APITestCase):
         starts_at = datetime.datetime(2019, 1, 1, 10, 15)
         ends_at = [2019, 1, 1, 14, 15]
         data = {
-                "files": [
+                "upload_files": [
                     {"file_name": "gps_file.log",
                      "file_data": b"gpsfiledata"},
                     {"file_name": "dustrak_file.csv",
@@ -116,22 +114,21 @@ class TestCollection(APITestCase):
         response = self.client.post(
             "/collection", data, format='json')
         assert response.status_code == 400
-        assert response.content.startswith(b'{"ends_at":')
+        assert response.content.startswith(b"""{"ends_at":""")
 
     def test_create_collection_bad_files(self):
         """Tests that collection creation fails if files input is incorrect."""
         starts_at = datetime.datetime(2019, 1, 1, 10, 15)
         ends_at = datetime.datetime(2019, 1, 1, 14, 15)
-        files = []
         data = {
-                'files': b'bad stuff',
+                'upload_files': b'bad stuff',
                 'starts_at': starts_at,
                 'ends_at': ends_at
             },
         response = self.client.post(
             "/collection", data, format='json')
         assert response.status_code == 400
-        assert response.content.startswith(b'{"non_field_errors":')
+        assert response.content.startswith(b"""{"non_field_errors":""")
 
         data = {
                 'starts_at': starts_at,
@@ -140,4 +137,4 @@ class TestCollection(APITestCase):
         response = self.client.post(
             "/collection", data, format='json')
         assert response.status_code == 400
-        assert response.content.startswith(b'{"non_field_errors":')
+        assert response.content.startswith(b"""{"non_field_errors":""")
