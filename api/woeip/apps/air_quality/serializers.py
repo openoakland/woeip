@@ -81,6 +81,10 @@ class CollectionGeoSerializer(serializers.Serializer):
     pollutant_values = serializers.ListField(child=PollutantValueSerializer())
 
 
+class CollectionSequenceSerializer(serializers.Serializer):
+    sequence = serializers.IntegerField()
+
+
 class SensorSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Sensor
