@@ -45,6 +45,14 @@ class CollectionViewSet(viewsets.ModelViewSet):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
+    @action(methods=['get'], detail=True)
+    def sequence(self, request, pk, *args, **kwargs):
+        collection = get_object_or_404(self.queryset, pk=pk)
+        sequence = collection.get_sequence()
+        serializer = serializers.CollectionSequenceSerializer(
+            {"sequence": sequence})
+        return Response(serializer.data)
+
 
 class CollectionFileViewSet(viewsets.ModelViewSet):
     queryset = models.CollectionFile.objects.all()
