@@ -21,7 +21,7 @@ class WoaqAPITestCase(APITestCase):
 
         self.logger = logging.getLogger('django.request')
         self._original_logger_level = self.logger.getEffectiveLevel()
-        self.logger.setLevel(logging.DEBUG)
+        self.logger.setLevel(logging.ERROR)
 
     def tearDown(self):
         shutil.rmtree(self._temp_media, ignore_errors=True)
