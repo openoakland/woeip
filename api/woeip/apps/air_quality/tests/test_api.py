@@ -1,5 +1,6 @@
 import datetime
 import logging
+import random
 import shutil
 import tempfile
 
@@ -12,7 +13,7 @@ from woeip.apps.air_quality.tests import factories
 request_factory = APIRequestFactory()
 
 
-class TestCollection(APITestCase):
+class WoaqAPITestCase(APITestCase):
     def setUp(self):
         settings._original_media_root = settings.MEDIA_ROOT
         self._temp_media = tempfile.mkdtemp()
@@ -20,8 +21,18 @@ class TestCollection(APITestCase):
 
         self.logger = logging.getLogger('django.request')
         self._original_logger_level = self.logger.getEffectiveLevel()
-        self.logger.setLevel(logging.ERROR)
+        self.logger.setLevel(logging.DEBUG)
 
+    def tearDown(self):
+        shutil.rmtree(self._temp_media, ignore_errors=True)
+        settings.MEDIA_ROOT = settings._original_media_root
+        del settings._original_media_root
+        self.logger.setLevel(self._original_logger_level)
+
+
+class TestCollection(WoaqAPITestCase):
+    def setUp(self):
+        super().setUp()
         self.collection_file = factories.CollectionFileFactory()
         self.pollutant = factories.PollutantFactory()
         self.n_values = 10
@@ -31,12 +42,6 @@ class TestCollection(APITestCase):
                 collection_file=self.collection_file, pollutant=self.pollutant
             )
             self.test_values.append(pollutant_value.value)
-
-    def tearDown(self):
-        shutil.rmtree(self._temp_media, ignore_errors=True)
-        settings.MEDIA_ROOT = settings._original_media_root
-        del settings._original_media_root
-        self.logger.setLevel(self._original_logger_level)
 
     def test_get_collection_list(self):  # pylint: disable=no-self-use
         request = request_factory.get("/collection")
@@ -138,3 +143,39 @@ class TestCollection(APITestCase):
             "/collection", data, format='json')
         assert response.status_code == 400
         assert response.content.startswith(b"""{"non_field_errors":""")
+
+
+class TestCollectionSequence(WoaqAPITestCase):
+    def setUp(self):
+        super().setUp()
+        starts_at = datetime.datetime(
+            random.randint(2000, 2019),
+            random.randint(1, 12),
+            random.randint(1, 28),
+            random.randint(2, 22), 00, 00,
+            tzinfo=datetime.timezone.utc,
+        )
+        self.collection = factories.CollectionFactory(starts_at=starts_at)
+        minute_interval = random.randint(1, 60)
+        self.collection_samedate = factories.CollectionFactory(
+            starts_at=self.collection.starts_at +
+            datetime.timedelta(minutes=minute_interval))
+        day_interval = random.randint(1, 100) * random.choice([-1, 1])
+        self.collection_diffdate = factories.CollectionFactory(
+            starts_at=self.collection.starts_at +
+            datetime.timedelta(days=day_interval))
+
+    def test_collection_sequence(self):
+        request = request_factory.get("/collection")
+        view = views.CollectionViewSet.as_view(actions={"get": "sequence"})
+        response = view(request, pk=self.collection.pk)
+        assert "sequence" in response.data
+        assert response.data["sequence"] == 0
+
+        response = view(request, pk=self.collection_samedate.pk)
+        assert "sequence" in response.data
+        assert response.data["sequence"] == 1
+
+        response = view(request, pk=self.collection_diffdate.pk)
+        assert "sequence" in response.data
+        assert response.data["sequence"] == 0
