@@ -1,4 +1,5 @@
 import Homepage from 'pages/Homepage'
+import SignIn from 'pages/SignIn'
 
 interface RouteConfig {
   path?: string
@@ -9,7 +10,13 @@ interface RouteConfig {
 const routes: RouteConfig[] = [
   {
     component: Homepage,
-    path: '/'
+    path: '/',
+    exact: true
+  },
+  {
+    component: SignIn,
+    path: '/login',
+    exact: false
   }
 ]
 

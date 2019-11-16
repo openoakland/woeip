@@ -1,6 +1,7 @@
 import styled from '@emotion/styled'
 import Logo from 'components/Logo'
 import React from 'react'
+import { Link } from 'react-router-dom'
 import { Container, Menu, MenuItemProps } from 'semantic-ui-react'
 
 const StyledContainer = styled(Container)`
@@ -68,7 +69,8 @@ class Header extends React.Component<Props> {
               <Menu.Item
                 key={item.name}
                 {...item}
-                link
+                as={Link}
+                to={item.name}
                 active={activeItem === item.name}
                 onClick={this.handleItemClick}
               >
