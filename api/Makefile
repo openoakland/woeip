@@ -28,3 +28,4 @@ detect_missing_migrations:  ## Determine if any apps are missing generated migra
 
 migrate: ## Apply database migrations
 	python manage.py migrate --noinput
+	python manage.py collectstatic --no-input
