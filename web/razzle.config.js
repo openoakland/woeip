@@ -18,7 +18,9 @@ module.exports = {
       components: path.resolve('./src/components'),
       containers: path.resolve('./src/containers'),
       pages: path.resolve('./src/pages'),
-      routes: path.resolve('./src/routes')
+      routes: path.resolve('./src/routes'),
+      images: path.resolve('./src/images'),
+      css: path.resolve('./src/css')
     }
 
     return config

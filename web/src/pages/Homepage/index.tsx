@@ -3,24 +3,11 @@ import LoginForm from 'components/Login'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { Container, Header } from 'semantic-ui-react'
-
-const StyledContainer = styled(Container)`
-  margin-top: 96px;
-  display: flex !important;
-  justify-content: center;
-  flex-flow: column;
-`
+import TruckHero from 'images/truckshero.png'
 
 const ContentWrapper = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-top: 64px;
-  & > div {
-    width: 50%;
-  }
-  div + div {
-    margin-left: 48px;
-  }
 `
 
 const Description = styled.div`
@@ -46,7 +33,7 @@ const LoginFormHeader = styled.div`
 `
 
 const Homepage: React.FunctionComponent<{}> = () => (
-  <StyledContainer>
+  <div>
     <Header textAlign="center" as="h1">
       Welcome to the West Oakland Air Quality Project
     </Header>
@@ -56,17 +43,8 @@ const Homepage: React.FunctionComponent<{}> = () => (
         Indicators Project by putting local air quality data in the hands of
         West Oaklanders.
       </Description>
-      <LoginContainer>
-        <LoginFormHeader>
-          <Header as="h3">Sign in to upload data</Header>
-          <div>
-            Or <Link to="/register">create an account</Link>
-          </div>
-        </LoginFormHeader>
-        <LoginForm />
-      </LoginContainer>
     </ContentWrapper>
-  </StyledContainer>
+  </div>
 )
 
 export default Homepage

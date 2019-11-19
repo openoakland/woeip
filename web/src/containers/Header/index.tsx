@@ -4,20 +4,10 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { Container, Menu, MenuItemProps } from 'semantic-ui-react'
 
-const StyledContainer = styled(Container)`
-  display: flex !important;
-  justify-content: space-between;
-  align-items: center;
-  padding-top: 32px;
-`
-
 const menuItems = [
   {
-    href: 'https://woeip.org',
-    name: 'woeip',
-    rel: 'noopener noreferrer',
-    target: '_blank',
-    value: 'Visit WOEIP'
+    name: '',
+    value: 'Home'
   },
   {
     name: 'upload',
@@ -61,7 +51,7 @@ class Header extends React.Component<Props> {
   public render() {
     const { activeItem } = this.state
     return (
-      <StyledContainer>
+      <div>
         <Logo />
         <Menu stackable pointing secondary>
           <Menu.Menu position="right">
@@ -79,7 +69,7 @@ class Header extends React.Component<Props> {
             ))}
           </Menu.Menu>
         </Menu>
-      </StyledContainer>
+      </div>
     )
   }
 }
