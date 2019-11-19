@@ -4,6 +4,15 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { Container, Menu, MenuItemProps } from 'semantic-ui-react'
 
+let flexStyle = {
+  display: 'flex',
+  justifyContent: 'space-between'
+}
+
+let menuItemStyle = {
+  color: '#fff'
+}
+
 const menuItems = [
   {
     name: '',
@@ -51,12 +60,13 @@ class Header extends React.Component<Props> {
   public render() {
     const { activeItem } = this.state
     return (
-      <div>
+      <div style={flexStyle}>
         <Logo />
-        <Menu stackable pointing secondary>
+        <Menu stackable pointing secondary borderless>
           <Menu.Menu position="right">
             {menuItems.map(item => (
               <Menu.Item
+                style={menuItemStyle}
                 key={item.name}
                 {...item}
                 as={Link}

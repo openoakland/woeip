@@ -1,5 +1,21 @@
 import React from 'react'
+import styled from '@emotion/styled'
 import { Button, Form, InputOnChangeData } from 'semantic-ui-react'
+
+const LoginContainer = styled.div`
+  display: flex;
+  flex-flow: column;
+`
+
+const LoginFormHeader = styled.div`
+  padding-bottom: 8px;
+  div {
+    margin-top: -8px;
+    a {
+      text-decoration: underline;
+    }
+  }
+`
 
 interface Props {
   isLoggingIn: boolean

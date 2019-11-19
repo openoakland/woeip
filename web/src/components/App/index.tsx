@@ -20,6 +20,8 @@ const BoundingContainer = styled(Container)`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  height: 100%;
+  overflow: hidden;
 `
 
 const App = props => {
