@@ -65,6 +65,7 @@ class CollectionSerializer(serializers.HyperlinkedModelSerializer):
             starts_at=validated_data.get("starts_at"),
             ends_at=validated_data.get("ends_at"),
         )
+        collection.save()
 
         for upload_file in validated_data.pop("upload_files", []):
             collection_file = CollectionFile.objects.create(
@@ -73,7 +74,7 @@ class CollectionSerializer(serializers.HyperlinkedModelSerializer):
             collection_file.file.save(
                 upload_file["file_name"], ContentFile(upload_file["file_data"]))
 
-        return super().create(validated_data)
+        return collection
 
 
 class CollectionGeoSerializer(serializers.Serializer):
