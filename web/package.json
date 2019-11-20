@@ -22,6 +22,8 @@
     "@types/react-dom": "^16.8.4",
     "@types/react-router-dom": "^4.3.4",
     "@types/webpack-env": "^1.13.9",
+    "husky": "^3.0.5",
+    "lint-staged": "^9.2.5",
     "prettier": "^1.18.2",
     "razzle": "^3.0.0",
     "razzle-plugin-typescript": "^3.0.0",
@@ -50,6 +52,17 @@
     ],
     "collectCoverageFrom": [
       "src/**/*.{js,jsx,ts,tsx}"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
+      "prettier --write",
+      "git add"
     ]
   }
 }
