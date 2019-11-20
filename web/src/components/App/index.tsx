@@ -26,12 +26,15 @@ const BoundingContainer = styled(Container)`
 
 const App = props => {
   // Get path so we can change background based on what page we are on
+  // Homepage has background image, other pages are white -Lt
   let path = props.location.pathname
+  let whiteText = '#ffffff'
+  let blackText = '#000000'
   return (
     <ThemeProvider theme={{}}>
       <div style={path != '/' ? {} : HeroContainer}>
         <BoundingContainer>
-          <Navbar />
+          <Navbar textColor={path != '/' ? blackText : whiteText} />
           <Switch>
             {routes.map(route => (
               <Route

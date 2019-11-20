@@ -9,10 +9,6 @@ let flexStyle = {
   justifyContent: 'space-between'
 }
 
-let menuItemStyle = {
-  color: '#fff'
-}
-
 const menuItems = [
   {
     name: '',
@@ -59,14 +55,17 @@ class Header extends React.Component<Props> {
 
   public render() {
     const { activeItem } = this.state
+
+    // Text color recieved as prop from App component -Lt
+    const textColor = this.props.textColor
     return (
       <div style={flexStyle}>
         <Logo />
         <Menu stackable pointing secondary borderless>
-          <Menu.Menu position="right">
+          <Menu.Menu position='right'>
             {menuItems.map(item => (
               <Menu.Item
-                style={menuItemStyle}
+                style={{ color: this.props.textColor }}
                 key={item.name}
                 {...item}
                 as={Link}

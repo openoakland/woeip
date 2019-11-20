@@ -2,20 +2,14 @@ import React from 'react'
 import styled from '@emotion/styled'
 import { Button, Form, InputOnChangeData } from 'semantic-ui-react'
 
-const LoginContainer = styled.div`
-  display: flex;
-  flex-flow: column;
-`
+const formStyles = {
+  width: '80%',
+  marginTop: 125
+}
 
-const LoginFormHeader = styled.div`
-  padding-bottom: 8px;
-  div {
-    margin-top: -8px;
-    a {
-      text-decoration: underline;
-    }
-  }
-`
+const underlinedText = {
+  textDecoration: 'underline'
+}
 
 interface Props {
   isLoggingIn: boolean
@@ -52,23 +46,30 @@ export default class Login extends React.Component<Props> {
   public render() {
     const { email, password } = this.state
     return (
-      <Form onSubmit={this.handleSubmit}>
-        <Form.Input
-          label="Email"
-          name="email"
-          value={email}
-          onChange={this.handleChange}
-        />
-        <Form.Input
-          label="Password"
-          name="password"
-          value={password}
-          onChange={this.handleChange}
-        />
-        <Button type="submit" basic>
-          Sign In
-        </Button>
-      </Form>
+      <div style={formStyles}>
+        <p>Sign in to upload data</p>
+        <p>
+          Or <span style={underlinedText}>create an account</span>
+        </p>
+        <Form onSubmit={this.handleSubmit}>
+          <Form.Input
+            label='Email'
+            name='email'
+            value={email}
+            onChange={this.handleChange}
+          />
+          <Form.Input
+            label='Password'
+            name='password'
+            value={password}
+            onChange={this.handleChange}
+          />
+          <Button type='submit' basic>
+            Sign In
+          </Button>
+          <p style={underlinedText}>Forgot your password?</p>
+        </Form>
+      </div>
     )
   }
 }
