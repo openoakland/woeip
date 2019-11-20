@@ -7,6 +7,8 @@ services:
       context: api
     container_name: woaq-api
     image: openoakland/woaq-api
+    volumes:
+      - static:/usr/src/app/public/static
 
   web:
     build:
@@ -27,3 +29,7 @@ services:
       - 80:80
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
+      - static:/var/www/html/static/
+
+volumes:
+  static:
