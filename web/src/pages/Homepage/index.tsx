@@ -26,7 +26,6 @@ const Header = styled.div`
   text-align: left;
   color: #fff;
   font-size: 44px;
-  font-style: italic;
 `
 
 const Homepage: React.FunctionComponent<{}> = () => (
