@@ -8,6 +8,7 @@ set -e
 # Run migrations
 echo Starting migrations...
 make migrate
+make collectstatic
 
 echo Starting Gunicorn...
 gunicorn woeip.wsgi \
