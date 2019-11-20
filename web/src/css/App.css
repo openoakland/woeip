@@ -1,3 +1,72 @@
 #root {
   height: 100%;
+  font-family: 'FaktPro';
 }
+
+#root h1,
+#root h2,
+#root h3,
+#root h4,
+#root h5 {
+  font-family: 'FaktPro';
+}
+
+@font-face {
+  font-family: 'FaktPro';
+  src: url('/fonts/fakt/FaktPro-Normal.otf') format('opentype'),
+    url('/fonts/fakt/FaktPro-Normal.ttf') format('truetype')
+      url('/fonts/fakt/FaktPro-Normal_web.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/*
+// These are commented out because I've been unable to confirm they do anything above what FaktPro does
+// To do. Ask designer if they are happy with font options and if we can take out the other font files
+// as they take up space
+// -LT
+@font-face {
+   font-family: 'FaktProItalic';
+      src: url('/fonts/fakt/FaktPro-NormalItalic.otf') format("opentype"),
+           url('/fonts/fakt/FaktPro-NormalItalic.ttf') format('truetype')
+           url('/fonts/fakt/FaktPro-NormalItalic_web.ttf') format("truetype");
+   font-weight: normal;
+   font-style: normal;
+}
+
+@font-face {
+   font-family: 'FaktProMedium';
+      src: url('/fonts/fakt/FaktPro-Medium.otf') format("opentype"),
+           url('/fonts/fakt/FaktPro-Medium.ttf') format('truetype')
+           url('/fonts/fakt/FaktPro-Medium_web.ttf') format("truetype");
+   font-weight: normal;
+   font-style: normal;
+}
+
+@font-face {
+   font-family: 'FaktProMediumItalic';
+      src: url('/fonts/fakt/FaktPro-MediumItalic.otf') format("opentype"),
+           url('/fonts/fakt/FaktPro-MediumItalic.ttf') format('truetype')
+           url('/fonts/fakt/FaktPro-MediumItalic_web.ttf') format("truetype");
+   font-weight: normal;
+   font-style: normal;
+}
+
+@font-face {
+   font-family: 'FaktProBlond';
+      src: url('/fonts/fakt/FaktPro-Blond.otf') format("opentype"),
+           url('/fonts/fakt/FaktPro-Blond.ttf') format('truetype')
+           url('/fonts/fakt/FaktPro-Blond_web.ttf') format("truetype");
+   font-weight: normal;
+   font-style: normal;
+}
+
+@font-face {
+   font-family: 'FaktProBlondItalic';
+      src: url('/fonts/fakt/FaktPro-BlondItalic.otf') format("opentype"),
+           url('/fonts/fakt/FaktPro-BlondItalic.ttf') format('truetype')
+           url('/fonts/fakt/FaktPro-BlondItalic_web.ttf') format("truetype");
+   font-weight: normal;
+   font-style: normal;
+}
+*/
