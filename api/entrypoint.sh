@@ -8,6 +8,9 @@ set -e
 # Run migrations
 echo Starting migrations...
 make migrate
+
+# Build static assets
+echo Building static assets...
 make collectstatic
 
 echo Starting Gunicorn...

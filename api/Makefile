@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := test
 
-.PHONY: clean detect_missing_migrations help requirements test validate coverage migrate static
+.PHONY: clean detect_missing_migrations help requirements test validate coverage migrate collectstatic
 
 # Generates a help message. Borrowed from https://github.com/pydanny/cookiecutter-djangopackage.
 help: ## Display this help message
