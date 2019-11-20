@@ -19,6 +19,7 @@ services:
     volumes:
       - ./api:/usr/src/app
       - logs:/usr/src/app/logs
+      - static:/usr/src/app/public/static
     depends_on:
       - db
     restart: always
@@ -53,7 +54,10 @@ services:
     build:
       args:
         - API_DOMAIN=api.lvh.me
+    volumes:
+      - static:/var/www/html/static/
 
 volumes:
   logs:
-  postgres:        
+  postgres:
+  static:
