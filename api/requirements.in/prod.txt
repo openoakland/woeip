@@ -6,6 +6,7 @@ django-extensions
 django-model-utils
 django-storages
 djangorestframework
+drf-yasg
 gevent
 gunicorn==19.9.0
 numpy
