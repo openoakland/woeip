@@ -1,13 +1,16 @@
 import React from 'react'
 import { Route, Switch } from 'react-router-dom'
+import { ThemeProvider } from 'emotion-theming'
 import Home from './Home'
-
-import './App.css'
+import 'semantic-ui-css/semantic.min.css'
+import theme from 'theme'
 
 const App = () => (
-  <Switch>
-    <Route exact={true} path='/' component={Home} />
-  </Switch>
+  <ThemeProvider theme={theme}>
+    <Switch>
+      <Route exact path='/' component={Home} />
+    </Switch>
+  </ThemeProvider>
 )
 
 export default App
