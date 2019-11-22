@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-  plugins: ['typescript'],
+  plugins: ['scss', 'typescript'],
   modify: (defaultConfig, { target, dev }) => {
     const config = defaultConfig
 
