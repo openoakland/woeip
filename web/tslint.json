@@ -7,7 +7,10 @@
     "jsx-boolean-value": false,
     "max-line-length": [true, 88],
     "no-console": false,
-    "no-implicit-dependencies": [true, ["routes", "theme"]],
+    "no-implicit-dependencies": [
+      true,
+      ["components", "routes", "theme"]
+    ],
     "no-submodule-imports": false,
     "object-literal-sort-keys": false,
     "ordered-imports": false,
