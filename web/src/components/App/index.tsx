@@ -4,7 +4,7 @@ import { ThemeProvider } from 'emotion-theming'
 import Navbar from 'components/Header'
 import 'semantic-ui-css/semantic.min.css'
 import './index.scss'
-import theme from 'theme'
+import { theme } from 'theme'
 import routes from 'routes'
 
 const App = () => (

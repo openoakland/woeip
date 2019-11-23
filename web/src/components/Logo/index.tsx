@@ -1,17 +1,18 @@
-import styled from '@emotion/styled'
+import styled from 'theme'
 import React from 'react'
 
-const LogoContainer = styled.div`
+const LogoText = 'WOAQ'
+
+const Logo = styled.div`
+  &::after {
+    content: '${LogoText}';
+  }
+  color: ${({ theme }) => theme.colors.text};
   font-size: 56px;
   line-height: 48px;
-  word-wrap: break-word;
-  color: ${({ theme }) => theme.colors.text};
-  width: 100px;
   text-align: right;
+  word-wrap: break-word;
+  width: 100px;
 `
-
-const Logo: React.FunctionComponent<{}> = () => (
-  <LogoContainer>WOAQ</LogoContainer>
-)
 
 export default Logo
