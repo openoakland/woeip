@@ -1,0 +1,75 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Fakt Pro';
+}
+
+h1, h2, h3, h4, h5, p, div {
+  font-family: 'Fakt Pro';
+}
+
+@font-face {
+  font-family: 'Fakt Pro';
+  font-weight: lighter;
+  font-style: normal;
+  src: url('/fonts/fakt/FaktPro-Blond.otf') format('opentype'),
+    url('/fonts/fakt/FaktPro-Blond_web.ttf') format('truetype'),
+    url('/fonts/fakt/FaktPro-Blond.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Fakt Pro';
+  font-weight: lighter;
+  font-style: italic;
+  src: url('/fonts/fakt/FaktPro-BlondItalic.otf') format('opentype'),
+    url('/fonts/fakt/FaktPro-BlondItalic_web.ttf') format('truetype'),
+    url('/fonts/fakt/FaktPro-BlondItalic.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Fakt Pro';
+  font-weight: normal;
+  font-style: normal;
+  src: url('/fonts/fakt/FaktPro-Normal.otf') format('opentype'),
+    url('/fonts/fakt/FaktPro-Normal_web.ttf') format('truetype'),
+    url('/fonts/fakt/FaktPro-Normal.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Fakt Pro';
+  font-weight: normal;
+  font-style: italic;
+  src: url('/fonts/fakt/FaktPro-NormalItalic.otf') format('opentype'),
+    url('/fonts/fakt/FaktPro-NormalItalic_web.ttf') format('truetype'),
+    url('/fonts/fakt/FaktPro-NormalItalic.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Fakt Pro';
+  font-weight: bold;
+  font-style: normal;
+  src: url('/fonts/fakt/FaktPro-Medium.otf') format('opentype'),
+    url('/fonts/fakt/FaktPro-Medium_web.ttf') format('truetype'),
+    url('/fonts/fakt/FaktPro-Medium.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Fakt Pro';
+  font-weight: bold;
+  font-style: italic;
+  src: url('/fonts/fakt/FaktPro-MediumItalic.otf') format('opentype'),
+    url('/fonts/fakt/FaktPro-MediumItalic_web.ttf') format('truetype'),
+    url('/fonts/fakt/FaktPro-MediumItalic.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Fakt Pro Light';
+  font-weight: normal;
+  font-style: normal;
+  src: url('/fonts/fakt/FaktSlabPro-Light.otf') format('opentype'),
+    url('/fonts/fakt/FaktSlabPro-Light.ttf') format('truetype');
+}
