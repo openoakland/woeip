@@ -12,6 +12,9 @@ install:
   - docker-compose -f docker-compose.yml -f docker-compose.ci.yml build
   - pip install -U codecov
 
+before_script:
+  - export NODE_OPTIONS=–max_old_space_size=4096
+
 script:
   - docker-compose -f docker-compose.yml -f docker-compose.ci.yml run --name api api "make coverage"
   - docker cp api:/usr/src/app/.coverage .coverage

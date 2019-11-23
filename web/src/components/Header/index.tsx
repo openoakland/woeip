@@ -1,4 +1,4 @@
-import styled from '@emotion/styled'
+import styled from 'theme'
 import Logo from 'components/Logo'
 import React from 'react'
 import { Container, Menu, MenuItemProps } from 'semantic-ui-react'
