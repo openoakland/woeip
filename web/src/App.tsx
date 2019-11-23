@@ -3,6 +3,7 @@ import { Route, Switch } from 'react-router-dom'
 import { ThemeProvider } from 'emotion-theming'
 import Home from './Home'
 import 'semantic-ui-css/semantic.min.css'
+import './App.scss'
 import theme from 'theme'
 
 const App = () => (
