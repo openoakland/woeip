@@ -15,6 +15,7 @@ module.exports = {
 
     config.resolve.alias = {
       ...config.resolve.alias,
+      routes: path.resolve('./src/routes'),
       theme: path.resolve('./src/theme')
     }
 
