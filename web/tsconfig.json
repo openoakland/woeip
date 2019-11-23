@@ -17,6 +17,7 @@
     "noImplicitThis": true,
     "noUnusedLocals": false,
     "paths": {
+      "components/*": ["components/*"],
       "routes": ["routes"],
       "theme": ["theme"],
     },
