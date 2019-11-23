@@ -6,6 +6,12 @@
     "interface-name": false,
     "jsx-boolean-value": false,
     "max-line-length": [true, 88],
+    "member-ordering": [
+      true,
+      "private-before-public",
+      "static-before-instance",
+      "variables-before-functions"
+    ],
     "no-console": false,
     "no-implicit-dependencies": [
       true,
