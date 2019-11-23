@@ -17,7 +17,8 @@
     "noImplicitThis": true,
     "noUnusedLocals": false,
     "paths": {
-      "theme": ["theme"]
+      "routes": ["routes"],
+      "theme": ["theme"],
     },
     "sourceMap": true,
     "strictNullChecks": true,
