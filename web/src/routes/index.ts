@@ -1,4 +1,5 @@
 import Home from 'components/Home'
+import Map from 'components/Map'
 
 interface RouteConfig {
   path?: string
@@ -25,7 +26,7 @@ const routes: Array<RouteConfig> = [
   {
     path: '/maps',
     exact: true,
-    component: Home
+    component: Map
   }
 ]
 
