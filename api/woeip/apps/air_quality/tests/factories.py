@@ -2,15 +2,42 @@
 import random
 
 import factory.fuzzy
+from faker.providers.python import Provider as PythonProvider
 import pytz
 from django.contrib.gis.geos import Point
 from woeip.apps.air_quality import models
 from woeip.apps.core.tests.factories import UserFactory
 
 
-class FuzzyPoint(factory.fuzzy.BaseFuzzyAttribute):
-    def fuzz(self):
-        return Point(random.random() * 180 - 90, random.random() * 360 - 180)
+class Provider(PythonProvider):
+    """Custom Faker provider methods
+    """
+
+    def random_value_in_range(self, min_value, max_value, digits=6):
+        # min_value and max_value apply to left-of-decimal value
+        # to get [0,1), need to set both to 0
+        base_val = self.pyfloat(
+            min_value=0, max_value=0, positive=True, right_digits=digits
+        )
+        return round(base_val * (max_value - min_value) + min_value, digits)
+
+    def west_oakland_geo_point(self):
+        lat_range = [37.798291, 37.823804]
+        lon_range = [-122.308052, -122.269242]
+        lat = self.random_value_in_range(
+            min_value=lat_range[0], max_value=lat_range[1], digits=6
+        )
+        lon = self.random_value_in_range(
+            min_value=lon_range[0], max_value=lon_range[1], digits=6
+        )
+        return Point(lat, lon)
+
+    def pollutant_value(self):
+        return self.random_value_in_range(min_value=0.0, max_value=0.050, digits=3)
+
+
+# Register new provider with Faker
+factory.Faker.add_provider(Provider)
 
 
 class DeviceFactory(factory.DjangoModelFactory):
@@ -26,7 +53,7 @@ class PollutantFactory(factory.DjangoModelFactory):
     class Meta:
         model = models.Pollutant
 
-    name = factory.Faker("pystr", max_chars=64)
+    name = factory.Faker("safe_color_name")
     description = factory.Faker("sentence", nb_words=3)
 
 
@@ -75,7 +102,7 @@ class TimeGeoFactory(factory.DjangoModelFactory):
         model = models.TimeGeo
 
     collection_file = factory.SubFactory(CollectionFileFactory)
-    location = FuzzyPoint()
+    location = factory.Faker("west_oakland_geo_point")
     time = factory.Faker("past_datetime", tzinfo=pytz.utc)
 
 
@@ -86,4 +113,4 @@ class PollutantValueFactory(factory.DjangoModelFactory):
     collection_file = factory.SubFactory(CollectionFileFactory)
     time_geo = factory.SubFactory(TimeGeoFactory)
     pollutant = factory.SubFactory(PollutantFactory)
-    value = factory.Faker("pyfloat")
+    value = factory.Faker("pollutant_value")
