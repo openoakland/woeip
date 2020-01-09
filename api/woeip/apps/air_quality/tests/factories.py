@@ -53,7 +53,7 @@ class PollutantFactory(factory.DjangoModelFactory):
     class Meta:
         model = models.Pollutant
 
-    name = factory.Faker("safe_color_name")
+    name = factory.Faker("random_element", elements=["PM1", "PM2.5", "PM4", "PM10"],)
     description = factory.Faker("sentence", nb_words=3)
 
 
