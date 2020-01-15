@@ -1,0 +1,2 @@
+docker-compose up -dV --build
+what might be happening is that the old volumes are being used for this container so the actual npm packages aren't being copied into the container
