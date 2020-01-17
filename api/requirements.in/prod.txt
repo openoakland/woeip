@@ -1,11 +1,11 @@
 argon2-cffi
-django==2.1.11
+django==3.0.2
 django-boto
 django-environ
 django-extensions
 django-model-utils
 django-storages
-djangorestframework
+djangorestframework==3.11.0
 drf-yasg
 gevent
 gunicorn==19.9.0
