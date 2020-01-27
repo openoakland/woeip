@@ -1,6 +1,7 @@
 # pylint: disable=too-many-ancestors
 import logging
 
+from django.db import transaction
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework import viewsets
@@ -39,6 +40,7 @@ class CollectionViewSet(viewsets.ModelViewSet):
 
         return Response(serializer.data)
 
+    @transaction.atomic
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
