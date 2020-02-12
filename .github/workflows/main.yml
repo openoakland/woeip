@@ -4,6 +4,7 @@ on: [push]
 
 jobs:
   build:
+    runs-on: ubuntu-latest
     env:
       PYTHON_ENV: ${{ secrets.PYTHON_ENV }}
       API_PORT: ${{ secrets.API_PORT }}
@@ -14,13 +15,12 @@ jobs:
       POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
       POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
       POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
-    runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
     - name: Build docker images
       run: |
-        docker-compose -f docker-compose.yml -f docker-compose.ci.yml build
+        docker-compose -f docker-compose.yml -f docker-compose.ci.yml build web
+        docker-compose -f docker-compose.yml -f docker-compose.ci.yml build api
     - name: Generate coverage report
       run: |
         docker-compose -f docker-compose.yml -f docker-compose.ci.yml run --name api api "make coverage && coverage xml"

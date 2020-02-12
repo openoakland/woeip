@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "start": "razzle start",
-    "build": "cross-env NODE_OPTIONS=--max_old_space_size=4096 razzle build",
+    "build": "cross-env NODE_OPTIONS=--max_old_space_size=8192 razzle build",
     "test": "razzle test --env=jsdom",
     "start:prod": "NODE_ENV=production node build/server.js"
   },
