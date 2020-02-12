@@ -1,0 +1,17 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Running docker scripts
+      run: |
+        docker-compose -f docker-compose.yml -f docker-compose.ci.yml build web
+        docker-compose -f docker-compose.yml -f docker-compose.ci.yml build api
+        docker-compose -f docker-compose.yml -f docker-compose.ci.yml run --name api api "make coverage && coverage xml"
+        docker cp api:/usr/src/app/coverage.xml coverage.xml
