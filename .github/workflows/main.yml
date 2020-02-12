@@ -9,7 +9,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Install codecov
+    - name: install codecov
       run: |
         pip install -U codecov 
     - name: Running docker scripts
