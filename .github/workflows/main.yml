@@ -4,7 +4,16 @@ on: [push]
 
 jobs:
   build:
-
+    env:
+      PYTHON_ENV: ${{ secrets.PYTHON_ENV }}
+      API_PORT: ${{ secrets.API_PORT }}
+      SECRET_KEY: ${{ secrets.SECRET_KEY }}
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      DEFAULT_FILE_STORAGE: ${{ secrets.DEFAULT_FILE_STORAGE }}
+      API_DOMAIN: ${{ secrets.API_DOMAIN }}
+      POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+      POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
     runs-on: ubuntu-latest
 
     steps:
@@ -23,13 +32,3 @@ jobs:
         file: ./coverage.xml
         yml: ./codecov.yml 
         fail_ci_if_error: true
-      env:
-        PYTHON_ENV: ${{ secrets.PYTHON_ENV }}
-        API_PORT: ${{ secrets.API_PORT }}
-        SECRET_KEY: ${{ secrets.SECRET_KEY }}
-        DATABASE_URL: ${{ secrets.DATABASE_URL }}
-        DEFAULT_FILE_STORAGE: ${{ secrets.DEFAULT_FILE_STORAGE }}
-        API_DOMAIN: ${{ secrets.API_DOMAIN }}
-        POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-        POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-        POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
