@@ -9,15 +9,20 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: install codecov
+    - name: Build docker images
       run: |
-        pip install -U codecov 
-    - name: Running docker scripts
+        docker-compose -f docker-compose.yml -f docker-compose.ci.yml build
+    - name: Generate coverage report
       run: |
-        docker-compose -f docker-compose.yml -f docker-compose.ci.yml build web
-        docker-compose -f docker-compose.yml -f docker-compose.ci.yml build api
         docker-compose -f docker-compose.yml -f docker-compose.ci.yml run --name api api "make coverage && coverage xml"
         docker cp api:/usr/src/app/coverage.xml coverage.xml
+    - name: Upload coverage to Codecov  
+      uses: codecov/codecov-action@v1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        file: ./coverage.xml
+        yml: ./codecov.yml 
+        fail_ci_if_error: true
       env:
         PYTHON_ENV: ${{ secrets.PYTHON_ENV }}
         API_PORT: ${{ secrets.API_PORT }}
