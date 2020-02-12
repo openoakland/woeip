@@ -9,6 +9,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: Install codecov
+      run: |
+        pip install -U codecov 
     - name: Running docker scripts
       run: |
         docker-compose -f docker-compose.yml -f docker-compose.ci.yml build web
