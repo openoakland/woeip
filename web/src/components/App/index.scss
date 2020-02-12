@@ -1,0 +1,75 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Fakt Pro';
+}
+
+h1, h2, h3, h4, h5, p, div {
+  font-family: 'Fakt Pro';
+}
+
+@font-face {
+  font-family: 'Fakt Pro';
+  font-weight: lighter;
+  font-style: normal;
+  src: url('/fonts/FaktPro-Blond.otf') format('opentype'),
+    url('/fonts/FaktPro-Blond_web.ttf') format('truetype'),
+    url('/fonts/FaktPro-Blond.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Fakt Pro';
+  font-weight: lighter;
+  font-style: italic;
+  src: url('/fonts/FaktPro-BlondItalic.otf') format('opentype'),
+    url('/fonts/FaktPro-BlondItalic_web.ttf') format('truetype'),
+    url('/fonts/FaktPro-BlondItalic.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Fakt Pro';
+  font-weight: normal;
+  font-style: normal;
+  src: url('/fonts/FaktPro-Normal.otf') format('opentype'),
+    url('/fonts/FaktPro-Normal_web.ttf') format('truetype'),
+    url('/fonts/FaktPro-Normal.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Fakt Pro';
+  font-weight: normal;
+  font-style: italic;
+  src: url('/fonts/FaktPro-NormalItalic.otf') format('opentype'),
+    url('/fonts/FaktPro-NormalItalic_web.ttf') format('truetype'),
+    url('/fonts/FaktPro-NormalItalic.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Fakt Pro';
+  font-weight: bold;
+  font-style: normal;
+  src: url('/fonts/FaktPro-Medium.otf') format('opentype'),
+    url('/fonts/FaktPro-Medium_web.ttf') format('truetype'),
+    url('/fonts/FaktPro-Medium.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Fakt Pro';
+  font-weight: bold;
+  font-style: italic;
+  src: url('/fonts/FaktPro-MediumItalic.otf') format('opentype'),
+    url('/fonts/FaktPro-MediumItalic_web.ttf') format('truetype'),
+    url('/fonts/FaktPro-MediumItalic.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Fakt Pro Light';
+  font-weight: normal;
+  font-style: normal;
+  src: url('/fonts/FaktSlabPro-Light.otf') format('opentype'),
+    url('/fonts/FaktSlabPro-Light.ttf') format('truetype');
+}
