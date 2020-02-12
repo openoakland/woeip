@@ -5,10 +5,17 @@ import shutil
 import tempfile
 
 from django.conf import settings
+from pathlib import Path
 from rest_framework.test import APIRequestFactory
 from rest_framework.test import APITestCase
 from woeip.apps.air_quality import views
 from woeip.apps.air_quality.tests import factories
+
+
+TEST_DATA_DIRECTORY = Path(__file__).parent / "data"
+GPS_PATH = TEST_DATA_DIRECTORY / "gps.log"
+DUSTRAK_PATH = TEST_DATA_DIRECTORY / "dustrak.csv"
+
 
 request_factory = APIRequestFactory()
 
@@ -19,7 +26,7 @@ class WoaqAPITestCase(APITestCase):
         self._temp_media = tempfile.mkdtemp()
         settings.MEDIA_ROOT = self._temp_media
 
-        self.logger = logging.getLogger('django.request')
+        self.logger = logging.getLogger("django.request")
         self._original_logger_level = self.logger.getEffectiveLevel()
         self.logger.setLevel(logging.ERROR)
 
@@ -67,18 +74,25 @@ class TestCollection(WoaqAPITestCase):
         """Tests collection create method."""
         starts_at = datetime.datetime(2019, 1, 1, 10, 15)
         ends_at = datetime.datetime(2019, 1, 1, 14, 15)
+
+        with open(GPS_PATH) as f:
+            gps_file_data = f.read()
+
+        with open(DUSTRAK_PATH) as f:
+            dustrak_file_data = f.read()
+
+        pollutant = factories.PollutantFactory()
+
         data = {
-                "upload_files": [
-                    {"file_name": "gps_file.log",
-                     "file_data": b"gpsfiledata"},
-                    {"file_name": "dustrak_file.csv",
-                     "file_data": b"dustrakfiledata"},
-                    ],
-                "starts_at": starts_at,
-                "ends_at": ends_at
-            }
-        response = self.client.post(
-            "/collection", data, format="json")
+            "upload_files": [
+                {"file_name": "gps_file.log", "file_data": gps_file_data},
+                {"file_name": "dustrak_file.csv", "file_data": dustrak_file_data},
+            ],
+            "starts_at": starts_at,
+            "ends_at": ends_at,
+            "pollutant": pollutant.pk,
+        }
+        response = self.client.post("/collection", data, format="json")
         assert response.status_code == 201
 
     def test_create_collection_bad_start(self):
@@ -87,17 +101,14 @@ class TestCollection(WoaqAPITestCase):
         starts_at = (2019, 1, 1, 10, 15)
         ends_at = datetime.datetime(2019, 1, 1, 14, 15)
         data = {
-                "upload_files": [
-                    {"file_name": "gps_file.log",
-                     "file_data": b"gpsfiledata"},
-                    {"file_name": "dustrak_file.csv",
-                     "file_data": b"dustrakfiledata"},
-                    ],
-                "starts_at": starts_at,
-                "ends_at": ends_at
-            }
-        response = self.client.post(
-            "/collection", data, format='json')
+            "upload_files": [
+                {"file_name": "gps_file.log", "file_data": b"gpsfiledata"},
+                {"file_name": "dustrak_file.csv", "file_data": b"dustrakfiledata"},
+            ],
+            "starts_at": starts_at,
+            "ends_at": ends_at,
+        }
+        response = self.client.post("/collection", data, format="json")
         assert response.status_code == 400
         assert response.content.startswith(b"""{"starts_at":""")
 
@@ -107,17 +118,14 @@ class TestCollection(WoaqAPITestCase):
         starts_at = datetime.datetime(2019, 1, 1, 10, 15)
         ends_at = [2019, 1, 1, 14, 15]
         data = {
-                "upload_files": [
-                    {"file_name": "gps_file.log",
-                     "file_data": b"gpsfiledata"},
-                    {"file_name": "dustrak_file.csv",
-                     "file_data": b"dustrakfiledata"},
-                    ],
-                "starts_at": starts_at,
-                "ends_at": ends_at
-            }
-        response = self.client.post(
-            "/collection", data, format='json')
+            "upload_files": [
+                {"file_name": "gps_file.log", "file_data": b"gpsfiledata"},
+                {"file_name": "dustrak_file.csv", "file_data": b"dustrakfiledata"},
+            ],
+            "starts_at": starts_at,
+            "ends_at": ends_at,
+        }
+        response = self.client.post("/collection", data, format="json")
         assert response.status_code == 400
         assert response.content.startswith(b"""{"ends_at":""")
 
@@ -125,22 +133,15 @@ class TestCollection(WoaqAPITestCase):
         """Tests that collection creation fails if files input is incorrect."""
         starts_at = datetime.datetime(2019, 1, 1, 10, 15)
         ends_at = datetime.datetime(2019, 1, 1, 14, 15)
-        data = {
-                'upload_files': b'bad stuff',
-                'starts_at': starts_at,
-                'ends_at': ends_at
-            },
-        response = self.client.post(
-            "/collection", data, format='json')
+        data = (
+            {"upload_files": b"bad stuff", "starts_at": starts_at, "ends_at": ends_at},
+        )
+        response = self.client.post("/collection", data, format="json")
         assert response.status_code == 400
         assert response.content.startswith(b"""{"non_field_errors":""")
 
-        data = {
-                'starts_at': starts_at,
-                'ends_at': ends_at
-            },
-        response = self.client.post(
-            "/collection", data, format='json')
+        data = ({"starts_at": starts_at, "ends_at": ends_at},)
+        response = self.client.post("/collection", data, format="json")
         assert response.status_code == 400
         assert response.content.startswith(b"""{"non_field_errors":""")
 
@@ -152,18 +153,21 @@ class TestCollectionSequence(WoaqAPITestCase):
             random.randint(2000, 2019),
             random.randint(1, 12),
             random.randint(1, 28),
-            random.randint(2, 22), 00, 00,
+            random.randint(2, 22),
+            00,
+            00,
             tzinfo=datetime.timezone.utc,
         )
         self.collection = factories.CollectionFactory(starts_at=starts_at)
         minute_interval = random.randint(1, 60)
         self.collection_samedate = factories.CollectionFactory(
-            starts_at=self.collection.starts_at +
-            datetime.timedelta(minutes=minute_interval))
+            starts_at=self.collection.starts_at
+            + datetime.timedelta(minutes=minute_interval)
+        )
         day_interval = random.randint(1, 100) * random.choice([-1, 1])
         self.collection_diffdate = factories.CollectionFactory(
-            starts_at=self.collection.starts_at +
-            datetime.timedelta(days=day_interval))
+            starts_at=self.collection.starts_at + datetime.timedelta(days=day_interval)
+        )
 
     def test_collection_sequence(self):
         request = request_factory.get("/collection")
