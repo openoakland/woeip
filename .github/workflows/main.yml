@@ -15,3 +15,13 @@ jobs:
         docker-compose -f docker-compose.yml -f docker-compose.ci.yml build api
         docker-compose -f docker-compose.yml -f docker-compose.ci.yml run --name api api "make coverage && coverage xml"
         docker cp api:/usr/src/app/coverage.xml coverage.xml
+      env:
+        PYTHON_ENV: ${{ secrets.PYTHON_ENV }}
+        API_PORT: ${{ secrets.API_PORT }}
+        SECRET_KEY: ${{ secrets.SECRET_KEY }}
+        DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        DEFAULT_FILE_STORAGE: ${{ secrets.DEFAULT_FILE_STORAGE }}
+        API_DOMAIN: ${{ secrets.API_DOMAIN }}
+        POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+        POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+        POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
