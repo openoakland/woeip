@@ -77,6 +77,17 @@ class CollectionSerializer(serializers.HyperlinkedModelSerializer):
         extra_kwargs = {"collection_files": {"required": False}}
 
     def create(self, validated_data):
+        # Assert that there are exactly two uploaded files
+        # Currently we only handles the exactly-two case
+        num_upload_files = len(validated_data.get("upload_files", []))
+        if num_upload_files != 2:
+            raise exceptions.ValidationError(
+                detail=(
+                    "Only a single pair of GPS/Dustrak files is currently supported. "
+                    + f"Please upload exactly 2 files. You uploaded {num_upload_files}."
+                )
+            )
+
         collection = Collection.objects.create(
             starts_at=validated_data.get("starts_at"),
             ends_at=validated_data.get("ends_at"),
@@ -108,27 +119,31 @@ class CollectionSerializer(serializers.HyperlinkedModelSerializer):
                 try:
                     gps_file = collection_file
                     gps_df = load_gps(gps_file.file.path)
-                except Exception:
+                except Exception as e:
                     gps_exception = e
                     continue
 
+        # Error messages if parsing failed
         errors = []
-        if dustrak_df is None:
-            dustrak_error_message = (
-                "No valid Dustrak file found. "
-                + "Please upload a valid file with 'dustrak' in the filename. "
+        if dustrak_df is None and dustrak_exception is None:
+            errors.append(
+                "No Dustrak file found. "
+                + "Please upload a Dustrak file with 'dustrak' in the filename. "
             )
-            if dustrak_exception is not None:
-                dustrak_error_message += repr(dustrak_exception)
-            errors.append(dustrak_error_message)
-        if gps_df is None:
-            gps_error_message = (
-                "No valid GPS file found. "
-                + "Please upload a valid file with 'gps' in the filename."
+        elif dustrak_exception is not None:
+            errors.append(
+                f"Dustrak file failed to process with: {repr(dustrak_exception)}"
             )
-            if gps_exception is not None:
-                gpserror_message += repr(gps_exception)
-            errors.append(gps_error_message)
+
+        # Error messages if parsing failed
+        if gps_df is None and gps_exception is None:
+            errors.append(
+                "No GPS file found. "
+                + "Please upload a GPS file with 'gps' in the filename. "
+            )
+        elif gps_exception is not None:
+            errors.append(f"GPS file failed to process with: {repr(gps_exception)}")
+
         if len(errors) > 0:
             raise exceptions.ValidationError(detail=errors)
 
