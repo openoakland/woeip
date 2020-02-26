@@ -95,6 +95,88 @@ class TestCollection(WoaqAPITestCase):
         response = self.client.post("/collection", data, format="json")
         assert response.status_code == 201
 
+    def test_create_collection_missing_gps(self):
+        """Tests collection create method when missing GPS file."""
+        starts_at = datetime.datetime(2019, 1, 1, 10, 15)
+        ends_at = datetime.datetime(2019, 1, 1, 14, 15)
+
+        with open(GPS_PATH) as f:
+            gps_file_data = f.read()
+
+        with open(DUSTRAK_PATH) as f:
+            dustrak_file_data = f.read()
+
+        pollutant = factories.PollutantFactory()
+
+        data = {
+            "upload_files": [
+                {"file_name": "bad_file.log", "file_data": gps_file_data},
+                {"file_name": "dustrak_file.csv", "file_data": dustrak_file_data},
+            ],
+            "starts_at": starts_at,
+            "ends_at": ends_at,
+            "pollutant": pollutant.pk,
+        }
+        response = self.client.post("/collection", data, format="json")
+        print(response.content)
+        assert response.status_code == 400
+        assert response.content.startswith(b'["No GPS file found.')
+
+    def test_create_collection_missing_dustrak(self):
+        """Tests collection create method when missing dustrak file."""
+        starts_at = datetime.datetime(2019, 1, 1, 10, 15)
+        ends_at = datetime.datetime(2019, 1, 1, 14, 15)
+
+        with open(GPS_PATH) as f:
+            gps_file_data = f.read()
+
+        with open(DUSTRAK_PATH) as f:
+            dustrak_file_data = f.read()
+
+        pollutant = factories.PollutantFactory()
+
+        data = {
+            "upload_files": [
+                {"file_name": "gps_file.log", "file_data": gps_file_data},
+                {"file_name": "bad_file.csv", "file_data": dustrak_file_data},
+            ],
+            "starts_at": starts_at,
+            "ends_at": ends_at,
+            "pollutant": pollutant.pk,
+        }
+        response = self.client.post("/collection", data, format="json")
+        print(response.content)
+        assert response.status_code == 400
+        assert response.content.startswith(b'["No Dustrak file found.')
+
+    def test_create_collection_wrong_number(self):
+        """Tests collection create method with wrong number of files."""
+        starts_at = datetime.datetime(2019, 1, 1, 10, 15)
+        ends_at = datetime.datetime(2019, 1, 1, 14, 15)
+
+        with open(GPS_PATH) as f:
+            gps_file_data = f.read()
+
+        with open(DUSTRAK_PATH) as f:
+            dustrak_file_data = f.read()
+
+        pollutant = factories.PollutantFactory()
+
+        data = {
+            "upload_files": [
+                {"file_name": "random_file.log", "file_data": gps_file_data},
+                {"file_name": "dustrak_file.csv", "file_data": dustrak_file_data},
+                {"file_name": "dustrak_file1.csv", "file_data": dustrak_file_data},
+            ],
+            "starts_at": starts_at,
+            "ends_at": ends_at,
+            "pollutant": pollutant.pk,
+        }
+        response = self.client.post("/collection", data, format="json")
+        print(response.content)
+        assert response.status_code == 400
+        assert b"Please upload exactly 2 files." in response.content
+
     def test_create_collection_bad_start(self):
         """Tests that collection creation fails if starts_at is not
         a proper datetime object."""
