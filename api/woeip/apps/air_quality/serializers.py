@@ -1,6 +1,12 @@
 # pylint: disable=abstract-method
 from django.core.files.base import ContentFile
-from rest_framework import serializers
+from rest_framework import serializers, exceptions
+from woeip.apps.air_quality.dustrak import (
+    load_dustrak,
+    load_gps,
+    join as join_dustrak,
+    save as save_dustrak,
+)
 from woeip.apps.air_quality.models import Calibration
 from woeip.apps.air_quality.models import Collection
 from woeip.apps.air_quality.models import CollectionFile
@@ -40,7 +46,7 @@ class DeviceSerializer(serializers.HyperlinkedModelSerializer):
 class PollutantSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Pollutant
-        fields = ["name", "description"]
+        fields = ["id", "name", "description"]
 
 
 class PollutantValueSerializer(serializers.ModelSerializer):
@@ -54,24 +60,108 @@ class PollutantValueSerializer(serializers.ModelSerializer):
 
 class CollectionSerializer(serializers.HyperlinkedModelSerializer):
     upload_files = serializers.ListField(write_only=True, required=False)
+    pollutant = serializers.PrimaryKeyRelatedField(
+        queryset=Pollutant.objects.all(), write_only=True, required=True
+    )
 
     class Meta:
         model = Collection
-        fields = ["starts_at", "ends_at", "collection_files", "upload_files"]
+        fields = [
+            "id",
+            "starts_at",
+            "ends_at",
+            "collection_files",
+            "upload_files",
+            "pollutant",
+        ]
         extra_kwargs = {"collection_files": {"required": False}}
 
     def create(self, validated_data):
+
+        ## Basic validation that we have the right files
+
+        upload_files = validated_data.pop("upload_files", [])
+
+        # Assert that there are exactly two uploaded files
+        # Currently we only handles the exactly-two case
+        num_upload_files = len(upload_files)
+        if num_upload_files != 2:
+            raise exceptions.ValidationError(
+                detail=(
+                    "Only a single pair of GPS/Dustrak files is currently supported. "
+                    + f"Please upload exactly 2 files. You uploaded {num_upload_files}."
+                )
+            )
+
+        # Check that we have a dustrak file and a gps file
+        dustrak_upload_file = None
+        gps_upload_file = None
+        missing_file_errors = []
+        for upload_file in upload_files:
+            if "dustrak" in upload_file["file_name"].lower():
+                dustrak_upload_file = upload_file
+            elif "gps" in upload_file["file_name"].lower():
+                gps_upload_file = upload_file
+        if dustrak_upload_file is None:
+            missing_file_errors.append(
+                "No Dustrak file found. "
+                + "Please upload a Dustrak file with 'dustrak' in the filename. "
+            )
+        if gps_upload_file is None:
+            missing_file_errors.append(
+                "No GPS file found. "
+                + "Please upload a GPS file with 'gps' in the filename. "
+            )
+        if len(missing_file_errors) > 0:
+            raise exceptions.ValidationError(detail=missing_file_errors)
+
+        # Now that we've validated the basics, create Collection and try to process
         collection = Collection.objects.create(
             starts_at=validated_data.get("starts_at"),
             ends_at=validated_data.get("ends_at"),
         )
 
-        for upload_file in validated_data.pop("upload_files", []):
-            collection_file = CollectionFile.objects.create(
-                collection=collection,
+        ## Create Collection, safe files, read into dataframe ##
+
+        parsing_errors = []
+
+        # Save CollectionFile and process for Dustrak
+        dustrak_collection_file = CollectionFile.objects.create(collection=collection)
+        dustrak_collection_file.file.save(
+            dustrak_upload_file["file_name"],
+            ContentFile(dustrak_upload_file["file_data"]),
+        )
+        dustrak_df = None  # need this to break out of try scope
+        try:
+            dustrak_metadata, dustrak_df = load_dustrak(
+                dustrak_collection_file.file.path, tz="America/Los_Angeles"
             )
-            collection_file.file.save(
-                upload_file["file_name"], ContentFile(upload_file["file_data"]))
+        except Exception as e:
+            parsing_errors.append(f"Dustrak file failed to process with: {repr(e)}")
+
+        # Save CollectionFile and process for GPS
+        gps_collection_file = CollectionFile.objects.create(collection=collection)
+        gps_collection_file.file.save(
+            gps_upload_file["file_name"], ContentFile(gps_upload_file["file_data"]),
+        )
+        gps_df = None  # need this to break out of try scope
+        try:
+            gps_df = load_gps(gps_collection_file.file.path)
+        except Exception as e:
+            parsing_errors.append(f"GPS file failed to process with: {repr(e)}")
+
+        if len(parsing_errors) > 0:
+            raise exceptions.ValidationError(detail=parsing_errors)
+
+        ## Join two dataframes ###
+
+        joined_df = join_dustrak(air_quality=dustrak_df, gps=gps_df)
+        save_dustrak(
+            joined_data=joined_df,
+            gps_collection_file=gps_collection_file,
+            pollutant_collection_file=dustrak_collection_file,
+            pollutant=validated_data.pop("pollutant"),
+        )
 
         return collection
 
