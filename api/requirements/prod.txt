@@ -17,7 +17,7 @@ django-environ==0.4.5
 django-extensions==2.2.6
 django-model-utils==3.2.0
 django-storages==1.8
-django==3.0.2
+django==3.0.3
 djangorestframework==3.11.0
 drf-yasg==1.17.0
 gevent==1.4.0
