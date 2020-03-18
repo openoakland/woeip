@@ -95,7 +95,7 @@ class Map extends Component {
         const date = new Date(individualPollutant.time_geo.substr(0, individualPollutant.time_geo.indexOf(' (')).replace(' ', ':'))
         const startCut:number =  individualPollutant.time_geo.indexOf('(') + 1
         const endCut: number = individualPollutant.time_geo.indexOf(')')
-        const [latitude, longitude] = individualPollutant.time_geo.slice(startCut, endCut).split(", ")
+        const [longitude, latitude] = individualPollutant.time_geo.slice(startCut, endCut).split(", ")
         return {
           time: date,
           coordinates: {
@@ -111,7 +111,6 @@ class Map extends Component {
   }
 
   render() {
-
     return (
       <MapContainer className="map-container">
         <ReactMapGL

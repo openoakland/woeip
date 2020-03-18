@@ -31,7 +31,7 @@ These are general guidelines on the flow from design to implementation
 
   # 5. Run tests as described below
 
-  # 6. Create a pull request 
+  # 6. Create a pull request
 ```
 
 ## Issues
@@ -75,7 +75,7 @@ As the codebase develops, robust testing techniques ensure code integrity. With 
 appropriate tests.
 
 Testing resources include:
-- [Django Testing](https://docs.djangoproject.com/en/2.2/topics/testing/overview/)
+- [Django Testing](https://docs.djangoproject.com/en/3.0/topics/testing/)
 - [Python Faker](https://faker.readthedocs.io/en/master/)
 - [Pytest](https://docs.pytest.org/en/latest/)
 

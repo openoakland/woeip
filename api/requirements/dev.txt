@@ -5,6 +5,7 @@
 #    pip-compile --output-file=requirements/dev.txt requirements.in/dev.txt
 #
 argon2-cffi==19.1.0
+asgiref==3.2.3            # via django
 astroid==2.2.5
 atomicwrites==1.3.0       # via pytest
 attrs==19.1.0             # via pytest
@@ -21,8 +22,8 @@ django-environ==0.4.5
 django-extensions==2.1.9
 django-model-utils==3.2.0
 django-storages==1.7.1
-django==2.1.11
-djangorestframework==3.10.2
+django==3.0.3
+djangorestframework==3.11.0
 drf-yasg==1.17.0
 factory-boy==2.12.0
 faker==2.0.0              # via factory-boy
@@ -56,7 +57,7 @@ requests==2.22.0          # via coreapi
 ruamel.yaml.clib==0.2.0   # via ruamel.yaml
 ruamel.yaml==0.16.5       # via drf-yasg
 six==1.12.0               # via argon2-cffi, astroid, django-extensions, drf-yasg, faker, packaging, python-dateutil
-sqlparse==0.3.0           # via django-debug-toolbar
+sqlparse==0.3.0           # via django, django-debug-toolbar
 text-unidecode==1.2       # via faker
 typed-ast==1.4.0          # via astroid, mypy
 typing-extensions==3.7.4  # via mypy
