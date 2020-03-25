@@ -1,0 +1,15 @@
+.filters-container .ui.icon.input {
+  width: 250px;
+}
+
+.filters-container .mapboxgl-ctrl-group {
+  background: initial;
+}
+
+.filters-container .mapboxgl-ctrl-group:not(:empty) {
+  box-shadow: none;
+}
+
+.filters-container .mapboxgl-ctrl-group > button {
+  background-color: #fff;
+}

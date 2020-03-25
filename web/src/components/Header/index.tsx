@@ -1,6 +1,6 @@
 import styled from 'theme'
 import Logo from 'components/Logo'
-import React, { useState } from 'react'
+import React from 'react'
 import { Container, Menu, MenuItemProps } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 
@@ -10,7 +10,7 @@ const StyledContainer = styled(Container)`
   align-items: center;
   align-content: center;
   padding-top: 48px;
-  .menu a {
+  a {
     line-height: 16px;
     &:hover:not(.active) {
       font-weight: lighter;
@@ -26,40 +26,56 @@ const StyledContainer = styled(Container)`
 
 const menuItems = ['about', 'upload', 'maps']
 
-const Header: React.FunctionComponent = () => {
-  const [activeItem, setActiveItem] = useState<MenuItemProps['name']>(
-    menuItems[menuItems.length - 1]
-  )
+interface Props {
+  loggedIn: boolean
+  firstname?: string
+}
 
-  const handleItemClick: MenuItemProps['onClick'] = (
+interface State {
+  activeItem: string
+}
+
+class Header extends React.Component<Props> {
+  public static displayName = 'Header'
+
+  public static defaultProps = {
+    loggedIn: false
+  }
+
+  public readonly state: State = {
+    activeItem: 'maps'
+  }
+
+  private handleItemClick = (
     _: React.MouseEvent<HTMLAnchorElement>,
     { name }: MenuItemProps
-  ) => setActiveItem(name)
+  ) => this.setState({ activeItem: name })
 
-  return (
-    <StyledContainer>
-      <Link to='/'>
+  public render() {
+    const { activeItem } = this.state
+    return (
+      <StyledContainer>
         <Logo />
-      </Link>
-      <Menu stackable pointing secondary>
-        <Menu.Menu position='right'>
-          {menuItems.map(item => (
-            <Menu.Item
-              key={item}
-              name={item}
-              link
-              as={Link}
-              to={`/${item}`}
-              active={activeItem === item}
-              onClick={handleItemClick}
-            >
-              {item}
-            </Menu.Item>
-          ))}
-        </Menu.Menu>
-      </Menu>
-    </StyledContainer>
-  )
+        <Menu stackable pointing secondary>
+          <Menu.Menu position='right'>
+            {menuItems.map(item => (
+              <Menu.Item
+                key={item}
+                name={item}
+                link
+                as={Link}
+                to={`/${item}`}
+                active={activeItem === item}
+                onClick={this.handleItemClick}
+              >
+                {item}
+              </Menu.Item>
+            ))}
+          </Menu.Menu>
+        </Menu>
+      </StyledContainer>
+    )
+  }
 }
 
 export default Header
