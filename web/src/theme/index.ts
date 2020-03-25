@@ -19,21 +19,14 @@ enum colors {
   gray = '#CFD0CE'
 }
 
-enum fonts {
-  primary = 'Fakt Pro',
-  secondary = 'Fakt Pro Light'
-}
-
 interface Theme {
   breakpoints: typeof breakpoints
   colors: typeof colors
-  fonts: typeof fonts
 }
 
 export const theme: Theme = {
   breakpoints,
-  colors,
-  fonts
+  colors
 }
 
 export default styled as CreateStyled<Theme>

@@ -10,9 +10,6 @@ const Logo = styled.div`
   color: ${({ theme }) => theme.colors.text};
   font-size: 56px;
   line-height: 48px;
-  text-align: right;
-  word-wrap: break-word;
-  width: 100px;
 `
 
 export default Logo
