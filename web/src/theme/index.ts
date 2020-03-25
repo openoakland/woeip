@@ -11,7 +11,7 @@ enum breakpoints {
 }
 
 enum colors {
-  primary = '#0E5478',
+  primary = '#26AE60',
   secondary = '#FFFF57',
   text = '#404040',
   white = '#FFF',

@@ -12,9 +12,9 @@ const StyledContainer = styled(Container)`
   padding-top: 48px;
   .menu a {
     line-height: 16px;
+    padding: 20px 40px !important;
     &:hover:not(.active) {
-      font-weight: lighter;
-      opacity: 0.5;
+      opacity: 0.8;
     }
     &.active,
     &:hover {
@@ -24,7 +24,11 @@ const StyledContainer = styled(Container)`
   }
 `
 
-const menuItems = ['about', 'upload', 'maps']
+const menuItems = [
+  { route: 'about', text: 'Visit WOEIP' },
+  { text: 'Add Data', route: 'upload' },
+  { text: 'View Maps', route: 'maps' }
+]
 
 const Header: React.FunctionComponent = () => {
   const [activeItem, setActiveItem] = useState<MenuItemProps['name']>(
@@ -43,17 +47,18 @@ const Header: React.FunctionComponent = () => {
       </Link>
       <Menu stackable pointing secondary>
         <Menu.Menu position='right'>
-          {menuItems.map(item => (
+          {menuItems.map(({ text, route }) => (
             <Menu.Item
-              key={item}
-              name={item}
+              className='menu-item'
+              key={text}
+              name={route}
               link
               as={Link}
-              to={`/${item}`}
-              active={activeItem === item}
+              to={`/${route}`}
+              active={activeItem === route}
               onClick={handleItemClick}
             >
-              {item}
+              {text}
             </Menu.Item>
           ))}
         </Menu.Menu>

@@ -1,12 +1,21 @@
 import React from 'react'
-import './index.css'
+import styled from 'theme'
+
+const HomeContainer = styled.div`
+  margin-top: 40px;
+`
+
+const HomeHeader = styled.div`
+  display: flex;
+  justify-content: center;
+`
 
 const Home = () => (
-  <div className='Home'>
-    <div className='Home-header'>
+  <HomeContainer>
+    <HomeHeader>
       <h2>Welcome to WOAQ</h2>
-    </div>
-  </div>
+    </HomeHeader>
+  </HomeContainer>
 )
 
 export default Home
