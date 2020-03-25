@@ -8,7 +8,6 @@ const Logo = styled.div`
   }
   color: ${({ theme }) => theme.colors.text};
   font-size: 36px;
-  line-height: 48px;
   text-align: right;
   width: 100px;
 `

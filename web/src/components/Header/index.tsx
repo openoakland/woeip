@@ -9,7 +9,6 @@ const StyledContainer = styled(Container)`
   justify-content: space-between;
   align-items: center;
   align-content: center;
-  padding-top: 48px;
   .menu a {
     line-height: 16px;
     padding: 20px 40px !important;
