@@ -19,8 +19,7 @@ jobs:
     - uses: actions/checkout@v2
     - name: Build docker images
       run: |
-        docker-compose -f docker-compose.yml -f docker-compose.ci.yml build web
-        docker-compose -f docker-compose.yml -f docker-compose.ci.yml build api
+        docker-compose -f docker-compose.yml -f docker-compose.ci.yml build
     - name: Generate coverage report
       run: |
         docker-compose -f docker-compose.yml -f docker-compose.ci.yml run --name api api "make coverage && coverage xml"
