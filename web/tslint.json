@@ -3,23 +3,10 @@
   "rules": {
     "array-type": [true, "generic"],
     "align": [true, "parameters", "arguments", "statements"],
-    "interface-name": false,
-    "jsx-boolean-value": false,
     "max-line-length": [true, 88],
-    "member-ordering": [
-      true,
-      "private-before-public",
-      "static-before-instance",
-      "variables-before-functions"
-    ],
     "no-console": false,
-    "no-implicit-dependencies": [
-      true,
-      ["components", "routes", "theme"]
-    ],
     "no-submodule-imports": false,
     "object-literal-sort-keys": false,
-    "ordered-imports": false,
     "prettier": true,
     "quotemark": [true, "single", "jsx-single"],
     "semicolon": [true, "never"]
