@@ -6,7 +6,7 @@ coverage:
         target: 90
     project:
       default:
-        target: 90
+        target: 95
 
 flags:
   api:
