@@ -1,5 +1,7 @@
 'use strict';
 
+const path = require('path')
+
 module.exports = {
   plugins: ['scss', 'typescript'],
   modify: (defaultConfig, { target, dev }) => {
