@@ -1,9 +1,7 @@
 'use strict';
 
-const path = require('path')
-
 module.exports = {
-  plugins: ['scss', 'typescript'],
+  plugins: ['typescript'],
   modify: (defaultConfig, { target, dev }) => {
     const config = defaultConfig
 
@@ -11,13 +9,6 @@ module.exports = {
       // Handle HMR within docker env: https://github.com/jaredpalmer/razzle/issues/416
       config.devServer.watchOptions['poll'] = 1000;
       config.devServer.watchOptions['aggregateTimeout'] = 300;
-    }
-
-    config.resolve.alias = {
-      ...config.resolve.alias,
-      components: path.resolve('./src/components'),
-      routes: path.resolve('./src/routes'),
-      theme: path.resolve('./src/theme')
     }
 
     return config
