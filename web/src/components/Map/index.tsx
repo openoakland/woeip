@@ -28,8 +28,8 @@ const parsePollutant = (item: PollutantValueResponse): Pollutant => {
   const coordsSplit = timeGeoSplit[1].split(', ')
   return {
     timestamp: timeGeoSplit[0].trim(),
-    latitude: Number(coordsSplit[0].trim()),
-    longitude: Number(coordsSplit[1].replace(')', '').trim()),
+    longitude: Number(coordsSplit[0].trim()),
+    latitude: Number(coordsSplit[1].replace(')', '').trim()),
     name: item.pollutant,
     value: item.value
   }
