@@ -9,10 +9,10 @@ python:
 cache: pip
 
 install:
-  - docker-compose -f docker-compose.yml -f docker-compose.ci.yml build
   - pip install -U codecov
 
 script:
+  - docker-compose -f docker-compose.yml -f docker-compose.ci.yml build api
   - docker-compose -f docker-compose.yml -f docker-compose.ci.yml run --name api api "make coverage && coverage xml"
   - docker cp api:/usr/src/app/coverage.xml coverage.xml
 
