@@ -39,4 +39,4 @@ repos:
       - id: tslint
         description: Lint and format client files
         args: [--fix]
-        files: '^web/src/.+\.(js|jsx|ts|tsx)'        
+        files: '^web/src/.+\.(js|jsx|ts|tsx)'
