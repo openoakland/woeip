@@ -22,15 +22,15 @@ class Provider(PythonProvider):
         return round(base_val * (max_value - min_value) + min_value, digits)
 
     def west_oakland_geo_point(self):
-        lat_range = [37.798291, 37.823804]
         lon_range = [-122.308052, -122.269242]
-        lat = self.random_value_in_range(
-            min_value=lat_range[0], max_value=lat_range[1], digits=6
-        )
+        lat_range = [37.798291, 37.823804]
         lon = self.random_value_in_range(
             min_value=lon_range[0], max_value=lon_range[1], digits=6
         )
-        return Point(lat, lon)
+        lat = self.random_value_in_range(
+            min_value=lat_range[0], max_value=lat_range[1], digits=6
+        )
+        return Point(lon, lat)
 
     def pollutant_value(self):
         return self.random_value_in_range(min_value=0.0, max_value=0.050, digits=3)
