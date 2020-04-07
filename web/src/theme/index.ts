@@ -16,7 +16,9 @@ enum colors {
   text = '#404040',
   white = '#FFF',
   black = '000',
-  gray = '#CFD0CE'
+  gray = '#CFD0CE',
+  lightGray = '#EAEAEA',
+  darkGray = '#A9A9A9'
 }
 
 enum fonts {
