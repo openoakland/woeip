@@ -1,4 +1,5 @@
-import Home from 'components/Home'
+import Map from 'components/Map'
+import Home from '../Home'
 
 interface RouteConfig {
   path?: string
@@ -13,19 +14,9 @@ const routes: Array<RouteConfig> = [
     component: Home
   },
   {
-    path: '/about',
-    exact: true,
-    component: Home
-  },
-  {
-    path: '/upload',
-    exact: true,
-    component: Home
-  },
-  {
     path: '/maps',
     exact: true,
-    component: Home
+    component: Map
   }
 ]
 
