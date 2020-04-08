@@ -16,10 +16,9 @@
     "noImplicitReturns": true,
     "noImplicitThis": true,
     "noUnusedLocals": false,
-    "paths": {
-      "components/*": ["components/*"],
-      "routes": ["routes"],
-      "theme": ["theme"],
+    "paths": {	
+      "components/*": ["components/*"],	
+      "routes": ["routes"]
     },
     "sourceMap": true,
     "strictNullChecks": true,

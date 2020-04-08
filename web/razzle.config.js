@@ -6,6 +6,16 @@ module.exports = {
   plugins: ['scss', 'typescript'],
   modify: (defaultConfig, { target, dev }) => {
     const config = defaultConfig
+    if (!dev) {
+      config.performance = Object.assign(
+        {},
+        {
+          maxAssetSize: 100000,
+          maxEntrypointSize: 300000,
+          hints: false
+        }
+      )
+    }
 
     if (config.devServer) {
       // Handle HMR within docker env: https://github.com/jaredpalmer/razzle/issues/416
@@ -13,11 +23,10 @@ module.exports = {
       config.devServer.watchOptions['aggregateTimeout'] = 300;
     }
 
-    config.resolve.alias = {
-      ...config.resolve.alias,
-      components: path.resolve('./src/components'),
-      routes: path.resolve('./src/routes'),
-      theme: path.resolve('./src/theme')
+    config.resolve.alias = {	
+      ...config.resolve.alias,	
+      components: path.resolve('./src/components'),	
+      routes: path.resolve('./src/routes')
     }
 
     return config
