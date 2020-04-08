@@ -1,12 +1,8 @@
 import React, { useState } from 'react'
 import { useDropzone, FileWithPath } from 'react-dropzone'
-import { Message, Icon, Button } from 'semantic-ui-react'
+import { Message, Icon, Button, Container } from 'semantic-ui-react'
 
 import styled from 'theme'
-
-const UploadContainer = styled.div`
-  margin: 40px;
-`
 
 const Dropzone = styled.div`
   width: 100%;
@@ -108,58 +104,56 @@ const Upload: React.FunctionComponent = () => {
   }
 
   return (
-    <div>
-      <UploadContainer>
-        <StyledMessage hidden={!success}>
-          <SuccessIcon />
-          Success! Your files were uploaded.
-        </StyledMessage>
-        <h2>Step 1. Upload your session files</h2>
-        <Dropzone {...getRootProps({ refKey: 'innerRef' })}>
-          <InstructionsContainer>
-            <p>Drag a pair of DusTrak and GPS files here</p>
-            <FileSelector>
-              <span>or</span>
-              <FileInput>
-                Select files from your computer
-                <input {...getInputProps()} />
-              </FileInput>
-            </FileSelector>
-          </InstructionsContainer>
-        </Dropzone>
-        {
-          <PendingContainer>
-            <h3>Pending Files</h3>
-            <hr />
-            {files.length > 0 ? (
-              <ul>
-                {files.map((file, i) => (
-                  <PendingFile key={file.path}>
-                    <FileNameContainer>
-                      <SuccessIcon />
-                      <FileName>{file.path}</FileName>
-                    </FileNameContainer>
-                    <IconButton icon onClick={removeItem(i)}>
-                      <Icon name='trash' />
-                    </IconButton>
-                  </PendingFile>
-                ))}
-              </ul>
-            ) : (
-              <NothingMessage>Nothing selected yet!</NothingMessage>
-            )}
+    <Container>
+      <StyledMessage hidden={!success}>
+        <SuccessIcon />
+        Success! Your files were uploaded.
+      </StyledMessage>
+      <h2>Step 1. Upload your session files</h2>
+      <Dropzone {...getRootProps({ refKey: 'innerRef' })}>
+        <InstructionsContainer>
+          <p>Drag a pair of DusTrak and GPS files here</p>
+          <FileSelector>
+            <span>or</span>
+            <FileInput>
+              Select files from your computer
+              <input {...getInputProps()} />
+            </FileInput>
+          </FileSelector>
+        </InstructionsContainer>
+      </Dropzone>
+      {
+        <PendingContainer>
+          <h3>Pending Files</h3>
+          <hr />
+          {files.length > 0 ? (
+            <ul>
+              {files.map((file, i) => (
+                <PendingFile key={file.path}>
+                  <FileNameContainer>
+                    <SuccessIcon />
+                    <FileName>{file.path}</FileName>
+                  </FileNameContainer>
+                  <IconButton icon onClick={removeItem(i)}>
+                    <Icon name='trash' />
+                  </IconButton>
+                </PendingFile>
+              ))}
+            </ul>
+          ) : (
+            <NothingMessage>Nothing selected yet!</NothingMessage>
+          )}
 
-            {files.length === 2 && (
-              <SubmitForm onSubmit={upload}>
-                <Button positive type='submit'>
-                  Upload
-                </Button>
-              </SubmitForm>
-            )}
-          </PendingContainer>
-        }
-      </UploadContainer>
-    </div>
+          {files.length === 2 && (
+            <SubmitForm onSubmit={upload}>
+              <Button positive type='submit'>
+                Upload
+              </Button>
+            </SubmitForm>
+          )}
+        </PendingContainer>
+      }
+    </Container>
   )
 }
 
