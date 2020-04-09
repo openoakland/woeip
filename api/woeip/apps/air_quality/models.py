@@ -29,7 +29,7 @@ class Pollutant(models.Model):
 
 class Sensor(models.Model):
     """A sensor is contained in a device and measures a single pollutant or a
-    latlon location. Multiple sensors may be co-located in a single device.
+    lonlat location. Multiple sensors may be co-located in a single device.
     """
 
     name = models.CharField(max_length=256)
@@ -42,7 +42,7 @@ class Sensor(models.Model):
         ("PM10", "PM10"),
         ("PM2.5", "PM2.5"),
         ("μg/m3", "μg/m3"),
-        ("latlon", "latlon"),
+        ("lonlat", "lonlat"),
     )
     unit = models.CharField(
         max_length=256,
@@ -109,7 +109,7 @@ class CollectionFile(models.Model):
 
 
 class TimeGeo(models.Model):
-    """Timegeo location datapoints are timestamped latlon values. Each location
+    """Timegeo location datapoints are timestamped lonlat values. Each location
     is extracted from a single collection file.
     """
 

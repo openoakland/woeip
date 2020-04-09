@@ -88,12 +88,12 @@ def degree_minute_to_decimal(degmin):
     Parameters
     ----------
     degmin : float
-        A latitude or longitude value expressed as (degrees * 100 + minutes)
+        A longitude or latitude value expressed as (degrees * 100 + minutes)
         e.g., latitude -12217.45234 is 122° 17.45234' W
 
     Returns
     -------
-    The latitude/longitude as a decimal
+    The longitude/latitude as a decimal
     """
     degrees = degmin // 100
     minutes = degmin - (degrees * 100)
@@ -176,18 +176,11 @@ def load_gps(filepath):
     gps["time"] = sample_times
     gps.sort_values(by="time", inplace=True)
 
-    gps["lat"] = gps.lat.apply(float)
     gps["lon"] = gps.lon.apply(float)
+    gps["lat"] = gps.lat.apply(float)
 
-    gps["lat"] = gps.lat.apply(degree_minute_to_decimal)
     gps["lon"] = gps.lon.apply(degree_minute_to_decimal)
-
-    latitudes = []
-    for _, (lat, lat_dir) in gps[["lat", "lat_dir"]].iterrows():
-        if lat_dir == "N":
-            latitudes.append(lat)
-        else:
-            latitudes.append(-lat)
+    gps["lat"] = gps.lat.apply(degree_minute_to_decimal)
 
     longitudes = []
     for _, (lon, lon_dir) in gps[["lon", "lon_dir"]].iterrows():
@@ -196,8 +189,15 @@ def load_gps(filepath):
         else:
             longitudes.append(-lon)
 
-    gps["lat"] = latitudes
+    latitudes = []
+    for _, (lat, lat_dir) in gps[["lat", "lat_dir"]].iterrows():
+        if lat_dir == "N":
+            latitudes.append(lat)
+        else:
+            latitudes.append(-lat)
+
     gps["lon"] = longitudes
+    gps["lat"] = latitudes
 
     return gps
 
@@ -207,7 +207,7 @@ def join(air_quality, gps, tolerance=3.0):
 
     The DusTrak device collects time stamps and air quality measurements, but no geospatial
     information. Scientists will also take a GPS device on their sessions that records timestamps
-    and latitudes/longitudes. Merge the two files by matching timestamps.
+    and longitudes/latitudes. Merge the two files by matching timestamps.
 
     Parameters
     ----------
@@ -220,7 +220,7 @@ def join(air_quality, gps, tolerance=3.0):
 
     Returns
     -------
-    A pandas DataFrame containing the sample time (in UTC), latitude, longitude, and measurement
+    A pandas DataFrame containing the sample time (in UTC), longitude, latitude, and measurement
     """
     joined_data = pd.merge_asof(
         air_quality,
@@ -230,7 +230,7 @@ def join(air_quality, gps, tolerance=3.0):
         tolerance=pd.Timedelta(f"{tolerance}s"),
     )
 
-    invalid_indices = joined_data[["lat", "lon", "Mass [mg/m3]"]].isnull().any(1)
+    invalid_indices = joined_data[["lon", "lat", "Mass [mg/m3]"]].isnull().any(1)
     joined_data = joined_data[~invalid_indices]
 
     n_dropped = invalid_indices.sum()
@@ -239,7 +239,7 @@ def join(air_quality, gps, tolerance=3.0):
         message = f"{n_dropped} air quality samples dropped that were not within {tolerance} seconds of a GPS sample."
         warnings.warn(message)
 
-    joined_data = joined_data[["time", "Mass [mg/m3]", "lat", "lon"]]
+    joined_data = joined_data[["time", "Mass [mg/m3]", "lon", "lat"]]
     joined_data.rename(columns={"Mass [mg/m3]": "measurement"}, inplace=True)
 
     return joined_data
