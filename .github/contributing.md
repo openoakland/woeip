@@ -65,23 +65,38 @@ Once the Travis checks are passing, any requested code changes are resolved, and
 ## Style guidelines
 ---------------
 Please follow these guidelines during development:
-- Docstrings in [Numpy Stlye](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_numpy.html#example-numpy)
-- [Django Templating](https://oncampus.oberlin.edu/webteam/2012/09/architecture-django-templates)
+- Docstrings in [Numpy Style](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_numpy.html#example-numpy)
+- Python stylized and enforced with [Black](https://github.com/ambv/black)
 - Visual/CSS styling: [Foundation 6 Global Styles](https://foundation.zurb.com/sites/docs/global.html)
+- Typescript linted with [tslint](https://www.npmjs.com/package/tslint) in the style of [Prettier](https://prettier.io/)
 
 ## Testing
 ---------------
 As the codebase develops, robust testing techniques ensure code integrity. With each new feature, we design and implement
-appropriate tests.
+appropriate tests. Minimum test coverage is 90%.
 
-Testing resources include:
+### Testing resources include-  
+#### API:
 - [Django Testing](https://docs.djangoproject.com/en/3.0/topics/testing/)
 - [Python Faker](https://faker.readthedocs.io/en/master/)
 - [Pytest](https://docs.pytest.org/en/latest/)
 
+Run migrations and code tests inside running [docker container/service](#development)
 ```bash
-  # Run migrations and code tests
-  docker-compose exec api /bin/bash "make validate"
+  docker-compose exec api /bin/bash  
+  root@<container_id>:/usr/src/app  make validate
+```
+#### Front End:
+- [Jest](https://jestjs.io/)
+
+Run tests inside running [docker container](#development)
+```bash
+  docker-compose exec web /bin/sh  
+  /usr/src/app npm test
+```
+alternatively...
+```
+/usr/src/app jest
 ```
 
 ### Reporting bugs and security concerns
