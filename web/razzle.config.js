@@ -1,5 +1,7 @@
 'use strict'
 
+const path = require('path')
+
 module.exports = {
   plugins: ['typescript'],
   modify: (defaultConfig, { target, dev }) => {
@@ -24,7 +26,8 @@ module.exports = {
     config.resolve.alias = {
       ...config.resolve.alias,
       components: path.resolve('./src/components'),
-      routes: path.resolve('./src/routes')
+      routes: path.resolve('./src/routes'),
+      theme: path.resolve('./src/theme')
     }
 
     return config
