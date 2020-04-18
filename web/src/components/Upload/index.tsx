@@ -94,7 +94,6 @@ const Upload: React.FunctionComponent = () => {
   })
 
   const upload = () => {
-    console.log('Uploaded:', files)
     setFiles([])
     setSuccess(true)
   }

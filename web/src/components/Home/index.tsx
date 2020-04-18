@@ -1,13 +1,16 @@
 import React from 'react'
 import styled from 'theme'
+import { Container } from 'semantic-ui-react'
 
-const HomeContainer = styled.div`
+const StyledContainer = styled(Container)`
+  display: flex;
+  justify-content: center;
   padding: 40px;
 `
 
 class Home extends React.Component<{}, {}> {
   public render() {
-    return <HomeContainer>Welcome to WOAQ!</HomeContainer>
+    return <StyledContainer>Welcome to WOAQ!</StyledContainer>
   }
 }
 

@@ -43,7 +43,7 @@ const Header: React.FunctionComponent<RouteComponentProps<RouteParams>> = ({
   const handleItemClick: MenuItemProps['onClick'] = (
     _: React.MouseEvent<HTMLAnchorElement>,
     { name }: MenuItemProps
-  ) => setActiveItem(name || '')
+  ) => setActiveItem(name!)
 
   return (
     <StyledContainer>
@@ -51,9 +51,9 @@ const Header: React.FunctionComponent<RouteComponentProps<RouteParams>> = ({
         <Logo />
       </Link>
       <Menu
-        stackable
-        pointing
-        secondary
+        stackable={true}
+        pointing={true}
+        secondary={true}
         style={{ borderBottom: 'none', marginTop: 0 }}
       >
         <Menu.Menu position='right'>
@@ -62,7 +62,7 @@ const Header: React.FunctionComponent<RouteComponentProps<RouteParams>> = ({
               className='menu-item'
               key={route}
               name={route}
-              link
+              link={true}
               as={Link}
               to={`/${route}`}
               active={activeItem === route}
