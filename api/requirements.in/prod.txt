@@ -13,3 +13,4 @@ numpy
 pandas
 psycopg2-binary
 pynmea2
+django-cors-headers
