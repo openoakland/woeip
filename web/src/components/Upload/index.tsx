@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useDropzone, FileWithPath } from 'react-dropzone'
 import { Message, Icon, Button, Container } from 'semantic-ui-react'
+import axios from 'axios'
 
 import styled from 'theme'
 
@@ -83,6 +84,24 @@ const SubmitForm = styled.form`
 
 const SuccessIcon = () => <Icon name='check circle outline' />
 
+interface FormDataValue {
+  file_name: string
+  file_data: FileWithPath
+}
+
+interface FormData {
+  append(
+    name: string,
+    value: string | Blob | FormDataValue,
+    fileName?: string
+  ): void
+}
+
+declare let FormData: {
+  prototype: FormData
+  new (form?: HTMLFormElement): FormData
+}
+
 const Upload: React.FunctionComponent = () => {
   const [files, setFiles] = useState<Array<FileWithPath>>([])
   const [success, setSuccess] = useState<boolean>(false)
@@ -93,7 +112,32 @@ const Upload: React.FunctionComponent = () => {
     multiple: true
   })
 
-  const upload = () => {
+  const upload = e => {
+    e.preventDefault()
+    const formData = new FormData()
+    for (let i = 0; i < files.length; i += 1) {
+      const file = files[i]
+      formData.append(`upload_files[]`, {
+        file_name: file.name,
+        file_data: file
+      })
+    }
+    formData.append('starts_at', '2020-03-04 06:00')
+    formData.append('ends_at', '2020-03-05 06:00')
+    formData.append('pollutant', '1')
+    axios
+      .post('http://api.lvh.me/collection', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+      .then(d => {
+        debugger
+      })
+      .catch(e => {
+        console.error(e)
+        debugger
+      })
     setFiles([])
     setSuccess(true)
   }
