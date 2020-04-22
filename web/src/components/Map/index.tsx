@@ -1,3 +1,4 @@
+import axios, { CancelToken } from 'axios'
 import React, { FunctionComponent, useEffect, useState } from 'react'
 import ReactMapGL from 'react-map-gl'
 // import styled from 'theme'
@@ -43,22 +44,22 @@ const Map: FunctionComponent<{}> = () => {
     <Pin key={index} coordinates={{ longitude, latitude }} />
   ))
 
-  const fetchPollutants = async (signal: AbortSignal) => {
+  const getPollutants = async (token: CancelToken) => {
     try {
-      const response = await fetch(POLLUTANTS_API_URL, { signal })
-      const data: Array<PollutantValueResponse> = await response.json()
+      const response = await axios.get<Array<PollutantValueResponse>>(POLLUTANTS_API_URL, {cancelToken: token})
+      const { data } = response
       const pollutantData = data.map(parsePollutant)
       setPollutants(pollutantData)
-    } catch (e) {
+    } catch(e) {
       console.error(e)
     }
   }
 
   // Request pollutant values on mount
   useEffect(() => {
-    const abortController = new AbortController()
-    fetchPollutants(abortController.signal)
-    return () => abortController.abort()
+    const source = axios.CancelToken.source()
+    getPollutants(source.token)
+    return () => source.cancel()
   }, [])
 
   return (

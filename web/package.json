@@ -9,6 +9,7 @@
     "start:prod": "NODE_ENV=production node build/server.js"
   },
   "dependencies": {
+    "axios": "^0.19.2",
     "express": "^4.17.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
