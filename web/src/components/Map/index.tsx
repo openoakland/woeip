@@ -46,11 +46,14 @@ const Map: FunctionComponent<{}> = () => {
 
   const getPollutants = async (token: CancelToken) => {
     try {
-      const response = await axios.get<Array<PollutantValueResponse>>(POLLUTANTS_API_URL, {cancelToken: token})
+      const response = await axios.get<Array<PollutantValueResponse>>(
+        POLLUTANTS_API_URL,
+        { cancelToken: token }
+      )
       const { data } = response
       const pollutantData = data.map(parsePollutant)
       setPollutants(pollutantData)
-    } catch(e) {
+    } catch (e) {
       console.error(e)
     }
   }
