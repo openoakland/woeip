@@ -90,11 +90,7 @@ interface FormDataValue {
 }
 
 interface FormData {
-  append(
-    name: string,
-    value: string | Blob | FormDataValue,
-    fileName?: string
-  ): void
+  append(name: string, value: string | FileWithPath, fileName?: string): void
 }
 
 declare let FormData: {
@@ -116,11 +112,7 @@ const Upload: React.FunctionComponent = () => {
     e.preventDefault()
     const formData = new FormData()
     for (let i = 0; i < files.length; i += 1) {
-      const file = files[i]
-      formData.append(`upload_files[]`, {
-        file_name: file.name,
-        file_data: file
-      })
+      formData.append('upload_files', files[i])
     }
     formData.append('starts_at', '2020-03-04 06:00')
     formData.append('ends_at', '2020-03-05 06:00')
@@ -136,7 +128,6 @@ const Upload: React.FunctionComponent = () => {
       })
       .catch(e => {
         console.error(e)
-        debugger
       })
     setFiles([])
     setSuccess(true)
