@@ -112,7 +112,7 @@ const Upload: React.FunctionComponent = () => {
     multiple: true
   })
 
-  const upload = e => {
+  const upload = (e: React.FormEvent) => {
     e.preventDefault()
     const formData = new FormData()
     for (let i = 0; i < files.length; i += 1) {
