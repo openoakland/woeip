@@ -89,14 +89,16 @@ Run migrations and code tests inside running [docker container/service](#develop
 #### Front End:
 - [Jest](https://jestjs.io/)
 
-Run tests inside running [docker container](#development)
+Run tests and linter inside running [docker container](#development)
 ```bash
   docker-compose exec web /bin/sh  
   /usr/src/app npm test
+  /usr/src/app npm run lint
 ```
 alternatively...
 ```
 /usr/src/app jest
+/usr/src/app tslint -p . [--fix optional]
 ```
 
 ### Reporting bugs and security concerns
