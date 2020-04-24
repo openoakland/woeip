@@ -8,7 +8,7 @@
     "no-console": false,
     "no-implicit-dependencies": [	
       true,	
-      ["components", "routes", "theme"]	
+      ["components", "routes", "theme", "dev"]
     ],
     "no-submodule-imports": false,
     "object-literal-sort-keys": false,
