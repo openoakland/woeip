@@ -88,6 +88,8 @@ Run migrations and code tests inside running [docker container/service](#develop
 ```
 #### Front End:
 - [Jest](https://jestjs.io/)
+- [Jest Dom](https://github.com/testing-library/jest-dom)
+- [React Testing Library](https://testing-library.com/docs/react-testing-library/setup)
 
 Run tests and linter inside running [docker container](#development)
 ```bash
