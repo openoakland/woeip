@@ -4,9 +4,9 @@
 #
 #    pip-compile --output-file=requirements/dev.txt requirements.in/dev.txt
 #
-argon2-cffi==19.1.0       # via -r requirements.in/prod.txt
+argon2-cffi==19.1.0
 asgiref==3.2.3            # via django
-astroid==2.2.5            # via -r requirements.in/dev.txt
+astroid==2.2.5
 atomicwrites==1.3.0       # via pytest
 attrs==19.1.0             # via pytest
 boto==2.49.0              # via django-boto
@@ -15,22 +15,21 @@ cffi==1.12.3              # via argon2-cffi
 chardet==3.0.4            # via requests
 coreapi==2.3.3            # via drf-yasg
 coreschema==0.0.4         # via coreapi, drf-yasg
-coverage==4.5.3           # via -r requirements.in/dev.txt
-django-boto==0.3.12       # via -r requirements.in/prod.txt
-django-cors-headers==3.2.1  # via -r requirements.in/dev.txt, -r requirements.in/prod.txt
-django-debug-toolbar==2.0  # via -r requirements.in/dev.txt
-django-environ==0.4.5     # via -r requirements.in/prod.txt
-django-extensions==2.1.9  # via -r requirements.in/prod.txt
-django-model-utils==3.2.0  # via -r requirements.in/prod.txt
-django-storages==1.7.1    # via -r requirements.in/prod.txt
-django==3.0.3             # via -r requirements.in/prod.txt, django-boto, django-cors-headers, django-debug-toolbar, django-model-utils, django-storages, djangorestframework, drf-yasg
-djangorestframework==3.11.0  # via -r requirements.in/prod.txt, drf-yasg
-drf-yasg==1.17.0          # via -r requirements.in/prod.txt
-factory-boy==2.12.0       # via -r requirements.in/dev.txt
+coverage==4.5.3
+django-boto==0.3.12
+django-debug-toolbar==2.0
+django-environ==0.4.5
+django-extensions==2.1.9
+django-model-utils==3.2.0
+django-storages==1.7.1
+django==3.0.3
+djangorestframework==3.11.0
+drf-yasg==1.17.0
+factory-boy==2.12.0
 faker==2.0.0              # via factory-boy
-gevent==1.4.0             # via -r requirements.in/prod.txt
+gevent==1.4.0
 greenlet==0.4.15          # via gevent
-gunicorn==19.9.0          # via -r requirements.in/prod.txt
+gunicorn==19.9.0
 idna==2.8                 # via requests
 importlib-metadata==0.18  # via pluggy, pytest
 inflection==0.3.1         # via drf-yasg
@@ -40,17 +39,17 @@ lazy-object-proxy==1.4.1  # via astroid
 markupsafe==1.1.1         # via jinja2
 more-itertools==7.1.0     # via pytest
 mypy-extensions==0.4.1    # via mypy
-mypy==0.720               # via -r requirements.in/dev.txt
-numpy==1.16.4             # via -r requirements.in/prod.txt, pandas
+mypy==0.720
+numpy==1.16.4
 packaging==19.0           # via drf-yasg, pytest
-pandas==0.24.2            # via -r requirements.in/prod.txt
+pandas==0.24.2
 pluggy==0.12.0            # via pytest
-psycopg2-binary==2.8.3    # via -r requirements.in/prod.txt
+psycopg2-binary==2.8.3
 py==1.8.0                 # via pytest
 pycparser==2.19           # via cffi
-pynmea2==1.15.0           # via -r requirements.in/prod.txt
+pynmea2==1.15.0
 pyparsing==2.4.0          # via packaging
-pytest-django==3.5.1      # via -r requirements.in/dev.txt
+pytest-django==3.5.1
 pytest==5.0.1             # via pytest-django
 python-dateutil==2.8.0    # via django-boto, faker, pandas
 pytz==2019.1              # via django, pandas

@@ -30,7 +30,7 @@ DJANGO_APPS = [
     "django.contrib.gis",
 ]
 
-THIRD_PARTY_APPS = ["django_extensions", "rest_framework", "storages", "drf_yasg", "corsheaders"]
+THIRD_PARTY_APPS = ["django_extensions", "rest_framework", "storages", "drf_yasg"]
 
 LOCAL_APPS = ["woeip.apps.core", "woeip.apps.air_quality"]
 
@@ -55,7 +55,6 @@ if DEFAULT_FILE_STORAGE == "storages.backends.s3boto.S3BotoStorage" and (
 
 
 MIDDLEWARE = [
-    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -67,12 +66,6 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = "woeip.urls"
-
-CORS_ORIGIN_ALLOW_ALL = False
-
-CORS_ORIGIN_WHITELIST = (
-    'http://lvh.me',
-)
 
 TEMPLATES = [
     {

@@ -4,7 +4,7 @@
 #
 #    pip-compile --output-file=requirements/prod.txt requirements.in/prod.txt
 #
-argon2-cffi==19.1.0       # via -r requirements.in/prod.txt
+argon2-cffi==19.1.0
 asgiref==3.2.3            # via django
 boto==2.49.0              # via django-boto
 certifi==2019.9.11        # via requests
@@ -12,29 +12,28 @@ cffi==1.12.3              # via argon2-cffi
 chardet==3.0.4            # via requests
 coreapi==2.3.3            # via drf-yasg
 coreschema==0.0.4         # via coreapi, drf-yasg
-django-boto==0.3.12       # via -r requirements.in/prod.txt
-django-cors-headers==3.2.1  # via -r requirements.in/prod.txt
-django-environ==0.4.5     # via -r requirements.in/prod.txt
-django-extensions==2.2.6  # via -r requirements.in/prod.txt
-django-model-utils==3.2.0  # via -r requirements.in/prod.txt
-django-storages==1.8      # via -r requirements.in/prod.txt
-django==3.0.3             # via -r requirements.in/prod.txt, django-boto, django-cors-headers, django-model-utils, django-storages, djangorestframework, drf-yasg
-djangorestframework==3.11.0  # via -r requirements.in/prod.txt, drf-yasg
-drf-yasg==1.17.0          # via -r requirements.in/prod.txt
-gevent==1.4.0             # via -r requirements.in/prod.txt
+django-boto==0.3.12
+django-environ==0.4.5
+django-extensions==2.2.6
+django-model-utils==3.2.0
+django-storages==1.8
+django==3.0.3
+djangorestframework==3.11.0
+drf-yasg==1.17.0
+gevent==1.4.0
 greenlet==0.4.15          # via gevent
-gunicorn==19.9.0          # via -r requirements.in/prod.txt
+gunicorn==19.9.0
 idna==2.8                 # via requests
 inflection==0.3.1         # via drf-yasg
 itypes==1.1.0             # via coreapi
 jinja2==2.10.3            # via coreschema
 markupsafe==1.1.1         # via jinja2
-numpy==1.16.4             # via -r requirements.in/prod.txt, pandas
+numpy==1.16.4
 packaging==19.2           # via drf-yasg
-pandas==0.24.2            # via -r requirements.in/prod.txt
-psycopg2-binary==2.8.3    # via -r requirements.in/prod.txt
+pandas==0.24.2
+psycopg2-binary==2.8.3
 pycparser==2.19           # via cffi
-pynmea2==1.15.0           # via -r requirements.in/prod.txt
+pynmea2==1.15.0
 pyparsing==2.4.5          # via packaging
 python-dateutil==2.8.0    # via django-boto, pandas
 pytz==2019.1              # via django, pandas

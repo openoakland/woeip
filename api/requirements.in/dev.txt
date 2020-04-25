@@ -5,4 +5,3 @@ django-debug-toolbar
 factory-boy
 mypy
 pytest-django
-django-cors-headers
