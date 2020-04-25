@@ -84,11 +84,6 @@ const SubmitForm = styled.form`
 
 const SuccessIcon = () => <Icon name='check circle outline' />
 
-interface FormDataValue {
-  file_name: string
-  file_data: FileWithPath
-}
-
 interface FormData {
   append(name: string, value: string | FileWithPath, fileName?: string): void
 }
@@ -100,7 +95,7 @@ declare let FormData: {
 
 const Upload: React.FunctionComponent = () => {
   const [files, setFiles] = useState<Array<FileWithPath>>([])
-  const [success, setSuccess] = useState<boolean>(false)
+  const [errorMessage, setErrorMessage] = useState<string>('')
   const { getRootProps, getInputProps } = useDropzone({
     onDrop: (acceptedFiles: Array<FileWithPath>) => {
       setFiles([...files, ...acceptedFiles])
@@ -115,7 +110,7 @@ const Upload: React.FunctionComponent = () => {
       formData.append('upload_files', files[i])
     }
     formData.append('starts_at', '2020-03-04 06:00')
-    formData.append('ends_at', '2020-03-05 06:00')
+    // formData.append('ends_at', '2020-03-05 06:00')
     formData.append('pollutant', '1')
     axios
       .post('http://api.lvh.me/collection', formData, {
@@ -124,13 +119,13 @@ const Upload: React.FunctionComponent = () => {
         }
       })
       .then(d => {
-        debugger
+        console.log('response data is:', d)
       })
       .catch(e => {
-        console.error(e)
+        console.error('error is:', e)
+        setErrorMessage(e.message)
       })
     setFiles([])
-    setSuccess(true)
   }
 
   const removeItem = (removableIndex: number) => {
@@ -139,10 +134,7 @@ const Upload: React.FunctionComponent = () => {
 
   return (
     <Container>
-      <StyledMessage hidden={!success}>
-        <SuccessIcon />
-        Success! Your files were uploaded.
-      </StyledMessage>
+      <StyledMessage hidden={errorMessage === ''}>{errorMessage}</StyledMessage>
       <h2>Step 1. Upload your session files</h2>
       <Dropzone {...getRootProps({ refKey: 'innerRef' })}>
         <InstructionsContainer>
