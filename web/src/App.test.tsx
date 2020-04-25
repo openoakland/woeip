@@ -6,7 +6,7 @@ import App from './App'
 import { MemoryRouter } from 'react-router-dom'
 
 describe('<App />', () => {
-  test('renders without exploding', () => {
+  test('Superficial test confirming that modules are configured', () => {
     render(
       <MemoryRouter>
         <App />

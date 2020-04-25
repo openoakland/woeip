@@ -7,7 +7,7 @@
     "max-line-length": [true, 88],
     "no-console": false,
     "no-implicit-dependencies": [	
-      true,	"dev"
+      true, "dev", ["components", "routes", "theme"]
     ],
     "no-submodule-imports": false,
     "object-literal-sort-keys": false,
