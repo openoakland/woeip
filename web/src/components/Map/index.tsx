@@ -2,9 +2,13 @@ import axios, { CancelToken } from 'axios'
 import React, { FunctionComponent, useEffect, useState } from 'react'
 import ReactMapGL from 'react-map-gl'
 // import styled from 'theme'
-// import MapFilters from './ControlPanel'
-import Pin from './Pin'
-import { Pollutant, PollutantValueResponse, Viewport } from './types'
+// import MapFilters from 'components/Map/ControlPanel'
+import Pin from 'components/Map/Pin'
+import {
+  Pollutant,
+  PollutantValueResponse,
+  Viewport
+} from 'components/Map/types'
 import {
   MAPBOX_ACCESS_TOKEN,
   MAP_STYLE,
@@ -46,11 +50,14 @@ const Map: FunctionComponent<{}> = () => {
 
   const getPollutants = async (token: CancelToken) => {
     try {
-      const response = await axios.get<Array<PollutantValueResponse>>(POLLUTANTS_API_URL, {cancelToken: token})
+      const response = await axios.get<Array<PollutantValueResponse>>(
+        POLLUTANTS_API_URL,
+        { cancelToken: token }
+      )
       const { data } = response
       const pollutantData = data.map(parsePollutant)
       setPollutants(pollutantData)
-    } catch(e) {
+    } catch (e) {
       console.error(e)
     }
   }
