@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react'
 import { Marker } from 'react-map-gl'
-import { Coordinates } from '../types'
+import { Coordinates } from 'components/Map/types'
 
 interface Props {
   coordinates: Coordinates

@@ -1,18 +1,18 @@
 import React from 'react'
-import { render } from 'react-dom'
+import { render, screen } from '@testing-library/react'
+import '@testing-library/jest-dom/extend-expect'
 
 import App from '.'
-
 import { MemoryRouter } from 'react-router-dom'
 
 describe('<App />', () => {
-  test('renders without exploding', () => {
-    const div = document.createElement('div')
+  test('Superficial test confirming that modules are configured', () => {
     render(
       <MemoryRouter>
         <App />
-      </MemoryRouter>,
-      div
+      </MemoryRouter>
     )
+    expect(screen.getByRole('heading')).toHaveTextContent('WOAQ')
+    expect(screen.getByRole('list')).toHaveClass('Home-resources')
   })
 })

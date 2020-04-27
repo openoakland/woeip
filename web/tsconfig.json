@@ -33,6 +33,7 @@
     "scripts",
     "acceptance-tests",
     "webpack",
+    "coverage",
     "jest",
     "razzle.config.js"
   ],
