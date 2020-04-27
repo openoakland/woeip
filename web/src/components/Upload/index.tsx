@@ -1,13 +1,18 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDropzone, FileWithPath } from 'react-dropzone'
 import { Message, Icon, Button, Container } from 'semantic-ui-react'
 import axios from 'axios'
 
 import styled from 'theme'
+import { validateFiles } from './util'
+
+const StyledContainer = styled(Container)`
+  margin-top: 30px;
+`
 
 const Dropzone = styled.div`
   width: 100%;
-  height: 200px;
+  height: 250px;
   background: ${({ theme }) => theme.colors.lightGray};
   display: flex;
   flex-direction: column;
@@ -26,8 +31,7 @@ const IconButton = styled(Button)`
 `
 
 const StyledMessage = styled(Message)`
-  color: white !important;
-  background: ${({ theme }) => theme.colors.primary} !important;
+  background: ${({ theme }) => theme.colors.warning} !important;
 `
 
 const PendingContainer = styled.div`
@@ -82,7 +86,7 @@ const SubmitForm = styled.form`
   justify-content: center;
 `
 
-const SuccessIcon = () => <Icon name='check circle outline' />
+const WarningIcon = () => <Icon name='warning circle' />
 
 interface FormData {
   append(name: string, value: string | FileWithPath, fileName?: string): void
@@ -103,14 +107,22 @@ const Upload: React.FunctionComponent = () => {
     multiple: true
   })
 
+  useEffect(() => {
+    const potentialErrorMessage = validateFiles(files)
+    setErrorMessage(potentialErrorMessage)
+  }, [files])
+
   const upload = (e: React.FormEvent) => {
     e.preventDefault()
     const formData = new FormData()
-    for (let i = 0; i < files.length; i += 1) {
-      formData.append('upload_files', files[i])
+
+    for (const file of files) {
+      formData.append('upload_files', file)
     }
+
+    // hard-coded for now:
     formData.append('starts_at', '2020-03-04 06:00')
-    // formData.append('ends_at', '2020-03-05 06:00')
+    formData.append('ends_at', '2020-03-05 06:00')
     formData.append('pollutant', '1')
     axios
       .post('http://api.lvh.me/collection', formData, {
@@ -120,10 +132,11 @@ const Upload: React.FunctionComponent = () => {
       })
       .then(d => {
         console.log('response data is:', d)
+        alert(d.statusText)
       })
-      .catch(e => {
-        console.error('error is:', e)
-        setErrorMessage(e.message)
+      .catch(error => {
+        console.error('error is:', error)
+        setErrorMessage(error.message)
       })
     setFiles([])
   }
@@ -133,9 +146,7 @@ const Upload: React.FunctionComponent = () => {
   }
 
   return (
-    <Container>
-      <StyledMessage hidden={errorMessage === ''}>{errorMessage}</StyledMessage>
-      <h2>Step 1. Upload your session files</h2>
+    <StyledContainer>
       <Dropzone {...getRootProps({ refKey: 'innerRef' })}>
         <InstructionsContainer>
           <p>Drag a pair of DusTrak and GPS files here</p>
@@ -148,38 +159,37 @@ const Upload: React.FunctionComponent = () => {
           </FileSelector>
         </InstructionsContainer>
       </Dropzone>
-      {
+      <StyledMessage hidden={errorMessage === ''}>
+        <WarningIcon />
+        {errorMessage}
+      </StyledMessage>
+      {files.length > 0 && (
         <PendingContainer>
           <h3>Pending Files</h3>
           <hr />
-          {files.length > 0 ? (
-            <ul>
-              {files.map((file, i) => (
-                <PendingFile key={file.path}>
-                  <FileNameContainer>
-                    <SuccessIcon />
-                    <FileName>{file.path}</FileName>
-                  </FileNameContainer>
-                  <IconButton icon={true} onClick={removeItem(i)}>
-                    <Icon name='trash' />
-                  </IconButton>
-                </PendingFile>
-              ))}
-            </ul>
-          ) : (
-            <NothingMessage>Nothing selected yet!</NothingMessage>
-          )}
+          <ul>
+            {files.map((file, i) => (
+              <PendingFile key={file.path}>
+                <FileNameContainer>
+                  <FileName>{file.path}</FileName>
+                </FileNameContainer>
+                <IconButton icon={true} onClick={removeItem(i)}>
+                  <Icon name='trash' />
+                </IconButton>
+              </PendingFile>
+            ))}
+          </ul>
 
-          {files.length === 2 && (
+          {files.length === 2 && !errorMessage ? (
             <SubmitForm onSubmit={upload}>
               <Button positive={true} type='submit'>
                 Upload
               </Button>
             </SubmitForm>
-          )}
+          ) : null}
         </PendingContainer>
-      }
-    </Container>
+      )}
+    </StyledContainer>
   )
 }
 
