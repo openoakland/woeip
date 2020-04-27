@@ -15,7 +15,6 @@ from woeip.apps.air_quality.models import Pollutant
 from woeip.apps.air_quality.models import PollutantValue
 from woeip.apps.air_quality.models import Sensor
 from woeip.apps.air_quality.models import TimeGeo
-import json
 
 
 class CalibrationSerializer(serializers.HyperlinkedModelSerializer):
