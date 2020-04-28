@@ -1,5 +1,4 @@
 import Map from 'components/Map'
-import Upload from 'components/Upload'
 import Home from 'components/Home'
 
 interface RouteConfig {
@@ -18,11 +17,6 @@ const routes: Array<RouteConfig> = [
     path: '/about',
     exact: true,
     component: Home
-  },
-  {
-    path: '/upload',
-    exact: true,
-    component: Upload
   },
   {
     path: '/maps',
