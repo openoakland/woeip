@@ -12,7 +12,6 @@ describe('<App />', () => {
         <App />
       </MemoryRouter>
     )
-    expect(screen.getByRole('heading')).toHaveTextContent('WOAQ')
-    expect(screen.getByRole('list')).toHaveClass('Home-resources')
+    expect(screen.getByRole('link')).toHaveTextContent('WOAQ')
   })
 })
