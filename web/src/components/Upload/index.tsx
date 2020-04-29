@@ -1,90 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { useDropzone, FileWithPath } from 'react-dropzone'
-import { Message, Icon, Button, Container } from 'semantic-ui-react'
-import axios from 'axios'
-
-import styled from 'theme'
-import { validateFiles } from './util'
-
-const StyledContainer = styled(Container)`
-  margin-top: 30px;
-`
-
-const Dropzone = styled.div`
-  width: 100%;
-  height: 250px;
-  background: ${({ theme }) => theme.colors.lightGray};
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`
-
-const InstructionsContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-`
-const IconButton = styled(Button)`
-  background: transparent !important;
-`
-
-const StyledMessage = styled(Message)`
-  background: ${({ theme }) => theme.colors.warning} !important;
-`
-
-const PendingContainer = styled.div`
-  width: 300px;
-  margin: 40px auto;
-  h3 {
-    text-align: center;
-  }
-`
-
-const PendingFile = styled.li`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`
-
-const FileInput = styled.a`
-  color: ${({ theme }) => theme.colors.darkGray};
-  text-decoration: underline;
-  &:hover {
-    cursor: pointer;
-  }
-`
-
-const FileNameContainer = styled.div`
-  display: flex;
-  align-items: center;
-`
-
-const FileName = styled.span`
-  display: inline-block;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  width: 180px;
-`
-
-const FileSelector = styled.div`
-  display: flex;
-  color: ${({ theme }) => theme.colors.darkGray};
-  flex-direction: column;
-  align-items: center;
-`
-
-const NothingMessage = styled.p`
-  margin-top: 20px;
-  text-align: center;
-`
-
-const SubmitForm = styled.form`
-  display: flex;
-  justify-content: center;
-`
+import { Icon } from 'semantic-ui-react'
+import { validateFiles } from 'components/Upload/util'
+import * as style from 'components/Upload/styles'
 
 const WarningIcon = () => <Icon name='warning circle' />
 
@@ -112,84 +30,51 @@ const Upload: React.FunctionComponent = () => {
     setErrorMessage(potentialErrorMessage)
   }, [files])
 
-  const upload = (e: React.FormEvent) => {
-    e.preventDefault()
-    const formData = new FormData()
-
-    for (const file of files) {
-      formData.append('upload_files', file)
-    }
-
-    // hard-coded for now:
-    formData.append('starts_at', '2020-03-04 06:00')
-    formData.append('ends_at', '2020-03-05 06:00')
-    formData.append('pollutant', '1')
-    axios
-      .post('http://api.lvh.me/collection', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      })
-      .then(d => {
-        console.log('response data is:', d)
-        alert(d.statusText)
-      })
-      .catch(error => {
-        console.error('error is:', error)
-        setErrorMessage(error.message)
-      })
-    setFiles([])
-  }
-
   const removeItem = (removableIndex: number) => {
     return () => setFiles(files.filter((_, i) => i !== removableIndex))
   }
 
   return (
-    <StyledContainer>
-      <Dropzone {...getRootProps({ refKey: 'innerRef' })}>
-        <InstructionsContainer>
+    <style.StyledContainer>
+      <style.Dropzone {...getRootProps({ refKey: 'innerRef' })}>
+        <style.InstructionsContainer>
           <p>Drag a pair of DusTrak and GPS files here</p>
-          <FileSelector>
+          <style.FileSelector>
             <span>or</span>
-            <FileInput>
+            <style.FileInput>
               Select files from your computer
               <input {...getInputProps()} />
-            </FileInput>
-          </FileSelector>
-        </InstructionsContainer>
-      </Dropzone>
-      <StyledMessage hidden={errorMessage === ''}>
+            </style.FileInput>
+          </style.FileSelector>
+        </style.InstructionsContainer>
+      </style.Dropzone>
+      <style.StyledMessage hidden={errorMessage === ''}>
         <WarningIcon />
         {errorMessage}
-      </StyledMessage>
+      </style.StyledMessage>
       {files.length > 0 && (
-        <PendingContainer>
+        <style.PendingContainer>
           <h3>Pending Files</h3>
           <hr />
           <ul>
             {files.map((file, i) => (
-              <PendingFile key={file.path}>
-                <FileNameContainer>
-                  <FileName>{file.path}</FileName>
-                </FileNameContainer>
-                <IconButton icon={true} onClick={removeItem(i)}>
+              <style.PendingFile key={file.path}>
+                <style.FileNameContainer>
+                  <style.FileName>{file.path}</style.FileName>
+                </style.FileNameContainer>
+                <style.IconButton icon={true} onClick={removeItem(i)}>
                   <Icon name='trash' />
-                </IconButton>
-              </PendingFile>
+                </style.IconButton>
+              </style.PendingFile>
             ))}
           </ul>
 
           {files.length === 2 && !errorMessage ? (
-            <SubmitForm onSubmit={upload}>
-              <Button positive={true} type='submit'>
-                Upload
-              </Button>
-            </SubmitForm>
+            <p>Upload Starts Automatically</p>
           ) : null}
-        </PendingContainer>
+        </style.PendingContainer>
       )}
-    </StyledContainer>
+    </style.StyledContainer>
   )
 }
 

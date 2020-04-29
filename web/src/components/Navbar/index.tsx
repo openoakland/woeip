@@ -25,6 +25,7 @@ const StyledContainer = styled(Container)`
 
 const menuItems = [
   { text: 'About', route: 'about' },
+  { text: 'Upload', route: 'upload' },
   { text: 'Maps', route: 'maps' }
 ]
 
