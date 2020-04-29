@@ -32,11 +32,7 @@ These are general guidelines on the flow from design to implementation
   # 5. Run tests as described below
 
   # 6. Create a pull request
-```  
-Local Domains:
-- api: api.lvh.me
-- swagger api documentation: api.lvh.me/swagger
-- front end: lvh.me
+```
 
 ## Issues
 ---------------
