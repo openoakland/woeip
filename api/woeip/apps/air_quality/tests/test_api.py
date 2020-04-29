@@ -165,7 +165,7 @@ class TestCollection(WoaqAPITestCase):
 
         data = {
             "upload_files": [
-                {"file_name": "random_file.log", "file_data": gps_file_data},
+                gps_file,
                 gps_file,
                 dustrak_file
             ],
