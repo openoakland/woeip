@@ -14,6 +14,7 @@ from woeip.apps.air_quality.tests import factories
 
 TEST_DATA_DIRECTORY = Path(__file__).parent / "data"
 GPS_PATH = TEST_DATA_DIRECTORY / "gps.log"
+RANDOM_PATH = TEST_DATA_DIRECTORY / "random.log"
 DUSTRAK_PATH = TEST_DATA_DIRECTORY / "dustrak.csv"
 
 
@@ -76,17 +77,17 @@ class TestCollection(WoaqAPITestCase):
         ends_at = datetime.datetime(2019, 1, 1, 14, 15)
 
         with open(GPS_PATH) as f:
-            gps_file_data = f.read()
+            gps_file = f
 
         with open(DUSTRAK_PATH) as f:
-            dustrak_file_data = f.read()
+            dustrak_file = f
 
         pollutant = factories.PollutantFactory()
 
         data = {
             "upload_files": [
-                {"file_name": "gps_file.log", "file_data": gps_file_data},
-                {"file_name": "dustrak_file.csv", "file_data": dustrak_file_data},
+                gps_file,
+                dustrak_file
             ],
             "starts_at": starts_at,
             "ends_at": ends_at,
@@ -100,18 +101,18 @@ class TestCollection(WoaqAPITestCase):
         starts_at = datetime.datetime(2019, 1, 1, 10, 15)
         ends_at = datetime.datetime(2019, 1, 1, 14, 15)
 
-        with open(GPS_PATH) as f:
-            gps_file_data = f.read()
+        with open(RANDOM_PATH) as f:
+            random_file = f
 
         with open(DUSTRAK_PATH) as f:
-            dustrak_file_data = f.read()
+            dustrak_file = f
 
         pollutant = factories.PollutantFactory()
 
         data = {
             "upload_files": [
-                {"file_name": "bad_file.log", "file_data": gps_file_data},
-                {"file_name": "dustrak_file.csv", "file_data": dustrak_file_data},
+                random_file,
+                dustrak_file,
             ],
             "starts_at": starts_at,
             "ends_at": ends_at,
@@ -128,17 +129,17 @@ class TestCollection(WoaqAPITestCase):
         ends_at = datetime.datetime(2019, 1, 1, 14, 15)
 
         with open(GPS_PATH) as f:
-            gps_file_data = f.read()
+            gps_file = f
 
-        with open(DUSTRAK_PATH) as f:
-            dustrak_file_data = f.read()
+        with open(RANDOM_PATH) as f:
+            random_file = f
 
         pollutant = factories.PollutantFactory()
 
         data = {
             "upload_files": [
-                {"file_name": "gps_file.log", "file_data": gps_file_data},
-                {"file_name": "bad_file.csv", "file_data": dustrak_file_data},
+                gps_file,
+                random_file
             ],
             "starts_at": starts_at,
             "ends_at": ends_at,
@@ -155,18 +156,18 @@ class TestCollection(WoaqAPITestCase):
         ends_at = datetime.datetime(2019, 1, 1, 14, 15)
 
         with open(GPS_PATH) as f:
-            gps_file_data = f.read()
+            gps_file = f
 
         with open(DUSTRAK_PATH) as f:
-            dustrak_file_data = f.read()
+            dustrak_file = f
 
         pollutant = factories.PollutantFactory()
 
         data = {
             "upload_files": [
                 {"file_name": "random_file.log", "file_data": gps_file_data},
-                {"file_name": "dustrak_file.csv", "file_data": dustrak_file_data},
-                {"file_name": "dustrak_file1.csv", "file_data": dustrak_file_data},
+                gps_file,
+                dustrak_file
             ],
             "starts_at": starts_at,
             "ends_at": ends_at,
