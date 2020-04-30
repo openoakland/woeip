@@ -165,8 +165,8 @@ class TestCollection(WoaqAPITestCase):
         ends_at = datetime.datetime(2019, 1, 1, 14, 15)
         data = {
             "upload_files": [
-                {"file_name": "gps_file.log", "file_data": b"gpsfiledata"},
-                {"file_name": "dustrak_file.csv", "file_data": b"dustrakfiledata"},
+                {"name": "gps_file.log", "file_data": b"gpsfiledata"},
+                {"name": "dustrak_file.csv", "file_data": b"dustrakfiledata"},
             ],
             "starts_at": starts_at,
             "ends_at": ends_at,
@@ -182,8 +182,8 @@ class TestCollection(WoaqAPITestCase):
         ends_at = [2019, 1, 1, 14, 15]
         data = {
             "upload_files": [
-                {"file_name": "gps_file.log", "file_data": b"gpsfiledata"},
-                {"file_name": "dustrak_file.csv", "file_data": b"dustrakfiledata"},
+                {"name": "gps_file.log", "file_data": b"gpsfiledata"},
+                {"name": "dustrak_file.csv", "file_data": b"dustrakfiledata"},
             ],
             "starts_at": starts_at,
             "ends_at": ends_at,
