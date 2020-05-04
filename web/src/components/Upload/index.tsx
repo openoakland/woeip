@@ -142,12 +142,13 @@ const Upload: React.FunctionComponent = () => {
   }
 
   const removeItem = (removableIndex: number) => {
-    return () => setFiles(files.filter((_, i) => i !== removableIndex))
+    console.log(removableIndex)
+    setFiles(files.filter((_, i) => i !== removableIndex))
   }
 
   return (
     <StyledContainer>
-      <Dropzone {...getRootProps({ refKey: 'innerRef' })}>
+      <Dropzone {...getRootProps({ refKey: 'ref' })}>
         <InstructionsContainer>
           <p>Drag a pair of DusTrak and GPS files here</p>
           <FileSelector>
@@ -173,7 +174,7 @@ const Upload: React.FunctionComponent = () => {
                 <FileNameContainer>
                   <FileName>{file.path}</FileName>
                 </FileNameContainer>
-                <IconButton icon={true} onClick={removeItem(i)}>
+                <IconButton icon={true} onClick={() => removeItem(i)}>
                   <Icon name='trash' />
                 </IconButton>
               </PendingFile>
