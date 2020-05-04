@@ -141,9 +141,9 @@ const Upload: React.FunctionComponent = () => {
     setFiles([])
   }
 
-  const removeItem = (removableIndex: number) => {
-    console.log(removableIndex)
-    setFiles(files.filter((_, i) => i !== removableIndex))
+  const removeItem = (event: React.SyntheticEvent<HTMLButtonElement>) => {
+    const removeIndex: number = Number(event.currentTarget.dataset.arg)
+    setFiles(files.filter((_, i) => i !== removeIndex))
   }
 
   return (
@@ -174,7 +174,7 @@ const Upload: React.FunctionComponent = () => {
                 <FileNameContainer>
                   <FileName>{file.path}</FileName>
                 </FileNameContainer>
-                <IconButton icon={true} onClick={() => removeItem(i)}>
+                <IconButton icon={true} data-arg={i} onClick={removeItem}>
                   <Icon name='trash' />
                 </IconButton>
               </PendingFile>
