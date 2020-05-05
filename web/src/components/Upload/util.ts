@@ -1,4 +1,5 @@
 import { FileWithPath } from 'react-dropzone'
+import * as moment from 'moment-timezone'
 
 export const getDatetimeGPS = (gps: Blob) => {
   gps
@@ -27,8 +28,20 @@ export const getDatetimeDustrak = (dustrak: Blob) => {
       const startTime: string = textLines[6].split(',')[1]
       const startDate: string = textLines[7].split(',')[1]
       const testLength: string = textLines[8].split(',')[1]
+      const startDatetime: moment.Moment = moment.tz(
+        `${startDate} ${startTime}`,
+        'MM-DD-YYYY hh:mm:ss a',
+        'America/Los_Angeles'
+      )
+      const endDatetime: moment.Moment = startDatetime.clone()
+      const testIntervals: Array<string> = testLength.split(':')
+      endDatetime
+        .add(testIntervals[0], 'days')
+        .add(testIntervals[1], 'hours')
+        .add(testIntervals[2], 'minutes')
+
       console.log(
-        `start time: ${startTime} start date: ${startDate} length ${testLength}`
+        `start: ${startDatetime} end: ${endDatetime}`
       )
     })
     .catch((error: Error) => {
