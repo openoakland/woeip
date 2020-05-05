@@ -15,6 +15,7 @@ from woeip.apps.air_quality.tests import factories
 TEST_DATA_DIRECTORY = Path(__file__).parent / "data"
 GPS_PATH = TEST_DATA_DIRECTORY / "gps.log"
 DUSTRAK_PATH = TEST_DATA_DIRECTORY / "dustrak.csv"
+RANDOM_PATH = TEST_DATA_DIRECTORY / "random.log"
 
 
 request_factory = APIRequestFactory()
