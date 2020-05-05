@@ -78,8 +78,10 @@ class CollectionSerializer(serializers.HyperlinkedModelSerializer):
 
     def create(self, validated_data):
 
-        # Basic validation that we have the right files
+        ## Basic validation that we have the right files
+
         upload_files = validated_data.pop("upload_files", [])
+
         # Assert that there are exactly two uploaded files
         # Currently we only handles the exactly-two case
         num_upload_files = len(upload_files)
@@ -96,10 +98,9 @@ class CollectionSerializer(serializers.HyperlinkedModelSerializer):
         gps_upload_file = None
         missing_file_errors = []
         for upload_file in upload_files:
-            file_name = upload_file.name
-            if "dustrak" in file_name.lower():
+            if "dustrak" in upload_file["file_name"].lower():
                 dustrak_upload_file = upload_file
-            elif "gps" in file_name.lower():
+            elif "gps" in upload_file["file_name"].lower():
                 gps_upload_file = upload_file
         if dustrak_upload_file is None:
             missing_file_errors.append(
@@ -127,8 +128,8 @@ class CollectionSerializer(serializers.HyperlinkedModelSerializer):
         # Save CollectionFile and process for Dustrak
         dustrak_collection_file = CollectionFile.objects.create(collection=collection)
         dustrak_collection_file.file.save(
-            dustrak_upload_file.name,
-            dustrak_upload_file,
+            dustrak_upload_file["file_name"],
+            ContentFile(dustrak_upload_file["file_data"]),
         )
         dustrak_df = None  # need this to break out of try scope
         try:
@@ -141,7 +142,7 @@ class CollectionSerializer(serializers.HyperlinkedModelSerializer):
         # Save CollectionFile and process for GPS
         gps_collection_file = CollectionFile.objects.create(collection=collection)
         gps_collection_file.file.save(
-            gps_upload_file.name, gps_upload_file,
+            gps_upload_file["file_name"], ContentFile(gps_upload_file["file_data"]),
         )
         gps_df = None  # need this to break out of try scope
         try:

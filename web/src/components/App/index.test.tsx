@@ -2,7 +2,7 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
 
-import App from '.'
+import App from 'components/App'
 import { MemoryRouter } from 'react-router-dom'
 
 describe('<App />', () => {
@@ -12,7 +12,6 @@ describe('<App />', () => {
         <App />
       </MemoryRouter>
     )
-    expect(screen.getByRole('heading')).toHaveTextContent('WOAQ')
-    expect(screen.getByRole('list')).toHaveClass('Home-resources')
+    expect(screen.getAllByRole('link')).toHaveLength(4)
   })
 })
