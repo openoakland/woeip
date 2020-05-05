@@ -88,7 +88,7 @@ class TestCollection(WoaqAPITestCase):
                 "ends_at": ends_at,
                 "pollutant": pollutant.pk,
             }
-            response = self.client.post("/collection", data, format="json")
+            response = self.client.post("/collection", data)
             assert response.status_code == 201
 
     def test_create_collection_missing_gps(self):
@@ -108,8 +108,8 @@ class TestCollection(WoaqAPITestCase):
                 "ends_at": ends_at,
                 "pollutant": pollutant.pk,
             }
-            response = self.client.post("/collection", data, format="json")
-            print(response.content)
+            print('WTH', type(data.get('upload_files')[0]))
+            response = self.client.post("/collection", data)
             assert response.status_code == 400
             assert response.content.startswith(b'["No GPS file found.')
 
@@ -130,7 +130,7 @@ class TestCollection(WoaqAPITestCase):
                 "ends_at": ends_at,
                 "pollutant": pollutant.pk,
             }
-            response = self.client.post("/collection", data, format="json")
+            response = self.client.post("/collection", data)
             print(response.content)
             assert response.status_code == 400
             assert response.content.startswith(b'["No Dustrak file found.')
