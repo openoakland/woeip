@@ -1,5 +1,5 @@
 import { FileWithPath } from 'react-dropzone'
-import * as moment from 'moment-timezone'
+import moment from 'moment-timezone'
 
 export const getDatetimeGPS = (gps: Blob) => {
   gps
@@ -10,7 +10,8 @@ export const getDatetimeGPS = (gps: Blob) => {
       for (const line of textLines) {
         if (line.startsWith('$GPRMC')) {
           encodedTime = line.split(',')[1]
-          console.log(encodedTime)
+          const endTime = moment.utc(`08/06/2014 ${encodedTime}`, 'MM-DD-YYYY hh mm ss.SS')
+          console.log(`gps time: ${endTime}`)
           break
         }
       }
