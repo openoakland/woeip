@@ -10,7 +10,10 @@ export const getDatetimeGPS = (gps: Blob) => {
       for (const line of textLines) {
         if (line.startsWith('$GPRMC')) {
           encodedTime = line.split(',')[1]
-          const endTime = moment.utc(`08/06/2014 ${encodedTime}`, 'MM-DD-YYYY hh mm ss.SS')
+          const endTime = moment.utc(
+            `08/06/2014 ${encodedTime}`,
+            'MM-DD-YYYY hh mm ss.SS'
+          )
           console.log(`gps time: ${endTime}`)
           break
         }
@@ -41,9 +44,7 @@ export const getDatetimeDustrak = (dustrak: Blob) => {
         .add(testIntervals[1], 'hours')
         .add(testIntervals[2], 'minutes')
 
-      console.log(
-        `start: ${startDatetime} end: ${endDatetime}`
-      )
+      console.log(`start: ${startDatetime} end: ${endDatetime}`)
     })
     .catch((error: Error) => {
       console.warn(error)
