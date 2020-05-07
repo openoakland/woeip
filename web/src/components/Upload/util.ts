@@ -7,12 +7,15 @@ export const getDatetimeGPS = (gps: Blob) => {
     .then((text: string) => {
       const textLines: Array<string> = text.split('\n')
       let encodedTime: string
+      let encodedDate: string
       for (const line of textLines) {
         if (line.startsWith('$GPRMC')) {
-          encodedTime = line.split(',')[1]
+          const lineFields:Array<string> = line.split(',')
+          encodedTime = lineFields[1]
+          encodedDate = lineFields[9]
           const endTime = moment.utc(
-            `08/06/2014 ${encodedTime}`,
-            'MM-DD-YYYY hh mm ss.SS'
+            `${encodedDate} ${encodedTime}`,
+            'DDMMYYYY hh mm ss.SS'
           )
           console.log(`gps time: ${endTime}`)
           break
@@ -23,6 +26,11 @@ export const getDatetimeGPS = (gps: Blob) => {
       console.warn(error)
     })
 }
+
+// interface DustrakTimes {
+//   start: moment.Moment
+//   end: moment.Moment
+// }
 
 export const getDatetimeDustrak = (dustrak: Blob) => {
   dustrak
@@ -45,13 +53,14 @@ export const getDatetimeDustrak = (dustrak: Blob) => {
         .add(testIntervals[2], 'minutes')
 
       console.log(`start: ${startDatetime} end: ${endDatetime}`)
+      // return {'start': startDatetime, 'end':endDatetime}
     })
     .catch((error: Error) => {
       console.warn(error)
     })
 }
 
-export const validateFiles = (files: Array<FileWithPath>): string => {
+export const validateFiles = async (files: Array<FileWithPath>): Promise<string> => {
   if (files.length > 0 && files.length < 2) {
     return 'We need one GPS log file and one DusTrak cvs file. Please add a file to continue.'
   }
@@ -77,8 +86,11 @@ export const validateFiles = (files: Array<FileWithPath>): string => {
     if (!logFile || !csvFile) {
       return 'We need one GPS log file and one DusTrak csv file. Please replace one of your files to continue.'
     } else {
-      getDatetimeDustrak(csvFile!)
-      getDatetimeGPS(logFile!)
+      const logText:string = await logFile.text()
+      const csvText:string = await csvFile.text()
+      console.log(logText)
+      console.log(csvText)
+
     }
   }
 

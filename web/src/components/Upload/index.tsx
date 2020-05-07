@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, EffectCallback } from 'react'
 import { useDropzone, FileWithPath } from 'react-dropzone'
 import { Message, Icon, Button, Container } from 'semantic-ui-react'
 import axios from 'axios'
@@ -108,8 +108,11 @@ const Upload: React.FunctionComponent = () => {
   })
 
   useEffect(() => {
-    const potentialErrorMessage = validateFiles(files)
+    const anyNameFunction = async () => {
+    const potentialErrorMessage = await validateFiles(files)
     setErrorMessage(potentialErrorMessage)
+    }
+    anyNameFunction()
   }, [files])
 
   const upload = (e: React.FormEvent) => {
