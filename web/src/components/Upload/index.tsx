@@ -109,8 +109,8 @@ const Upload: React.FunctionComponent = () => {
 
   useEffect(() => {
     const anyNameFunction = async () => {
-    const potentialErrorMessage = await validateFiles(files)
-    setErrorMessage(potentialErrorMessage)
+      const potentialErrorMessage = await validateFiles(files)
+      setErrorMessage(potentialErrorMessage)
     }
     anyNameFunction()
   }, [files])
