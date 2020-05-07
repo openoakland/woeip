@@ -106,12 +106,12 @@ class CollectionSerializer(serializers.HyperlinkedModelSerializer):
         if dustrak_upload_file is None:
             missing_file_errors.append(
                 "No Dustrak file found. "
-                + "Please upload a Dustrak file with 'dustrak' in the filename. "
+                + "Please upload a Dustrak file with a .csv extension. "
             )
         if gps_upload_file is None:
             missing_file_errors.append(
                 "No GPS file found. "
-                + "Please upload a GPS file with 'gps' in the filename. "
+                + "Please upload a GPS file with a .log extension. "
             )
         if len(missing_file_errors) > 0:
             raise exceptions.ValidationError(detail=missing_file_errors)
