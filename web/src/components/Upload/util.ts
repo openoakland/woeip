@@ -1,18 +1,16 @@
 import { FileWithPath } from 'react-dropzone'
 import moment from 'moment-timezone'
+import { DustrakMeta, ValidateMeta } from 'components/Upload/types'
 
 export const getGpsStart = (
   textLines: Array<string>
 ): moment.Moment | Error => {
-  let encodedTime: string
-  let encodedDate: string
-  let endTime: moment.Moment
   for (const line of textLines) {
     if (line.startsWith('$GPRMC')) {
       const lineFields: Array<string> = line.split(',')
-      encodedTime = lineFields[1]
-      encodedDate = lineFields[9]
-      endTime = moment.utc(
+      const encodedTime: string = lineFields[1]
+      const encodedDate: string = lineFields[9]
+      const endTime: moment.Moment = moment.utc(
         `${encodedDate} ${encodedTime}`,
         'DDMMYYYY hh mm ss.SS'
       )
@@ -49,18 +47,25 @@ export const getDustrakEnd = (
 
 export const validateFiles = async (
   files: Array<FileWithPath>
-): Promise<string> => {
+): Promise<ValidateMeta> => {
+  const dustrakData: DustrakMeta = {
+    startDatetime: '',
+    endDatetime: ''
+  }
+  const validateData: ValidateMeta = {
+    message: '',
+    dustrakMeta: dustrakData
+  }
+
   if (files.length > 0 && files.length < 2) {
-    return 'We need one GPS log file and one DusTrak cvs file. Please add a file to continue.'
-  }
-
-  if (files.length > 2) {
-    return 'We need exactly one GPS log file and one DusTrak cvs file. Please remove additional files.'
-  }
-
-  if (files.length === 2) {
-    let logFile: Blob | undefined
-    let csvFile: Blob | undefined
+    validateData.message =
+      'We need one GPS log file and one DusTrak cvs file. Please add a file to continue.'
+  } else if (files.length > 2) {
+    validateData.message =
+      'We need exactly one GPS log file and one DusTrak cvs file. Please remove additional files.'
+  } else if (files.length === 2) {
+    let logFile: File | undefined
+    let csvFile: File | undefined
 
     files.forEach(file => {
       if (file.type === 'text/csv') {
@@ -73,7 +78,8 @@ export const validateFiles = async (
     })
 
     if (!logFile || !csvFile) {
-      return 'We need one GPS log file and one DusTrak csv file. Please replace one of your files to continue.'
+      validateData.message =
+        'We need one GPS log file and one DusTrak csv file. Please replace one of your files to continue.'
     } else {
       const [logText, csvText]: Array<string> = await Promise.all([
         logFile.text(),
@@ -87,8 +93,10 @@ export const validateFiles = async (
       )
       const logTextLines: Array<string> = logText.split('\n')
       const gpsStart: moment.Moment | Error = getGpsStart(logTextLines)
-      console.log(`dustrak: ${dustrakStart} - ${dustrakEnd}\ngps: ${gpsStart}`)
+      validateData.message = ''
+      dustrakData.startDatetime = dustrakStart.format()
+      dustrakData.endDatetime = dustrakEnd.format()
     }
   }
-  return ''
+  return validateData
 }

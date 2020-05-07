@@ -1,10 +1,11 @@
-import React, { useState, useEffect, EffectCallback } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDropzone, FileWithPath } from 'react-dropzone'
 import { Message, Icon, Button, Container } from 'semantic-ui-react'
 import axios from 'axios'
 
 import styled from 'theme'
-import { validateFiles } from './util'
+import { validateFiles } from 'components/Upload/util'
+import { ValidateMeta, DustrakMeta } from 'components/Upload/types'
 
 const StyledContainer = styled(Container)`
   margin-top: 30px;
@@ -100,6 +101,10 @@ declare let FormData: {
 const Upload: React.FunctionComponent = () => {
   const [files, setFiles] = useState<Array<FileWithPath>>([])
   const [errorMessage, setErrorMessage] = useState<string>('')
+  const [dustrakMeta, setDustrakMeta] = useState<DustrakMeta>({
+    startDatetime: '',
+    endDatetime: ''
+  })
   const { getRootProps, getInputProps } = useDropzone({
     onDrop: (acceptedFiles: Array<FileWithPath>) => {
       setFiles([...files, ...acceptedFiles])
@@ -109,8 +114,11 @@ const Upload: React.FunctionComponent = () => {
 
   useEffect(() => {
     const anyNameFunction = async () => {
-      const potentialErrorMessage = await validateFiles(files)
-      setErrorMessage(potentialErrorMessage)
+      const validateMeta: ValidateMeta = await validateFiles(files)
+      setErrorMessage(validateMeta.message)
+      if (validateMeta.message === '') {
+        setDustrakMeta(validateMeta.dustrakMeta)
+      }
     }
     anyNameFunction()
   }, [files])
@@ -123,10 +131,11 @@ const Upload: React.FunctionComponent = () => {
       formData.append('upload_files', file)
     }
 
-    // hard-coded for now:
-    formData.append('starts_at', '2020-03-04 06:00')
-    formData.append('ends_at', '2020-03-05 06:00')
+    formData.append('starts_at', dustrakMeta.startDatetime)
+    formData.append('ends_at', dustrakMeta.endDatetime)
     formData.append('pollutant', '1')
+    console.log(dustrakMeta.startDatetime)
+    console.log(dustrakMeta.endDatetime)
     axios
       .post('http://api.lvh.me/collection', formData, {
         headers: {
