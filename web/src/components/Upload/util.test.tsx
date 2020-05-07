@@ -23,6 +23,24 @@ describe('successful gps parse', () => {
   })
 })
 
+describe('start (gprmc) not found in gps', () => {
+  let noGprmcLines: Array<string> | undefined
+  beforeAll(()=>{
+    noGprmcLines = fs
+    .readFileSync(`${testDir}/gprmc_missing.log`)
+    .toString()
+    .split('\n')
+  })
+
+  afterAll(()=> {
+    noGprmcLines = undefined
+  })
+
+  it('has an error from not finding a start datetime', ()=> {
+    expect(getGpsStart(noGprmcLines!)).toEqual(new Error('start time not found'))
+  })
+})
+
 describe('parse dustrak file', () => {
   test.skip('finds the start and end times in the dustrak file', () => {
     const validCsvData: Buffer = fs.readFileSync(
