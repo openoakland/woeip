@@ -1,4 +1,5 @@
 # pylint: disable=abstract-method
+import os
 from django.core.files.base import ContentFile
 from rest_framework import serializers, exceptions
 from woeip.apps.air_quality.dustrak import (
@@ -97,9 +98,10 @@ class CollectionSerializer(serializers.HyperlinkedModelSerializer):
         missing_file_errors = []
         for upload_file in upload_files:
             file_name = upload_file.name
-            if "dustrak" in file_name.lower():
+            _, file_ext = os.path.splitext(file_name)
+            if file_ext == '.csv':
                 dustrak_upload_file = upload_file
-            elif "gps" in file_name.lower():
+            elif file_ext == '.log':
                 gps_upload_file = upload_file
         if dustrak_upload_file is None:
             missing_file_errors.append(
