@@ -1,9 +1,11 @@
 import { getDustrakStart } from 'components/Upload/util'
-import valid from 'components/Upload/test-data/valid.csv'
+import * as fs from 'fs'
 
 describe('parse dustrak file', () => {
   test('finds the start and end times in the dustrak file', () => {
-    console.log(valid)
-    // expect(getDatetimeStart(dustrak)).toBe(true)
+    const validCsvData: Buffer = fs.readFileSync(
+      `${__dirname}/test-data/valid.csv`
+    )
+    console.log(validCsvData.toString())
   })
 })
