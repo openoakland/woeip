@@ -7,14 +7,18 @@ export const getGpsStart = (
 ): moment.Moment | Error => {
   for (const line of textLines) {
     if (line.startsWith('$GPRMC')) {
-      const lineFields: Array<string> = line.split(',')
-      const encodedTime: string = lineFields[1]
-      const encodedDate: string = lineFields[9]
-      const endTime: moment.Moment = moment.utc(
-        `${encodedDate} ${encodedTime}`,
-        'DDMMYYYY hh mm ss.SS'
-      )
-      return endTime
+      try {
+        const lineFields: Array<string> = line.split(',')
+        const encodedTime: string = lineFields[1]
+        const encodedDate: string = lineFields[9]
+        const endTime: moment.Moment = moment.utc(
+          `${encodedDate} ${encodedTime}`,
+          'DDMMYYYY hh mm ss.SS'
+        )
+        return endTime
+      } catch(e){
+        return new Error(e)
+      }
     }
   }
   return new Error('start time not found')

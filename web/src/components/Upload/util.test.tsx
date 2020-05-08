@@ -2,42 +2,62 @@ import moment from 'moment-timezone'
 import * as fs from 'fs'
 import { getDustrakStart, getGpsStart } from 'components/Upload/util'
 
-
-const testDir: string = `${__dirname}/test-data/`
+const testDir: string = `${__dirname}/test-data`
 
 describe('successful gps parse', () => {
-  let validGpsLines: Array<string> | undefined
-  beforeAll(() => {
-    validGpsLines = fs
+  let validGps: Array<string> | undefined
+  beforeEach(() => {
+    validGps = fs
       .readFileSync(`${testDir}/valid.log`)
       .toString()
       .split('\n')
   })
 
-  afterAll(() => {
-    validGpsLines = undefined
+  afterEach(() => {
+    validGps = undefined
   })
 
-  it('should find the time listed in the GPS', ()=>{
-    expect(getGpsStart(validGpsLines!)).toEqual(moment.utc('060814 192152.825','DDMMYYYY hh mm ss.SS'))
+  it('should find the time listed in the GPS', () => {
+    expect(getGpsStart(validGps!)).toEqual(
+      moment.utc('060814 192152.825', 'DDMMYYYY hh mm ss.SS')
+    )
   })
 })
 
 describe('start (gprmc) not found in gps', () => {
-  let noGprmcLines: Array<string> | undefined
-  beforeAll(()=>{
-    noGprmcLines = fs
-    .readFileSync(`${testDir}/gprmc_missing.log`)
-    .toString()
-    .split('\n')
+  let noGprmc: Array<string> | undefined
+  beforeEach(() => {
+    noGprmc = fs
+      .readFileSync(`${testDir}/gprmc_missing.log`)
+      .toString()
+      .split('\n')
   })
 
-  afterAll(()=> {
-    noGprmcLines = undefined
+  afterEach(() => {
+    noGprmc = undefined
   })
 
-  it('has an error from not finding a start datetime', ()=> {
-    expect(getGpsStart(noGprmcLines!)).toEqual(new Error('start time not found'))
+  it('has an error from not finding a start datetime', () => {
+    expect(getGpsStart(noGprmc!)).toEqual(
+      new Error('start time not found')
+    )
+  })
+})
+
+describe('start (gprmc) missing data in gps', () => {
+  let gprmcCorrupt: Array<string> | undefined
+  beforeEach(() => {
+    gprmcCorrupt = fs
+      .readFileSync(`${testDir}/gprmc_missing.log`)
+      .toString()
+      .split('\n')
+  })
+  afterEach(() => {
+    gprmcCorrupt = undefined
+  })
+
+  it('should fail to create a valid moment in gps', () => {
+    expect(getDustrakStart(gprmcCorrupt!)).toEqual(new Error())
   })
 })
 
