@@ -91,16 +91,22 @@ export const validateFiles = async (
       )
       const logTextLines: Array<string> = logText.split('\n')
       const gpsStart: moment.Moment = getGpsStart(logTextLines)
-      if (!dustrakStart.isValid() || !dustrakEnd.isValid() || !gpsStart.isValid()){
-        validateData.message = 'Files could not be uploaded. Try again or choose a different file'
-      }
-      else if (dustrakStart.subtract(2, "minutes") <= gpsStart && gpsStart <= dustrakStart.add(2,'minutes')){
+      if (
+        !dustrakStart.isValid() ||
+        !dustrakEnd.isValid() ||
+        !gpsStart.isValid()
+      ) {
+        validateData.message =
+          'Files could not be uploaded. Try again or choose a different file.'
+      } else if (
+        dustrakStart.subtract(2, 'minutes') <= gpsStart &&
+        gpsStart <= dustrakStart.add(2, 'minutes')
+      ) {
         validateData.message = ''
         dustrakData.startDatetime = dustrakStart.format()
         dustrakData.endDatetime = dustrakEnd.format()
-      }
-      else {
-        validateData.message = "Dates don't match. Please replace one of your files to continue"
+      } else {
+        validateData.message = `Dates don't match. Please replace one of your files to continue.`
       }
     }
   }
