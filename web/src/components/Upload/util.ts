@@ -2,26 +2,20 @@ import { FileWithPath } from 'react-dropzone'
 import moment from 'moment-timezone'
 import { DustrakMeta, ValidateMeta } from 'components/Upload/types'
 
-export const getGpsStart = (
-  textLines: Array<string>
-): moment.Moment | Error => {
+export const getGpsStart = (textLines: Array<string>): moment.Moment => {
   for (const line of textLines) {
     if (line.startsWith('$GPRMC')) {
-      try {
-        const lineFields: Array<string> = line.split(',')
-        const encodedTime: string = lineFields[1]
-        const encodedDate: string = lineFields[9]
-        const endTime: moment.Moment = moment.utc(
-          `${encodedDate} ${encodedTime}`,
-          'DDMMYYYY hh mm ss.SS'
-        )
-        return endTime
-      } catch(e){
-        return new Error(e)
-      }
+      const lineFields: Array<string> = line.split(',')
+      const encodedTime: string = lineFields[1]
+      const encodedDate: string = lineFields[9]
+      const endTime: moment.Moment = moment.utc(
+        `${encodedDate} ${encodedTime}`,
+        'DDMMYYYY hh mm ss.SS'
+      )
+      return endTime
     }
   }
-  return new Error('start time not found')
+  return moment.utc('')
 }
 
 export const getDustrakStart = (textLines: Array<string>): moment.Moment => {
@@ -96,10 +90,18 @@ export const validateFiles = async (
         dustrakStart
       )
       const logTextLines: Array<string> = logText.split('\n')
-      const gpsStart: moment.Moment | Error = getGpsStart(logTextLines)
-      validateData.message = ''
-      dustrakData.startDatetime = dustrakStart.format()
-      dustrakData.endDatetime = dustrakEnd.format()
+      const gpsStart: moment.Moment = getGpsStart(logTextLines)
+      if (!dustrakStart.isValid() || !dustrakEnd.isValid() || !gpsStart.isValid()){
+        validateData.message = 'Files could not be uploaded. Try again or choose a different file'
+      }
+      else if (dustrakStart.subtract(2, "minutes") <= gpsStart && gpsStart <= dustrakStart.add(2,'minutes')){
+        validateData.message = ''
+        dustrakData.startDatetime = dustrakStart.format()
+        dustrakData.endDatetime = dustrakEnd.format()
+      }
+      else {
+        validateData.message = "Dates don't match. Please replace one of your files to continue"
+      }
     }
   }
   return validateData

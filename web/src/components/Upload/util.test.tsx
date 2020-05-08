@@ -1,71 +1,83 @@
 import moment from 'moment-timezone'
 import * as fs from 'fs'
-import { getDustrakStart, getGpsStart } from 'components/Upload/util'
+import {
+  getDustrakStart,
+  getDustrakEnd,
+  getGpsStart
+} from 'components/Upload/util'
 
 const testDir: string = `${__dirname}/test-data`
 
 describe('successful gps parse', () => {
-  let validGps: Array<string> | undefined
-  beforeEach(() => {
-    validGps = fs
-      .readFileSync(`${testDir}/valid.log`)
-      .toString()
-      .split('\n')
-  })
-
-  afterEach(() => {
-    validGps = undefined
-  })
+  const validGps: Array<string> = fs
+    .readFileSync(`${testDir}/valid.log`)
+    .toString()
+    .split('\n')
 
   it('should find the time listed in the GPS', () => {
-    expect(getGpsStart(validGps!)).toEqual(
-      moment.utc('060814 192152.825', 'DDMMYYYY hh mm ss.SS')
-    )
+    expect(getGpsStart(validGps).isValid()).toBe(true)
   })
 })
 
 describe('start (gprmc) not found in gps', () => {
-  let noGprmc: Array<string> | undefined
-  beforeEach(() => {
-    noGprmc = fs
-      .readFileSync(`${testDir}/gprmc_missing.log`)
-      .toString()
-      .split('\n')
-  })
-
-  afterEach(() => {
-    noGprmc = undefined
-  })
+  const noGprmc: Array<string> = fs
+    .readFileSync(`${testDir}/gprmc_missing.log`)
+    .toString()
+    .split('\n')
 
   it('has an error from not finding a start datetime', () => {
-    expect(getGpsStart(noGprmc!)).toEqual(
-      new Error('start time not found')
-    )
+    expect(getGpsStart(noGprmc).isValid()).toBe(false)
   })
 })
 
-describe('start (gprmc) missing data in gps', () => {
-  let gprmcCorrupt: Array<string> | undefined
-  beforeEach(() => {
-    gprmcCorrupt = fs
-      .readFileSync(`${testDir}/gprmc_missing.log`)
-      .toString()
-      .split('\n')
-  })
-  afterEach(() => {
-    gprmcCorrupt = undefined
-  })
+describe('start (gprmc) corrupt in gps', () => {
+  const gprmcCorrupt: Array<string> = fs
+    .readFileSync(`${testDir}/gprmc_corrupt.log`)
+    .toString()
+    .split('\n')
 
   it('should fail to create a valid moment in gps', () => {
-    expect(getDustrakStart(gprmcCorrupt!)).toEqual(new Error())
+    expect(getGpsStart(gprmcCorrupt).isValid()).toBe(false)
   })
 })
 
-describe('parse dustrak file', () => {
-  test.skip('finds the start and end times in the dustrak file', () => {
-    const validCsvData: Buffer = fs.readFileSync(
-      `${__dirname}/test-data/valid.csv`
+describe('successful dustrak parse', () => {
+  const validDustrak: Array<string> = fs
+    .readFileSync(`${testDir}/valid.csv`)
+    .toString()
+    .split('\n')
+
+  it('finds the start and end dustrak datetimes', () => {
+    const startDatetime: moment.Moment = getDustrakStart(validDustrak)
+    expect(startDatetime.isValid()).toBe(true)
+    expect(getDustrakEnd(validDustrak, startDatetime).isValid()).toBe(true)
+  })
+})
+
+describe('wrong file in place of dustrak', () => {
+  const wrongDustrak: Array<string> = fs
+    .readFileSync(`${testDir}/wrong.csv`)
+    .toString()
+    .split('\n')
+
+  it('moment handles non-datetime data', () => {
+    const startDatetime: moment.Moment = getDustrakStart(wrongDustrak)
+    expect(startDatetime.isValid()).toBe(false)
+    expect(getDustrakEnd(wrongDustrak, startDatetime).isValid()).toBe(false)
+  })
+})
+
+describe('start time missing from dustrak', () => {
+  const missingStartDustrak: Array<string> = fs
+    .readFileSync(`${testDir}/start_missing.csv`)
+    .toString()
+    .split('\n')
+
+  it('cant find start and end', () => {
+    const startDatetime: moment.Moment = getDustrakStart(missingStartDustrak)
+    expect(startDatetime.isValid()).toBe(false)
+    expect(getDustrakEnd(missingStartDustrak, startDatetime).isValid()).toBe(
+      false
     )
-    console.log(validCsvData.toString())
   })
 })
