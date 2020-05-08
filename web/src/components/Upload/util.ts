@@ -19,28 +19,35 @@ export const getGpsStart = (textLines: Array<string>): moment.Moment => {
 }
 
 export const getDustrakStart = (textLines: Array<string>): moment.Moment => {
-  const startTime: string = textLines[6].split(',')[1]
-  const startDate: string = textLines[7].split(',')[1]
-  const startDatetime: moment.Moment = moment.tz(
-    `${startDate} ${startTime}`,
-    'MM-DD-YYYY hh:mm:ss a',
-    'America/Los_Angeles'
-  )
-  return startDatetime
+  if (textLines.length >= 8) {
+    const startTime: string = textLines[6].split(',')[1]
+    const startDate: string = textLines[7].split(',')[1]
+    const startDatetime: moment.Moment = moment.tz(
+      `${startDate} ${startTime}`,
+      'MM-DD-YYYY hh:mm:ss a',
+      'America/Los_Angeles'
+    )
+    return startDatetime
+  } else {
+    return moment('')
+  }
 }
 
 export const getDustrakEnd = (
   textLines: Array<string>,
   startDatetime: moment.Moment
 ): moment.Moment => {
-  const endDatetime: moment.Moment = startDatetime.clone()
-  const testLength: string = textLines[8].split(',')[1]
-  const [days, hours, minutes]: Array<string> = testLength.split(':')
-  endDatetime
-    .add(days, 'days')
-    .add(hours, 'hours')
-    .add(minutes, 'minutes')
-  return endDatetime
+  if (textLines.length >= 9) {
+    const endDatetime: moment.Moment = startDatetime.clone()
+    const testLength: string = textLines[8].split(',')[1]
+    const [days, hours, minutes]: Array<string> = testLength.split(':')
+    endDatetime
+      .add(days, 'days')
+      .add(hours, 'hours')
+      .add(minutes, 'minutes')
+    return endDatetime
+  }
+  return moment('')
 }
 
 export const validateFiles = async (

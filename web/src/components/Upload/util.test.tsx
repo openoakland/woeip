@@ -81,3 +81,20 @@ describe('start time missing from dustrak', () => {
     )
   })
 })
+
+describe('empty file fed to gps and dustrak', () => {
+  const empty: Array<string> = fs
+    .readFileSync(`${testDir}/empty.txt`)
+    .toString()
+    .split('\n')
+
+  it('should handle empty in gps module', () => {
+    expect(getGpsStart(empty).isValid()).toBe(false)
+  })
+
+  it('should handle empty in dustrak modules', () => {
+    const startDatetime: moment.Moment = getDustrakStart(empty)
+    expect(startDatetime.isValid()).toBe(false)
+    expect(getDustrakEnd(empty, startDatetime).isValid()).toBe(false)
+  })
+})
