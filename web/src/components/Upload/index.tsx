@@ -113,14 +113,14 @@ const Upload: React.FunctionComponent = () => {
   })
 
   useEffect(() => {
-    const anyNameFunction = async () => {
+    const handleValidation = async () => {
       const validateMeta: ValidateMeta = await validateFiles(files)
       setErrorMessage(validateMeta.message)
       if (validateMeta.message === '') {
         setDustrakMeta(validateMeta.dustrakMeta)
       }
     }
-    anyNameFunction()
+    handleValidation()
   }, [files])
 
   const upload = (e: React.FormEvent) => {
