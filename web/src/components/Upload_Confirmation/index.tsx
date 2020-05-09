@@ -5,9 +5,9 @@ import {
   Button,
   Container,
   Form,
-  Select
+  Input,
+  Dropdown
 } from 'semantic-ui-react'
-
 import styled from 'theme'
 
 const StyledContainer = styled(Container)`
@@ -15,7 +15,7 @@ const StyledContainer = styled(Container)`
 `
 
 const ContentContainer = styled.div`
-  margin: 0px 125px 0px 125px;
+  margin: 0px 130px 0px 130px;
 `
 
 const SuccessBanner = styled(Message)`
@@ -52,20 +52,28 @@ const FormContainer = styled.div`
 const FormContent = styled(Form)`
   padding: 22px 72px 80px 32px;
 `
-const DisabledInput = styled(Form.Input)`
+const DisabledInput = styled(Input)`
   min-width: auto;
   width: 160px;
 `
-const DropdownInput = styled(Form.Field)`
-  min-width: auto;
+
+const CalendarIcon = () => <Icon name='calendar outline' />
+
+const DropdownInput = styled(Dropdown)`
+  min-width: auto !important;
   width: 160px;
-  * {
-    min-width: auto !important;
-  }
+`
+
+const InputLabel = styled.p`
+  font-family: ${({ theme }) => theme.fonts.primary};
+  font-size 14px;
+  line-height: 24px;
+  margin: 0px 0px 32px 0px !important;
 `
 const SubmitForm = styled.form`
   display: flex;
   justify-content: space-between;
+  margin-top: 48px;
   button {
     border-radius: 2px !important;
     font-family: ${({ theme }) => theme.fonts.secondary} !important;
@@ -103,16 +111,23 @@ const UploadConfirmation: React.FunctionComponent = () => {
         <h3>Step 2. Confirm your session details</h3>
         <FormContainer>
           <FormContent>
-            <DisabledInput placeholder='First Name' readOnly />
-            <p>Collection Date</p>
-            <DisabledInput placeholder='First Name' readOnly />
-            <p>Start Time</p>
+            <div>
+              <DisabledInput
+                icon='calendar outline'
+                iconPosition='right'
+                disabled={true}
+              />
+            </div>
+            <InputLabel>Collection date</InputLabel>
+            <DisabledInput placeholder='First Name' disabled={true} />
+            <InputLabel>Start time</InputLabel>
             <DropdownInput
-              control={Select}
+              search={true}
+              selection={true}
               options={options}
               placeholder='Gender'
             />
-            <p>Device</p>
+            <InputLabel>Device</InputLabel>
             <SubmitForm>
               <SaveButton>Save</SaveButton>
               <CancelButton>Cancel</CancelButton>
