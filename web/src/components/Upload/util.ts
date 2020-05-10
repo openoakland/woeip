@@ -19,7 +19,7 @@ export const getGpsStart = (textLines: Array<string>): moment.Moment => {
 }
 
 export const getDustrakStart = (textLines: Array<string>): moment.Moment => {
-  if (textLines.length >= 8) {
+  try {
     const startTime: string = textLines[6].split(',')[1]
     const startDate: string = textLines[7].split(',')[1]
     const startDatetime: moment.Moment = moment.tz(
@@ -28,8 +28,13 @@ export const getDustrakStart = (textLines: Array<string>): moment.Moment => {
       'America/Los_Angeles'
     )
     return startDatetime
-  } else {
-    return moment('')
+  } catch (e) {
+    if (e instanceof TypeError) {
+      console.warn(e)
+      return moment('')
+    } else {
+      throw e
+    }
   }
 }
 
@@ -37,7 +42,7 @@ export const getDustrakEnd = (
   textLines: Array<string>,
   startDatetime: moment.Moment
 ): moment.Moment => {
-  if (textLines.length >= 9) {
+  try {
     const endDatetime: moment.Moment = startDatetime.clone()
     const testLength: string = textLines[8].split(',')[1]
     const [days, hours, minutes]: Array<string> = testLength.split(':')
@@ -46,8 +51,14 @@ export const getDustrakEnd = (
       .add(hours, 'hours')
       .add(minutes, 'minutes')
     return endDatetime
+  } catch(e){
+    if (e instanceof TypeError){
+      console.warn(e)
+      return moment('')
+    } else{
+      throw e
+    }
   }
-  return moment('')
 }
 
 export const validateFiles = async (
