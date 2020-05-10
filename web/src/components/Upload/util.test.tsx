@@ -10,22 +10,12 @@ const testDir: string = `${__dirname}/test-data`
 
 describe('parses gps and dustrak files', () => {
   let validGps: Array<string>
-  let noGprmc: Array<string>
+  let gprmcMissing: Array<string>
   let gprmcCorrupt: Array<string>
   let validDustrak: Array<string>
   let wrongDustrak: Array<string>
   let missingStartDustrak: Array<string>
   let empty: Array<string>
-  const fileNames: Array<string> = [
-    'valid.log',
-    'gprmc_missing.log',
-    'gprmc_corrupt.log',
-    'valid.csv',
-    'wrong.csv',
-    'start_missing.csv',
-    'empty.txt'
-  ]
-  const filePromises: Array<Promise<Array<string>>> = []
   beforeAll(async () => {
     const readFile = (
       path: string,
@@ -38,13 +28,24 @@ describe('parses gps and dustrak files', () => {
         })
       })
 
+    const fileNames: Array<string> = [
+      'valid.log',
+      'gprmc_missing.log',
+      'gprmc_corrupt.log',
+      'valid.csv',
+      'wrong.csv',
+      'start_missing.csv',
+      'empty.txt'
+    ]
+    const filePromises: Array<Promise<Array<string>>> = []
     for (const file of fileNames) {
       const filePomise: Promise<Array<string>> = readFile(`${testDir}/${file}`)
       filePromises.push(filePomise)
-    };
+    }
+    // tslint:disable-next-line
     [
       validGps,
-      noGprmc,
+      gprmcMissing,
       gprmcCorrupt,
       validDustrak,
       wrongDustrak,
@@ -58,7 +59,7 @@ describe('parses gps and dustrak files', () => {
   })
 
   it('has an error from not finding a start datetime', () => {
-    expect(getGpsStart(noGprmc).isValid()).toBe(false)
+    expect(getGpsStart(gprmcMissing).isValid()).toBe(false)
   })
 
   it('should fail to create a valid moment in gps', () => {
