@@ -8,70 +8,77 @@ import {
 
 const testDir: string = `${__dirname}/test-data`
 
-describe('successful gps parse', () => {
-  const validGps: Array<string> = fs
-    .readFileSync(`${testDir}/valid.log`)
-    .toString()
-    .split('\n')
+describe('parses gps and dustrak files', () => {
+  let validGps: Array<string>
+  let noGprmc: Array<string>
+  let gprmcCorrupt: Array<string>
+  let validDustrak: Array<string>
+  let wrongDustrak: Array<string>
+  let missingStartDustrak: Array<string>
+  let empty: Array<string>
+  beforeAll(async () => {
+    const readFile = (path: string, opts: string = 'utf8') =>
+      new Promise((resolve, reject) => {
+        fs.readFile(path, opts, (err, data) => {
+          if (err) reject(err)
+          else resolve(data.toString().split('\n', 10))
+        })
+      })
+
+    const validGpsPromise: Promise<any> = readFile(`${testDir}/valid.log`)
+    const noGprmcPromise: Promise<any> = readFile(
+      `${testDir}/gprmc_missing.log`
+    )
+    const gprmcCorruptPromise: Promise<any> = readFile(
+      `${testDir}/gprmc_corrupt.log`
+    )
+    const validDustrakPromise: Promise<any> = readFile(`${testDir}/valid.csv`)
+    const wrongDustrakPromise: Promise<any> = readFile(`${testDir}/wrong.csv`)
+    const missingStartDustrakPromise: Promise<any> = readFile(
+      `${testDir}/start_missing.csv`
+    )
+    const emptyPromise: Promise<any> = readFile(`${testDir}/empty.txt`)
+    const fileData = await Promise.all([
+      validGpsPromise,
+      noGprmcPromise,
+      gprmcCorruptPromise,
+      validDustrakPromise,
+      wrongDustrakPromise,
+      missingStartDustrakPromise,
+      emptyPromise
+    ])
+    validGps = fileData[0]
+    noGprmc = fileData[1]
+    gprmcCorrupt = fileData[2]
+    validDustrak = fileData[3]
+    wrongDustrak = fileData[4]
+    missingStartDustrak = fileData[5]
+    empty = fileData[6]
+  })
 
   it('should find the time listed in the GPS', () => {
     expect(getGpsStart(validGps).isValid()).toBe(true)
   })
-})
-
-describe('start (gprmc) not found in gps', () => {
-  const noGprmc: Array<string> = fs
-    .readFileSync(`${testDir}/gprmc_missing.log`)
-    .toString()
-    .split('\n')
 
   it('has an error from not finding a start datetime', () => {
     expect(getGpsStart(noGprmc).isValid()).toBe(false)
   })
-})
-
-describe('start (gprmc) corrupt in gps', () => {
-  const gprmcCorrupt: Array<string> = fs
-    .readFileSync(`${testDir}/gprmc_corrupt.log`)
-    .toString()
-    .split('\n')
 
   it('should fail to create a valid moment in gps', () => {
     expect(getGpsStart(gprmcCorrupt).isValid()).toBe(false)
   })
-})
-
-describe('successful dustrak parse', () => {
-  const validDustrak: Array<string> = fs
-    .readFileSync(`${testDir}/valid.csv`)
-    .toString()
-    .split('\n')
 
   it('finds the start and end dustrak datetimes', () => {
     const startDatetime: moment.Moment = getDustrakStart(validDustrak)
     expect(startDatetime.isValid()).toBe(true)
     expect(getDustrakEnd(validDustrak, startDatetime).isValid()).toBe(true)
   })
-})
-
-describe('wrong file in place of dustrak', () => {
-  const wrongDustrak: Array<string> = fs
-    .readFileSync(`${testDir}/wrong.csv`)
-    .toString()
-    .split('\n')
 
   it('moment handles non-datetime data', () => {
     const startDatetime: moment.Moment = getDustrakStart(wrongDustrak)
     expect(startDatetime.isValid()).toBe(false)
     expect(getDustrakEnd(wrongDustrak, startDatetime).isValid()).toBe(false)
   })
-})
-
-describe('start time missing from dustrak', () => {
-  const missingStartDustrak: Array<string> = fs
-    .readFileSync(`${testDir}/start_missing.csv`)
-    .toString()
-    .split('\n')
 
   it('cant find start and end', () => {
     const startDatetime: moment.Moment = getDustrakStart(missingStartDustrak)
@@ -80,13 +87,6 @@ describe('start time missing from dustrak', () => {
       false
     )
   })
-})
-
-describe('empty file fed to gps and dustrak', () => {
-  const empty: Array<string> = fs
-    .readFileSync(`${testDir}/empty.txt`)
-    .toString()
-    .split('\n')
 
   it('should handle empty in gps module', () => {
     expect(getGpsStart(empty).isValid()).toBe(false)
