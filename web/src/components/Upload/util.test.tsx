@@ -16,44 +16,41 @@ describe('parses gps and dustrak files', () => {
   let wrongDustrak: Array<string>
   let missingStartDustrak: Array<string>
   let empty: Array<string>
+  const fileNames: Array<string> = [
+    'valid.log',
+    'gprmc_missing.log',
+    'gprmc_corrupt.log',
+    'valid.csv',
+    'wrong.csv',
+    'start_missing.csv',
+    'empty.txt'
+  ]
+  const filePromises: Array<Promise<Array<string>>> = []
   beforeAll(async () => {
-    const readFile = (path: string, opts: string = 'utf8') =>
+    const readFile = (
+      path: string,
+      opts: string = 'utf8'
+    ): Promise<Array<string>> =>
       new Promise((resolve, reject) => {
         fs.readFile(path, opts, (err, data) => {
-          if (err) reject(err)
+          if (err) reject(`error: ${err}`)
           else resolve(data.toString().split('\n', 10))
         })
       })
 
-    const validGpsPromise: Promise<any> = readFile(`${testDir}/valid.log`)
-    const noGprmcPromise: Promise<any> = readFile(
-      `${testDir}/gprmc_missing.log`
-    )
-    const gprmcCorruptPromise: Promise<any> = readFile(
-      `${testDir}/gprmc_corrupt.log`
-    )
-    const validDustrakPromise: Promise<any> = readFile(`${testDir}/valid.csv`)
-    const wrongDustrakPromise: Promise<any> = readFile(`${testDir}/wrong.csv`)
-    const missingStartDustrakPromise: Promise<any> = readFile(
-      `${testDir}/start_missing.csv`
-    )
-    const emptyPromise: Promise<any> = readFile(`${testDir}/empty.txt`)
-    const fileData = await Promise.all([
-      validGpsPromise,
-      noGprmcPromise,
-      gprmcCorruptPromise,
-      validDustrakPromise,
-      wrongDustrakPromise,
-      missingStartDustrakPromise,
-      emptyPromise
-    ])
-    validGps = fileData[0]
-    noGprmc = fileData[1]
-    gprmcCorrupt = fileData[2]
-    validDustrak = fileData[3]
-    wrongDustrak = fileData[4]
-    missingStartDustrak = fileData[5]
-    empty = fileData[6]
+    for (const file of fileNames) {
+      const filePomise: Promise<Array<string>> = readFile(`${testDir}/${file}`)
+      filePromises.push(filePomise)
+    };
+    [
+      validGps,
+      noGprmc,
+      gprmcCorrupt,
+      validDustrak,
+      wrongDustrak,
+      missingStartDustrak,
+      empty
+    ] = await Promise.all(filePromises)
   })
 
   it('should find the time listed in the GPS', () => {
