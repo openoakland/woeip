@@ -5,7 +5,7 @@ import { DustrakMeta, ValidateMeta } from 'components/Upload/types'
 export const getGpsStart = (textLines: Array<string>): moment.Moment => {
   for (const line of textLines) {
     if (line.startsWith('$GPRMC')) {
-      const lineFields: Array<string> = line.split(',')
+      const lineFields: Array<string> = line.split(',', 10)
       const encodedTime: string = lineFields[1]
       const encodedDate: string = lineFields[9]
       const endTime: moment.Moment = moment.utc(
@@ -90,13 +90,13 @@ export const validateFiles = async (
         logFile.text(),
         csvFile.text()
       ])
-      const csvTextLines: Array<string> = csvText.split('\n')
+      const csvTextLines: Array<string> = csvText.split('\n', 9)
       const dustrakStart: moment.Moment = getDustrakStart(csvTextLines)
       const dustrakEnd: moment.Moment = getDustrakEnd(
         csvTextLines,
         dustrakStart
       )
-      const logTextLines: Array<string> = logText.split('\n')
+      const logTextLines: Array<string> = logText.split('\n', 10)
       const gpsStart: moment.Moment = getGpsStart(logTextLines)
       if (
         !dustrakStart.isValid() ||
