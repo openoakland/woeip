@@ -4,7 +4,6 @@ import {
   Icon,
   Button,
   Container,
-  Form,
   Input,
   Dropdown
 } from 'semantic-ui-react'
@@ -53,7 +52,7 @@ const FormContainer = styled.div`
   margin: 0 auto;
 `
 
-const FormContent = styled(Form)`
+const FormContent = styled.div`
   padding: 1.85rem 4.5rem 5rem 2rem;
 `
 const DisabledInput = styled(Input)`
