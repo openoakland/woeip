@@ -41,7 +41,11 @@ const SuccessIcon = () => <Icon name='check circle outline' />
 
 const SuccessMessage = styled.span`
   font-family: ${({ theme }) => theme.fonts.secondary};
-  font-size: 16px;
+  font-size: 1rem;
+`
+
+const FormMessage = styled.h3`
+  font-size: 1.5rem;
 `
 
 const FormContainer = styled.div`
@@ -50,7 +54,7 @@ const FormContainer = styled.div`
 `
 
 const FormContent = styled(Form)`
-  padding: 22px 72px 80px 32px;
+  padding: 1.85rem 4.5rem 5rem 2rem;
 `
 const DisabledInput = styled(Input)`
   min-width: auto;
@@ -62,11 +66,15 @@ const CalendarIcon = () => <Icon name='calendar outline' />
 const DropdownInput = styled(Dropdown)`
   min-width: auto !important;
   width: 160px;
+  //eventually need to make borders of this dropdown #232735 per wireframe
+  // :focus-within {
+  //   border: 1px solid #232735 !important;
+  // }
 `
 
 const InputLabel = styled.p`
   font-family: ${({ theme }) => theme.fonts.primary};
-  font-size 14px;
+  font-size .875rem;
   line-height: 24px;
   margin: 0px 0px 32px 0px !important;
 `
@@ -80,7 +88,7 @@ const SubmitForm = styled.form`
     font-style: normal !important;
     font-weight: 500 !important;
     width: 160px !important;
-    font-size: 16px !important;
+    font-size: 1rem !important;
   }
 `
 
@@ -95,9 +103,10 @@ const CancelButton = styled(Button)`
 `
 
 const options = [
-  { key: 'm', text: 'Male', value: 'male' },
-  { key: 'f', text: 'Female', value: 'female' },
-  { key: 'o', text: 'Other', value: 'other' }
+  { key: 'a', text: 'Device A', value: 'Device A' },
+  { key: 'b', text: 'Device B', value: 'Device B' },
+  { key: 'c', text: 'Device C', value: 'Device c' },
+  { key: 'd', text: 'Device D', value: 'Device D' }
 ]
 
 const UploadConfirmation: React.FunctionComponent = () => {
@@ -108,7 +117,7 @@ const UploadConfirmation: React.FunctionComponent = () => {
           <SuccessIcon />
           <SuccessMessage>Success! Your files were uploaded.</SuccessMessage>
         </SuccessBanner>
-        <h3>Step 2. Confirm your session details</h3>
+        <FormMessage>Step 2. Confirm your session details</FormMessage>
         <FormContainer>
           <FormContent>
             <div>
@@ -121,12 +130,7 @@ const UploadConfirmation: React.FunctionComponent = () => {
             <InputLabel>Collection date</InputLabel>
             <DisabledInput placeholder='First Name' disabled={true} />
             <InputLabel>Start time</InputLabel>
-            <DropdownInput
-              search={true}
-              selection={true}
-              options={options}
-              placeholder='Gender'
-            />
+            <DropdownInput search={true} selection={true} options={options} />
             <InputLabel>Device</InputLabel>
             <SubmitForm>
               <SaveButton>Save</SaveButton>
