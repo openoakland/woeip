@@ -109,6 +109,10 @@ const options = [
   { key: 'd', text: 'Device D', value: 'Device D' }
 ]
 
+const deviceChange = (event: React.FormEvent<HTMLSelectElement>) => {
+  //append formdata at this point
+}
+
 const UploadConfirmation: React.FunctionComponent = () => {
   return (
     <StyledContainer>
@@ -121,16 +125,17 @@ const UploadConfirmation: React.FunctionComponent = () => {
         <FormContainer>
           <FormContent>
             <div>
-              <DisabledInput
-                icon='calendar outline'
-                iconPosition='right'
-                disabled={true}
-              />
+              <DisabledInput icon='calendar outline' disabled={true} />
             </div>
             <InputLabel>Collection date</InputLabel>
-            <DisabledInput placeholder='First Name' disabled={true} />
+            <DisabledInput placeholder='' disabled={true} />
             <InputLabel>Start time</InputLabel>
-            <DropdownInput search={true} selection={true} options={options} />
+            <DropdownInput
+              search={true}
+              selection={true}
+              options={options}
+              onChange={deviceChange}
+            />
             <InputLabel>Device</InputLabel>
             <SubmitForm>
               <SaveButton>Save</SaveButton>
