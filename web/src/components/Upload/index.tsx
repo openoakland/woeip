@@ -113,8 +113,8 @@ const Upload: React.FunctionComponent = () => {
 
   useEffect(() => {
     const handleValidation = async () => {
-      const validate: string = await validateFiles(files)
-      setErrorMessage(validate)
+      const potentialErrorMessage: string = await validateFiles(files)
+      setErrorMessage(potentialErrorMessage)
     }
     handleValidation()
   }, [files])
@@ -137,7 +137,6 @@ const Upload: React.FunctionComponent = () => {
       getDustrakEnd(csvTextSplit, dustrakStart).format()
     )
     formData.append('pollutant', '1')
-    console.log(dustrakStart)
     axios
       .post('http://api.lvh.me/collection', formData, {
         headers: {

@@ -3,7 +3,7 @@ import moment from 'moment-timezone'
 
 export const getGpsStart = (textLines: Array<string>): moment.Moment => {
   /* Return moment under all circumstances.
-  Allow future check of whether moment is valid */
+  This enables validity checks on returned moment */
   for (const line of textLines) {
     if (line.startsWith('$GPRMC')) {
       const lineFields: Array<string> = line.split(',', 10)
