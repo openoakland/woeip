@@ -91,11 +91,8 @@ describe('parses gps and dustrak files', () => {
   })
 
   it('should handle empty in dustrak modules', () => {
-    const spyOnWarn = jest.spyOn(console, 'warn').mockImplementation()
     const startDatetime: moment.Moment = getDustrakStart(empty)
     expect(startDatetime.isValid()).toBe(false)
     expect(getDustrakEnd(empty, startDatetime).isValid()).toBe(false)
-    expect(spyOnWarn).toHaveBeenCalledWith(new TypeError(`Cannot read property 'split' of undefined`))
-    spyOnWarn.mockRestore()
   })
 })

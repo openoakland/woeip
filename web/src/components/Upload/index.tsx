@@ -2,10 +2,13 @@ import React, { useState, useEffect } from 'react'
 import { useDropzone, FileWithPath } from 'react-dropzone'
 import { Message, Icon, Button, Container } from 'semantic-ui-react'
 import axios from 'axios'
-
 import styled from 'theme'
-import { validateFiles } from 'components/Upload/util'
-import { ValidateMeta, DustrakMeta } from 'components/Upload/types'
+import {
+  identFiles,
+  getDustrakStart,
+  getDustrakEnd,
+  validateFiles
+} from 'components/Upload/util'
 
 const StyledContainer = styled(Container)`
   margin-top: 30px;
@@ -101,10 +104,6 @@ declare let FormData: {
 const Upload: React.FunctionComponent = () => {
   const [files, setFiles] = useState<Array<FileWithPath>>([])
   const [errorMessage, setErrorMessage] = useState<string>('')
-  const [dustrakMeta, setDustrakMeta] = useState<DustrakMeta>({
-    startDatetime: '',
-    endDatetime: ''
-  })
   const { getRootProps, getInputProps } = useDropzone({
     onDrop: (acceptedFiles: Array<FileWithPath>) => {
       setFiles([...files, ...acceptedFiles])
@@ -114,16 +113,13 @@ const Upload: React.FunctionComponent = () => {
 
   useEffect(() => {
     const handleValidation = async () => {
-      const validateMeta: ValidateMeta = await validateFiles(files)
-      setErrorMessage(validateMeta.message)
-      if (validateMeta.message === '') {
-        setDustrakMeta(validateMeta.dustrakMeta)
-      }
+      const validate: string = await validateFiles(files)
+      setErrorMessage(validate)
     }
     handleValidation()
   }, [files])
 
-  const upload = (e: React.FormEvent) => {
+  const upload = async (e: React.FormEvent) => {
     e.preventDefault()
     const formData = new FormData()
 
@@ -131,11 +127,17 @@ const Upload: React.FunctionComponent = () => {
       formData.append('upload_files', file)
     }
 
-    formData.append('starts_at', dustrakMeta.startDatetime)
-    formData.append('ends_at', dustrakMeta.endDatetime)
+    const logFile: File = identFiles(files)[0]!
+    const logText: string = await logFile.text()
+    const logTextSplit: Array<string> = logText.split('\n', 10)
+    const dustrakStart: moment.Moment = getDustrakStart(logTextSplit)
+    formData.append('starts_at', dustrakStart.format())
+    formData.append(
+      'ends_at',
+      getDustrakEnd(logTextSplit, dustrakStart).format()
+    )
     formData.append('pollutant', '1')
-    console.log(dustrakMeta.startDatetime)
-    console.log(dustrakMeta.endDatetime)
+    console.log(dustrakStart)
     axios
       .post('http://api.lvh.me/collection', formData, {
         headers: {

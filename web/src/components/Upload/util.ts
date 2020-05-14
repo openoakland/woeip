@@ -1,25 +1,26 @@
 import { FileWithPath } from 'react-dropzone'
 import moment from 'moment-timezone'
-import { DustrakMeta, ValidateMeta } from 'components/Upload/types'
 
 export const getGpsStart = (textLines: Array<string>): moment.Moment => {
+  /* Return moment under all circumstances.
+  Allow future check of whether moment is valid */
   for (const line of textLines) {
     if (line.startsWith('$GPRMC')) {
       const lineFields: Array<string> = line.split(',', 10)
-      const encodedTime: string = lineFields[1]
-      const encodedDate: string = lineFields[9]
-      const endTime: moment.Moment = moment.utc(
-        `${encodedDate} ${encodedTime}`,
+      const startTime: string = lineFields[1]
+      const startDate: string = lineFields[9]
+      const startDateTime: moment.Moment = moment.utc(
+        `${startDate} ${startTime}`,
         'DDMMYYYY hh mm ss.SS'
       )
-      return endTime
+      return startDateTime
     }
   }
   return moment.utc('')
 }
 
 export const getDustrakStart = (textLines: Array<string>): moment.Moment => {
-  try {
+  if (textLines.length > 7) {
     const startTime: string = textLines[6].split(',')[1]
     const startDate: string = textLines[7].split(',')[1]
     const startDatetime: moment.Moment = moment.tz(
@@ -28,13 +29,8 @@ export const getDustrakStart = (textLines: Array<string>): moment.Moment => {
       'America/Los_Angeles'
     )
     return startDatetime
-  } catch (e) {
-    if (e instanceof TypeError) {
-      console.warn(e)
-      return moment('')
-    } else {
-      throw e
-    }
+  } else {
+    return moment('')
   }
 }
 
@@ -42,7 +38,7 @@ export const getDustrakEnd = (
   textLines: Array<string>,
   startDatetime: moment.Moment
 ): moment.Moment => {
-  try {
+  if (textLines.length > 8) {
     const endDatetime: moment.Moment = startDatetime.clone()
     const testLength: string = textLines[8].split(',')[1]
     const [days, hours, minutes]: Array<string> = testLength.split(':')
@@ -51,82 +47,69 @@ export const getDustrakEnd = (
       .add(hours, 'hours')
       .add(minutes, 'minutes')
     return endDatetime
-  } catch(e){
-    if (e instanceof TypeError){
-      console.warn(e)
-      return moment('')
-    } else{
-      throw e
-    }
+  } else {
+    return moment('')
   }
+}
+
+export const identFiles = (
+  files: Array<FileWithPath>
+): Array<File | undefined> => {
+  let logFile: File | undefined
+  let csvFile: File | undefined
+
+  files.forEach(file => {
+    if (file.name.endsWith('.csv')) {
+      csvFile = file
+    }
+
+    if (file.name.endsWith('.log')) {
+      logFile = file
+    }
+  })
+  return [logFile, csvFile]
 }
 
 export const validateFiles = async (
   files: Array<FileWithPath>
-): Promise<ValidateMeta> => {
-  const dustrakData: DustrakMeta = {
-    startDatetime: '',
-    endDatetime: ''
-  }
-  const validateData: ValidateMeta = {
-    message: '',
-    dustrakMeta: dustrakData
-  }
-
+): Promise<string> => {
   if (files.length > 0 && files.length < 2) {
-    validateData.message =
-      'We need one GPS log file and one DusTrak cvs file. Please add a file to continue.'
-  } else if (files.length > 2) {
-    validateData.message =
-      'We need exactly one GPS log file and one DusTrak cvs file. Please remove additional files.'
-  } else if (files.length === 2) {
-    let logFile: File | undefined
-    let csvFile: File | undefined
-
-    files.forEach(file => {
-      if (file.type === 'text/csv') {
-        csvFile = file
-      }
-
-      if (file.type === 'text/x-log') {
-        logFile = file
-      }
-    })
-
+    return 'We need one GPS log file and one DusTrak cvs file. Please add a file to continue.'
+  }
+  if (files.length > 2) {
+    return 'We need exactly one GPS log file and one DusTrak cvs file. Please remove additional files.'
+  }
+  if (files.length === 2) {
+    const [logFile, csvFile] = identFiles(files)
     if (!logFile || !csvFile) {
-      validateData.message =
-        'We need one GPS log file and one DusTrak csv file. Please replace one of your files to continue.'
-    } else {
-      const [logText, csvText]: Array<string> = await Promise.all([
-        logFile.text(),
-        csvFile.text()
-      ])
-      const csvTextLines: Array<string> = csvText.split('\n', 9)
-      const dustrakStart: moment.Moment = getDustrakStart(csvTextLines)
-      const dustrakEnd: moment.Moment = getDustrakEnd(
-        csvTextLines,
-        dustrakStart
-      )
-      const logTextLines: Array<string> = logText.split('\n', 10)
-      const gpsStart: moment.Moment = getGpsStart(logTextLines)
-      if (
-        !dustrakStart.isValid() ||
-        !dustrakEnd.isValid() ||
-        !gpsStart.isValid()
-      ) {
-        validateData.message =
-          'Files could not be uploaded. Try again or choose a different file.'
-      } else if (
+      return 'We need one GPS log file and one DusTrak csv file. Please replace one of your files to continue.'
+    }
+
+    const [logText, csvText]: Array<string> = await Promise.all([
+      logFile.text(),
+      csvFile.text()
+    ])
+    const csvTextLines: Array<string> = csvText.split('\n', 9)
+    const dustrakStart: moment.Moment = getDustrakStart(csvTextLines)
+    const dustrakEnd: moment.Moment = getDustrakEnd(csvTextLines, dustrakStart)
+    const logTextLines: Array<string> = logText.split('\n', 10)
+    const gpsStart: moment.Moment = getGpsStart(logTextLines)
+
+    if (
+      !dustrakStart.isValid() ||
+      !dustrakEnd.isValid() ||
+      !gpsStart.isValid()
+    ) {
+      return 'Files could not be uploaded. Try again or choose a different file.'
+    }
+    if (
+      !(
         dustrakStart.subtract(2, 'minutes') <= gpsStart &&
         gpsStart <= dustrakStart.add(2, 'minutes')
-      ) {
-        validateData.message = ''
-        dustrakData.startDatetime = dustrakStart.format()
-        dustrakData.endDatetime = dustrakEnd.format()
-      } else {
-        validateData.message = `Dates don't match. Please replace one of your files to continue.`
-      }
+      )
+    ) {
+      return `Dates don't match. Please replace one of your files to continue.`
     }
   }
-  return validateData
+  return ''
 }
