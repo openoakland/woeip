@@ -127,14 +127,14 @@ const Upload: React.FunctionComponent = () => {
       formData.append('upload_files', file)
     }
 
-    const logFile: File = identFiles(files)[0]!
-    const logText: string = await logFile.text()
-    const logTextSplit: Array<string> = logText.split('\n', 10)
-    const dustrakStart: moment.Moment = getDustrakStart(logTextSplit)
+    const csvFile: File = identFiles(files)[1]!
+    const csvText: string = await csvFile.text()
+    const csvTextSplit: Array<string> = csvText.split('\n', 10)
+    const dustrakStart: moment.Moment = getDustrakStart(csvTextSplit)
     formData.append('starts_at', dustrakStart.format())
     formData.append(
       'ends_at',
-      getDustrakEnd(logTextSplit, dustrakStart).format()
+      getDustrakEnd(csvTextSplit, dustrakStart).format()
     )
     formData.append('pollutant', '1')
     console.log(dustrakStart)
