@@ -2,9 +2,13 @@ import React, { useState, useEffect } from 'react'
 import { useDropzone, FileWithPath } from 'react-dropzone'
 import { Message, Icon, Button, Container } from 'semantic-ui-react'
 import axios from 'axios'
-
 import styled from 'theme'
-import { validateFiles } from './util'
+import {
+  identFiles,
+  getDustrakStart,
+  getDustrakEnd,
+  validateFiles
+} from 'components/Upload/util'
 
 const StyledContainer = styled(Container)`
   margin-top: 30px;
@@ -108,11 +112,14 @@ const Upload: React.FunctionComponent = () => {
   })
 
   useEffect(() => {
-    const potentialErrorMessage = validateFiles(files)
-    setErrorMessage(potentialErrorMessage)
+    const handleValidation = async () => {
+      const potentialErrorMessage: string = await validateFiles(files)
+      setErrorMessage(potentialErrorMessage)
+    }
+    handleValidation()
   }, [files])
 
-  const upload = (e: React.FormEvent) => {
+  const upload = async (e: React.FormEvent) => {
     e.preventDefault()
     const formData = new FormData()
 
@@ -120,9 +127,15 @@ const Upload: React.FunctionComponent = () => {
       formData.append('upload_files', file)
     }
 
-    // hard-coded for now:
-    formData.append('starts_at', '2020-03-04 06:00')
-    formData.append('ends_at', '2020-03-05 06:00')
+    const csvFile: File = identFiles(files)[1]!
+    const csvText: string = await csvFile.text()
+    const csvTextSplit: Array<string> = csvText.split('\n', 10)
+    const dustrakStart: moment.Moment = getDustrakStart(csvTextSplit)
+    formData.append('starts_at', dustrakStart.format())
+    formData.append(
+      'ends_at',
+      getDustrakEnd(csvTextSplit, dustrakStart).format()
+    )
     formData.append('pollutant', '1')
     axios
       .post('http://api.lvh.me/collection', formData, {
