@@ -1,6 +1,6 @@
 import Map from 'components/Map'
 import Upload from 'components/Upload'
-import UploadConfirmation from 'components/Upload_Confirmation'
+import UploadConfirmation from 'components/UploadConfirmation'
 import Home from 'components/Home'
 
 interface RouteConfig {

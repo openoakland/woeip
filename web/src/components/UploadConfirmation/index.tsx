@@ -109,7 +109,7 @@ const options = [
 ]
 
 const deviceChange = (event: React.FormEvent<HTMLSelectElement>) => {
-  //append formdata at this point
+  // append formdata at this point
 }
 
 const UploadConfirmation: React.FunctionComponent = () => {
