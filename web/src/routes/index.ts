@@ -1,5 +1,6 @@
 import Map from 'components/Map'
 import Upload from 'components/Upload'
+import UploadConfirmation from 'components/UploadConfirmation'
 import Home from 'components/Home'
 
 interface RouteConfig {
@@ -28,6 +29,11 @@ const routes: Array<RouteConfig> = [
     path: '/maps',
     exact: true,
     component: Map
+  },
+  {
+    path: '/confirm-upload',
+    exact: true,
+    component: UploadConfirmation
   }
 ]
 
