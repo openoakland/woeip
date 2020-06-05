@@ -113,6 +113,11 @@ const deviceChange = (event: React.FormEvent<HTMLSelectElement>) => {
 }
 
 const UploadConfirmation: React.FunctionComponent = () => {
+
+  useEffect(() => {
+    debugger
+  })
+
   return (
     <StyledContainer>
       <ContentContainer>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useDropzone, FileWithPath } from 'react-dropzone'
 import { Message, Icon, Button, Container } from 'semantic-ui-react'
+import UploadConfirmation from 'components/UploadConfirmation'
 import axios from 'axios'
 import styled from 'theme'
 import {
@@ -104,6 +105,7 @@ declare let FormData: {
 const Upload: React.FunctionComponent = () => {
   const [files, setFiles] = useState<Array<FileWithPath>>([])
   const [errorMessage, setErrorMessage] = useState<string>('')
+  const [stageOne, setStageOne] = useState<boolean>(true)
   const { getRootProps, getInputProps } = useDropzone({
     onDrop: (acceptedFiles: Array<FileWithPath>) => {
       setFiles([...files, ...acceptedFiles])
@@ -112,6 +114,7 @@ const Upload: React.FunctionComponent = () => {
   })
 
   useEffect(() => {
+    debugger
     const handleValidation = async () => {
       const potentialErrorMessage: string = await validateFiles(files)
       setErrorMessage(potentialErrorMessage)
@@ -159,7 +162,7 @@ const Upload: React.FunctionComponent = () => {
     setFiles(files.filter((_, i) => i !== removeIndex))
   }
 
-  return (
+  const uploadPage = stageOne ? (
     <StyledContainer>
       <Dropzone {...getRootProps({ refKey: 'ref' })}>
         <InstructionsContainer>
@@ -204,6 +207,10 @@ const Upload: React.FunctionComponent = () => {
         </PendingContainer>
       )}
     </StyledContainer>
+    ) : (<UploadConfirmation/>)
+
+  return (
+    uploadPage
   )
 }
 
