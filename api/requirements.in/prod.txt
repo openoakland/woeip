@@ -1,5 +1,5 @@
 argon2-cffi
-django==3.0.3
+django==3.0.7
 django-boto
 django-environ
 django-extensions
