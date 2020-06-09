@@ -29,9 +29,10 @@ describe('parses gps and dustrak files', () => {
       })
 
     const fileNames: Array<string> = [
-      'valid.log',
-      'gprmc_missing.log',
-      'gprmc_corrupt.log',
+      /* .log files are git ignored */
+      'valid.log.test',
+      'gprmc_missing.log.test',
+      'gprmc_corrupt.log.test',
       'valid.csv',
       'wrong.csv',
       'start_missing.csv',
