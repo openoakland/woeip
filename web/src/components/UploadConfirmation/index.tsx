@@ -7,6 +7,7 @@ import {
   Input,
   Dropdown
 } from 'semantic-ui-react'
+import axios from 'axios'
 import styled from 'theme'
 
 const StyledContainer = styled(Container)`
@@ -113,10 +114,24 @@ const deviceChange = (event: React.FormEvent<HTMLSelectElement>) => {
 }
 
 const UploadConfirmation: React.FunctionComponent = () => {
+  useEffect(() => {})
 
-  useEffect(() => {
-    debugger
-  })
+  const upload = (event: React.FormEvent) => {
+    // axios
+    // .post('http://api.lvh.me/collection', formData, {
+    //   headers: {
+    //     'Content-Type': 'multipart/form-data'
+    //   }
+    // })
+    // .then(d => {
+    //   console.log('response data is:', d)
+    //   alert(d.statusText)
+    // })
+    // .catch(error => {
+    //   console.error('error is:', error)
+    //   setErrorMessage(error.message)
+    // })
+  }
 
   return (
     <StyledContainer>
@@ -141,8 +156,8 @@ const UploadConfirmation: React.FunctionComponent = () => {
               onChange={deviceChange}
             />
             <InputLabel>Device</InputLabel>
-            <SubmitForm>
-              <SaveButton>Save</SaveButton>
+            <SubmitForm onSubmit={upload}>
+              <SaveButton type='submit'>Save</SaveButton>
               <CancelButton>Cancel</CancelButton>
             </SubmitForm>
           </FormContent>
