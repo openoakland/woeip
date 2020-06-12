@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useDropzone, FileWithPath } from 'react-dropzone'
 import { Message, Icon, Button, Container } from 'semantic-ui-react'
 import UploadConfirmation from 'components/UploadConfirmation'
+import axios from 'axios'
 import styled from 'theme'
 import {
   identFiles,
@@ -143,22 +144,21 @@ const Upload: React.FunctionComponent = () => {
 
     // setStageOne(false)
 
-    // axios
-    //   .post('http://api.lvh.me/collection', formData, {
-    //     headers: {
-    //       'Content-Type': 'multipart/form-data'
-    //     }
-    //   })
-    //   .then(d => {
-    //     console.log('response data is:', d)
-    //     alert(d.statusText)
-    //   })
-    //   .catch(error => {
-    //     console.error('error is:', error)
-    //     setErrorMessage(error.message)
-    //   })
-
-    setFiles([])
+    axios
+      .post('http://api.lvh.me/collection', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+      .then(d => {
+        console.log('response data is:', d)
+        alert(d.statusText)
+        setFiles([])
+      })
+      .catch(error => {
+        console.error(error)
+        alert(`files failed to upload: ${error.message}`)
+      })
   }
 
   const removeItem = (event: React.SyntheticEvent<HTMLButtonElement>) => {
