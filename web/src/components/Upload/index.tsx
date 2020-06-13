@@ -99,7 +99,7 @@ interface FormData {
 
 declare let FormData: {
   prototype: FormData
-  new(form?: HTMLFormElement): FormData
+  new (form?: HTMLFormElement): FormData
 }
 
 const Upload: React.FunctionComponent = () => {
@@ -163,52 +163,53 @@ const Upload: React.FunctionComponent = () => {
     setFiles(files.filter((_, i) => i !== removeIndex))
   }
 
-  const uploadPage = (files.length !== 2 || errorMessage) ? (
-    <StyledContainer>
-      <Dropzone {...getRootProps({ refKey: 'ref' })}>
-        <InstructionsContainer>
-          <p>Drag a pair of DusTrak and GPS files here</p>
-          <FileSelector>
-            <span>or</span>
-            <FileInput>
-              Select files from your computer
-              <input {...getInputProps()} />
-            </FileInput>
-          </FileSelector>
-        </InstructionsContainer>
-      </Dropzone>
-      <StyledMessage hidden={errorMessage === ''}>
-        <WarningIcon />
-        {errorMessage}
-      </StyledMessage>
-      {files.length > 0 && (
-        <PendingContainer>
-          <h3>Pending Files</h3>
-          <hr />
-          <ul>
-            {files.map((file, i) => (
-              <PendingFile key={file.path}>
-                <FileNameContainer>
-                  <FileName>{file.path}</FileName>
-                </FileNameContainer>
-                <IconButton icon={true} data-arg={i} onClick={removeItem}>
-                  <Icon name='trash' />
-                </IconButton>
-              </PendingFile>
-            ))}
-          </ul>
+  const uploadPage =
+    files.length !== 2 || errorMessage ? (
+      <StyledContainer>
+        <Dropzone {...getRootProps({ refKey: 'ref' })}>
+          <InstructionsContainer>
+            <p>Drag a pair of DusTrak and GPS files here</p>
+            <FileSelector>
+              <span>or</span>
+              <FileInput>
+                Select files from your computer
+                <input {...getInputProps()} />
+              </FileInput>
+            </FileSelector>
+          </InstructionsContainer>
+        </Dropzone>
+        <StyledMessage hidden={errorMessage === ''}>
+          <WarningIcon />
+          {errorMessage}
+        </StyledMessage>
+        {files.length > 0 && (
+          <PendingContainer>
+            <h3>Pending Files</h3>
+            <hr />
+            <ul>
+              {files.map((file, i) => (
+                <PendingFile key={file.path}>
+                  <FileNameContainer>
+                    <FileName>{file.path}</FileName>
+                  </FileNameContainer>
+                  <IconButton icon={true} data-arg={i} onClick={removeItem}>
+                    <Icon name='trash' />
+                  </IconButton>
+                </PendingFile>
+              ))}
+            </ul>
 
-          {files.length === 2 && !errorMessage ? (
-            <SubmitForm onSubmit={upload}>
-              <Button positive={true} type='submit'>
-                Upload
-              </Button>
-            </SubmitForm>
-          ) : null}
-        </PendingContainer>
-      )}
-    </StyledContainer>
-  ) : (
+            {files.length === 2 && !errorMessage ? (
+              <SubmitForm onSubmit={upload}>
+                <Button positive={true} type='submit'>
+                  Upload
+                </Button>
+              </SubmitForm>
+            ) : null}
+          </PendingContainer>
+        )}
+      </StyledContainer>
+    ) : (
       <UploadConfirmation />
     )
 
