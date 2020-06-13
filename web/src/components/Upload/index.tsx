@@ -2,14 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { useDropzone, FileWithPath } from 'react-dropzone'
 import { Message, Icon, Button, Container } from 'semantic-ui-react'
 import UploadConfirmation from 'components/Upload/UploadConfirmation'
-import axios from 'axios'
 import styled from 'theme'
-import {
-  identFiles,
-  getDustrakStart,
-  getDustrakEnd,
-  validateFiles
-} from 'components/Upload/util'
+import { validateFiles } from 'components/Upload/util'
 
 const StyledContainer = styled(Container)`
   margin-top: 30px;
@@ -86,11 +80,6 @@ const NothingMessage = styled.p`
   text-align: center;
 `
 
-const SubmitForm = styled.form`
-  display: flex;
-  justify-content: center;
-`
-
 const WarningIcon = () => <Icon name='warning circle' />
 
 interface FormData {
@@ -119,42 +108,6 @@ const Upload: React.FunctionComponent = () => {
     }
     handleValidation()
   })
-
-  const upload = async (e: React.FormEvent) => {
-    e.preventDefault()
-    const formData = new FormData()
-
-    for (const file of files) {
-      formData.append('upload_files', file)
-    }
-
-    const dustrakFile: File = identFiles(files)[1]!
-    const dustrakText: string = await dustrakFile.text()
-    const dustrakTextSplit: Array<string> = dustrakText.split('\n', 10)
-    const dustrakStart: moment.Moment = getDustrakStart(dustrakTextSplit)
-    formData.append('starts_at', dustrakStart.format())
-    formData.append(
-      'ends_at',
-      getDustrakEnd(dustrakTextSplit, dustrakStart).format()
-    )
-    formData.append('pollutant', '1')
-
-    axios
-      .post('http://api.lvh.me/collection', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      })
-      .then(d => {
-        console.log('response data is:', d)
-        alert(d.statusText)
-        setFiles([])
-      })
-      .catch(error => {
-        console.error(error)
-        alert(`files failed to upload: ${error.message}`)
-      })
-  }
 
   const removeItem = (event: React.SyntheticEvent<HTMLButtonElement>) => {
     const removeIndex: number = Number(event.currentTarget.dataset.arg)
@@ -196,14 +149,6 @@ const Upload: React.FunctionComponent = () => {
                 </PendingFile>
               ))}
             </ul>
-            {/* 
-            {files.length === 2 && !errorMessage ? (
-              <SubmitForm onSubmit={upload}>
-                <Button positive={true} type='submit'>
-                  Upload
-                </Button>
-              </SubmitForm>
-            ) : null} */}
           </PendingContainer>
         )}
       </StyledContainer>

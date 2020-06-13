@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { useDropzone, FileWithPath } from 'react-dropzone'
-import { Redirect } from 'react-router-dom'
+import { FileWithPath } from 'react-dropzone'
+import { useHistory } from 'react-router-dom'
 import {
   Message,
   Icon,
@@ -12,8 +12,7 @@ import {
 import {
   identFiles,
   getDustrakStart,
-  getDustrakEnd,
-  validateFiles
+  getDustrakEnd
 } from 'components/Upload/util'
 import axios from 'axios'
 import styled from 'theme'
@@ -123,6 +122,7 @@ const UploadConfirmation: React.FunctionComponent<Array<
 >> = files => {
   const [dustrakText, setDustrakText] = useState<Array<string>>([])
   const [dustrakStart, setDustrakStart] = useState<moment.Moment>(moment(''))
+  const history = useHistory()
 
   useEffect(() => {
     const getDustrak = async () => {
@@ -144,14 +144,12 @@ const UploadConfirmation: React.FunctionComponent<Array<
 
     formData.append('upload_files', files[0])
     formData.append('upload_files', files[1])
-    console.log(dustrakStart.format())
     formData.append('starts_at', dustrakStart.format())
     formData.append(
       'ends_at',
       getDustrakEnd(dustrakText, dustrakStart).format()
     )
     formData.append('pollutant', '1')
-    console.log(formData)
 
     axios
       .post('http://api.lvh.me/collection', formData, {
@@ -161,13 +159,16 @@ const UploadConfirmation: React.FunctionComponent<Array<
       })
       .then(d => {
         console.log('response data is:', d)
-        alert(d.statusText)
-        // return <Redirect to='/maps/' />
+        history.push('/maps')
       })
       .catch(error => {
         console.error(error)
         alert(`files failed to upload: ${error.message}`)
       })
+  }
+
+  const cancelUpload = () => {
+    history.push('/about')
   }
 
   return (
@@ -202,7 +203,7 @@ const UploadConfirmation: React.FunctionComponent<Array<
             <InputLabel>Device</InputLabel>
             <SubmitForm onSubmit={upload}>
               <SaveButton type='submit'>Save</SaveButton>
-              {/* <CancelButton>Cancel</CancelButton> */}
+              <CancelButton onClick={cancelUpload}>Cancel</CancelButton>
             </SubmitForm>
           </FormContent>
         </FormContainer>
