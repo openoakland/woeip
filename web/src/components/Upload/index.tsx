@@ -210,7 +210,7 @@ const Upload: React.FunctionComponent = () => {
         )}
       </StyledContainer>
     ) : (
-      <UploadConfirmation />
+      <UploadConfirmation {...files} />
     )
 
   return uploadPage

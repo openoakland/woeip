@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useDropzone, FileWithPath } from 'react-dropzone'
 import {
   Message,
   Icon,
@@ -114,12 +115,16 @@ const deviceChange = (event: React.FormEvent<HTMLSelectElement>) => {
   console.log('appease the linter by filling the deviceChange() block')
 }
 
-const UploadConfirmation: React.FunctionComponent = () => {
+const UploadConfirmation: React.FunctionComponent<Array<
+  FileWithPath
+>> = files => {
   useEffect(() => {
     console.log(
       'appease the linter by filling the UploadConfirmation useEffect()'
     )
   })
+
+  console.warn(files)
 
   const upload = (event: React.FormEvent) => {
     // axios
