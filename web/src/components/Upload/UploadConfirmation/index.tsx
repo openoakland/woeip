@@ -8,8 +8,15 @@ import {
   Input,
   Dropdown
 } from 'semantic-ui-react'
+import {
+  identFiles,
+  getDustrakStart,
+  getDustrakEnd,
+  validateFiles
+} from 'components/Upload/util'
 import axios from 'axios'
 import styled from 'theme'
+import moment from 'moment-timezone'
 
 const StyledContainer = styled(Container)`
   margin-top: 30px;
@@ -110,37 +117,59 @@ const options = [
   { key: 'd', text: 'Device D', value: 'Device D' }
 ]
 
-const deviceChange = (event: React.FormEvent<HTMLSelectElement>) => {
-  // append formdata at this point
-  console.log('appease the linter by filling the deviceChange() block')
-}
-
 const UploadConfirmation: React.FunctionComponent<Array<
   FileWithPath
 >> = files => {
+  const [dustrakText, setDustrakText] = useState<Array<string>>([])
+  const [dustrakStart, setDustrakStart] = useState<moment.Moment>(moment(''))
+
   useEffect(() => {
-    console.log(
-      'appease the linter by filling the UploadConfirmation useEffect()'
+    const getDustrak = async () => {
+      // files passed to component as object but processed like array
+      const dustrakFile: File = identFiles([files[0], files[1]])[1]!
+      const dustrakString: string = await dustrakFile.text()
+      const dustrakTextUpdate: Array<string> = dustrakString.split('\n', 10)
+      const dustrakStartUpdate: moment.Moment = getDustrakStart(
+        dustrakTextUpdate
+      )
+      setDustrakStart(dustrakStartUpdate)
+      console.log(dustrakTextUpdate)
+      console.log(dustrakStartUpdate)
+      setDustrakText(dustrakTextUpdate)
+    }
+    getDustrak()
+  }, [files])
+  const upload = async (e: React.FormEvent) => {
+    e.preventDefault()
+    const formData = new FormData()
+
+    for (const file of files) {
+      formData.append('upload_files', file)
+    }
+
+    // const dustrakStart: moment.Moment = getDustrakStart(dustrakText)
+    formData.append('starts_at', dustrakStart.format())
+    formData.append(
+      'ends_at',
+      getDustrakEnd(dustrakText, dustrakStart).format()
     )
-  })
+    formData.append('pollutant', '1')
 
-  console.warn(files)
-
-  const upload = (event: React.FormEvent) => {
-    // axios
-    // .post('http://api.lvh.me/collection', formData, {
-    //   headers: {
-    //     'Content-Type': 'multipart/form-data'
-    //   }
-    // })
-    // .then(d => {
-    //   console.log('response data is:', d)
-    //   alert(d.statusText)
-    // })
-    // .catch(error => {
-    //   console.error('error is:', error)
-    //   setErrorMessage(error.message)
-    // })
+    axios
+      .post('http://api.lvh.me/collection', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+      .then(d => {
+        console.log('response data is:', d)
+        alert(d.statusText)
+        // setFiles([])
+      })
+      .catch(error => {
+        console.error(error)
+        alert(`files failed to upload: ${error.message}`)
+      })
   }
 
   return (
@@ -154,16 +183,23 @@ const UploadConfirmation: React.FunctionComponent<Array<
         <FormContainer>
           <FormContent>
             <div>
-              <DisabledInput icon='calendar outline' disabled={true} />
+              <DisabledInput
+                value={dustrakStart.format('MMMM Do YYYY')}
+                icon='calendar outline'
+                disabled={true}
+              />
             </div>
             <InputLabel>Collection date</InputLabel>
-            <DisabledInput placeholder='' disabled={true} />
+            <DisabledInput
+              value={dustrakStart.format('h:mm:ss a')}
+              disabled={true}
+            />
             <InputLabel>Start time</InputLabel>
             <DropdownInput
               search={true}
               selection={true}
               options={options}
-              onChange={deviceChange}
+              defaultValue={options[0].value}
             />
             <InputLabel>Device</InputLabel>
             <SubmitForm onSubmit={upload}>

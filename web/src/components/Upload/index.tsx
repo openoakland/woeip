@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useDropzone, FileWithPath } from 'react-dropzone'
 import { Message, Icon, Button, Container } from 'semantic-ui-react'
-import UploadConfirmation from 'components/UploadConfirmation'
+import UploadConfirmation from 'components/Upload/UploadConfirmation'
 import axios from 'axios'
 import styled from 'theme'
 import {
@@ -105,7 +105,6 @@ declare let FormData: {
 const Upload: React.FunctionComponent = () => {
   const [files, setFiles] = useState<Array<FileWithPath>>([])
   const [errorMessage, setErrorMessage] = useState<string>('')
-  const [uploadFormData, setUploadFormData] = useState<FormData>()
   const { getRootProps, getInputProps } = useDropzone({
     onDrop: (acceptedFiles: Array<FileWithPath>) => {
       setFiles([...files, ...acceptedFiles])
@@ -139,7 +138,6 @@ const Upload: React.FunctionComponent = () => {
       getDustrakEnd(dustrakTextSplit, dustrakStart).format()
     )
     formData.append('pollutant', '1')
-    setUploadFormData(formData)
 
     axios
       .post('http://api.lvh.me/collection', formData, {
@@ -198,14 +196,14 @@ const Upload: React.FunctionComponent = () => {
                 </PendingFile>
               ))}
             </ul>
-
+            {/* 
             {files.length === 2 && !errorMessage ? (
               <SubmitForm onSubmit={upload}>
                 <Button positive={true} type='submit'>
                   Upload
                 </Button>
               </SubmitForm>
-            ) : null}
+            ) : null} */}
           </PendingContainer>
         )}
       </StyledContainer>

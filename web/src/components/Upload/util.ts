@@ -57,7 +57,6 @@ export const identFiles = (
 ): Array<File | undefined> => {
   let gpsFile: File | undefined
   let dustrakFile: File | undefined
-
   files.forEach(file => {
     if (file.name.endsWith('.csv')) {
       dustrakFile = file
