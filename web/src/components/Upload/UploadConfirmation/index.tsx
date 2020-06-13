@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useDropzone, FileWithPath } from 'react-dropzone'
+import { Redirect } from 'react-router-dom'
 import {
   Message,
   Icon,
@@ -133,27 +134,24 @@ const UploadConfirmation: React.FunctionComponent<Array<
         dustrakTextUpdate
       )
       setDustrakStart(dustrakStartUpdate)
-      console.log(dustrakTextUpdate)
-      console.log(dustrakStartUpdate)
       setDustrakText(dustrakTextUpdate)
     }
     getDustrak()
   }, [files])
-  const upload = async (e: React.FormEvent) => {
+  const upload = (e: React.FormEvent) => {
     e.preventDefault()
     const formData = new FormData()
 
-    for (const file of files) {
-      formData.append('upload_files', file)
-    }
-
-    // const dustrakStart: moment.Moment = getDustrakStart(dustrakText)
+    formData.append('upload_files', files[0])
+    formData.append('upload_files', files[1])
+    console.log(dustrakStart.format())
     formData.append('starts_at', dustrakStart.format())
     formData.append(
       'ends_at',
       getDustrakEnd(dustrakText, dustrakStart).format()
     )
     formData.append('pollutant', '1')
+    console.log(formData)
 
     axios
       .post('http://api.lvh.me/collection', formData, {
@@ -164,7 +162,7 @@ const UploadConfirmation: React.FunctionComponent<Array<
       .then(d => {
         console.log('response data is:', d)
         alert(d.statusText)
-        // setFiles([])
+        // return <Redirect to='/maps/' />
       })
       .catch(error => {
         console.error(error)
@@ -204,7 +202,7 @@ const UploadConfirmation: React.FunctionComponent<Array<
             <InputLabel>Device</InputLabel>
             <SubmitForm onSubmit={upload}>
               <SaveButton type='submit'>Save</SaveButton>
-              <CancelButton>Cancel</CancelButton>
+              {/* <CancelButton>Cancel</CancelButton> */}
             </SubmitForm>
           </FormContent>
         </FormContainer>
