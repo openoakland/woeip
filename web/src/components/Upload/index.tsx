@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useDropzone, FileWithPath } from 'react-dropzone'
 import { Message, Icon, Button, Container } from 'semantic-ui-react'
 import UploadConfirmation from 'components/UploadConfirmation'
+import axios from 'axios'
 import styled from 'theme'
 import {
   identFiles,
@@ -129,36 +130,35 @@ const Upload: React.FunctionComponent = () => {
       formData.append('upload_files', file)
     }
 
-    const csvFile: File = identFiles(files)[1]!
-    const csvText: string = await csvFile.text()
-    const csvTextSplit: Array<string> = csvText.split('\n', 10)
-    const dustrakStart: moment.Moment = getDustrakStart(csvTextSplit)
+    const dustrakFile: File = identFiles(files)[1]!
+    const dustrakText: string = await dustrakFile.text()
+    const dustrakTextSplit: Array<string> = dustrakText.split('\n', 10)
+    const dustrakStart: moment.Moment = getDustrakStart(dustrakTextSplit)
     formData.append('starts_at', dustrakStart.format())
     formData.append(
       'ends_at',
-      getDustrakEnd(csvTextSplit, dustrakStart).format()
+      getDustrakEnd(dustrakTextSplit, dustrakStart).format()
     )
     formData.append('pollutant', '1')
     // setUploadFormData(formData)
 
     // setStageOne(false)
 
-    // axios
-    //   .post('http://api.lvh.me/collection', formData, {
-    //     headers: {
-    //       'Content-Type': 'multipart/form-data'
-    //     }
-    //   })
-    //   .then(d => {
-    //     console.log('response data is:', d)
-    //     alert(d.statusText)
-    //   })
-    //   .catch(error => {
-    //     console.error('error is:', error)
-    //     setErrorMessage(error.message)
-    //   })
-
-    setFiles([])
+    axios
+      .post('http://api.lvh.me/collection', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+      .then(d => {
+        console.log('response data is:', d)
+        alert(d.statusText)
+        setFiles([])
+      })
+      .catch(error => {
+        console.error(error)
+        alert(`files failed to upload: ${error.message}`)
+      })
   }
 
   const removeItem = (event: React.SyntheticEvent<HTMLButtonElement>) => {

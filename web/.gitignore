@@ -1,5 +1,7 @@
 logs
 *.log
+!src/components/Upload/test-data/*.log
+
 npm-debug.log*
 .DS_Store
 
