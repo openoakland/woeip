@@ -99,13 +99,12 @@ interface FormData {
 
 declare let FormData: {
   prototype: FormData
-  new (form?: HTMLFormElement): FormData
+  new(form?: HTMLFormElement): FormData
 }
 
 const Upload: React.FunctionComponent = () => {
   const [files, setFiles] = useState<Array<FileWithPath>>([])
   const [errorMessage, setErrorMessage] = useState<string>('')
-  const [stageOne, setStageOne] = useState<boolean>(true)
   const [uploadFormData, setUploadFormData] = useState<FormData>()
   const { getRootProps, getInputProps } = useDropzone({
     onDrop: (acceptedFiles: Array<FileWithPath>) => {
@@ -140,9 +139,7 @@ const Upload: React.FunctionComponent = () => {
       getDustrakEnd(dustrakTextSplit, dustrakStart).format()
     )
     formData.append('pollutant', '1')
-    // setUploadFormData(formData)
-
-    // setStageOne(false)
+    setUploadFormData(formData)
 
     axios
       .post('http://api.lvh.me/collection', formData, {
@@ -166,7 +163,7 @@ const Upload: React.FunctionComponent = () => {
     setFiles(files.filter((_, i) => i !== removeIndex))
   }
 
-  const uploadPage = stageOne ? (
+  const uploadPage = (files.length !== 2 || errorMessage) ? (
     <StyledContainer>
       <Dropzone {...getRootProps({ refKey: 'ref' })}>
         <InstructionsContainer>
@@ -212,8 +209,8 @@ const Upload: React.FunctionComponent = () => {
       )}
     </StyledContainer>
   ) : (
-    <UploadConfirmation />
-  )
+      <UploadConfirmation />
+    )
 
   return uploadPage
 }
