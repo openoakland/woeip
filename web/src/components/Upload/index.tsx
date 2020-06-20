@@ -1,15 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { useDropzone, FileWithPath } from 'react-dropzone'
 import { Message, Icon, Button, Container } from 'semantic-ui-react'
-import UploadConfirmation from 'components/UploadConfirmation'
-import axios from 'axios'
+import UploadConfirmation from 'components/Upload/UploadConfirmation'
 import styled from 'theme'
-import {
-  identFiles,
-  getDustrakStart,
-  getDustrakEnd,
-  validateFiles
-} from 'components/Upload/util'
+import { validateFiles } from 'components/Upload/util'
 
 const StyledContainer = styled(Container)`
   margin-top: 30px;
@@ -86,11 +80,6 @@ const NothingMessage = styled.p`
   text-align: center;
 `
 
-const SubmitForm = styled.form`
-  display: flex;
-  justify-content: center;
-`
-
 const WarningIcon = () => <Icon name='warning circle' />
 
 interface FormData {
@@ -105,8 +94,6 @@ declare let FormData: {
 const Upload: React.FunctionComponent = () => {
   const [files, setFiles] = useState<Array<FileWithPath>>([])
   const [errorMessage, setErrorMessage] = useState<string>('')
-  const [stageOne, setStageOne] = useState<boolean>(true)
-  const [uploadFormData, setUploadFormData] = useState<FormData>()
   const { getRootProps, getInputProps } = useDropzone({
     onDrop: (acceptedFiles: Array<FileWithPath>) => {
       setFiles([...files, ...acceptedFiles])
@@ -122,98 +109,52 @@ const Upload: React.FunctionComponent = () => {
     handleValidation()
   })
 
-  const upload = async (e: React.FormEvent) => {
-    e.preventDefault()
-    const formData = new FormData()
-
-    for (const file of files) {
-      formData.append('upload_files', file)
-    }
-
-    const dustrakFile: File = identFiles(files)[1]!
-    const dustrakText: string = await dustrakFile.text()
-    const dustrakTextSplit: Array<string> = dustrakText.split('\n', 10)
-    const dustrakStart: moment.Moment = getDustrakStart(dustrakTextSplit)
-    formData.append('starts_at', dustrakStart.format())
-    formData.append(
-      'ends_at',
-      getDustrakEnd(dustrakTextSplit, dustrakStart).format()
-    )
-    formData.append('pollutant', '1')
-    // setUploadFormData(formData)
-
-    // setStageOne(false)
-
-    axios
-      .post('http://api.lvh.me/collection', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      })
-      .then(d => {
-        console.log('response data is:', d)
-        alert(d.statusText)
-        setFiles([])
-      })
-      .catch(error => {
-        console.error(error)
-        alert(`files failed to upload: ${error.message}`)
-      })
-  }
-
   const removeItem = (event: React.SyntheticEvent<HTMLButtonElement>) => {
     const removeIndex: number = Number(event.currentTarget.dataset.arg)
     setFiles(files.filter((_, i) => i !== removeIndex))
   }
 
-  const uploadPage = stageOne ? (
-    <StyledContainer>
-      <Dropzone {...getRootProps({ refKey: 'ref' })}>
-        <InstructionsContainer>
-          <p>Drag a pair of DusTrak and GPS files here</p>
-          <FileSelector>
-            <span>or</span>
-            <FileInput>
-              Select files from your computer
-              <input {...getInputProps()} />
-            </FileInput>
-          </FileSelector>
-        </InstructionsContainer>
-      </Dropzone>
-      <StyledMessage hidden={errorMessage === ''}>
-        <WarningIcon />
-        {errorMessage}
-      </StyledMessage>
-      {files.length > 0 && (
-        <PendingContainer>
-          <h3>Pending Files</h3>
-          <hr />
-          <ul>
-            {files.map((file, i) => (
-              <PendingFile key={file.path}>
-                <FileNameContainer>
-                  <FileName>{file.path}</FileName>
-                </FileNameContainer>
-                <IconButton icon={true} data-arg={i} onClick={removeItem}>
-                  <Icon name='trash' />
-                </IconButton>
-              </PendingFile>
-            ))}
-          </ul>
-
-          {files.length === 2 && !errorMessage ? (
-            <SubmitForm onSubmit={upload}>
-              <Button positive={true} type='submit'>
-                Upload
-              </Button>
-            </SubmitForm>
-          ) : null}
-        </PendingContainer>
-      )}
-    </StyledContainer>
-  ) : (
-    <UploadConfirmation />
-  )
+  const uploadPage =
+    files.length !== 2 || errorMessage ? (
+      <StyledContainer>
+        <Dropzone {...getRootProps({ refKey: 'ref' })}>
+          <InstructionsContainer>
+            <p>Drag a pair of DusTrak and GPS files here</p>
+            <FileSelector>
+              <span>or</span>
+              <FileInput>
+                Select files from your computer
+                <input {...getInputProps()} />
+              </FileInput>
+            </FileSelector>
+          </InstructionsContainer>
+        </Dropzone>
+        <StyledMessage hidden={errorMessage === ''}>
+          <WarningIcon />
+          {errorMessage}
+        </StyledMessage>
+        {files.length > 0 && (
+          <PendingContainer>
+            <h3>Pending Files</h3>
+            <hr />
+            <ul>
+              {files.map((file, i) => (
+                <PendingFile key={file.path}>
+                  <FileNameContainer>
+                    <FileName>{file.path}</FileName>
+                  </FileNameContainer>
+                  <IconButton icon={true} data-arg={i} onClick={removeItem}>
+                    <Icon name='trash' />
+                  </IconButton>
+                </PendingFile>
+              ))}
+            </ul>
+          </PendingContainer>
+        )}
+      </StyledContainer>
+    ) : (
+      <UploadConfirmation {...files} />
+    )
 
   return uploadPage
 }
