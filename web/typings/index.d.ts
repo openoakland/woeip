@@ -4,3 +4,5 @@ declare module '*.svg' {
 }
 
 declare module 'react-map-gl'
+
+declare module 'react-router-dom'

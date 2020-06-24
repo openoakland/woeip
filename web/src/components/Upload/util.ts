@@ -55,19 +55,18 @@ export const getDustrakEnd = (
 export const identFiles = (
   files: Array<FileWithPath>
 ): Array<File | undefined> => {
-  let logFile: File | undefined
-  let csvFile: File | undefined
-
+  let gpsFile: File | undefined
+  let dustrakFile: File | undefined
   files.forEach(file => {
     if (file.name.endsWith('.csv')) {
-      csvFile = file
+      dustrakFile = file
     }
 
     if (file.name.endsWith('.log')) {
-      logFile = file
+      gpsFile = file
     }
   })
-  return [logFile, csvFile]
+  return [gpsFile, dustrakFile]
 }
 
 export const validateFiles = async (
@@ -80,14 +79,14 @@ export const validateFiles = async (
     return 'We need exactly one GPS log file and one DusTrak cvs file. Please remove additional files.'
   }
   if (files.length === 2) {
-    const [logFile, csvFile] = identFiles(files)
-    if (!logFile || !csvFile) {
+    const [gpsFile, dustrakFile] = identFiles(files)
+    if (!gpsFile || !dustrakFile) {
       return 'We need one GPS log file and one DusTrak csv file. Please replace one of your files to continue.'
     }
 
     const [logText, csvText]: Array<string> = await Promise.all([
-      logFile.text(),
-      csvFile.text()
+      gpsFile.text(),
+      dustrakFile.text()
     ])
     const csvTextLines: Array<string> = csvText.split('\n', 9)
     const dustrakStart: moment.Moment = getDustrakStart(csvTextLines)

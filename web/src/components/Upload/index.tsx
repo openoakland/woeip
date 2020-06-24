@@ -1,14 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { useDropzone, FileWithPath } from 'react-dropzone'
 import { Message, Icon, Button, Container } from 'semantic-ui-react'
-import axios from 'axios'
+import UploadConfirmation from 'components/Upload/UploadConfirmation'
 import styled from 'theme'
-import {
-  identFiles,
-  getDustrakStart,
-  getDustrakEnd,
-  validateFiles
-} from 'components/Upload/util'
+import { validateFiles } from 'components/Upload/util'
 
 const StyledContainer = styled(Container)`
   margin-top: 30px;
@@ -85,11 +80,6 @@ const NothingMessage = styled.p`
   text-align: center;
 `
 
-const SubmitForm = styled.form`
-  display: flex;
-  justify-content: center;
-`
-
 const WarningIcon = () => <Icon name='warning circle' />
 
 interface FormData {
@@ -117,94 +107,56 @@ const Upload: React.FunctionComponent = () => {
       setErrorMessage(potentialErrorMessage)
     }
     handleValidation()
-  }, [files])
-
-  const upload = async (e: React.FormEvent) => {
-    e.preventDefault()
-    const formData = new FormData()
-
-    for (const file of files) {
-      formData.append('upload_files', file)
-    }
-
-    const csvFile: File = identFiles(files)[1]!
-    const csvText: string = await csvFile.text()
-    const csvTextSplit: Array<string> = csvText.split('\n', 10)
-    const dustrakStart: moment.Moment = getDustrakStart(csvTextSplit)
-    formData.append('starts_at', dustrakStart.format())
-    formData.append(
-      'ends_at',
-      getDustrakEnd(csvTextSplit, dustrakStart).format()
-    )
-    formData.append('pollutant', '1')
-    axios
-      .post('http://api.lvh.me/collection', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      })
-      .then(d => {
-        console.log('response data is:', d)
-        alert(d.statusText)
-      })
-      .catch(error => {
-        console.error('error is:', error)
-        setErrorMessage(error.message)
-      })
-    setFiles([])
-  }
+  })
 
   const removeItem = (event: React.SyntheticEvent<HTMLButtonElement>) => {
     const removeIndex: number = Number(event.currentTarget.dataset.arg)
     setFiles(files.filter((_, i) => i !== removeIndex))
   }
 
-  return (
-    <StyledContainer>
-      <Dropzone {...getRootProps({ refKey: 'ref' })}>
-        <InstructionsContainer>
-          <p>Drag a pair of DusTrak and GPS files here</p>
-          <FileSelector>
-            <span>or</span>
-            <FileInput>
-              Select files from your computer
-              <input {...getInputProps()} />
-            </FileInput>
-          </FileSelector>
-        </InstructionsContainer>
-      </Dropzone>
-      <StyledMessage hidden={errorMessage === ''}>
-        <WarningIcon />
-        {errorMessage}
-      </StyledMessage>
-      {files.length > 0 && (
-        <PendingContainer>
-          <h3>Pending Files</h3>
-          <hr />
-          <ul>
-            {files.map((file, i) => (
-              <PendingFile key={file.path}>
-                <FileNameContainer>
-                  <FileName>{file.path}</FileName>
-                </FileNameContainer>
-                <IconButton icon={true} data-arg={i} onClick={removeItem}>
-                  <Icon name='trash' />
-                </IconButton>
-              </PendingFile>
-            ))}
-          </ul>
+  const uploadPage =
+    files.length !== 2 || errorMessage ? (
+      <StyledContainer>
+        <Dropzone {...getRootProps({ refKey: 'ref' })}>
+          <InstructionsContainer>
+            <p>Drag a pair of DusTrak and GPS files here</p>
+            <FileSelector>
+              <span>or</span>
+              <FileInput>
+                Select files from your computer
+                <input {...getInputProps()} />
+              </FileInput>
+            </FileSelector>
+          </InstructionsContainer>
+        </Dropzone>
+        <StyledMessage hidden={errorMessage === ''}>
+          <WarningIcon />
+          {errorMessage}
+        </StyledMessage>
+        {files.length > 0 && (
+          <PendingContainer>
+            <h3>Pending Files</h3>
+            <hr />
+            <ul>
+              {files.map((file, i) => (
+                <PendingFile key={file.path}>
+                  <FileNameContainer>
+                    <FileName>{file.path}</FileName>
+                  </FileNameContainer>
+                  <IconButton icon={true} data-arg={i} onClick={removeItem}>
+                    <Icon name='trash' />
+                  </IconButton>
+                </PendingFile>
+              ))}
+            </ul>
+          </PendingContainer>
+        )}
+      </StyledContainer>
+    ) : (
+      <UploadConfirmation {...files} />
+    )
 
-          {files.length === 2 && !errorMessage ? (
-            <SubmitForm onSubmit={upload}>
-              <Button positive={true} type='submit'>
-                Upload
-              </Button>
-            </SubmitForm>
-          ) : null}
-        </PendingContainer>
-      )}
-    </StyledContainer>
-  )
+  return uploadPage
 }
 
 export default Upload
