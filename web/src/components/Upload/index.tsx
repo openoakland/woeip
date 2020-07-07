@@ -94,6 +94,7 @@ declare let FormData: {
 const Upload: React.FunctionComponent = () => {
   const [files, setFiles] = useState<Array<FileWithPath>>([])
   const [errorMessage, setErrorMessage] = useState<string>('')
+  const [proceed, setProceed] = useState<boolean>(false)
   const { getRootProps, getInputProps } = useDropzone({
     onDrop: (acceptedFiles: Array<FileWithPath>) => {
       setFiles([...files, ...acceptedFiles])
@@ -105,6 +106,9 @@ const Upload: React.FunctionComponent = () => {
     const handleValidation = async () => {
       const potentialErrorMessage: string = await validateFiles(files)
       setErrorMessage(potentialErrorMessage)
+      if (files.length === 2 && potentialErrorMessage === '') {
+        setProceed(true)
+      }
     }
     handleValidation()
   })
@@ -115,7 +119,7 @@ const Upload: React.FunctionComponent = () => {
   }
 
   const uploadPage =
-    files.length !== 2 || errorMessage ? (
+    files.length !== 2 || proceed === false ? (
       <StyledContainer>
         <Dropzone {...getRootProps({ refKey: 'ref' })}>
           <InstructionsContainer>

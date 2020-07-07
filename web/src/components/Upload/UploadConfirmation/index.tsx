@@ -183,14 +183,14 @@ const UploadConfirmation: React.FunctionComponent<Array<
           <FormContent>
             <div>
               <DisabledInput
-                value={dustrakStart.format('MMMM Do YYYY')}
+                value={dustrakStart.format('MM/DD/YYYY')}
                 icon='calendar outline'
                 disabled={true}
               />
             </div>
             <InputLabel>Collection date</InputLabel>
             <DisabledInput
-              value={dustrakStart.format('h:mm:ss a')}
+              value={dustrakStart.format('h:mm A')}
               disabled={true}
             />
             <InputLabel>Start time</InputLabel>
