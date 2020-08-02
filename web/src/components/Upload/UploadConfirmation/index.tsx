@@ -69,7 +69,7 @@ const DisabledInput = styled(Input)`
   width: 160px;
 `
 
-const CalendarIcon = () => <Icon name='calendar outline' />
+// const CalendarIcon = () => <Icon name='calendar outline' />
 
 const DropdownInput = styled(Dropdown)`
   min-width: auto !important;

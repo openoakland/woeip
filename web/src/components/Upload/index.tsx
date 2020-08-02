@@ -75,21 +75,21 @@ const FileSelector = styled.div`
   align-items: center;
 `
 
-const NothingMessage = styled.p`
-  margin-top: 20px;
-  text-align: center;
-`
+// const NothingMessage = styled.p`
+//   margin-top: 20px;
+//   text-align: center;
+// `
 
 const WarningIcon = () => <Icon name='warning circle' />
 
-interface FormData {
-  append(name: string, value: string | FileWithPath, fileName?: string): void
-}
+// interface FormData {
+//   append(name: string, value: string | FileWithPath, fileName?: string): void
+// }
 
-declare let FormData: {
-  prototype: FormData
-  new (form?: HTMLFormElement): FormData
-}
+// declare let FormData: {
+//   prototype: FormData
+//   new (form?: HTMLFormElement): FormData
+// }
 
 const Upload: React.FunctionComponent = () => {
   const [files, setFiles] = useState<Array<FileWithPath>>([])
