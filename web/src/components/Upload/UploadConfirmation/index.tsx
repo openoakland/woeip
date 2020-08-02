@@ -9,6 +9,7 @@ import {
   Input,
   Dropdown
 } from 'semantic-ui-react'
+import * as confirmationElements from 'components/Upload/UploadConfirmation/elements'
 import {
   identFiles,
   getDustrakStart,
@@ -18,13 +19,13 @@ import axios from 'axios'
 import styled from 'theme'
 import moment from 'moment-timezone'
 
-const StyledContainer = styled(Container)`
-  margin-top: 30px;
-`
+// const StyledContainer = styled(Container)`
+//   margin-top: 30px;
+// `
 
-const ContentContainer = styled.div`
-  margin: 0px 130px 0px 130px;
-`
+// const ContentContainer = styled.div`
+//   margin: 0px 130px 0px 130px;
+// `
 
 const SuccessBanner = styled(Message)`
   background: #619e54 !important;
@@ -172,8 +173,8 @@ const UploadConfirmation: React.FunctionComponent<Array<
   }
 
   return (
-    <StyledContainer>
-      <ContentContainer>
+    <confirmationElements.StyledContainer>
+      <confirmationElements.ContentContainer>
         <SuccessBanner>
           <SuccessIcon />
           <SuccessMessage>Success! Your files were uploaded.</SuccessMessage>
@@ -207,8 +208,8 @@ const UploadConfirmation: React.FunctionComponent<Array<
             </SubmitForm>
           </FormContent>
         </FormContainer>
-      </ContentContainer>
-    </StyledContainer>
+      </confirmationElements.ContentContainer>
+    </confirmationElements.StyledContainer>
   )
 }
 
