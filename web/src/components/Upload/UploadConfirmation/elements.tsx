@@ -1,11 +1,11 @@
 import React from 'react'
 import {
-    Message,
-    Icon,
-    Button,
-    Container,
-    Input,
-    Dropdown
+  Message,
+  Icon,
+  Button,
+  Container,
+  Input,
+  Dropdown
 } from 'semantic-ui-react'
 import styled from 'theme'
 
@@ -55,6 +55,7 @@ export const FormContainer = styled.div`
 export const FormContent = styled.div`
   padding: 1.85rem 4.5rem 5rem 2rem;
 `
+
 export const DisabledInput = styled(Input)`
   min-width: auto;
   width: 160px;
@@ -75,6 +76,7 @@ export const InputLabel = styled.p`
   line-height: 24px;
   margin: 0px 0px 32px 0px !important;
 `
+
 export const SubmitForm = styled.form`
   display: flex;
   justify-content: space-between;
@@ -97,3 +99,4 @@ export const SaveButton = styled(Button)`
 export const CancelButton = styled(Button)`
   color: rgba(53, 53, 53, 0.9) !important;
   background-color: #f4f5f4 !important;
+`

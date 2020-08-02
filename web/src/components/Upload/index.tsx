@@ -58,9 +58,15 @@ const Upload: React.FunctionComponent = () => {
               {files.map((file, i) => (
                 <uploadElements.PendingFile key={file.path}>
                   <uploadElements.FileNameContainer>
-                    <uploadElements.FileName>{file.path}</uploadElements.FileName>
+                    <uploadElements.FileName>
+                      {file.path}
+                    </uploadElements.FileName>
                   </uploadElements.FileNameContainer>
-                  <uploadElements.IconButton icon={true} data-arg={i} onClick={removeItem}>
+                  <uploadElements.IconButton
+                    icon={true}
+                    data-arg={i}
+                    onClick={removeItem}
+                  >
                     <uploadElements.TrashIcon />
                   </uploadElements.IconButton>
                 </uploadElements.PendingFile>

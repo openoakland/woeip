@@ -76,9 +76,13 @@ const UploadConfirmation: React.FunctionComponent<Array<
       <confirmationElements.ContentContainer>
         <confirmationElements.SuccessBanner>
           <confirmationElements.SuccessIcon />
-          <confirmationElements.SuccessMessage>Success! Your files were uploaded.</confirmationElements.SuccessMessage>
+          <confirmationElements.SuccessMessage>
+            Success! Your files were uploaded.
+          </confirmationElements.SuccessMessage>
         </confirmationElements.SuccessBanner>
-        <confirmationElements.FormMessage>Step 2. Confirm your session details</confirmationElements.FormMessage>
+        <confirmationElements.FormMessage>
+          Step 2. Confirm your session details
+        </confirmationElements.FormMessage>
         <confirmationElements.FormContainer>
           <confirmationElements.FormContent>
             <div>
@@ -88,22 +92,32 @@ const UploadConfirmation: React.FunctionComponent<Array<
                 disabled={true}
               />
             </div>
-            <confirmationElements.InputLabel>Collection date</confirmationElements.InputLabel>
+            <confirmationElements.InputLabel>
+              Collection date
+            </confirmationElements.InputLabel>
             <confirmationElements.DisabledInput
               value={dustrakStart.format('h:mm A')}
               disabled={true}
             />
-            <confirmationElements.InputLabel>Start time</confirmationElements.InputLabel>
+            <confirmationElements.InputLabel>
+              Start time
+            </confirmationElements.InputLabel>
             <confirmationElements.DropdownInput
               search={true}
               selection={true}
               options={options}
               defaultValue={options[0].value}
             />
-            <confirmationElements.InputLabel>Device</confirmationElements.InputLabel>
+            <confirmationElements.InputLabel>
+              Device
+            </confirmationElements.InputLabel>
             <confirmationElements.SubmitForm onSubmit={upload}>
-              <confirmationElements.SaveButton type='submit'>Save</confirmationElements.SaveButton>
-              <confirmationElements.CancelButton onClick={cancelUpload}>Cancel</confirmationElements.CancelButton>
+              <confirmationElements.SaveButton type='submit'>
+                Save
+              </confirmationElements.SaveButton>
+              <confirmationElements.CancelButton onClick={cancelUpload}>
+                Cancel
+              </confirmationElements.CancelButton>
             </confirmationElements.SubmitForm>
           </confirmationElements.FormContent>
         </confirmationElements.FormContainer>
