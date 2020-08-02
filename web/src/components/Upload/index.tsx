@@ -1,95 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { useDropzone, FileWithPath } from 'react-dropzone'
-import { Message, Icon, Button, Container } from 'semantic-ui-react'
 import UploadConfirmation from 'components/Upload/UploadConfirmation'
-import styled from 'theme'
 import { validateFiles } from 'components/Upload/util'
-
-const StyledContainer = styled(Container)`
-  margin-top: 30px;
-`
-
-const Dropzone = styled.div`
-  width: 100%;
-  height: 250px;
-  background: ${({ theme }) => theme.colors.lightGray};
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`
-
-const InstructionsContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-`
-const IconButton = styled(Button)`
-  background: transparent !important;
-`
-
-const StyledMessage = styled(Message)`
-  background: ${({ theme }) => theme.colors.warning} !important;
-`
-
-const PendingContainer = styled.div`
-  width: 300px;
-  margin: 40px auto;
-  h3 {
-    text-align: center;
-  }
-`
-
-const PendingFile = styled.li`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`
-
-const FileInput = styled.a`
-  color: ${({ theme }) => theme.colors.darkGray};
-  text-decoration: underline;
-  &:hover {
-    cursor: pointer;
-  }
-`
-
-const FileNameContainer = styled.div`
-  display: flex;
-  align-items: center;
-`
-
-const FileName = styled.span`
-  display: inline-block;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  width: 180px;
-`
-
-const FileSelector = styled.div`
-  display: flex;
-  color: ${({ theme }) => theme.colors.darkGray};
-  flex-direction: column;
-  align-items: center;
-`
-
-// const NothingMessage = styled.p`
-//   margin-top: 20px;
-//   text-align: center;
-// `
-
-const WarningIcon = () => <Icon name='warning circle' />
-
-// interface FormData {
-//   append(name: string, value: string | FileWithPath, fileName?: string): void
-// }
-
-// declare let FormData: {
-//   prototype: FormData
-//   new (form?: HTMLFormElement): FormData
-// }
+import * as uploadElements from 'components/Upload/elements'
 
 const Upload: React.FunctionComponent = () => {
   const [files, setFiles] = useState<Array<FileWithPath>>([])
@@ -120,42 +33,42 @@ const Upload: React.FunctionComponent = () => {
 
   const uploadPage =
     files.length !== 2 || proceed === false ? (
-      <StyledContainer>
-        <Dropzone {...getRootProps({ refKey: 'ref' })}>
-          <InstructionsContainer>
+      <uploadElements.StyledContainer>
+        <uploadElements.Dropzone {...getRootProps({ refKey: 'ref' })}>
+          <uploadElements.InstructionsContainer>
             <p>Drag a pair of DusTrak and GPS files here</p>
-            <FileSelector>
+            <uploadElements.FileSelector>
               <span>or</span>
-              <FileInput>
+              <uploadElements.FileInput>
                 Select files from your computer
                 <input {...getInputProps()} />
-              </FileInput>
-            </FileSelector>
-          </InstructionsContainer>
-        </Dropzone>
-        <StyledMessage hidden={errorMessage === ''}>
-          <WarningIcon />
+              </uploadElements.FileInput>
+            </uploadElements.FileSelector>
+          </uploadElements.InstructionsContainer>
+        </uploadElements.Dropzone>
+        <uploadElements.StyledMessage hidden={errorMessage === ''}>
+          <uploadElements.WarningIcon />
           {errorMessage}
-        </StyledMessage>
+        </uploadElements.StyledMessage>
         {files.length > 0 && (
-          <PendingContainer>
+          <uploadElements.PendingContainer>
             <h3>Pending Files</h3>
             <hr />
             <ul>
               {files.map((file, i) => (
-                <PendingFile key={file.path}>
-                  <FileNameContainer>
-                    <FileName>{file.path}</FileName>
-                  </FileNameContainer>
-                  <IconButton icon={true} data-arg={i} onClick={removeItem}>
-                    <Icon name='trash' />
-                  </IconButton>
-                </PendingFile>
+                <uploadElements.PendingFile key={file.path}>
+                  <uploadElements.FileNameContainer>
+                    <uploadElements.FileName>{file.path}</uploadElements.FileName>
+                  </uploadElements.FileNameContainer>
+                  <uploadElements.IconButton icon={true} data-arg={i} onClick={removeItem}>
+                    <uploadElements.TrashIcon />
+                  </uploadElements.IconButton>
+                </uploadElements.PendingFile>
               ))}
             </ul>
-          </PendingContainer>
+          </uploadElements.PendingContainer>
         )}
-      </StyledContainer>
+      </uploadElements.StyledContainer>
     ) : (
       <UploadConfirmation {...files} />
     )
