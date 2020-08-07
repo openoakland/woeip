@@ -27,6 +27,10 @@ class CollectionViewSet(viewsets.ModelViewSet):
     queryset = models.Collection.objects.all()
     serializer_class = serializers.CollectionSerializer
 
+    # def get_queryset(self):
+    # query by start date
+
+
     @action(detail=True, methods=["GET"])
     def data(self, request, pk=None):
         collection = get_object_or_404(self.queryset, pk=pk)

@@ -71,6 +71,8 @@ class TestCollection(WoaqAPITestCase):
         stored_values = [pv["value"] for pv in response.data["pollutant_values"]]
         assert stored_values == self.test_values
 
+    # Test getting collection using a query string
+
     def test_create_collection(self):
         """Tests collection create method."""
         starts_at = datetime.datetime(2019, 1, 1, 10, 15)
