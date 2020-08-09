@@ -32,7 +32,7 @@ class CollectionViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         queryset = models.Collection.objects.all()
         start_date = self.request.query_params.get("start_date", None)
-        if start_date is not None:
+        if start_date:
             try:
                 start = list(map(int, start_date.split('-')))
                 return queryset.filter(starts_at__date=datetime.date(*start))
@@ -42,8 +42,7 @@ class CollectionViewSet(viewsets.ModelViewSet):
                 Fail to convert strings to integers
                 """
                 logger.error(e)
-                raise ValidationError(detail=e)
-            return []
+                raise ValidationError(detail=e)            
         return queryset
 
 
