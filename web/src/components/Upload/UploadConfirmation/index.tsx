@@ -7,6 +7,7 @@ import {
   getDustrakStart,
   getDustrakEnd
 } from 'components/Upload/util'
+import {ConfirmationProps} from 'components/Upload/UploadConfirmation/types'
 import axios from 'axios'
 import moment from 'moment-timezone'
 
@@ -17,27 +18,29 @@ const options = [
   { key: 'd', text: 'Device D', value: 'Device D' }
 ]
 
-const UploadConfirmation: React.FunctionComponent<Array<
-  FileWithPath
->> = files => {
+const UploadConfirmation = ({files, setFiles}:ConfirmationProps)=> {
   const [dustrakText, setDustrakText] = useState<Array<string>>([])
   const [dustrakStart, setDustrakStart] = useState<moment.Moment>(moment(''))
   const history = useHistory()
 
-  useEffect(() => {
-    const getDustrak = async () => {
-      // files passed to component as object but processed like array
-      const dustrakFile: File = identFiles([files[0], files[1]])[1]!
-      const dustrakString: string = await dustrakFile.text()
-      const dustrakTextUpdate: Array<string> = dustrakString.split('\n', 10)
-      const dustrakStartUpdate: moment.Moment = getDustrakStart(
-        dustrakTextUpdate
-      )
-      setDustrakStart(dustrakStartUpdate)
-      setDustrakText(dustrakTextUpdate)
-    }
-    getDustrak()
-  }, [files])
+  useEffect(()=>{
+    console.log(files)
+  })
+
+  // useEffect(() => {
+  //   const getDustrak = async () => {
+  //     // files passed to component as object but processed like array
+  //     const dustrakFile: File = identFiles([files[0], files[1]])[1]!
+  //     const dustrakString: string = await dustrakFile.text()
+  //     const dustrakTextUpdate: Array<string> = dustrakString.split('\n', 10)
+  //     const dustrakStartUpdate: moment.Moment = getDustrakStart(
+  //       dustrakTextUpdate
+  //     )
+  //     setDustrakStart(dustrakStartUpdate)
+  //     setDustrakText(dustrakTextUpdate)
+  //   }
+  //   getDustrak()
+  // }, [files])
   const upload = (e: React.FormEvent) => {
     e.preventDefault()
     const formData = new FormData()
@@ -68,7 +71,8 @@ const UploadConfirmation: React.FunctionComponent<Array<
   }
 
   const cancelUpload = () => {
-    history.push('/about')
+    // history.push('/about')
+    setFiles([])
   }
 
   return (
