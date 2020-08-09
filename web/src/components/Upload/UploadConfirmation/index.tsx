@@ -125,8 +125,7 @@ const UploadConfirmation = ({files, setFiles, setProceed}: ConfirmationProps) =>
 
   useEffect(() => {
     const getDustrak = async () => {
-      // files passed to component as object but processed like array
-      const dustrakFile: File = identFiles([files[0], files[1]])[1]!
+      const dustrakFile: File = identFiles(files)[1]!
       const dustrakString: string = await dustrakFile.text()
       const dustrakTextUpdate: Array<string> = dustrakString.split('\n', 10)
       const dustrakStartUpdate: moment.Moment = getDustrakStart(
@@ -167,7 +166,6 @@ const UploadConfirmation = ({files, setFiles, setProceed}: ConfirmationProps) =>
   }
 
   const cancelUpload = () => {
-    // history.push('/about')
     setFiles([])
     setProceed(false)
   }
