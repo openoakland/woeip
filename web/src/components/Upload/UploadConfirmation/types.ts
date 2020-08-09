@@ -1,7 +1,7 @@
-import {FileWithPath} from 'react-dropzone'
+import { FileWithPath } from 'react-dropzone'
 
 export type ConfirmationProps = {
-    files: FileWithPath[]
-    setFiles: (files: FileWithPath[]) => void
-    setProceed: (proceed: boolean) => void
+  files: Array<FileWithPath>
+  setFiles: (files: Array<FileWithPath>) => void
+  setProceed: (proceed: boolean) => void
 }

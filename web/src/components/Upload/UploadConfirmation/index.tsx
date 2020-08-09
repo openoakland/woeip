@@ -14,7 +14,7 @@ import {
   getDustrakStart,
   getDustrakEnd
 } from 'components/Upload/util'
-import {ConfirmationProps} from 'components/Upload/UploadConfirmation/types'
+import { ConfirmationProps } from 'components/Upload/UploadConfirmation/types'
 import axios from 'axios'
 import styled from 'theme'
 import moment from 'moment-timezone'
@@ -118,7 +118,11 @@ const options = [
   { key: 'd', text: 'Device D', value: 'Device D' }
 ]
 
-const UploadConfirmation = ({files, setFiles, setProceed}: ConfirmationProps) => {
+const UploadConfirmation = ({
+  files,
+  setFiles,
+  setProceed
+}: ConfirmationProps) => {
   const [dustrakText, setDustrakText] = useState<Array<string>>([])
   const [dustrakStart, setDustrakStart] = useState<moment.Moment>(moment(''))
   const history = useHistory()
