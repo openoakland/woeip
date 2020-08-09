@@ -1,5 +1,6 @@
 # pylint: disable=too-many-ancestors
 import logging
+import datetime
 
 from django.db import transaction
 from django.shortcuts import get_object_or_404
@@ -27,8 +28,26 @@ class CollectionViewSet(viewsets.ModelViewSet):
     queryset = models.Collection.objects.all()
     serializer_class = serializers.CollectionSerializer
 
-    # def get_queryset(self):
-    # query by start date
+    def get_queryset(self):
+        queryset = models.Collection.objects.all()
+        start_date = self.request.query_params.get("start_date", None)
+        if start_date:
+            try:
+                start = list(map(int, start_date.split('-')))
+            except ValueError as e:
+                print(f"Value Error: {e}")
+                return []
+                
+            try:
+                return queryset.filter(starts_at__date=datetime.date(*start))
+            except TypeError as e:
+                print (f"Type Error: {e}")
+                return []
+            except ValueError as e:
+                print (f"Value Error: {e}")
+                return []
+                
+        return queryset
 
 
     @action(detail=True, methods=["GET"])
