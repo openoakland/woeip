@@ -157,7 +157,10 @@ const Upload: React.FunctionComponent = () => {
         )}
       </StyledContainer>
     ) : (
-      <UploadConfirmation {...files} />
+      <UploadConfirmation 
+      files={files} 
+      setFiles={setFiles}
+      setProceed={setProceed}/>
     )
 
   return uploadPage
