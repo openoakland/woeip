@@ -6,6 +6,7 @@ from django.db import transaction
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework import viewsets
+from rest_framework.exceptions import ValidationError
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from woeip.apps.air_quality import models
@@ -32,8 +33,17 @@ class CollectionViewSet(viewsets.ModelViewSet):
         queryset = models.Collection.objects.all()
         start_date = self.request.query_params.get("start_date", None)
         if start_date is not None:
-            start = list(map(int, start_date.split('-')))
-            return queryset.filter(starts_at__date=datetime.date(*start))
+            try:
+                start = list(map(int, start_date.split('-')))
+                return queryset.filter(starts_at__date=datetime.date(*start))
+            except (TypeError, ValueError) as e:
+                """Incorrect number of values,
+                Values are not valid dates,
+                Fail to convert strings to integers
+                """
+                logger.error(e)
+                raise ValidationError(detail=e)
+            return []
         return queryset
 
 
