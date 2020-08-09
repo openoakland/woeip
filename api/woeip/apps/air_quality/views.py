@@ -37,7 +37,6 @@ class CollectionViewSet(viewsets.ModelViewSet):
             except ValueError as e:
                 print(f"Value Error: {e}")
                 return []
-                
             try:
                 return queryset.filter(starts_at__date=datetime.date(*start))
             except TypeError as e:
