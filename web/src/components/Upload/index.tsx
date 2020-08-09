@@ -118,8 +118,7 @@ const Upload: React.FunctionComponent = () => {
     setFiles(files.filter((_, i) => i !== removeIndex))
   }
 
-  const uploadPage =
-    files.length !== 2 || proceed === false ? (
+  return proceed === false ? (
       <StyledContainer>
         <Dropzone {...getRootProps({ refKey: 'ref' })}>
           <InstructionsContainer>
@@ -162,8 +161,6 @@ const Upload: React.FunctionComponent = () => {
       setFiles={setFiles}
       setProceed={setProceed}/>
     )
-
-  return uploadPage
 }
 
 export default Upload
