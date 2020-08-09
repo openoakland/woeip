@@ -31,20 +31,20 @@ class CollectionViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         queryset = models.Collection.objects.all()
         start_date = self.request.query_params.get("start_date", None)
-        if start_date:
+        if start_date is not None:
             try:
                 start = list(map(int, start_date.split('-')))
-            except ValueError as e:
-                print(f"Value Error: {e}")
-                return []
-            try:
                 return queryset.filter(starts_at__date=datetime.date(*start))
             except TypeError as e:
-                print (f"Type Error: {e}")
-                return []
+                """May have incorrect number of values
+                """
+                logger.error(f"Type Error: {e}")
             except ValueError as e:
-                print (f"Value Error: {e}")
-                return []
+                """String may fail to convert to integer.
+                Values may not be valid dates.
+                """
+                logger.error(f"Value Error: {e}")
+            return []
                 
         return queryset
 
