@@ -57,6 +57,18 @@ class TestCollection(WoaqAPITestCase):
         response = view(request)
         assert response.status_code == 200
 
+    def test_get_collection_list_date(self):
+        request = request_factory.get("/collection?start_date=2014-08-06")
+        view = views.CollectionViewSet.as_view({"get": "list"})
+        response = view(request)
+        assert response.status_code == 200
+
+    def test_get_collection_list_date_error(self):
+        request = request_factory.get("/collection?start_date=2014-08")
+        view = views.CollectionViewSet.as_view({"get": "list"})
+        response = view(request)
+        assert response.status_code == 400
+
     def test_get_collection_retrieve(self):
         request = request_factory.get("/collection")
         view = views.CollectionViewSet.as_view(actions={"get": "retrieve"})
@@ -70,6 +82,7 @@ class TestCollection(WoaqAPITestCase):
         assert response.status_code == 200
         stored_values = [pv["value"] for pv in response.data["pollutant_values"]]
         assert stored_values == self.test_values
+
 
     def test_create_collection(self):
         """Tests collection create method."""
