@@ -22,7 +22,9 @@ const Footer: React.FunctionComponent = () => {
   ))
   return (
     <Elements.Container>
-      <Elements.LinkList>{footerItems}</Elements.LinkList>
+      <Elements.Content>
+        <Elements.LinkList>{footerItems}</Elements.LinkList>
+      </Elements.Content>
     </Elements.Container>
   )
 }

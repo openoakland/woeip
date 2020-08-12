@@ -6,6 +6,8 @@ export const Container = styled.div`
   left: 0;
   width: 100%;
   background-color: ${({ theme }) => theme.colors.gray};
+  display: flex;
+  justify-content: center;
 `
 
 export const LinkList = styled.ul`
@@ -16,4 +18,8 @@ export const LinkList = styled.ul`
 export const ExternalLink = styled.a`
   color: ${({ theme }) => theme.colors.text};
   text-decoration: underline;
+`
+
+export const Content = styled.div`
+  width: 1250px;
 `

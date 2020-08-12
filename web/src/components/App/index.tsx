@@ -11,18 +11,18 @@ import 'semantic-ui-css/semantic.min.css'
 import './index.css'
 
 const Content = styled.div`
-  padding-bottom: 124px;
+  padding-bottom: 150px;
 `
 
 const App = () => (
   <ThemeProvider theme={theme}>
     <Navbar />
     <Content>
-    <Switch>
-      {routes.map(route => (
-        <Route key={route.path} {...route} />
-      ))}
-    </Switch>
+      <Switch>
+        {routes.map(route => (
+          <Route key={route.path} {...route} />
+        ))}
+      </Switch>
     </Content>
     <Footer />
   </ThemeProvider>
