@@ -1,5 +1,14 @@
+html {
+  position: relative;
+  min-height: 100%;
+  width: 100%;
+  padding: 0;
+}
+
 body {
   margin: 0;
-  padding: 0;
+  padding-bottom: 124px;
   font-family: sans-serif;
+  width: 100%;
+  height: auto;
 }
