@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { FooterLink } from 'components/Footer/types'
+import * as Elements from 'components/Footer/elements'
 
 const footerLinks: Array<FooterLink> = [
   { name: 'WOAQ on GitHub', url: 'https://github.com/openoakland/woeip' },
@@ -10,13 +11,19 @@ const footerLinks: Array<FooterLink> = [
 const Footer: React.FunctionComponent = () => {
   const footerItems = footerLinks.map((link: FooterLink) => (
     <li key={link.name}>
-      <a href={link.url}>{link.name}</a>
+      <Elements.ExternalLink
+        href={link.url}
+        target='_blank'
+        rel='noopener noreferrer'
+      >
+        {link.name}
+      </Elements.ExternalLink>
     </li>
   ))
   return (
-    <div>
-      <ul>{footerItems}</ul>
-    </div>
+    <Elements.Container>
+      <Elements.LinkList>{footerItems}</Elements.LinkList>
+    </Elements.Container>
   )
 }
 
