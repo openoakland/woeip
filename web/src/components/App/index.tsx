@@ -3,6 +3,7 @@ import { Route, Switch } from 'react-router-dom'
 import { ThemeProvider } from 'emotion-theming'
 import { theme } from 'theme'
 import Navbar from 'components/Navbar'
+import Footer from 'components/Footer'
 
 import routes from 'routes'
 
@@ -17,6 +18,7 @@ const App = () => (
         <Route key={route.path} {...route} />
       ))}
     </Switch>
+    <Footer />
   </ThemeProvider>
 )
 
