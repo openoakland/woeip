@@ -9,7 +9,7 @@ const StyledContainer = styled(Container)`
   justify-content: space-between;
   align-items: flex-start;
   align-content: center;
-  margin-top: 40px;
+  padding-top: 40px;
   .menu a {
     margin: 0 20px !important;
     &:hover:not(.active) {
