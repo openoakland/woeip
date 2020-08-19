@@ -11,13 +11,7 @@ const footerLinks: Array<FooterLink> = [
 const Footer: React.FunctionComponent = () => {
   const footerItems = footerLinks.map((link: FooterLink) => (
     <li key={link.name}>
-      <Elements.ExternalLink
-        href={link.url}
-        target='_blank'
-        rel='noopener noreferrer'
-      >
-        {link.name}
-      </Elements.ExternalLink>
+      <Elements.ExternalLink href={link.url}>{link.name}</Elements.ExternalLink>
     </li>
   ))
   return (
