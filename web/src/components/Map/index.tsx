@@ -1,7 +1,9 @@
 import axios, { CancelToken } from 'axios'
 import React, { FunctionComponent, useEffect, useState } from 'react'
 import ReactMapGL from 'react-map-gl'
-// import styled from 'theme'
+import styled from 'theme'
+import { Container } from 'semantic-ui-react'
+import ControlPanel from 'components/Map/ControlPanelAjay'
 // import MapFilters from 'components/Map/ControlPanel'
 import Pin from 'components/Map/Pin'
 import {
@@ -15,13 +17,26 @@ import {
   POLLUTANTS_API_URL
 } from '../../constants'
 
-// const MapContainer = styled.div`
-//   position: relative;
-//   margin-top: 40px;
-// `
+const StyledContainer = styled(Container)`
+  margin-top: 30px;
+`
+
+const ContentContainer = styled.div`
+  margin: 0px 130px 92px 130px;
+  display: flex;
+`
+
+const MapContainer = styled.div`
+  height: 548px;
+  width: 65%
+`
+
+const ControlPanelContainer = styled.div`
+  width: 35%;
+`
 
 const initialViewport: Viewport = {
-  zoom: 14,
+  zoom: 12,
   latitude: 37.812036,
   longitude: -122.286675,
   bearing: 0,
@@ -70,19 +85,26 @@ const Map: FunctionComponent<{}> = () => {
   }, [])
 
   return (
-    <div>
-      <ReactMapGL
-        {...viewport}
-        width='100vw'
-        height='100vh'
-        mapStyle={MAP_STYLE}
-        onViewportChange={setViewport}
-        mapboxApiAccessToken={MAPBOX_ACCESS_TOKEN}
-      >
-        {markers.length ? markers : null}
-        {/* <MapFilters /> */}
-      </ReactMapGL>
-    </div>
+    <StyledContainer>
+      <ContentContainer>
+        <MapContainer>
+          <ReactMapGL
+            {...viewport}
+            width='100%'
+            height='100%'
+            mapStyle={MAP_STYLE}
+            onViewportChange={setViewport}
+            mapboxApiAccessToken={MAPBOX_ACCESS_TOKEN}
+          >
+            {markers.length ? markers : null}
+            {/* <MapFilters /> */}
+          </ReactMapGL>
+        </MapContainer>
+        <ControlPanelContainer>
+          <ControlPanel />
+        </ControlPanelContainer>
+      </ContentContainer>
+    </StyledContainer>
   )
 }
 
