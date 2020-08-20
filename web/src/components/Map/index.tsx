@@ -23,6 +23,10 @@ const StyledContainer = styled(Container)`
 
 const ContentContainer = styled.div`
   margin: 0px 130px 92px 130px;
+`
+
+const LowerHalfContainer = styled.div`
+  margin-top: 22px;
   display: flex;
 `
 
@@ -33,6 +37,10 @@ const MapContainer = styled.div`
 
 const ControlPanelContainer = styled.div`
   width: 35%;
+`
+
+const FormMessage = styled.h3`
+  font-size: 1.5rem;
 `
 
 const initialViewport: Viewport = {
@@ -87,22 +95,25 @@ const Map: FunctionComponent<{}> = () => {
   return (
     <StyledContainer>
       <ContentContainer>
-        <MapContainer>
-          <ReactMapGL
-            {...viewport}
-            width='100%'
-            height='100%'
-            mapStyle={MAP_STYLE}
-            onViewportChange={setViewport}
-            mapboxApiAccessToken={MAPBOX_ACCESS_TOKEN}
-          >
-            {markers.length ? markers : null}
-            {/* <MapFilters /> */}
-          </ReactMapGL>
-        </MapContainer>
-        <ControlPanelContainer>
-          <ControlPanel />
-        </ControlPanelContainer>
+        <FormMessage>View Maps</FormMessage>
+        <LowerHalfContainer>
+          <MapContainer>
+            <ReactMapGL
+              {...viewport}
+              width='100%'
+              height='100%'
+              mapStyle={MAP_STYLE}
+              onViewportChange={setViewport}
+              mapboxApiAccessToken={MAPBOX_ACCESS_TOKEN}
+            >
+              {markers.length ? markers : null}
+              {/* <MapFilters /> */}
+            </ReactMapGL>
+          </MapContainer>
+          <ControlPanelContainer>
+            <ControlPanel />
+          </ControlPanelContainer>
+        </LowerHalfContainer>
       </ContentContainer>
     </StyledContainer>
   )

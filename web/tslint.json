@@ -6,7 +6,7 @@
     "interface-name": false,
     "max-line-length": [true, 88],
     "no-console": false,
-    "no-implicit-dependencies": [	
+    "no-implicit-dependencies": [
       true, "dev", ["components", "routes", "theme"]
     ],
     "no-submodule-imports": false,
