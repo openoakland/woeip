@@ -12,7 +12,8 @@ import {
 import {
   identFiles,
   getDustrakStart,
-  getDustrakEnd
+  getDustrakEnd,
+  getDustrakSerial
 } from 'components/Upload/util'
 import { ConfirmationProps } from 'components/Upload/UploadConfirmation/types'
 import axios from 'axios'
@@ -112,9 +113,9 @@ const CancelButton = styled(Button)`
 `
 
 const devices = {
-  8530091203: 'Device A',
-  8530094612: 'Device B',
-  8530100707: 'Device C'
+  '8530091203': 'Device A',
+  '8530094612': 'Device B',
+  '8530100707': 'Device C'
 }
 
 
@@ -125,6 +126,7 @@ const UploadConfirmation = ({
 }: ConfirmationProps) => {
   const [dustrakText, setDustrakText] = useState<Array<string>>([])
   const [dustrakStart, setDustrakStart] = useState<moment.Moment>(moment(''))
+  const [dustrakSerial, setDustrakSerial] = useState<string>('')
   const history = useHistory()
 
   useEffect(() => {
@@ -132,11 +134,13 @@ const UploadConfirmation = ({
       const dustrakFile: File = identFiles(files)[1]!
       const dustrakString: string = await dustrakFile.text()
       const dustrakTextUpdate: Array<string> = dustrakString.split('\n', 10)
+      setDustrakText(dustrakTextUpdate)
       const dustrakStartUpdate: moment.Moment = getDustrakStart(
         dustrakTextUpdate
       )
       setDustrakStart(dustrakStartUpdate)
-      setDustrakText(dustrakTextUpdate)
+      const dustrakSerialUpdate: string = getDustrakSerial(dustrakTextUpdate)
+      setDustrakSerial(dustrakSerialUpdate)
     })()
   }, [files])
   const upload = (e: React.FormEvent) => {
@@ -197,7 +201,7 @@ const UploadConfirmation = ({
             />
             <InputLabel>Start time</InputLabel>
             <DisabledInput
-              value={devices[8530091203]}
+              value={devices[dustrakSerial]}
               disabled={true}
             />
             <InputLabel>Device</InputLabel>
