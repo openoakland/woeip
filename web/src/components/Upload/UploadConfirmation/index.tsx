@@ -111,12 +111,12 @@ const CancelButton = styled(Button)`
   background-color: #f4f5f4 !important;
 `
 
-const options = [
-  { key: 'a', text: 'Device A', value: 'Device A' },
-  { key: 'b', text: 'Device B', value: 'Device B' },
-  { key: 'c', text: 'Device C', value: 'Device c' },
-  { key: 'd', text: 'Device D', value: 'Device D' }
-]
+const devices = {
+  8530091203: 'Device A',
+  8530094612: 'Device B',
+  8530100707: 'Device C'
+}
+
 
 const UploadConfirmation = ({
   files,
@@ -128,7 +128,7 @@ const UploadConfirmation = ({
   const history = useHistory()
 
   useEffect(() => {
-    const getDustrak = async () => {
+    (async function () {
       const dustrakFile: File = identFiles(files)[1]!
       const dustrakString: string = await dustrakFile.text()
       const dustrakTextUpdate: Array<string> = dustrakString.split('\n', 10)
@@ -137,8 +137,7 @@ const UploadConfirmation = ({
       )
       setDustrakStart(dustrakStartUpdate)
       setDustrakText(dustrakTextUpdate)
-    }
-    getDustrak()
+    })()
   }, [files])
   const upload = (e: React.FormEvent) => {
     e.preventDefault()
@@ -197,11 +196,9 @@ const UploadConfirmation = ({
               disabled={true}
             />
             <InputLabel>Start time</InputLabel>
-            <DropdownInput
-              search={true}
-              selection={true}
-              options={options}
-              defaultValue={options[0].value}
+            <DisabledInput
+              value={devices[8530091203]}
+              disabled={true}
             />
             <InputLabel>Device</InputLabel>
             <SubmitForm onSubmit={upload}>
