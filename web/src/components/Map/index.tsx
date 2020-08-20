@@ -1,6 +1,7 @@
 import axios, { CancelToken } from 'axios'
 import React, { FunctionComponent, useEffect, useState } from 'react'
 import ReactMapGL from 'react-map-gl'
+import moment from 'moment-timezone'
 import styled from 'theme'
 import { Container } from 'semantic-ui-react'
 import ControlPanel from 'components/Map/ControlPanelAjay'
@@ -37,6 +38,7 @@ const MapContainer = styled.div`
 
 const ControlPanelContainer = styled.div`
   width: 35%;
+  padding-left: 54px;
 `
 
 const FormMessage = styled.h3`
@@ -64,6 +66,7 @@ const parsePollutant = (item: PollutantValueResponse): Pollutant => {
 }
 
 const Map: FunctionComponent<{}> = () => {
+  const [date, setDate] = useState<moment.Moment>(moment())
   const [pollutants, setPollutants] = useState<Array<Pollutant>>([])
   const [viewport, setViewport] = useState<Viewport>(initialViewport)
 
@@ -111,7 +114,7 @@ const Map: FunctionComponent<{}> = () => {
             </ReactMapGL>
           </MapContainer>
           <ControlPanelContainer>
-            <ControlPanel />
+            <ControlPanel date={date} setDate={setDate} />
           </ControlPanelContainer>
         </LowerHalfContainer>
       </ContentContainer>
