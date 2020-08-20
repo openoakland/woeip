@@ -1,16 +1,16 @@
 import styled from 'theme'
 import Logo from 'components/Logo'
-import React, { useState } from 'react'
-import { Container, Menu, MenuItemProps } from 'semantic-ui-react'
+import React, { useState, useEffect } from 'react'
+import { Container, Menu } from 'semantic-ui-react'
 import { Link, withRouter } from 'react-router-dom'
-import { RouteComponentProps } from 'react-router'
+import { RouteComponentProps} from 'react-router'
 
 const StyledContainer = styled(Container)`
   display: flex !important;
   justify-content: space-between;
   align-items: flex-start;
   align-content: center;
-  margin-top: 40px;
+  padding-top: 40px;
   .menu a {
     margin: 0 20px !important;
     &:hover:not(.active) {
@@ -41,10 +41,7 @@ const Header: React.FunctionComponent<RouteParams> = ({
     location.pathname.split('/')[1]
   )
 
-  const handleItemClick: MenuItemProps['onClick'] = (
-    _: React.MouseEvent<HTMLAnchorElement>,
-    { name }: MenuItemProps
-  ) => setActiveItem(name as string)
+  useEffect(()=> setActiveItem(location.pathname.split('/')[1]))
 
   return (
     <StyledContainer>
@@ -67,7 +64,6 @@ const Header: React.FunctionComponent<RouteParams> = ({
               as={Link}
               to={`/${route}`}
               active={activeItem === route}
-              onClick={handleItemClick}
             >
               {text}
             </Menu.Item>

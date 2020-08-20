@@ -1,10 +1,12 @@
 # pylint: disable=too-many-ancestors
 import logging
+import datetime
 
 from django.db import transaction
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework import viewsets
+from rest_framework.exceptions import ValidationError
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from woeip.apps.air_quality import models
@@ -26,6 +28,23 @@ class CalibrationViewSet(viewsets.ModelViewSet):
 class CollectionViewSet(viewsets.ModelViewSet):
     queryset = models.Collection.objects.all()
     serializer_class = serializers.CollectionSerializer
+
+    def get_queryset(self):
+        queryset = models.Collection.objects.all()
+        start_date = self.request.query_params.get("start_date", None)
+        if start_date:
+            try:
+                start = list(map(int, start_date.split('-')))
+                return queryset.filter(starts_at__date=datetime.date(*start))
+            except (TypeError, ValueError) as e:
+                """Incorrect number of values,
+                Values are not valid dates,
+                Fail to convert strings to integers
+                """
+                logger.error(e)
+                raise ValidationError(detail=e)            
+        return queryset
+
 
     @action(detail=True, methods=["GET"])
     def data(self, request, pk=None):

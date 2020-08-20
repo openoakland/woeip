@@ -113,49 +113,50 @@ const Upload: React.FunctionComponent = () => {
     setFiles(files.filter((_, i) => i !== removeIndex))
   }
 
-  const uploadPage =
-    files.length !== 2 || proceed === false ? (
-      <StyledContainer>
-        <Dropzone {...getRootProps({ refKey: 'ref' })}>
-          <InstructionsContainer>
-            <p>Drag a pair of DusTrak and GPS files here</p>
-            <FileSelector>
-              <span>or</span>
-              <FileInput>
-                Select files from your computer
-                <input {...getInputProps()} />
-              </FileInput>
-            </FileSelector>
-          </InstructionsContainer>
-        </Dropzone>
-        <StyledMessage hidden={errorMessage === ''}>
-          <WarningIcon />
-          {errorMessage}
-        </StyledMessage>
-        {files.length > 0 && (
-          <PendingContainer>
-            <h3>Pending Files</h3>
-            <hr />
-            <ul>
-              {files.map((file, i) => (
-                <PendingFile key={file.path}>
-                  <FileNameContainer>
-                    <FileName>{file.path}</FileName>
-                  </FileNameContainer>
-                  <IconButton icon={true} data-arg={i} onClick={removeItem}>
-                    <Icon name='trash' />
-                  </IconButton>
-                </PendingFile>
-              ))}
-            </ul>
-          </PendingContainer>
-        )}
-      </StyledContainer>
-    ) : (
-      <UploadConfirmation {...files} />
-    )
-
-  return uploadPage
+  return proceed === false ? (
+    <StyledContainer>
+      <Dropzone {...getRootProps({ refKey: 'ref' })}>
+        <InstructionsContainer>
+          <p>Drag a pair of DusTrak and GPS files here</p>
+          <FileSelector>
+            <span>or</span>
+            <FileInput>
+              Select files from your computer
+              <input {...getInputProps()} />
+            </FileInput>
+          </FileSelector>
+        </InstructionsContainer>
+      </Dropzone>
+      <StyledMessage hidden={errorMessage === ''}>
+        <WarningIcon />
+        {errorMessage}
+      </StyledMessage>
+      {files.length > 0 && (
+        <PendingContainer>
+          <h3>Pending Files</h3>
+          <hr />
+          <ul>
+            {files.map((file, i) => (
+              <PendingFile key={file.path}>
+                <FileNameContainer>
+                  <FileName>{file.path}</FileName>
+                </FileNameContainer>
+                <IconButton icon={true} data-arg={i} onClick={removeItem}>
+                  <Icon name='trash' />
+                </IconButton>
+              </PendingFile>
+            ))}
+          </ul>
+        </PendingContainer>
+      )}
+    </StyledContainer>
+  ) : (
+    <UploadConfirmation
+      files={files}
+      setFiles={setFiles}
+      setProceed={setProceed}
+    />
+  )
 }
 
 export default Upload
