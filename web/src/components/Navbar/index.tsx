@@ -3,7 +3,7 @@ import Logo from 'components/Logo'
 import React, { useState, useEffect } from 'react'
 import { Container, Menu } from 'semantic-ui-react'
 import { Link, withRouter } from 'react-router-dom'
-import { RouteComponentProps} from 'react-router'
+import { RouteComponentProps } from 'react-router'
 
 const StyledContainer = styled(Container)`
   display: flex !important;
@@ -41,7 +41,7 @@ const Header: React.FunctionComponent<RouteParams> = ({
     location.pathname.split('/')[1]
   )
 
-  useEffect(()=> setActiveItem(location.pathname.split('/')[1]))
+  useEffect(() => setActiveItem(location.pathname.split('/')[1]))
 
   return (
     <StyledContainer>

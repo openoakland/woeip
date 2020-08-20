@@ -119,14 +119,14 @@ const UploadConfirmation = ({
   files,
   setFiles,
   setProceed
-}: ConfirmationProps) => {
+}: ConfirmationProps): JSX.Element => {
   const [dustrakText, setDustrakText] = useState<Array<string>>([])
   const [dustrakStart, setDustrakStart] = useState<moment.Moment>(moment(''))
   const history = useHistory()
 
   useEffect(() => {
     const getDustrak = async () => {
-      const dustrakFile: File = identFiles(files)[1]!
+      const dustrakFile: File = identFiles(files)[1] as File
       const dustrakString: string = await dustrakFile.text()
       const dustrakTextUpdate: Array<string> = dustrakString.split('\n', 10)
       const dustrakStartUpdate: moment.Moment = getDustrakStart(
