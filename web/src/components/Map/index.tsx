@@ -32,7 +32,7 @@ const LowerHalfContainer = styled.div`
 
 const MapContainer = styled.div`
   height: 548px;
-  width: 65%
+  width: 65%;
 `
 
 const ControlPanelContainer = styled.div`
