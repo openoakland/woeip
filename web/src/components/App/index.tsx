@@ -9,7 +9,7 @@ import routes from 'routes'
 import 'semantic-ui-css/semantic.min.css'
 import './index.css'
 
-const App = () => (
+const App = (): JSX.Element => (
   <ThemeProvider theme={theme}>
     <Navbar />
     <Switch>

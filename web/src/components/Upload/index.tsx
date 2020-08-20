@@ -75,11 +75,6 @@ const FileSelector = styled.div`
   align-items: center;
 `
 
-const NothingMessage = styled.p`
-  margin-top: 20px;
-  text-align: center;
-`
-
 const WarningIcon = () => <Icon name='warning circle' />
 
 interface FormData {
@@ -114,7 +109,7 @@ const Upload: React.FunctionComponent = () => {
   })
 
   const removeItem = (event: React.SyntheticEvent<HTMLButtonElement>) => {
-    const removeIndex: number = Number(event.currentTarget.dataset.arg)
+    const removeIndex = Number(event.currentTarget.dataset.arg)
     setFiles(files.filter((_, i) => i !== removeIndex))
   }
 

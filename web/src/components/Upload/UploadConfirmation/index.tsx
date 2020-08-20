@@ -69,8 +69,6 @@ const DisabledInput = styled(Input)`
   width: 160px;
 `
 
-const CalendarIcon = () => <Icon name='calendar outline' />
-
 const DropdownInput = styled(Dropdown)`
   min-width: auto !important;
   width: 160px;
@@ -127,7 +125,7 @@ const UploadConfirmation: React.FunctionComponent<Array<
   useEffect(() => {
     const getDustrak = async () => {
       // files passed to component as object but processed like array
-      const dustrakFile: File = identFiles([files[0], files[1]])[1]!
+      const dustrakFile: File = identFiles([files[0], files[1]])[1] as File
       const dustrakString: string = await dustrakFile.text()
       const dustrakTextUpdate: Array<string> = dustrakString.split('\n', 10)
       const dustrakStartUpdate: moment.Moment = getDustrakStart(
