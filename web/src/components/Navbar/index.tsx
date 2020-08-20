@@ -40,7 +40,7 @@ const Header: React.FunctionComponent<RouteComponentProps<RouteParams>> = ({
     location.pathname.split('/')[1]
   )
 
-  useEffect(()=> setActiveItem(location.pathname.split('/')[1]))
+  useEffect(() => setActiveItem(location.pathname.split('/')[1]))
 
   return (
     <StyledContainer>

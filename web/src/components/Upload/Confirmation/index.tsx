@@ -1,21 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import { FileWithPath } from 'react-dropzone'
 import { useHistory } from 'react-router-dom'
-import {
-  Message,
-  Icon,
-  Button,
-  Container,
-  Input,
-  Dropdown
-} from 'semantic-ui-react'
+import { Message, Icon, Button, Container, Input } from 'semantic-ui-react'
 import {
   identFiles,
   getDustrakStart,
   getDustrakEnd,
   getDustrakSerial
 } from 'components/Upload/util'
-import { ConfirmationProps } from 'components/Upload/UploadConfirmation/types'
+import { ConfirmationProps } from 'components/Upload/Confirmation/types'
 import axios from 'axios'
 import styled from 'theme'
 import moment from 'moment-timezone'
@@ -71,17 +63,6 @@ const DisabledInput = styled(Input)`
   width: 160px;
 `
 
-const CalendarIcon = () => <Icon name='calendar outline' />
-
-const DropdownInput = styled(Dropdown)`
-  min-width: auto !important;
-  width: 160px;
-  //eventually need to make borders of this dropdown #232735 per wireframe
-  // :focus-within {
-  //   border: 1px solid #232735 !important;
-  // }
-`
-
 const InputLabel = styled.p`
   font-family: ${({ theme }) => theme.fonts.primary};
   font-size .875rem;
@@ -118,19 +99,14 @@ const devices = {
   '8530100707': 'Device C'
 }
 
-
-const UploadConfirmation = ({
-  files,
-  setFiles,
-  setProceed
-}: ConfirmationProps) => {
+const Confirmation = ({ files, setFiles, setProceed }: ConfirmationProps) => {
   const [dustrakText, setDustrakText] = useState<Array<string>>([])
   const [dustrakStart, setDustrakStart] = useState<moment.Moment>(moment(''))
   const [dustrakSerial, setDustrakSerial] = useState<string>('')
   const history = useHistory()
 
   useEffect(() => {
-    (async function () {
+    (async () => {
       const dustrakFile: File = identFiles(files)[1]!
       const dustrakString: string = await dustrakFile.text()
       const dustrakTextUpdate: Array<string> = dustrakString.split('\n', 10)
@@ -200,10 +176,7 @@ const UploadConfirmation = ({
               disabled={true}
             />
             <InputLabel>Start time</InputLabel>
-            <DisabledInput
-              value={devices[dustrakSerial]}
-              disabled={true}
-            />
+            <DisabledInput value={devices[dustrakSerial]} disabled={true} />
             <InputLabel>Device</InputLabel>
             <SubmitForm onSubmit={upload}>
               <SaveButton type='submit'>Save</SaveButton>
@@ -216,4 +189,4 @@ const UploadConfirmation = ({
   )
 }
 
-export default UploadConfirmation
+export default Confirmation

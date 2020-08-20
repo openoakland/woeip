@@ -3,11 +3,11 @@ import moment from 'moment-timezone'
 import { text } from 'express'
 
 export const getDustrakSerial = (textLines: Array<string>): string => {
-  if(textLines.length > 2){
+  if (textLines.length > 2) {
     return textLines[2].split(',')[1]
   }
   return ''
-} 
+}
 
 export const getGpsStart = (textLines: Array<string>): moment.Moment => {
   /* Return moment under all circumstances.

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useDropzone, FileWithPath } from 'react-dropzone'
 import { Message, Icon, Button, Container } from 'semantic-ui-react'
-import UploadConfirmation from 'components/Upload/UploadConfirmation'
+import UploadConfirmation from 'components/Upload/Confirmation'
 import styled from 'theme'
 import { validateFiles } from 'components/Upload/util'
 
@@ -73,11 +73,6 @@ const FileSelector = styled.div`
   color: ${({ theme }) => theme.colors.darkGray};
   flex-direction: column;
   align-items: center;
-`
-
-const NothingMessage = styled.p`
-  margin-top: 20px;
-  text-align: center;
 `
 
 const WarningIcon = () => <Icon name='warning circle' />
