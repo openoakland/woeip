@@ -39,7 +39,7 @@ describe('parses gps and dustrak files', () => {
       const filePomise: Promise<Array<string>> = readFile(`${testDir}/${file}`)
       filePromises.push(filePomise)
     }
-    // tslint:disable-next-line
+
     ;[
       validGps,
       gprmcMissing,
