@@ -6,7 +6,7 @@ import {
   getGpsStart
 } from 'components/Upload/util'
 
-const testDir: string = `${__dirname}/test-data`
+const testDir = `${__dirname}/test-data`
 
 describe('parses gps and dustrak files', () => {
   let validGps: Array<string>
@@ -17,10 +17,7 @@ describe('parses gps and dustrak files', () => {
   let missingStartDustrak: Array<string>
   let empty: Array<string>
   beforeAll(async () => {
-    const readFile = (
-      path: string,
-      opts: string = 'utf8'
-    ): Promise<Array<string>> =>
+    const readFile = (path: string, opts = 'utf8'): Promise<Array<string>> =>
       new Promise((resolve, reject) => {
         fs.readFile(path, opts, (err, data) => {
           if (err) reject(`error: ${err}`)
@@ -42,8 +39,8 @@ describe('parses gps and dustrak files', () => {
       const filePomise: Promise<Array<string>> = readFile(`${testDir}/${file}`)
       filePromises.push(filePomise)
     }
-    // tslint:disable-next-line
-    [
+
+    ;[
       validGps,
       gprmcMissing,
       gprmcCorrupt,

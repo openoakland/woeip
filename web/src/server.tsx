@@ -5,16 +5,17 @@ import { StaticRouter } from 'react-router-dom'
 
 import App from 'components/App'
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 let assets: any
 
 const syncLoadAssets = () => {
-  assets = require(process.env.RAZZLE_ASSETS_MANIFEST!)
+  assets = require(process.env.RAZZLE_ASSETS_MANIFEST as string)
 }
 syncLoadAssets()
 
 const server = express()
   .disable('x-powered-by')
-  .use(express.static(process.env.RAZZLE_PUBLIC_DIR!))
+  .use(express.static(process.env.RAZZLE_PUBLIC_DIR as string))
   .get('/*', (req: express.Request, res: express.Response) => {
     const context = {}
     const markup = renderToString(

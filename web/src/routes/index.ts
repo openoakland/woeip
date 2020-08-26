@@ -5,7 +5,7 @@ import Home from 'components/Home'
 interface RouteConfig {
   path?: string
   exact?: boolean
-  component: React.ComponentClass<any> | React.FunctionComponent<any>
+  component: React.ComponentClass<{}> | React.FunctionComponent<{}>
 }
 
 const routes: Array<RouteConfig> = [

@@ -9,7 +9,7 @@ const StyledContainer = styled(Container)`
 `
 
 class Home extends React.Component<{}, {}> {
-  public render() {
+  public render(): JSX.Element {
     return <StyledContainer>Welcome to WOAQ!</StyledContainer>
   }
 }

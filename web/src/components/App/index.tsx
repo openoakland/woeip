@@ -14,7 +14,7 @@ const Content = styled.div`
   padding-bottom: 150px;
 `
 
-const App = () => (
+const App = (): JSX.Element => (
   <ThemeProvider theme={theme}>
     <Navbar />
     <Content>

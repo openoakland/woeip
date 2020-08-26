@@ -12,6 +12,6 @@ describe('<App />', () => {
         <App />
       </MemoryRouter>
     )
-    expect(screen.getAllByRole('link')).toHaveLength(4)
+    expect(screen.getAllByRole('link')).toHaveLength(7)
   })
 })
