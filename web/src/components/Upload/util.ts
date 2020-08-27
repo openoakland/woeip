@@ -1,6 +1,10 @@
 import { FileWithPath } from 'react-dropzone'
 import moment from 'moment-timezone'
 
+export const getDustrakSerial = (textLines: Array<string>): string => {
+  return textLines.length > 2 ? textLines[2].split(',')[1].trim() : ''
+}
+
 export const getGpsStart = (textLines: Array<string>): moment.Moment => {
   /* Return moment under all circumstances.
   This enables validity checks on returned moment */

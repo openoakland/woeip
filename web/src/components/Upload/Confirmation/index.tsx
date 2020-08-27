@@ -1,19 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
-import {
-  Message,
-  Icon,
-  Button,
-  Container,
-  Input,
-  Dropdown
-} from 'semantic-ui-react'
+import { Message, Icon, Button, Container, Input } from 'semantic-ui-react'
 import {
   identFiles,
   getDustrakStart,
-  getDustrakEnd
+  getDustrakEnd,
+  getDustrakSerial
 } from 'components/Upload/util'
-import { ConfirmationProps } from 'components/Upload/UploadConfirmation/types'
+import { ConfirmationProps } from 'components/Upload/Confirmation/types'
 import axios from 'axios'
 import styled from 'theme'
 import moment from 'moment-timezone'
@@ -69,15 +63,6 @@ const DisabledInput = styled(Input)`
   width: 160px;
 `
 
-const DropdownInput = styled(Dropdown)`
-  min-width: auto !important;
-  width: 160px;
-  //eventually need to make borders of this dropdown #232735 per wireframe
-  // :focus-within {
-  //   border: 1px solid #232735 !important;
-  // }
-`
-
 const InputLabel = styled.p`
   font-family: ${({ theme }) => theme.fonts.primary};
   font-size .875rem;
@@ -108,34 +93,31 @@ const CancelButton = styled(Button)`
   background-color: #f4f5f4 !important;
 `
 
-const options = [
-  { key: 'a', text: 'Device A', value: 'Device A' },
-  { key: 'b', text: 'Device B', value: 'Device B' },
-  { key: 'c', text: 'Device C', value: 'Device c' },
-  { key: 'd', text: 'Device D', value: 'Device D' }
-]
+const devices = {
+  '8530091203': 'Device A',
+  '8530094612': 'Device B',
+  '8530100707': 'Device C'
+}
 
-const UploadConfirmation = ({
-  files,
-  setFiles,
-  setProceed
-}: ConfirmationProps): JSX.Element => {
+const Confirmation = ({ files, setFiles, setProceed }: ConfirmationProps) => {
   const [dustrakText, setDustrakText] = useState<Array<string>>([])
   const [dustrakStart, setDustrakStart] = useState<moment.Moment>(moment(''))
+  const [dustrakSerial, setDustrakSerial] = useState<string>('')
   const history = useHistory()
 
   useEffect(() => {
-    const getDustrak = async () => {
-      const dustrakFile: File = identFiles(files)[1] as File
+    (async () => {
+      const dustrakFile: File = identFiles(files)[1]!
       const dustrakString: string = await dustrakFile.text()
       const dustrakTextUpdate: Array<string> = dustrakString.split('\n', 10)
+      setDustrakText(dustrakTextUpdate)
       const dustrakStartUpdate: moment.Moment = getDustrakStart(
         dustrakTextUpdate
       )
       setDustrakStart(dustrakStartUpdate)
-      setDustrakText(dustrakTextUpdate)
-    }
-    getDustrak()
+      const dustrakSerialUpdate: string = getDustrakSerial(dustrakTextUpdate)
+      setDustrakSerial(dustrakSerialUpdate)
+    })()
   }, [files])
   const upload = (e: React.FormEvent) => {
     e.preventDefault()
@@ -194,12 +176,7 @@ const UploadConfirmation = ({
               disabled={true}
             />
             <InputLabel>Start time</InputLabel>
-            <DropdownInput
-              search={true}
-              selection={true}
-              options={options}
-              defaultValue={options[0].value}
-            />
+            <DisabledInput value={devices[dustrakSerial]} disabled={true} />
             <InputLabel>Device</InputLabel>
             <SubmitForm onSubmit={upload}>
               <SaveButton type='submit'>Save</SaveButton>
@@ -212,4 +189,4 @@ const UploadConfirmation = ({
   )
 }
 
-export default UploadConfirmation
+export default Confirmation
