@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useDropzone, FileWithPath } from 'react-dropzone'
 import { Message, Icon, Button, Container } from 'semantic-ui-react'
-import UploadConfirmation from 'components/Upload/UploadConfirmation'
+import UploadConfirmation from 'components/Upload/Confirmation'
 import styled from 'theme'
 import { validateFiles } from 'components/Upload/util'
 

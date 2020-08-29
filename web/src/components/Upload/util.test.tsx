@@ -3,7 +3,8 @@ import * as fs from 'fs'
 import {
   getDustrakStart,
   getDustrakEnd,
-  getGpsStart
+  getGpsStart,
+  getDustrakSerial
 } from 'components/Upload/util'
 
 const testDir = `${__dirname}/test-data`
@@ -49,6 +50,14 @@ describe('parses gps and dustrak files', () => {
       missingStartDustrak,
       empty
     ] = await Promise.all(filePromises)
+  })
+
+  it('should find the dustrak serial', () => {
+    expect(getDustrakSerial(validDustrak)).toEqual('8530094612')
+  })
+
+  it('should handle a corrupted dustrak file with blank serial', () => {
+    expect(getDustrakSerial(empty)).toEqual('')
   })
 
   it('should find the time listed in the GPS', () => {
