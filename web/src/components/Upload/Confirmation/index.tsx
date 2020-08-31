@@ -99,28 +99,19 @@ const devices = {
   '8530100707': 'Device C'
 }
 
-<<<<<<< HEAD:web/src/components/Upload/Confirmation/index.tsx
-const Confirmation = ({ files, setFiles, setProceed }: ConfirmationProps) => {
-=======
 const Confirmation = ({
   files,
   setFiles,
   setProceed
 }: ConfirmationProps): JSX.Element => {
->>>>>>> 7e4b8075a459d61c5632011b182d748832590913:web/src/components/Upload/UploadConfirmation/index.tsx
   const [dustrakText, setDustrakText] = useState<Array<string>>([])
   const [dustrakStart, setDustrakStart] = useState<moment.Moment>(moment(''))
   const [dustrakSerial, setDustrakSerial] = useState<string>('')
   const history = useHistory()
 
   useEffect(() => {
-<<<<<<< HEAD:web/src/components/Upload/Confirmation/index.tsx
-    (async () => {
-      const dustrakFile: File = identFiles(files)[1]!
-=======
     ;(async () => {
       const dustrakFile: File = identFiles(files)[1] as File
->>>>>>> 7e4b8075a459d61c5632011b182d748832590913:web/src/components/Upload/UploadConfirmation/index.tsx
       const dustrakString: string = await dustrakFile.text()
       const dustrakTextUpdate: Array<string> = dustrakString.split('\n', 10)
       setDustrakText(dustrakTextUpdate)
