@@ -38,19 +38,22 @@ Seed initial pollutant data as outlined in Issue #TBD
 - woaq-api: [python](https://www.python.org/), [django-rest-framework](https://www.django-rest-framework.org/)
 - woaq-db: [postgis](https://postgis.net/)
 
-## Domains 
-- Webpage: [lvh.me](http://lvh.me)
+## Domains  
+
+You can now open your web browser and access the services at the following [lvh](https://www.quora.com/What-is-lvh-me?share=1) domains:  
+
+### Front-end  
+
+- Homepage: [lvh.me](http://lvh.me)
+
+### Back-end  
+
 - API: [api.lvh.me](http://api.lvh.me)
 - API Documentation: [api.lvh.me/swagger](http://api.lvh.me/swagger)
 
 ## Code Quality Checks
 
 Follow testing and linting instructions in the [Pull Request Template](/.github/pull_request_template.md)
-
-## Contributing workflow and guidelines
-
-See the [Contributing](https://github.com/openoakland/woeip/blob/master/.github/contributing.md) section.
-
 
 # Contributing as a non-developer
 

@@ -1,6 +1,6 @@
 ## Checklist
 - [ ] Add description
-- [ ] Reference the open issue that pull the request addresses
+- [ ] Reference the open issue that the pull request addresses
 - [ ] Pass code quality checks
   - spin up docker `docker-compose up -d --build`
   - enter api container `docker-compose exec api /bin/bash`
