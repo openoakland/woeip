@@ -21,3 +21,6 @@ gunicorn woeip.wsgi \
     --worker-tmp-dir=/dev/shm \
     --reload
     "$@"
+
+echo Saving initial pollutant type...
+make seed_pollutant

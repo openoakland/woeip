@@ -31,3 +31,6 @@ migrate: ## Apply database migrations
 
 collectstatic: ## Collect static files
 	python manage.py collectstatic --no-input
+
+seed_pollutant: ## Save initial pollutant type
+	python manage.py loaddata pollutant.json
