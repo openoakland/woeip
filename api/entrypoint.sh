@@ -9,6 +9,9 @@ set -e
 echo Starting migrations...
 make migrate
 
+echo Saving initial pollutant type...
+make seed_pollutant
+
 # Build static assets
 echo Building static assets...
 make collectstatic
@@ -21,6 +24,3 @@ gunicorn woeip.wsgi \
     --worker-tmp-dir=/dev/shm \
     --reload
     "$@"
-
-echo Saving initial pollutant type...
-make seed_pollutant
