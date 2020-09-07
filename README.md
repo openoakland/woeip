@@ -28,7 +28,7 @@ Run Locally
   cd woeip
   docker-compose up -d --build
 ```
-Seed initial pollutant data as outlined in Issue #TBD 
+Seed initial pollutant data as outlined in Issue [#254](https://github.com/openoakland/woeip/issues/254)
 
 ## Services  
 
