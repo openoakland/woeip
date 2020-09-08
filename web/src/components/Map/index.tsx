@@ -114,7 +114,7 @@ const Map: FunctionComponent<{}> = () => {
             </ReactMapGL>
           </MapContainer>
           <ControlPanelContainer>
-            <ControlPanel date={date} setDate={setDate} />
+            <ControlPanel date={date} setDate={setDate}/>
           </ControlPanelContainer>
         </LowerHalfContainer>
       </ContentContainer>

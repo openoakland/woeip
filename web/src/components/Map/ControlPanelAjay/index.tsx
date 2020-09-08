@@ -29,7 +29,7 @@ const DateContainer = styled.div`
   display: flex;
 `
 
-const ControlPanel = ({ date, setDate }: ControlPanelProps) => {
+const ControlPanel = ({ date, setDate}: ControlPanelProps) => {
   const onChange = (event, data) => {
     const parsed = moment(data.value)
     setDate(parsed)
