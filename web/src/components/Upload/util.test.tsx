@@ -3,10 +3,11 @@ import * as fs from 'fs'
 import {
   getDustrakStart,
   getDustrakEnd,
-  getGpsStart
+  getGpsStart,
+  getDustrakSerial
 } from 'components/Upload/util'
 
-const testDir: string = `${__dirname}/test-data`
+const testDir = `${__dirname}/test-data`
 
 describe('parses gps and dustrak files', () => {
   let validGps: Array<string>
@@ -17,10 +18,7 @@ describe('parses gps and dustrak files', () => {
   let missingStartDustrak: Array<string>
   let empty: Array<string>
   beforeAll(async () => {
-    const readFile = (
-      path: string,
-      opts: string = 'utf8'
-    ): Promise<Array<string>> =>
+    const readFile = (path: string, opts = 'utf8'): Promise<Array<string>> =>
       new Promise((resolve, reject) => {
         fs.readFile(path, opts, (err, data) => {
           if (err) reject(`error: ${err}`)
@@ -42,8 +40,8 @@ describe('parses gps and dustrak files', () => {
       const filePomise: Promise<Array<string>> = readFile(`${testDir}/${file}`)
       filePromises.push(filePomise)
     }
-    // tslint:disable-next-line
-    [
+
+    ;[
       validGps,
       gprmcMissing,
       gprmcCorrupt,
@@ -52,6 +50,14 @@ describe('parses gps and dustrak files', () => {
       missingStartDustrak,
       empty
     ] = await Promise.all(filePromises)
+  })
+
+  it('should find the dustrak serial', () => {
+    expect(getDustrakSerial(validDustrak)).toEqual('8530094612')
+  })
+
+  it('should handle a corrupted dustrak file with blank serial', () => {
+    expect(getDustrakSerial(empty)).toEqual('')
   })
 
   it('should find the time listed in the GPS', () => {

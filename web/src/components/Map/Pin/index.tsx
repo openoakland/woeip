@@ -2,7 +2,7 @@ import React, { FunctionComponent } from 'react'
 import { Marker } from 'react-map-gl'
 import { Coordinates } from 'components/Map/types'
 
-interface Props {
+interface PinProps {
   coordinates: Coordinates
 }
 
@@ -17,8 +17,10 @@ const attrs: React.SVGAttributes<SVGSVGElement> = {
   viewBox: '0 0 24 24'
 }
 
-const Pin: FunctionComponent<Props> = ({ coordinates }) => (
-  <Marker {...coordinates}>
+const Pin: FunctionComponent<PinProps> = (
+  props: PinProps
+): React.ReactElement => (
+  <Marker {...props.coordinates}>
     <svg {...attrs}>
       <path d={ICON} />
     </svg>
