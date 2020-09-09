@@ -1,0 +1,10 @@
+[
+    {
+        "model": "air_quality.pollutant",
+        "pk": 1,
+        "fields": {
+            "name": "particulates",
+            "description": "from dustrak"
+        }
+    }
+]
