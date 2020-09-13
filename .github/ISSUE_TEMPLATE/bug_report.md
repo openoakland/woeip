@@ -39,10 +39,11 @@ Add any other context about the problem here.
 
 **Labels**
 - [ ] Add a status label
+  - `needs definition`
+  - `needs help`
+  - `ready to work on`
+  - `in progress`
   - `backlog`
-  - `discussing`
-  - `ready`
-  - `implementing`
 - [ ] Add a `bug` label
 - [ ] Add additional labels as needed
 

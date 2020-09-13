@@ -21,10 +21,11 @@ Add any other context or screenshots about the feature request here.
 
 **Labels**
 - [ ] Add a status label
+  - `needs definition`
+  - `needs help`
+  - `ready to work on`
+  - `in progress`
   - `backlog`
-  - `discussing`
-  - `ready`
-  - `implementing`
 - [ ] Add additional labels as needed
 
 ### For Developers

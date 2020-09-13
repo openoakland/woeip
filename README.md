@@ -21,31 +21,38 @@ To participate in this project, we ask you to abide by the OpenOakland [Code of 
 
 # Quickstart for developers
 
-Run the woaq infrastructure with [Docker Compose](https://docs.docker.com/compose/)
-
-```bash
+Install [Docker](https://www.docker.com/) and [Docker Compose](https://docs.docker.com/compose/)  
+Run Locally  
+```
   git clone https://github.com/openoakland/woeip.git
   cd woeip
   docker-compose up -d --build
 ```
 
-Browse the client at [lvh.me](http://lvh.me), ping the api at [api.lvh.me](http://api.lvh.me).
+## Services  
 
-## Services
-
-- woaq-proxy: [nginx-proxy](https://github.com/jwilder/nginx-proxy), [ssl-autogen](https://github.com/JrCs/docker-letsencrypt-nginx-proxy-companion)
- 
+- woaq-proxy: [nginx-proxy](https://github.com/jwilder/nginx-proxy), [ssl-autogen](https://github.com/JrCs/docker-letsencrypt-nginx-proxy-companion)   
 - woaq-web:
-[typescript](https://www.typescriptlang.org/), [react](https://reactjs.org/), [razzle](https://github.com/jaredpalmer/razzle), [zurb](https://react.foundation/)
-
+[typescript](https://www.typescriptlang.org/), [react](https://reactjs.org/), [razzle](https://github.com/jaredpalmer/razzle), [semantic UI](https://react.semantic-ui.com/)  
 - woaq-api: [python](https://www.python.org/), [django-rest-framework](https://www.django-rest-framework.org/)
-
 - woaq-db: [postgis](https://postgis.net/)
 
-## Contributing workflow and guidelines
+## Domains  
 
-See the [Contributing](https://github.com/openoakland/woeip/blob/master/.github/contributing.md) section.
+You can now open your web browser and access the services at the following [lvh](https://www.quora.com/What-is-lvh-me?share=1) domains:  
 
+### Front-end  
+
+- Homepage: [lvh.me](http://lvh.me)
+
+### Back-end  
+
+- API: [api.lvh.me](http://api.lvh.me)
+- API Documentation: [api.lvh.me/swagger](http://api.lvh.me/swagger)
+
+## Code Quality Checks
+
+Follow testing and linting instructions in the [Pull Request Template](/.github/pull_request_template.md)
 
 # Contributing as a non-developer
 
