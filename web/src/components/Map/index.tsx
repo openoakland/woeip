@@ -75,17 +75,29 @@ const Map: FunctionComponent<{}> = () => {
   ))
 
   const getPollutants = async (token: CancelToken) => {
-    try {
-      const response = await axios.get<Array<PollutantValueResponse>>(
-        POLLUTANTS_API_URL,
-        { cancelToken: token }
-      )
-      const { data } = response
-      const pollutantData = data.map(parsePollutant)
-      setPollutants(pollutantData)
-    } catch (e) {
-      console.error(e)
-    }
+    //gets the collection ids from date
+    const requestOne = axios.get<Array<PollutantValueResponse>>(
+      `http://api.lvh.me/collection?start_date=${date.format('YYYY-MM-DD')}`,
+      { cancelToken: token }
+    )
+
+    requestOne.then(data => {
+      if (data.data.length > 0){
+        //gets the pollutant values from that collection
+        const requestTwo = axios.get<Array<PollutantValueResponse>>(
+          `http://api.lvh.me/collection/${data.data[0].id}/data`,
+          { cancelToken: token }
+        )
+
+        requestTwo.then(secondData => {
+          const secondDataRetreived: any = secondData
+          const pollutantData = secondDataRetreived.data.pollutant_values.map(parsePollutant)
+          setPollutants(pollutantData)
+     }).catch(error => console.log(error))}
+     else {
+       setPollutants([])
+     }
+    }).catch(error => console.log(error))
   }
 
   // Request pollutant values on mount
@@ -93,7 +105,7 @@ const Map: FunctionComponent<{}> = () => {
     const source = axios.CancelToken.source()
     getPollutants(source.token)
     return () => source.cancel()
-  }, [])
+  })
 
   return (
     <StyledContainer>
