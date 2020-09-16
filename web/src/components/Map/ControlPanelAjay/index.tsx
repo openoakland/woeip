@@ -29,11 +29,48 @@ const DateContainer = styled.div`
   display: flex;
 `
 
-const ControlPanel = ({ date, setDate}: ControlPanelProps) => {
+const ControlPanel = ({ date, setDate, collections, currentCollection}: ControlPanelProps) => {
   const onChange = (event, data) => {
     const parsed = moment(data.value)
     setDate(parsed)
   }
+
+  const information = () => {
+    if (collections.length > 0){
+      return (
+        <div>
+          <LabelContainer>
+            <BoldedLabel>Session:</BoldedLabel>
+            <label>{collections.indexOf(currentCollection) + 1}</label>
+          </LabelContainer>
+          <LabelContainer>
+            <BoldedLabel>Start Time:</BoldedLabel>
+            <label>Insert Start Time</label>
+          </LabelContainer>
+          <LabelContainer>
+            <BoldedLabel>Collected By:</BoldedLabel>
+            <label>Insert Collection User</label>
+          </LabelContainer>
+          <LabelContainer>
+            <BoldedLabel>Device:</BoldedLabel>
+            <label>Insert Device</label>
+          </LabelContainer>
+          {collectionList}
+        </div>
+      )} else {
+        return (
+          <div>
+            <label>There is no uploaded dada available for this day</label>
+          </div>
+        )
+      }
+  }
+
+  const collectionList = collections.map(key => {
+    if(key !== currentCollection) return key
+  }).map(filteredKey => {
+    return <p>{filteredKey}</p>
+  })
 
   return (
     <div>
@@ -47,22 +84,7 @@ const ControlPanel = ({ date, setDate}: ControlPanelProps) => {
           clearable={false}
         />
       </DateContainer>
-      <LabelContainer>
-        <BoldedLabel>Session:</BoldedLabel>
-        <label>Insert Session</label>
-      </LabelContainer>
-      <LabelContainer>
-        <BoldedLabel>Start Time:</BoldedLabel>
-        <label>Insert Start Time</label>
-      </LabelContainer>
-      <LabelContainer>
-        <BoldedLabel>Collected By:</BoldedLabel>
-        <label>Insert Collection User</label>
-      </LabelContainer>
-      <LabelContainer>
-        <BoldedLabel>Device:</BoldedLabel>
-        <label>Insert Device</label>
-      </LabelContainer>
+      {information()}
     </div>
   )
 }

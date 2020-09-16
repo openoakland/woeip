@@ -67,6 +67,8 @@ const parsePollutant = (item: PollutantValueResponse): Pollutant => {
 
 const Map: FunctionComponent<{}> = () => {
   const [date, setDate] = useState<moment.Moment>(moment())
+  const [currentCollection, setCurrentCollection] = useState<number>()
+  const [collections, setCollections] = useState<Array<any>>([])
   const [pollutants, setPollutants] = useState<Array<Pollutant>>([])
   const [viewport, setViewport] = useState<Viewport>(initialViewport)
 
@@ -74,38 +76,48 @@ const Map: FunctionComponent<{}> = () => {
     <Pin key={index} coordinates={{ longitude, latitude }} />
   ))
 
-  const getPollutants = async (token: CancelToken) => {
-    //gets the collection ids from date
-    const requestOne = axios.get<Array<PollutantValueResponse>>(
+  const getCollections = async (token: CancelToken) => {
+    const collectionDateRequest = axios.get<Array<PollutantValueResponse>>(
       `http://api.lvh.me/collection?start_date=${date.format('YYYY-MM-DD')}`,
       { cancelToken: token }
     )
 
-    requestOne.then(data => {
+    collectionDateRequest.then(data => {
       if (data.data.length > 0){
-        //gets the pollutant values from that collection
-        const requestTwo = axios.get<Array<PollutantValueResponse>>(
-          `http://api.lvh.me/collection/${data.data[0].id}/data`,
-          { cancelToken: token }
-        )
-
-        requestTwo.then(secondData => {
-          const secondDataRetreived: any = secondData
-          const pollutantData = secondDataRetreived.data.pollutant_values.map(parsePollutant)
-          setPollutants(pollutantData)
-     }).catch(error => console.log(error))}
-     else {
+        debugger
+        const collectionData = data.data.map(collection => collection.id)
+        setCollections(collectionData)
+        getPollutants(token, collectionData[0])
+      } else {
        setPollutants([])
      }
     }).catch(error => console.log(error))
   }
 
+  const getPollutants = async (token: CancelToken, key: number) => {
+        setCurrentCollection(key)
+        const pollutantRequest = axios.get<Array<PollutantValueResponse>>(
+          `http://api.lvh.me/collection/${key}/data`,
+          { cancelToken: token }
+        )
+
+        pollutantRequest
+          .then(secondData => {
+            const secondDataRetreived: any = secondData
+            const pollutantData = secondDataRetreived.data.pollutant_values.map(
+              parsePollutant
+            )
+            setPollutants(pollutantData)
+          })
+          .catch(error => console.log(error))
+  }
+
   // Request pollutant values on mount
   useEffect(() => {
     const source = axios.CancelToken.source()
-    getPollutants(source.token)
+    getCollections(source.token)
     return () => source.cancel()
-  })
+  }, [date])
 
   return (
     <StyledContainer>
@@ -126,7 +138,7 @@ const Map: FunctionComponent<{}> = () => {
             </ReactMapGL>
           </MapContainer>
           <ControlPanelContainer>
-            <ControlPanel date={date} setDate={setDate}/>
+            <ControlPanel date={date} setDate={setDate} collections={collections} currentCollection={currentCollection}/>
           </ControlPanelContainer>
         </LowerHalfContainer>
       </ContentContainer>

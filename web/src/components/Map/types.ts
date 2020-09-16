@@ -16,6 +16,7 @@ export interface Viewport extends Coordinates {
 }
 
 export interface PollutantValueResponse {
+  id: number
   pollutant_values: any
   time_geo: string
   pollutant: string
