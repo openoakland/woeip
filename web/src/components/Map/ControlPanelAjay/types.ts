@@ -1,3 +1,4 @@
+import { CancelToken } from 'axios'
 import moment from 'moment-timezone'
 
 export type ControlPanelProps = {
@@ -5,4 +6,5 @@ export type ControlPanelProps = {
     setDate: (date: moment.Moment) => void
     collections: Array<number>
     currentCollection: any
+    getPollutants: any
 }
