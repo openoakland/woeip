@@ -1,12 +1,10 @@
 import React, { useState, useEffect, MouseEvent } from 'react'
 import axios, { CancelToken } from 'axios'
-import styled from 'theme'
+import * as Elements from 'components/Map/ControlPanel/elements'
 import { ControlPanelProps } from 'components/Map/ControlPanel/types'
 import SemanticDatepicker from 'react-semantic-ui-datepickers'
 import 'react-semantic-ui-datepickers/dist/react-semantic-ui-datepickers.css'
 import moment from 'moment-timezone'
-import { Console } from 'console'
-import * as Elements from 'components/Map/ControlPanel/elements'
 
 const ControlPanel = ({
   date,
@@ -31,13 +29,20 @@ const ControlPanel = ({
     getPollutants(source.token, collections[collectionIdx])
   }
 
+  const sessionTime = (starts_at: any) => {
+    const parsed = moment(starts_at)
+    return parsed.format('h:mm A')
+  }
+
   const collectionList = () => {
     return collections
       .map((collection: any, idx) => {
-        if (collection.id !== currentCollection.id) return idx + 1
+        if (collection.id !== currentCollection.id) {
+          return idx + 1
+        } else return undefined;
       })
       .map(filteredKey => {
-        if (filteredKey)
+        if (filteredKey){
           return (
             <Elements.SessionLabel
               key={filteredKey}
@@ -47,13 +52,8 @@ const ControlPanel = ({
             >
               Session {filteredKey}
             </Elements.SessionLabel>
-          )
+        )} else return undefined
       })
-  }
-
-  const sessionTime = (starts_at: any) => {
-    const parsed = moment(starts_at)
-    return parsed.format('h:mm A')
   }
 
   const sessionInformation = () => {
