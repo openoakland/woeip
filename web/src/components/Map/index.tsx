@@ -4,7 +4,7 @@ import ReactMapGL from 'react-map-gl'
 import moment from 'moment-timezone'
 import styled from 'theme'
 import { Container } from 'semantic-ui-react'
-import ControlPanel from 'components/Map/ControlPanelAjay'
+import ControlPanel from 'components/Map/ControlPanel'
 // import MapFilters from 'components/Map/ControlPanel'
 import Pin from 'components/Map/Pin'
 import {
@@ -90,6 +90,8 @@ const Map: FunctionComponent<{}> = () => {
           getPollutants(token, collectionData[0])
         } else {
           setPollutants([])
+          setCollections([])
+          setCurrentCollection(null)
         }
       })
       .catch(error => console.log(error))
