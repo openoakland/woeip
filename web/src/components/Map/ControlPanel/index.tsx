@@ -6,66 +6,7 @@ import SemanticDatepicker from 'react-semantic-ui-datepickers'
 import 'react-semantic-ui-datepickers/dist/react-semantic-ui-datepickers.css'
 import moment from 'moment-timezone'
 import { Console } from 'console'
-
-const Content = styled.div`
-  height: 100%;
-  display: flex;
-  flex-flow: column;
-`
-
-const Header = styled.h3`
-  font-size: 1.5rem;
-`
-
-const LabelContainer = styled.div`
-  overflow: hidden;
-`
-
-const SessionLabelContainer = styled.div`
-  overflow: hidden;
-  margin-top: 40px;
-`
-
-const Label = styled.p`
-  font-size: 1rem;
-  float: right;
-`
-
-const BoldedLabel = styled.p`
-  font-size: 1rem;
-  font-weight: bold;
-  float: left;
-  margin-bottom: 0.7rem;
-`
-
-const BoldedSessionLabel = styled.p`
-  font-size: 1rem;
-  font-weight: bold;
-  margin-bottom: 0.7rem;
-`
-
-const DateContainer = styled.div`
-  padding-top: 5px;
-  display: flex;
-  .input {
-    width: 140px;
-  }
-`
-
-const NoDataContainer = styled.div`
-  display: flex;
-  height: 100%;
-  margin-top: 30px;
-`
-
-const NoDataText = styled.label`
-  font-weight: bold;
-`
-
-const SessionLabel = styled.p`
-  text-decoration: underline;
-  cursor: pointer;
-`
+import * as Elements from 'components/Map/ControlPanel/elements'
 
 const ControlPanel = ({
   date,
@@ -75,7 +16,6 @@ const ControlPanel = ({
   currentCollection,
   getPollutants
 }: ControlPanelProps) => {
-
   const changeDate = (event: any, data: any) => {
     setPollutants([])
     const parsed = moment(data.value)
@@ -99,14 +39,14 @@ const ControlPanel = ({
       .map(filteredKey => {
         if (filteredKey)
           return (
-            <SessionLabel
+            <Elements.SessionLabel
               key={filteredKey}
               onClick={e => {
                 changeSession(e, filteredKey - 1)
               }}
             >
               Session {filteredKey}
-            </SessionLabel>
+            </Elements.SessionLabel>
           )
       })
   }
@@ -120,51 +60,59 @@ const ControlPanel = ({
     if (collections.length > 0 && currentCollection) {
       return (
         <div>
-          <LabelContainer>
-            <BoldedLabel>Session:</BoldedLabel>
-            <label>{collections.indexOf(currentCollection) + 1}</label>
-          </LabelContainer>
-          <LabelContainer>
-            <BoldedLabel>Start Time:</BoldedLabel>
-            <label>{sessionTime(currentCollection.starts_at)}</label>
-          </LabelContainer>
-          <LabelContainer>
-            <BoldedLabel>Collected By:</BoldedLabel>
-            <label>Insert Collection User</label>
-          </LabelContainer>
-          <LabelContainer>
-            <BoldedLabel>Device:</BoldedLabel>
-            <label>Insert Device</label>
-          </LabelContainer>
-          <SessionLabelContainer>
-            <BoldedSessionLabel>Other sessions from this day:</BoldedSessionLabel>
+          <Elements.LabelContainer>
+            <Elements.BoldedLabel>Session:</Elements.BoldedLabel>
+            <Elements.TextLabel>
+              {collections.indexOf(currentCollection) + 1}
+            </Elements.TextLabel>
+          </Elements.LabelContainer>
+          <Elements.LabelContainer>
+            <Elements.BoldedLabel>Start Time:</Elements.BoldedLabel>
+            <Elements.TextLabel>
+              {sessionTime(currentCollection.starts_at)}
+            </Elements.TextLabel>
+          </Elements.LabelContainer>
+          <Elements.LabelContainer>
+            <Elements.BoldedLabel>Collected By:</Elements.BoldedLabel>
+            <Elements.TextLabel>Insert Collection User</Elements.TextLabel>
+          </Elements.LabelContainer>
+          <Elements.LabelContainer>
+            <Elements.BoldedLabel>Device:</Elements.BoldedLabel>
+            <Elements.TextLabel>Insert Device</Elements.TextLabel>
+          </Elements.LabelContainer>
+          <Elements.SessionLabelContainer>
+            <Elements.BoldedSessionLabel>
+              Other sessions from this day:
+            </Elements.BoldedSessionLabel>
             {collectionList()}
-          </SessionLabelContainer>
+          </Elements.SessionLabelContainer>
         </div>
       )
     } else {
       return (
-        <NoDataContainer>
-          <NoDataText>No uploaded data available for this day</NoDataText>
-        </NoDataContainer>
+        <Elements.NoDataContainer>
+          <Elements.NoDataText>
+            No uploaded data available for this day
+          </Elements.NoDataText>
+        </Elements.NoDataContainer>
       )
     }
   }
 
   return (
-    <Content>
-      <Header>{date.format('LL')}</Header>
-      <DateContainer>
-        <Label>View a different day</Label>
+    <Elements.Content>
+      <Elements.Header>{date.format('LL')}</Elements.Header>
+      <Elements.DateContainer>
+        <Elements.Label>View a different day</Elements.Label>
         <SemanticDatepicker
           onChange={changeDate}
           format='MM/DD/YYYY'
           value={date.toDate()}
           clearable={false}
         />
-      </DateContainer>
+      </Elements.DateContainer>
       {sessionInformation()}
-    </Content>
+    </Elements.Content>
   )
 }
 
