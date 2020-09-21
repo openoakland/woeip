@@ -37,6 +37,7 @@ const MapContainer = styled.div`
 `
 
 const ControlPanelContainer = styled.div`
+  height: 548px;
   width: 35%;
   padding-left: 54px;
 `
@@ -144,6 +145,7 @@ const Map: FunctionComponent<{}> = () => {
             <ControlPanel
               date={date}
               setDate={setDate}
+              setPollutants={setPollutants}
               collections={collections}
               currentCollection={currentCollection}
               getPollutants={getPollutants}
