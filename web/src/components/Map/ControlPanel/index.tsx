@@ -29,6 +29,14 @@ const ControlPanel = ({
     getPollutants(source.token, collections[collectionIdx])
   }
 
+  const openData = (
+    event: React.MouseEvent<HTMLSpanElement>) => {
+      event.preventDefault();
+      window.open(`${currentCollection.collection_files[0]}`)
+      window.open(`${currentCollection.collection_files[1]}`)
+    }
+
+
   const sessionTime = (starts_at: any) => {
     const parsed = moment(starts_at)
     return parsed.format('h:mm A')
@@ -59,7 +67,7 @@ const ControlPanel = ({
   const sessionInformation = () => {
     if (collections.length > 0 && currentCollection) {
       return (
-        <div>
+        <Elements.SessionDataContainer>
           <Elements.LabelContainer>
             <Elements.BoldedLabel>Session:</Elements.BoldedLabel>
             <Elements.TextLabel>
@@ -86,7 +94,14 @@ const ControlPanel = ({
             </Elements.BoldedSessionLabel>
             {collectionList()}
           </Elements.SessionLabelContainer>
-        </div>
+          <Elements.ViewDataLabel
+            onClick={e => {
+              openData(e)
+            }}
+          >
+            Download Raw Data
+          </Elements.ViewDataLabel>
+        </Elements.SessionDataContainer>
       )
     } else {
       return (

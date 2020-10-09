@@ -59,7 +59,19 @@ export const NoDataText = styled.label`
   font-weight: bold;
 `
 
+export const SessionDataContainer = styled.div`
+  position: relative;
+  height: 100%;
+`
+
 export const SessionLabel = styled.p`
   text-decoration: underline;
   cursor: pointer;
+`
+
+export const ViewDataLabel = styled.p`
+  text-decoration: underline;
+  cursor: pointer;
+  position: absolute;
+  bottom: 0;
 `
