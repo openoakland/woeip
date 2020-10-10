@@ -14,8 +14,7 @@ import {
 } from 'components/Map/types'
 import {
   MAPBOX_ACCESS_TOKEN,
-  MAP_STYLE,
-  POLLUTANTS_API_URL
+  MAP_STYLE
 } from '../../constants'
 
 const StyledContainer = styled(Container)`
@@ -138,7 +137,6 @@ const Map: FunctionComponent<{}> = () => {
               mapboxApiAccessToken={MAPBOX_ACCESS_TOKEN}
             >
               {markers.length ? markers : null}
-              {/* <MapFilters /> */}
             </ReactMapGL>
           </MapContainer>
           <ControlPanelContainer>

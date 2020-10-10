@@ -1,4 +1,3 @@
-export const POLLUTANTS_API_URL = 'http://api.lvh.me/collection/1/data'
 export const MAP_STYLE = 'mapbox://styles/mapbox/streets-v11'
 export const MAPBOX_ACCESS_TOKEN =
   process.env.MAPBOX_ACCESS_TOKEN ||
