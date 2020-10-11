@@ -22,3 +22,10 @@ export interface PollutantValueResponse {
   pollutant: string
   value: number
 }
+
+export interface Collection {
+  id: number
+  start_at: string
+  ends_at: string
+  collection_files: Array<string>
+}

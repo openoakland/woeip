@@ -88,7 +88,7 @@ const Map: FunctionComponent<{}> = () => {
         if (data.data.length > 0) {
           const collectionData = data.data.map(collection => collection)
           setCollections(collectionData)
-          getPollutants(token, collectionData[0])
+          getPollutants(token, collectionData[0], collectionData[0].id)
         } else {
           setPollutants([])
           setCollections([])
@@ -98,10 +98,14 @@ const Map: FunctionComponent<{}> = () => {
       .catch(error => console.log(error))
   }
 
-  const getPollutants = async (token: CancelToken, collection: any) => {
+  const getPollutants = async (
+    token: CancelToken,
+    collection: any,
+    collectionId: number
+  ) => {
     setCurrentCollection(collection)
     const pollutantRequest = axios.get<Array<PollutantValueResponse>>(
-      `http://api.lvh.me/collection/${collection.id}/data`,
+      `http://api.lvh.me/collection/${collectionId}/data`,
       { cancelToken: token }
     )
 

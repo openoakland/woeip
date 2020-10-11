@@ -1,6 +1,7 @@
-import React, { useState, useEffect, MouseEvent } from 'react'
-import axios, { CancelToken } from 'axios'
+import React from 'react'
+import axios from 'axios'
 import * as Elements from 'components/Map/ControlPanel/elements'
+import { Collection } from 'components/Map/types'
 import { ControlPanelProps } from 'components/Map/ControlPanel/types'
 import SemanticDatepicker from 'react-semantic-ui-datepickers'
 import 'react-semantic-ui-datepickers/dist/react-semantic-ui-datepickers.css'
@@ -22,11 +23,12 @@ const ControlPanel = ({
 
   const changeSession = (
     event: React.MouseEvent<HTMLSpanElement>,
-    collectionIdx: number
+    collectionIndex: number,
+    collectionId: number
   ) => {
     setPollutants([])
     const source = axios.CancelToken.source()
-    getPollutants(source.token, collections[collectionIdx])
+    getPollutants(source.token, collections[collectionIndex], collectionId)
   }
 
   const sessionTime = (starts_at: string) => {
@@ -34,21 +36,22 @@ const ControlPanel = ({
     return parsed.format('h:mm A')
   }
 
-  const collectionList = () :Array<React.ReactElement | ''> => {
-    return collections
-      .map((collection: any, filterKey: number) => {
-        if (collection.id !== currentCollection.id) {
-          return (
-            <Elements.SessionLabel
-              key={filterKey}
-              onClick={e => {
-                changeSession(e, filterKey)
-              }}
-            >
-              Session {filterKey + 1}
-            </Elements.SessionLabel>
-        )} else return ''
-      })
+  const collectionList = (): Array<React.ReactElement | ''> => {
+    return collections.map((collection: Collection, index: number) => {
+      const collectionId = collection.id
+      if (collectionId !== currentCollection.id) {
+        return (
+          <Elements.SessionLabel
+            key={collectionId}
+            onClick={(e: React.MouseEvent<HTMLSpanElement>) => {
+              changeSession(e, index, collectionId)
+            }}
+          >
+            Session {index + 1}
+          </Elements.SessionLabel>
+        )
+      } else return ''
+    })
   }
 
   const sessionInformation = () => {
@@ -79,7 +82,11 @@ const ControlPanel = ({
             <Elements.BoldedSessionLabel>
               Other sessions from this day:
             </Elements.BoldedSessionLabel>
-            {collections.length > 1 ? collectionList() : <Elements.NoDataText>None</Elements.NoDataText>}
+            {collections.length > 1 ? (
+              collectionList()
+            ) : (
+              <Elements.NoDataText>None</Elements.NoDataText>
+            )}
           </Elements.SessionLabelContainer>
         </div>
       )
