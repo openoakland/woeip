@@ -1,7 +1,7 @@
 import React from 'react'
 import axios from 'axios'
 import * as Elements from 'components/Map/ControlPanel/elements'
-import { Collection } from 'components/Map/types'
+import { Pollutant, Collection } from 'components/Map/types'
 import { ControlPanelProps } from 'components/Map/ControlPanel/types'
 import SemanticDatepicker from 'react-semantic-ui-datepickers'
 import 'react-semantic-ui-datepickers/dist/react-semantic-ui-datepickers.css'
@@ -14,8 +14,8 @@ const ControlPanel = ({
   collections,
   currentCollection,
   getPollutants
-}: ControlPanelProps) => {
-  const changeDate = (event: any, data: any) => {
+}: ControlPanelProps): React.ReactElement => {
+  const changeDate = (event: React.MouseEvent, data: any) => {
     setPollutants([])
     const parsed = moment(data.value)
     setDate(parsed)
@@ -23,12 +23,13 @@ const ControlPanel = ({
 
   const changeSession = (
     event: React.MouseEvent<HTMLSpanElement>,
-    collectionIndex: number,
     collectionId: number
   ) => {
     setPollutants([])
     const source = axios.CancelToken.source()
-    getPollutants(source.token, collections[collectionIndex], collectionId)
+    getPollutants(source.token, collectionId).then((pollutants: Pollutant[]) =>
+      setPollutants(pollutants)
+    )
   }
 
   const sessionTime = (starts_at: string) => {
@@ -38,13 +39,13 @@ const ControlPanel = ({
 
   const collectionList = (): Array<React.ReactElement | ''> => {
     return collections.map((collection: Collection, index: number) => {
-      const collectionId = collection.id
+      const collectionId: number = collection.id
       if (collectionId !== currentCollection.id) {
         return (
           <Elements.SessionLabel
             key={collectionId}
             onClick={(e: React.MouseEvent<HTMLSpanElement>) => {
-              changeSession(e, index, collectionId)
+              changeSession(e, collectionId)
             }}
           >
             Session {index + 1}
