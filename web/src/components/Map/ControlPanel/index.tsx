@@ -13,23 +13,29 @@ const ControlPanel = ({
   setPollutants,
   collections,
   currentCollection,
+  setCurrentCollection,
   getPollutants
 }: ControlPanelProps): React.ReactElement => {
-  const changeDate = (event: React.MouseEvent, data: any) => {
+  const changeDate = (
+    _event: React.MouseEvent,
+    data: { value: moment.MomentInput }
+  ) => {
     setPollutants([])
     const parsed = moment(data.value)
     setDate(parsed)
   }
 
   const changeSession = (
-    event: React.MouseEvent<HTMLSpanElement>,
+    _event: React.MouseEvent<HTMLSpanElement>,
+    collection: Collection,
     collectionId: number
   ) => {
     setPollutants([])
     const source = axios.CancelToken.source()
-    getPollutants(source.token, collectionId).then((pollutants: Pollutant[]) =>
-      setPollutants(pollutants)
-    )
+    setCurrentCollection(collection)
+    getPollutants(source.token, collectionId)
+      .then(pollutants => setPollutants(pollutants as Pollutant[]))
+      .catch((error: Error) => console.log(error))
   }
 
   const sessionTime = (starts_at: string) => {
@@ -45,7 +51,7 @@ const ControlPanel = ({
           <Elements.SessionLabel
             key={collectionId}
             onClick={(e: React.MouseEvent<HTMLSpanElement>) => {
-              changeSession(e, collectionId)
+              changeSession(e, collection, collectionId)
             }}
           >
             Session {index + 1}

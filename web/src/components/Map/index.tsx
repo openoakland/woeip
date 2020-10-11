@@ -38,7 +38,7 @@ const Map: FunctionComponent<{}> = () => {
           setCurrentCollection(collections[0])
           getPollutants(token, firstCollection.id)
             .then(pollutants => setPollutants(pollutants as Pollutant[]))
-            .catch(error => console.log(error))
+            .catch((error: Error) => console.log(error))
         } else {
           setPollutants([])
           setCollections([])
@@ -79,7 +79,8 @@ const Map: FunctionComponent<{}> = () => {
               setDate={setDate}
               setPollutants={setPollutants}
               collections={collections}
-              currentCollection={currentCollection}
+              currentCollection={currentCollection as Collection}
+              setCurrentCollection={setCurrentCollection}
               getPollutants={getPollutants}
             />
           </Elements.ControlPanelContainer>
