@@ -29,35 +29,30 @@ const ControlPanel = ({
     getPollutants(source.token, collections[collectionIdx])
   }
 
-  const sessionTime = (starts_at: any) => {
+  const sessionTime = (starts_at: string) => {
     const parsed = moment(starts_at)
     return parsed.format('h:mm A')
   }
 
-  const collectionList = () => {
+  const collectionList = () :Array<React.ReactElement | ''> => {
     return collections
-      .map((collection: any, idx) => {
+      .map((collection: any, filterKey: number) => {
         if (collection.id !== currentCollection.id) {
-          return idx + 1
-        } else return undefined;
-      })
-      .map(filteredKey => {
-        if (filteredKey){
           return (
             <Elements.SessionLabel
-              key={filteredKey}
+              key={filterKey}
               onClick={e => {
-                changeSession(e, filteredKey - 1)
+                changeSession(e, filterKey)
               }}
             >
-              Session {filteredKey}
+              Session {filterKey + 1}
             </Elements.SessionLabel>
-        )} else return undefined
+        )} else return ''
       })
   }
 
   const sessionInformation = () => {
-    if (collections.length > 0 && currentCollection) {
+    if (currentCollection) {
       return (
         <div>
           <Elements.LabelContainer>
@@ -84,7 +79,7 @@ const ControlPanel = ({
             <Elements.BoldedSessionLabel>
               Other sessions from this day:
             </Elements.BoldedSessionLabel>
-            {collectionList()}
+            {collections.length > 1 ? collectionList() : <Elements.NoDataText>None</Elements.NoDataText>}
           </Elements.SessionLabelContainer>
         </div>
       )
