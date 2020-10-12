@@ -4,6 +4,7 @@ import * as Elements from 'components/Map/ControlPanel/elements'
 import { Pollutant, Collection } from 'components/Map/types'
 import { ControlPanelProps } from 'components/Map/ControlPanel/types'
 import SemanticDatepicker from 'react-semantic-ui-datepickers'
+import { SemanticDatepickerProps} from 'react-semantic-ui-datepickers/dist/types'
 import 'react-semantic-ui-datepickers/dist/react-semantic-ui-datepickers.css'
 import moment from 'moment-timezone'
 
@@ -17,12 +18,12 @@ const ControlPanel = ({
   getPollutants
 }: ControlPanelProps): React.ReactElement => {
   const changeDate = (
-    _event: React.MouseEvent,
-    data: { value: moment.MomentInput }
-  ) => {
-    setPollutants([])
-    const parsed = moment(data.value)
-    setDate(parsed)
+    _event: React.SyntheticEvent | undefined, data: SemanticDatepickerProps  ) => {
+    const dateLocal: Date | null = data.value as Date | null
+    if (dateLocal !== null){
+      setPollutants([])
+      dateLocal && setDate(moment(dateLocal!.toISOString()))      
+    }    
   }
 
   const changeSession = (
@@ -34,7 +35,7 @@ const ControlPanel = ({
     const source = axios.CancelToken.source()
     setCurrentCollection(collection)
     getPollutants(source.token, collectionId)
-      .then((pollutants: Pollutant[]) =>
+      .then((pollutants) =>
         pollutants
           ? setPollutants(pollutants as Pollutant[])
           : setPollutants([])
