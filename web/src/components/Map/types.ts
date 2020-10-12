@@ -15,10 +15,19 @@ export interface Viewport extends Coordinates {
   zoom: number
 }
 
-export interface PollutantValueResponse {
-  id: number
-  pollutant_values: any
+export interface PollutantValue {
+  value: number
   time_geo: string
   pollutant: string
-  value: number
+}
+
+export interface PollutantResponse {
+  pollutant_values: PollutantValue[]
+}
+
+export interface Collection {
+  id: number
+  starts_at: string
+  ends_at: string
+  collection_files: Array<string>
 }

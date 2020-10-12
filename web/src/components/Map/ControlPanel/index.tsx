@@ -1,8 +1,10 @@
-import React, { useState, useEffect, MouseEvent } from 'react'
-import axios, { CancelToken } from 'axios'
+import React from 'react'
+import axios from 'axios'
 import * as Elements from 'components/Map/ControlPanel/elements'
+import { Pollutant, Collection } from 'components/Map/types'
 import { ControlPanelProps } from 'components/Map/ControlPanel/types'
 import SemanticDatepicker from 'react-semantic-ui-datepickers'
+import { SemanticDatepickerProps } from 'react-semantic-ui-datepickers/dist/types'
 import 'react-semantic-ui-datepickers/dist/react-semantic-ui-datepickers.css'
 import moment from 'moment-timezone'
 
@@ -12,52 +14,62 @@ const ControlPanel = ({
   setPollutants,
   collections,
   currentCollection,
+  setCurrentCollection,
   getPollutants
-}: ControlPanelProps) => {
-  const changeDate = (event: any, data: any) => {
-    setPollutants([])
-    const parsed = moment(data.value)
-    setDate(parsed)
+}: ControlPanelProps): React.ReactElement => {
+  const changeDate = (
+    _event: React.SyntheticEvent | undefined,
+    data: SemanticDatepickerProps
+  ) => {
+    const dateLocal: Date | null = data.value as Date | null
+    if (dateLocal !== null) {
+      setPollutants([])
+      setDate(moment(dateLocal.toISOString()))
+    }
   }
 
   const changeSession = (
-    event: React.MouseEvent<HTMLSpanElement>,
-    collectionIdx: number
+    _event: React.MouseEvent<HTMLSpanElement>,
+    collection: Collection,
+    collectionId: number
   ) => {
     setPollutants([])
     const source = axios.CancelToken.source()
-    getPollutants(source.token, collections[collectionIdx])
+    setCurrentCollection(collection)
+    getPollutants(source.token, collectionId)
+      .then(pollutants =>
+        pollutants
+          ? setPollutants(pollutants as Pollutant[])
+          : setPollutants([])
+      )
+      .catch((error: Error) => console.log(error))
   }
 
-  const sessionTime = (starts_at: any) => {
+  const sessionTime = (starts_at: string) => {
     const parsed = moment(starts_at)
     return parsed.format('h:mm A')
   }
 
-  const collectionList = () => {
-    return collections
-      .map((collection: any, idx) => {
-        if (collection.id !== currentCollection.id) {
-          return idx + 1
-        } else return undefined;
-      })
-      .map(filteredKey => {
-        if (filteredKey){
-          return (
-            <Elements.SessionLabel
-              key={filteredKey}
-              onClick={e => {
-                changeSession(e, filteredKey - 1)
-              }}
-            >
-              Session {filteredKey}
-            </Elements.SessionLabel>
-        )} else return undefined
-      })
+  const collectionList = (): Array<React.ReactElement | ''> => {
+    return collections.map((collection: Collection, index: number) => {
+      const collectionId: number = collection.id
+      if (collectionId !== currentCollection.id) {
+        return (
+          <Elements.SessionLabel
+            key={collectionId}
+            onClick={(e: React.MouseEvent<HTMLSpanElement>) => {
+              changeSession(e, collection, collectionId)
+            }}
+          >
+            Session {index + 1}
+          </Elements.SessionLabel>
+        )
+      } else return ''
+    })
   }
 
   const sessionInformation = () => {
-    if (collections.length > 0 && currentCollection) {
+    if (currentCollection) {
       return (
         <div>
           <Elements.LabelContainer>
@@ -84,7 +96,11 @@ const ControlPanel = ({
             <Elements.BoldedSessionLabel>
               Other sessions from this day:
             </Elements.BoldedSessionLabel>
-            {collectionList()}
+            {collections.length > 1 ? (
+              collectionList()
+            ) : (
+              <Elements.NoDataText>None</Elements.NoDataText>
+            )}
           </Elements.SessionLabelContainer>
         </div>
       )
