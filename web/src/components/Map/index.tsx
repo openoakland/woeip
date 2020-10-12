@@ -37,7 +37,11 @@ const Map: FunctionComponent<{}> = () => {
           const firstCollection = collections[0]
           setCurrentCollection(collections[0])
           getPollutants(token, firstCollection.id)
-            .then(pollutants => setPollutants(pollutants as Pollutant[]))
+            .then(pollutants =>
+              pollutants
+                ? setPollutants(pollutants as Pollutant[])
+                : setPollutants([])
+            )
             .catch((error: Error) => console.log(error))
         } else {
           setPollutants([])
@@ -52,7 +56,7 @@ const Map: FunctionComponent<{}> = () => {
   useEffect(() => {
     const source = axios.CancelToken.source()
     getCollections(source.token)
-    return () => source.cancel()
+    return () => source.cancel('collection call cancelled')
   }, [date])
 
   return (

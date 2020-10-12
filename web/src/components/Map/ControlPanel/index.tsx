@@ -34,7 +34,11 @@ const ControlPanel = ({
     const source = axios.CancelToken.source()
     setCurrentCollection(collection)
     getPollutants(source.token, collectionId)
-      .then(pollutants => setPollutants(pollutants as Pollutant[]))
+      .then((pollutants: Pollutant[]) =>
+        pollutants
+          ? setPollutants(pollutants as Pollutant[])
+          : setPollutants([])
+      )
       .catch((error: Error) => console.log(error))
   }
 
