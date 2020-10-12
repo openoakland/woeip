@@ -1,12 +1,14 @@
-import axios, { CancelToken } from 'axios'
+import axios, { AxiosResponse, CancelToken } from 'axios'
 import React, { FunctionComponent, useEffect, useState } from 'react'
 import ReactMapGL from 'react-map-gl'
 import moment from 'moment-timezone'
-import styled from 'theme'
-import { Container } from 'semantic-ui-react'
+import { Collection, Coordinates } from 'components/Map/types'
+import { initialViewport, getPollutants } from 'components/Map/utils'
+import * as Elements from 'components/Map/elements'
 import ControlPanel from 'components/Map/ControlPanel'
 // import MapFilters from 'components/Map/ControlPanel'
 import Pin from 'components/Map/Pin'
+<<<<<<< HEAD
 import {
   Pollutant,
   PollutantValueResponse,
@@ -64,53 +66,48 @@ const parsePollutant = (item: PollutantValueResponse): Pollutant => {
     value: item.value
   }
 }
+=======
+import { Pollutant, Viewport } from 'components/Map/types'
+import { MAPBOX_ACCESS_TOKEN, MAP_STYLE, API_URL } from '../../constants'
+>>>>>>> master
 
 const Map: FunctionComponent<{}> = () => {
   const [date, setDate] = useState<moment.Moment>(moment())
-  const [currentCollection, setCurrentCollection] = useState<any>()
-  const [collections, setCollections] = useState<Array<any>>([])
+  const [currentCollection, setCurrentCollection] = useState<Collection>()
+  const [collections, setCollections] = useState<Array<Collection>>([])
   const [pollutants, setPollutants] = useState<Array<Pollutant>>([])
   const [viewport, setViewport] = useState<Viewport>(initialViewport)
 
-  const markers = pollutants.map(({ longitude, latitude }, index) => (
-    <Pin key={index} coordinates={{ longitude, latitude }} />
+  const markers = pollutants.map((coordinates: Coordinates, index: number) => (
+    <Pin key={index} coordinates={coordinates} />
   ))
 
   const getCollections = async (token: CancelToken) => {
-    const collectionDateRequest = axios.get<Array<PollutantValueResponse>>(
-      `http://api.lvh.me/collection?start_date=${date.format('YYYY-MM-DD')}`,
-      { cancelToken: token }
-    )
-
-    collectionDateRequest
-      .then(data => {
-        if (data.data.length > 0) {
-          const collectionData = data.data.map(collection => collection)
-          setCollections(collectionData)
-          getPollutants(token, collectionData[0])
+    axios
+      .get<Array<Collection>>(
+        `${API_URL}/collection?start_date=${date.format('YYYY-MM-DD')}`,
+        { cancelToken: token }
+      )
+      .then((response: AxiosResponse<Array<Collection>>) => {
+        if (response.data.length > 0) {
+          const collections: Collection[] = response.data.map(
+            (collection: Collection) => collection
+          )
+          setCollections(collections)
+          const firstCollection = collections[0]
+          setCurrentCollection(collections[0])
+          getPollutants(token, firstCollection.id)
+            .then(pollutants =>
+              pollutants
+                ? setPollutants(pollutants as Pollutant[])
+                : setPollutants([])
+            )
+            .catch((error: Error) => console.log(error))
         } else {
           setPollutants([])
           setCollections([])
-          setCurrentCollection(null)
+          setCurrentCollection(undefined)
         }
-      })
-      .catch(error => console.log(error))
-  }
-
-  const getPollutants = async (token: CancelToken, collection: any) => {
-    setCurrentCollection(collection)
-    const pollutantRequest = axios.get<Array<PollutantValueResponse>>(
-      `http://api.lvh.me/collection/${collection.id}/data`,
-      { cancelToken: token }
-    )
-
-    pollutantRequest
-      .then(secondData => {
-        const secondDataRetreived: any = secondData
-        const pollutantData = secondDataRetreived.data.pollutant_values.map(
-          parsePollutant
-        )
-        setPollutants(pollutantData)
       })
       .catch(error => console.log(error))
   }
@@ -119,15 +116,15 @@ const Map: FunctionComponent<{}> = () => {
   useEffect(() => {
     const source = axios.CancelToken.source()
     getCollections(source.token)
-    return () => source.cancel()
+    return () => source.cancel('collection call cancelled')
   }, [date])
 
   return (
-    <StyledContainer>
-      <ContentContainer>
-        <FormMessage>View Maps</FormMessage>
-        <LowerHalfContainer>
-          <MapContainer>
+    <Elements.StyledContainer>
+      <Elements.ContentContainer>
+        <Elements.FormMessage>View Maps</Elements.FormMessage>
+        <Elements.LowerHalfContainer>
+          <Elements.MapContainer>
             <ReactMapGL
               {...viewport}
               width='100%'
@@ -138,20 +135,21 @@ const Map: FunctionComponent<{}> = () => {
             >
               {markers.length ? markers : null}
             </ReactMapGL>
-          </MapContainer>
-          <ControlPanelContainer>
+          </Elements.MapContainer>
+          <Elements.ControlPanelContainer>
             <ControlPanel
               date={date}
               setDate={setDate}
               setPollutants={setPollutants}
               collections={collections}
-              currentCollection={currentCollection}
+              currentCollection={currentCollection as Collection}
+              setCurrentCollection={setCurrentCollection}
               getPollutants={getPollutants}
             />
-          </ControlPanelContainer>
-        </LowerHalfContainer>
-      </ContentContainer>
-    </StyledContainer>
+          </Elements.ControlPanelContainer>
+        </Elements.LowerHalfContainer>
+      </Elements.ContentContainer>
+    </Elements.StyledContainer>
   )
 }
 
