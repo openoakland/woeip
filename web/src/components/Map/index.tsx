@@ -8,68 +8,8 @@ import * as Elements from 'components/Map/elements'
 import ControlPanel from 'components/Map/ControlPanel'
 // import MapFilters from 'components/Map/ControlPanel'
 import Pin from 'components/Map/Pin'
-<<<<<<< HEAD
-import {
-  Pollutant,
-  PollutantValueResponse,
-  Viewport
-} from 'components/Map/types'
-import {
-  MAPBOX_ACCESS_TOKEN,
-  MAP_STYLE
-} from '../../constants'
-
-const StyledContainer = styled(Container)`
-  margin-top: 30px;
-`
-
-const ContentContainer = styled.div`
-  margin: 0px 130px 92px 130px;
-`
-
-const LowerHalfContainer = styled.div`
-  margin-top: 22px;
-  display: flex;
-`
-
-const MapContainer = styled.div`
-  height: 548px;
-  width: 65%;
-`
-
-const ControlPanelContainer = styled.div`
-  height: 548px;
-  width: 35%;
-  padding-left: 54px;
-`
-
-const FormMessage = styled.h3`
-  font-size: 1.5rem;
-`
-
-const initialViewport: Viewport = {
-  zoom: 12,
-  latitude: 37.812036,
-  longitude: -122.286675,
-  bearing: 0,
-  pitch: 0
-}
-
-const parsePollutant = (item: PollutantValueResponse): Pollutant => {
-  const timeGeoSplit = item.time_geo.split('(')
-  const coordsSplit = timeGeoSplit[1].split(', ')
-  return {
-    timestamp: timeGeoSplit[0].trim(),
-    longitude: Number(coordsSplit[0].trim()),
-    latitude: Number(coordsSplit[1].replace(')', '').trim()),
-    name: item.pollutant,
-    value: item.value
-  }
-}
-=======
 import { Pollutant, Viewport } from 'components/Map/types'
 import { MAPBOX_ACCESS_TOKEN, MAP_STYLE, API_URL } from '../../constants'
->>>>>>> master
 
 const Map: FunctionComponent<{}> = () => {
   const [date, setDate] = useState<moment.Moment>(moment())
