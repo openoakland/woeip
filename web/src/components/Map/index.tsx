@@ -36,12 +36,16 @@ const Map: FunctionComponent<{}> = () => {
           setCollections(collections)
           const firstCollection = collections[0]
           setCurrentCollection(collections[0])
+          console.log('hi')
           getPollutants(token, firstCollection.id)
-            .then(pollutants =>
-              pollutants
-                ? setPollutants(pollutants as Pollutant[])
-                : setPollutants([])
-            )
+            .then(pollutants => {
+              if (pollutants){
+                setPollutants(pollutants as Pollutant[])
+              } else {
+                setPollutants([])
+              }
+              console.log('hey')
+            })
             .catch((error: Error) => console.log(error))
         } else {
           setPollutants([])

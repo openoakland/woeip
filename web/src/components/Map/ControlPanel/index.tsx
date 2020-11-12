@@ -36,21 +36,24 @@ const ControlPanel = ({
     setPollutants([])
     const source = axios.CancelToken.source()
     setCurrentCollection(collection)
+    console.log('hi')
     getPollutants(source.token, collectionId)
-      .then(pollutants =>
-        pollutants
-          ? setPollutants(pollutants as Pollutant[])
-          : setPollutants([])
-      )
+      .then(pollutants => {
+        if (pollutants) {
+          setPollutants(pollutants as Pollutant[])
+        } else {
+          setPollutants([])
+        }
+        console.log('hey')
+      })
       .catch((error: Error) => console.log(error))
   }
 
-  const openData = (
-    event: React.MouseEvent<HTMLSpanElement>) => {
-      event.preventDefault();
-      window.open(`${currentCollection.collection_files[0]}`)
-      window.open(`${currentCollection.collection_files[1]}`)
-    }
+  const openData = (event: React.MouseEvent<HTMLSpanElement>) => {
+    event.preventDefault()
+    window.open(`${currentCollection.collection_files[0]}`)
+    window.open(`${currentCollection.collection_files[1]}`)
+  }
 
   const sessionTime = (starts_at: string) => {
     const parsed = moment(starts_at)
