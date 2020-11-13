@@ -17,6 +17,7 @@ const Map: FunctionComponent<{}> = () => {
   const [collections, setCollections] = useState<Array<Collection>>([])
   const [pollutants, setPollutants] = useState<Array<Pollutant>>([])
   const [viewport, setViewport] = useState<Viewport>(initialViewport)
+  const [loading, setLoading] = useState<Boolean>(false)
 
   const markers = pollutants.map((coordinates: Coordinates, index: number) => (
     <Pin key={index} coordinates={coordinates} />
@@ -36,7 +37,9 @@ const Map: FunctionComponent<{}> = () => {
           setCollections(collections)
           const firstCollection = collections[0]
           setCurrentCollection(collections[0])
-          console.log('hi')
+          setLoading(true)
+          var map = document.querySelectorAll<HTMLElement>('.overlays')[0]
+          map.style.background = 'rgba(0, 0, 0, 0.7)'
           getPollutants(token, firstCollection.id)
             .then(pollutants => {
               if (pollutants){
@@ -44,7 +47,8 @@ const Map: FunctionComponent<{}> = () => {
               } else {
                 setPollutants([])
               }
-              console.log('hey')
+              setLoading(false)
+              map.style.background = ''
             })
             .catch((error: Error) => console.log(error))
         } else {
@@ -74,6 +78,7 @@ const Map: FunctionComponent<{}> = () => {
               width='100%'
               height='100%'
               mapStyle={MAP_STYLE}
+              className="sup"
               onViewportChange={setViewport}
               mapboxApiAccessToken={MAPBOX_ACCESS_TOKEN}
             >
