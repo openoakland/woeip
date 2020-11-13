@@ -51,6 +51,7 @@ const ControlPanel = ({
   }
 
   const openData = (event: React.MouseEvent<HTMLSpanElement>) => {
+    debugger
     event.preventDefault()
     window.open(`${currentCollection.collection_files[0]}`)
     window.open(`${currentCollection.collection_files[1]}`)

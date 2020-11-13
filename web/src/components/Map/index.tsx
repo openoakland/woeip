@@ -1,5 +1,6 @@
 import axios, { AxiosResponse, CancelToken } from 'axios'
 import React, { FunctionComponent, useEffect, useState } from 'react'
+import { useLocation, useHistory } from 'react-router-dom'
 import ReactMapGL from 'react-map-gl'
 import moment from 'moment-timezone'
 import { Dimmer, Loader, Segment } from 'semantic-ui-react'
@@ -12,13 +13,15 @@ import Pin from 'components/Map/Pin'
 import { Pollutant, Viewport } from 'components/Map/types'
 import { MAPBOX_ACCESS_TOKEN, MAP_STYLE, API_URL } from '../../constants'
 
-const Map: FunctionComponent<{}> = () => {
+const Map: FunctionComponent<{}> = props => {
   const [date, setDate] = useState<moment.Moment>(moment())
   const [currentCollection, setCurrentCollection] = useState<Collection>()
   const [collections, setCollections] = useState<Array<Collection>>([])
   const [pollutants, setPollutants] = useState<Array<Pollutant>>([])
   const [viewport, setViewport] = useState<Viewport>(initialViewport)
   const [loading, setLoading] = useState<boolean>(false)
+  const location = useLocation()
+  const history = useHistory()
 
   const markers = pollutants.map((coordinates: Coordinates, index: number) => (
     <Pin key={index} coordinates={coordinates} />
@@ -37,7 +40,15 @@ const Map: FunctionComponent<{}> = () => {
           )
           setCollections(collections)
           const firstCollection = collections[0]
-          setCurrentCollection(collections[0])
+          const lastCollection = collections[collections.length - 1]
+
+          //if we are coming from a push from the upload page - i.e there
+          //exists a location state that's not empty, set most recent collection
+          location.state !== undefined && Object.keys(location.state).length > 0
+            ? setCurrentCollection(lastCollection)
+            : setCurrentCollection(firstCollection)
+          //clears location state so now just first collection is set
+          history.replace({ pathname: '/maps', state: {} })
           setLoading(true)
           getPollutants(token, firstCollection.id)
             .then(pollutants => {
@@ -57,8 +68,15 @@ const Map: FunctionComponent<{}> = () => {
       })
       .catch(error => console.log(error))
   }
+  //if pushed from upload, sets date to date from upload
+  useEffect(() => {
+    if (location.state) {
+      if (!moment(location.state.date).isSame(date)) {
+        setDate(moment(location.state.date))
+      }
+    }
+  }, [])
 
-  // Request pollutant values on mount
   useEffect(() => {
     const source = axios.CancelToken.source()
     getCollections(source.token)

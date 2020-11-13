@@ -144,7 +144,12 @@ const Confirmation = ({
       })
       .then(d => {
         console.log('response data is:', d)
-        history.push('/maps')
+        history.push({
+          pathname: '/maps',
+          state: {
+            date: dustrakStart.format('MM/DD/YYYY')
+          }
+        })
       })
       .catch(error => {
         console.error(error)
