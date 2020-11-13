@@ -2,6 +2,7 @@ import axios, { AxiosResponse, CancelToken } from 'axios'
 import React, { FunctionComponent, useEffect, useState } from 'react'
 import ReactMapGL from 'react-map-gl'
 import moment from 'moment-timezone'
+import { Dimmer, Loader, Segment } from 'semantic-ui-react'
 import { Collection, Coordinates } from 'components/Map/types'
 import { initialViewport, getPollutants } from 'components/Map/utils'
 import * as Elements from 'components/Map/elements'
@@ -17,7 +18,7 @@ const Map: FunctionComponent<{}> = () => {
   const [collections, setCollections] = useState<Array<Collection>>([])
   const [pollutants, setPollutants] = useState<Array<Pollutant>>([])
   const [viewport, setViewport] = useState<Viewport>(initialViewport)
-  const [loading, setLoading] = useState<Boolean>(false)
+  const [loading, setLoading] = useState<boolean>(false)
 
   const markers = pollutants.map((coordinates: Coordinates, index: number) => (
     <Pin key={index} coordinates={coordinates} />
@@ -38,17 +39,14 @@ const Map: FunctionComponent<{}> = () => {
           const firstCollection = collections[0]
           setCurrentCollection(collections[0])
           setLoading(true)
-          var map = document.querySelectorAll<HTMLElement>('.overlays')[0]
-          map.style.background = 'rgba(0, 0, 0, 0.7)'
           getPollutants(token, firstCollection.id)
             .then(pollutants => {
-              if (pollutants){
+              if (pollutants) {
                 setPollutants(pollutants as Pollutant[])
               } else {
                 setPollutants([])
               }
               setLoading(false)
-              map.style.background = ''
             })
             .catch((error: Error) => console.log(error))
         } else {
@@ -78,18 +76,21 @@ const Map: FunctionComponent<{}> = () => {
               width='100%'
               height='100%'
               mapStyle={MAP_STYLE}
-              className="sup"
               onViewportChange={setViewport}
               mapboxApiAccessToken={MAPBOX_ACCESS_TOKEN}
             >
               {markers.length ? markers : null}
             </ReactMapGL>
+            <Dimmer active={loading}>
+              <Loader indeterminate>Loading Pollutant Data...</Loader>
+            </Dimmer>
           </Elements.MapContainer>
           <Elements.ControlPanelContainer>
             <ControlPanel
               date={date}
               setDate={setDate}
               setPollutants={setPollutants}
+              setLoading={setLoading}
               collections={collections}
               currentCollection={currentCollection as Collection}
               setCurrentCollection={setCurrentCollection}

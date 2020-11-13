@@ -12,6 +12,7 @@ const ControlPanel = ({
   date,
   setDate,
   setPollutants,
+  setLoading,
   collections,
   currentCollection,
   setCurrentCollection,
@@ -36,7 +37,7 @@ const ControlPanel = ({
     setPollutants([])
     const source = axios.CancelToken.source()
     setCurrentCollection(collection)
-    console.log('hi')
+    setLoading(true)
     getPollutants(source.token, collectionId)
       .then(pollutants => {
         if (pollutants) {
@@ -44,7 +45,7 @@ const ControlPanel = ({
         } else {
           setPollutants([])
         }
-        console.log('hey')
+        setLoading(false)
       })
       .catch((error: Error) => console.log(error))
   }
