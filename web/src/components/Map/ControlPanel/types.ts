@@ -6,6 +6,7 @@ export type ControlPanelProps = {
   date: moment.Moment
   setDate: (date: moment.Moment) => void
   setPollutants: (pollutants: Pollutant[]) => void
+  setLoading: (loading: boolean) => void
   collections: Array<Collection>
   currentCollection: Collection
   setCurrentCollection: (collection: Collection) => void

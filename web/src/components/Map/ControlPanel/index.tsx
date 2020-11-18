@@ -12,6 +12,7 @@ const ControlPanel = ({
   date,
   setDate,
   setPollutants,
+  setLoading,
   collections,
   currentCollection,
   setCurrentCollection,
@@ -36,13 +37,23 @@ const ControlPanel = ({
     setPollutants([])
     const source = axios.CancelToken.source()
     setCurrentCollection(collection)
+    setLoading(true)
     getPollutants(source.token, collectionId)
-      .then(pollutants =>
-        pollutants
-          ? setPollutants(pollutants as Pollutant[])
-          : setPollutants([])
-      )
+      .then(pollutants => {
+        if (pollutants) {
+          setPollutants(pollutants as Pollutant[])
+        } else {
+          setPollutants([])
+        }
+        setLoading(false)
+      })
       .catch((error: Error) => console.log(error))
+  }
+
+  const openData = (event: React.MouseEvent<HTMLSpanElement>) => {
+    event.preventDefault()
+    window.open(`${currentCollection.collection_files[0]}`)
+    window.open(`${currentCollection.collection_files[1]}`)
   }
 
   const sessionTime = (starts_at: string) => {
@@ -71,7 +82,7 @@ const ControlPanel = ({
   const sessionInformation = () => {
     if (currentCollection) {
       return (
-        <div>
+        <Elements.SessionDataContainer>
           <Elements.LabelContainer>
             <Elements.BoldedLabel>Session:</Elements.BoldedLabel>
             <Elements.TextLabel>
@@ -102,7 +113,14 @@ const ControlPanel = ({
               <Elements.NoDataText>None</Elements.NoDataText>
             )}
           </Elements.SessionLabelContainer>
-        </div>
+          <Elements.ViewDataLabel
+            onClick={e => {
+              openData(e)
+            }}
+          >
+            Download Raw Data
+          </Elements.ViewDataLabel>
+        </Elements.SessionDataContainer>
       )
     } else {
       return (

@@ -1,5 +1,5 @@
 import styled from 'theme'
-import { Container } from 'semantic-ui-react'
+import { Container, Segment } from 'semantic-ui-react'
 
 export const StyledContainer = styled(Container)`
   margin-top: 30px;
@@ -14,10 +14,15 @@ export const LowerHalfContainer = styled.div`
   display: flex;
 `
 
-export const MapContainer = styled.div`
-  height: 548px;
-  width: 65%;
-`
+export const MapContainer = styled(Segment)`
+         height: 548px;
+         width: 65%;
+         margin: 0px !important;
+         padding: 0px !important;
+         border-radius: 0px !important;
+         border: none !important;
+         box-shadow: none !important;
+       `
 
 export const ControlPanelContainer = styled.div`
   height: 548px;
@@ -27,4 +32,7 @@ export const ControlPanelContainer = styled.div`
 
 export const FormMessage = styled.h3`
   font-size: 1.5rem;
+`
+
+export const LoadingContainer = styled.div`
 `
