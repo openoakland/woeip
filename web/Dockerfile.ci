@@ -1,28 +1,13 @@
-# ---------------------
-# STEP 1
-# Build minified application
-
-FROM node:12.6.0-alpine as builder
+FROM node:14-alpine
 
 WORKDIR /usr/src/app
 COPY package.json package-lock.json ./
 
-# Clean install of packages
-RUN npm ci 
+RUN npm ci
 
-COPY . ./
+COPY . .
 
 RUN npm run build
+RUN npx browserslist@latest
 
-# ---------------------
-# STEP 2
-# Copy build assets and run app
-
-FROM node:12.6.0-alpine
-
-WORKDIR /usr/src/app
-
-COPY --from=builder /usr/src/app/build /usr/src/app
-RUN mv /usr/src/app/public /usr/src/public
-
-ENTRYPOINT ["node", "server.js"]
+CMD [ "npm", "run", "start:prod" ]
