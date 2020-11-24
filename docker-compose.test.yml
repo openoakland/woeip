@@ -5,6 +5,23 @@ services:
     build:
       args:
         - PYTHON_ENV=prod
+    ports:
+      - 8000
+    environment:
+      VIRTUAL_HOST: api.lvh.me
+      VIRTUAL_PORT: 8000
+      SECRET_KEY: secret_key
+      DATABASE_URL: postgis://postgres:postgres@db:5432/woaq
+      DEFAULT_FILE_STORAGE: django.core.files.storage.FileSystemStorage
+    volumes:
+      - ./api:/usr/src/app
+      - logs:/usr/src/app/logs
+      - static:/usr/src/app/public/static
+    depends_on:
+      - db
+    restart: always
+    stdin_open: true
+    tty: true
   web:
     build:
       dockerfile: Dockerfile.ci
@@ -15,3 +32,24 @@ services:
       NODE_ENV: production
       VIRTUAL_HOST: lvh.me
       VIRTUAL_PORT: 3000
+  db:
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=woaq
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    ports:
+      - 5432
+    restart: always
+
+  proxy:
+    build:
+      args:
+        - API_DOMAIN=api.lvh.me
+    volumes:
+      - static:/var/www/html/static/
+volumes: 
+  logs:
+  postgres:
+  static:
