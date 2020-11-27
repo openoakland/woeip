@@ -16,7 +16,7 @@ services:
 
   db:
     container_name: woaq-db
-    image: mdillon/postgis:11
+    image: postgis/postgis:13-master
 
   proxy:
     build:
