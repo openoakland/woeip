@@ -8,10 +8,10 @@ services:
     ports:
       - 8000
     environment:
-      VIRTUAL_HOST: api.lvh.me
+      VIRTUAL_HOST: ${API_DOMAIN}
       VIRTUAL_PORT: 8000
-      SECRET_KEY: secret_key
-      DATABASE_URL: postgis://postgres:postgres@db:5432/woaq
+      SECRET_KEY: ${SECRET_KEY}
+      DATABASE_URL: postgis://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/woaq
       DEFAULT_FILE_STORAGE: django.core.files.storage.FileSystemStorage
     volumes:
       - ./api:/usr/src/app
@@ -30,13 +30,13 @@ services:
       - 3001:3001
     environment: 
       NODE_ENV: production
-      VIRTUAL_HOST: lvh.me
+      VIRTUAL_HOST: ${WEB_DOMAIN}
       VIRTUAL_PORT: 3000
   db:
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=woaq
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: woaq
     volumes:
       - postgres:/var/lib/postgresql/data
     ports:
@@ -46,7 +46,7 @@ services:
   proxy:
     build:
       args:
-        - API_DOMAIN=api.lvh.me
+        - API_DOMAIN=${API_DOMAIN}
     volumes:
       - static:/var/www/html/static/
 volumes: 
