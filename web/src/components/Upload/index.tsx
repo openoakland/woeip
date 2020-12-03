@@ -137,7 +137,7 @@ const Upload: React.FunctionComponent = () => {
           <hr />
           <ul>
             {files.map((file, i) => (
-              <PendingFile key={file.path}>
+              <PendingFile key={file.path as string + i}>
                 <FileNameContainer>
                   <FileName>{file.path}</FileName>
                 </FileNameContainer>
