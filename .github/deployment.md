@@ -11,7 +11,9 @@ A configuration suitable for development
 Steps:
 1. docker-compose up --build
 
-## Testing
+## Develop
+
+## Livewire
 A basic configuration to allow user to interact with a live site
 - All data served on an Amazon EC2 machine
 - Files saved using Django's file manager
