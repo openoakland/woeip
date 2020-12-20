@@ -6,13 +6,14 @@ services:
       args:
         - PYTHON_ENV=prod
     ports:
-      - 8000
+      - ${API_PORT}
     environment:
-      VIRTUAL_HOST: ${API_DOMAIN}
-      VIRTUAL_PORT: 8000
       SECRET_KEY: ${SECRET_KEY}
       DATABASE_URL: postgis://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/woaq
       DEFAULT_FILE_STORAGE: django.core.files.storage.FileSystemStorage
+      LETSENCRYPT_HOST: ${API_DOMAIN}
+      VIRTUAL_HOST: ${API_DOMAIN}
+      VIRTUAL_PORT: ${API_PORT}
     volumes:
       - ./api:/usr/src/app
       - logs:/usr/src/app/logs
@@ -26,12 +27,13 @@ services:
     build:
       dockerfile: Dockerfile.ci
     ports:
-      - 3000
+      - ${WEB_PORT}
       - 3001:3001
     environment: 
       NODE_ENV: production
+      LETSENCRYPT_HOST: ${WEB_DOMAIN}
       VIRTUAL_HOST: ${WEB_DOMAIN}
-      VIRTUAL_PORT: 3000
+      VIRTUAL_PORT: ${WEB_PORT}
   db:
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
@@ -47,9 +49,38 @@ services:
     build:
       args:
         - API_DOMAIN=${API_DOMAIN}
+    ports:
+      - 80:80
+      - 443:443
     volumes:
+      - 'html:/usr/share/nginx/html'
+      - "dhparam:/etc/nginx/dhparam"
+      - 'vhost:/etc/nginx/vhost.d'
+      - 'certs:/etc/nginx/certs'
+      - '/var/run/docker.sock:/tmp/docker.sock:ro'
       - static:/var/www/html/static/
-volumes: 
+
+  ssl:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    volumes:
+      - 'html:/usr/share/nginx/html'
+      - "dhparam:/etc/nginx/dhparam"
+      - 'vhost:/etc/nginx/vhost.d'
+      - 'certs:/etc/nginx/certs'
+      - "/run/docker.sock:/var/run/docker.sock:ro"
+    environment:
+      NGINX_PROXY_CONTAINER: "woaq-proxy"
+      DEFAULT_EMAIL: ${DEFAULT_EMAIL}
+    restart: always
+    depends_on: 
+      - "proxy"
+
+          
+volumes:
   logs:
   postgres:
   static:
+  certs:
+  html:
+  vhost:
+  dhparam:
