@@ -34,6 +34,7 @@ services:
       LETSENCRYPT_HOST: ${WEB_DOMAIN}
       VIRTUAL_HOST: ${WEB_DOMAIN}
       VIRTUAL_PORT: ${WEB_PORT}
+      API_DOMAIN: ${API_DOMAIN}
   db:
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
