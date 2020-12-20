@@ -11,7 +11,7 @@ import ControlPanel from 'components/Map/ControlPanel'
 // import MapFilters from 'components/Map/ControlPanel'
 import Pin from 'components/Map/Pin'
 import { Pollutant, Viewport } from 'components/Map/types'
-import { MAPBOX_ACCESS_TOKEN, MAP_STYLE, API_DOMAIN } from '../../constants'
+import { MAPBOX_ACCESS_TOKEN, MAP_STYLE, API_URL } from '../../constants'
 
 const Map: FunctionComponent<{}> = props => {
   const [date, setDate] = useState<moment.Moment>(moment())
@@ -30,7 +30,7 @@ const Map: FunctionComponent<{}> = props => {
   const getCollections = async (token: CancelToken) => {
     axios
       .get<Array<Collection>>(
-        `http://${API_DOMAIN}/collection?start_date=${date.format('YYYY-MM-DD')}`,
+        `${API_URL}/collection?start_date=${date.format('YYYY-MM-DD')}`,
         { cancelToken: token }
       )
       .then((response: AxiosResponse<Array<Collection>>) => {

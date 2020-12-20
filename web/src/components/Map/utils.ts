@@ -1,7 +1,7 @@
 import axios, { AxiosResponse, CancelToken } from 'axios'
 import { Pollutant, PollutantValue, Viewport } from 'components/Map/types'
 import { PollutantResponse } from 'components/Map/types'
-import { API_DOMAIN } from '../../constants'
+import { API_URL } from '../../constants'
 
 export const initialViewport: Viewport = {
   zoom: 12,
@@ -16,7 +16,7 @@ export const getPollutants = async (
   collectionId: number
 ): Promise<Pollutant[] | void> => {
   return axios
-    .get<PollutantResponse>(`http:\/\/${API_DOMAIN}/collection/${collectionId}/data`, {
+    .get<PollutantResponse>(`${API_URL}/collection/${collectionId}/data`, {
       cancelToken: token
     })
     .then((response: AxiosResponse<PollutantResponse>) => {

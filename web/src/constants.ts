@@ -1,4 +1,4 @@
-export const API_DOMAIN = process.env.API_DOMAIN || 'api.lvh.me'
+export const API_URL = process.env.NODE_ENV==='production' ? 'https://api.tangled.city' : 'http://api.lvh.me'
 export const POLLUTANTS_PATH = 'collection/1/data'
 export const MAP_STYLE = 'mapbox://styles/mapbox/streets-v11'
 export const MAPBOX_ACCESS_TOKEN =
