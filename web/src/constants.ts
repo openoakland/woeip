@@ -1,5 +1,5 @@
-export const API_URL = process.env.API_DOMAIN || 'http://api.lvh.me'
-export const POLLUTANTS_API_URL = `http://${API_URL}/collection/1/data`
+export const API_DOMAIN = process.env.API_DOMAIN || 'api.lvh.me'
+export const POLLUTANTS_PATH = 'collection/1/data'
 export const MAP_STYLE = 'mapbox://styles/mapbox/streets-v11'
 export const MAPBOX_ACCESS_TOKEN =
   process.env.MAPBOX_ACCESS_TOKEN ||

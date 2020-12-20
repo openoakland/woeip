@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { API_DOMAIN } from '../../../constants'
 import { useHistory } from 'react-router-dom'
 import { Message, Icon, Button, Container, Input } from 'semantic-ui-react'
 import {
@@ -137,7 +138,7 @@ const Confirmation = ({
     formData.append('pollutant', '1')
 
     axios
-      .post('http://api.lvh.me/collection', formData, {
+      .post(`http://${API_DOMAIN}/collection`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
