@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
-import { Message, Icon, Button, Container, Input } from 'semantic-ui-react'
+import {
+  Message,
+  Icon,
+  Button,
+  Container,
+  Input,
+  Modal
+} from 'semantic-ui-react'
 import {
   identFiles,
   getDustrakStart,
@@ -73,24 +80,47 @@ const SubmitForm = styled.form`
   display: flex;
   justify-content: space-between;
   margin-top: 48px;
-  button {
-    border-radius: 2px !important;
-    font-family: ${({ theme }) => theme.fonts.secondary} !important;
-    font-style: normal !important;
-    font-weight: 500 !important;
-    width: 160px !important;
-    font-size: 1rem !important;
-  }
 `
-
-const SaveButton = styled(Button)`
+const FormButton = styled(Button)`
+  border-radius: 2px !important;
+  font-family: ${({ theme }) => theme.fonts.secondary} !important;
+  font-style: normal !important;
+  font-weight: 500 !important;
+  width: 160px !important;
+  font-size: 1rem !important;
+`
+const SaveButton = styled(FormButton)`
   color: ${({ theme }) => theme.colors.white} !important;
   background-color: rgba(53, 53, 53, 0.9) !important;
 `
-
-const CancelButton = styled(Button)`
+const CancelButton = styled(FormButton)`
   color: rgba(53, 53, 53, 0.9) !important;
   background-color: #f4f5f4 !important;
+`
+const StyledModal = styled(Modal)`
+  padding: 1.5rem;
+  padding-top: 7rem;
+  max-width: 500px;
+  .header {
+    border: none !important;
+  }
+  .content {
+    margin-bottom: 4rem;
+  }
+  .actions {
+    border: none !important;
+    background: ${({ theme }) => theme.colors.white} !important;
+  }
+  i.close {
+    top: 1.0535rem !important;
+    right: 1rem !important;
+    color: rgba(53, 53, 53, 0.9) !important;
+  }
+`
+const BackButton = styled(FormButton)`
+  color: rgba(53, 53, 53, 0.9) !important;
+  background-color: #fff !important;
+  border: 1px solid rgba(53, 53, 53, 0.9) !important;
 `
 
 const devices = {
@@ -107,6 +137,7 @@ const Confirmation = ({
   const [dustrakText, setDustrakText] = useState<Array<string>>([])
   const [dustrakStart, setDustrakStart] = useState<moment.Moment>(moment(''))
   const [dustrakSerial, setDustrakSerial] = useState<string>('')
+  const [showModal, setShowModal] = useState<boolean>(false)
   const history = useHistory()
 
   useEffect(() => {
@@ -189,10 +220,24 @@ const Confirmation = ({
             <InputLabel>Device</InputLabel>
             <SubmitForm onSubmit={upload}>
               <SaveButton type='submit'>Save</SaveButton>
-              <CancelButton onClick={cancelUpload}>Cancel</CancelButton>
+              <CancelButton type='button' onClick={() => setShowModal(true)}>
+                Cancel
+              </CancelButton>
             </SubmitForm>
           </FormContent>
         </FormContainer>
+        <StyledModal
+          closeIcon
+          open={showModal}
+          onClose={() => setShowModal(false)}
+        >
+          <Modal.Header>Cancel data upload?</Modal.Header>
+          <Modal.Content>Cancelling now will delete your data.</Modal.Content>
+          <Modal.Actions>
+            <BackButton onClick={() => setShowModal(false)}>Go back</BackButton>
+            <SaveButton onClick={cancelUpload}>Cancel upload</SaveButton>
+          </Modal.Actions>
+        </StyledModal>
       </ContentContainer>
     </StyledContainer>
   )
