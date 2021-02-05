@@ -138,6 +138,7 @@ const Confirmation = ({
   const [dustrakStart, setDustrakStart] = useState<moment.Moment>(moment(''))
   const [dustrakSerial, setDustrakSerial] = useState<string>('')
   const [showModal, setShowModal] = useState<boolean>(false)
+  const [isSaving, setIsSaving] = useState<boolean>(false)
   const history = useHistory()
 
   useEffect(() => {
@@ -155,6 +156,7 @@ const Confirmation = ({
     })()
   }, [files])
   const upload = (e: React.FormEvent) => {
+    setIsSaving(true)
     e.preventDefault()
     const formData = new FormData()
 
@@ -186,6 +188,8 @@ const Confirmation = ({
         console.error(error)
         alert(`files failed to upload: ${error.message}`)
       })
+
+      return () => setIsSaving(false)
   }
 
   const cancelUpload = () => {
@@ -219,10 +223,10 @@ const Confirmation = ({
             <DisabledInput value={devices[dustrakSerial]} disabled={true} />
             <InputLabel>Device</InputLabel>
             <SubmitForm onSubmit={upload}>
-              <SaveButton type='submit'>Save</SaveButton>
-              <CancelButton type='button' onClick={() => setShowModal(true)}>
+              <SaveButton type='submit' loading={isSaving}>Save</SaveButton>
+              { !isSaving && <CancelButton type='button' onClick={() => setShowModal(true)}>
                 Cancel
-              </CancelButton>
+              </CancelButton>}
             </SubmitForm>
           </FormContent>
         </FormContainer>
