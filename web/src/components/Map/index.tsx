@@ -1,7 +1,7 @@
 import axios, { AxiosResponse, CancelToken } from 'axios'
 import React, { FunctionComponent, useEffect, useState } from 'react'
 import { useLocation, useHistory } from 'react-router-dom'
-import ReactMapGL from 'react-map-gl'
+import ReactMapGL, { NavigationControl } from 'react-map-gl'
 import moment from 'moment-timezone'
 import { Dimmer, Loader, Segment } from 'semantic-ui-react'
 import { Collection, Coordinates } from 'components/Map/types'
@@ -12,6 +12,13 @@ import ControlPanel from 'components/Map/ControlPanel'
 import Pin from 'components/Map/Pin'
 import { Pollutant, Viewport } from 'components/Map/types'
 import { MAPBOX_ACCESS_TOKEN, MAP_STYLE, API_URL } from '../../constants'
+import styled from 'theme'
+
+const PositionedNavigationControl = styled(NavigationControl)`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+`
 
 const Map: FunctionComponent<{}> = props => {
   const [date, setDate] = useState<moment.Moment>(moment())
@@ -97,6 +104,7 @@ const Map: FunctionComponent<{}> = props => {
               onViewportChange={setViewport}
               mapboxApiAccessToken={MAPBOX_ACCESS_TOKEN}
             >
+              <PositionedNavigationControl showCompass={false} />
               {markers.length ? markers : null}
             </ReactMapGL>
             <Dimmer active={loading}>
