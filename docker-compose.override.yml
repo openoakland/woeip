@@ -26,18 +26,19 @@ services:
     stdin_open: true
     tty: true
 
-  # web:
-  #   environment:
-  #     NODE_ENV: development
-  #     VIRTUAL_HOST: lvh.me
-  #     VIRTUAL_PORT: 3000
-  #   ports:
-  #     - 3000
-  #     - 3001:3001
-  #   volumes:
-  #     - ./web:/usr/src/app
-  #     - /usr/src/app/node_modules/
-  #     - /usr/src/app/build/
+  web:
+    command: npm run start
+    environment:
+      # NODE_ENV: development
+      VIRTUAL_HOST: lvh.me
+      VIRTUAL_PORT: 3000
+    ports:
+      - 3000
+      - 3001:3001
+    volumes:
+      - ./web:/usr/src/app:rw
+      # - /usr/src/app/node_modules/
+      # - /usr/src/app/build/
 
   db:
     environment:
