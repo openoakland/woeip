@@ -1,0 +1,12 @@
+.map-view-container {
+    height: 75vh;
+    border-style: solid;
+    border-width: 0.1rem;
+}
+
+.circle-marker {
+    height: 0.1rem;
+    width: 0.1rem;
+    background-color: #f00;
+    border-radius: 50%;
+}

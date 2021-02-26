@@ -1,0 +1,32 @@
+.linked-header{
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.flex-row{
+    display: flex;
+    flex-direction: row;
+}
+
+.flex-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.justify-center{
+    justify-content: center;
+}
+
+.file-icon-pair{
+    justify-content: center;
+}
+
+.margin-none {
+    margin: 0;
+}
+
+
+.icon-button {
+    background: none;
+    outline: none;
+}
