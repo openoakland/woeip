@@ -1,0 +1,8 @@
+.git/
+.gitignore
+.cache
+*.md
+!README.md
+
+dist/
+node_modules/
