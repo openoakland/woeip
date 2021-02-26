@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import ReactMapGL, { Marker } from "react-map-gl";
+import ReactMapGL, { Marker, NavigationControl } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 
 import { Dimmer, Loader, Container } from "../ui";
@@ -44,6 +44,10 @@ export const MapView = ({ isLoading, pollutants }) => {
         onViewStateChange={setViewport}
         mapboxApiAccessToken={mapboxApiAccessToken}
       >
+        <NavigationControl
+          showCompass={false}
+          className={"navigation-control"}
+        />
         {markers}
       </ReactMapGL>
     </Container>
