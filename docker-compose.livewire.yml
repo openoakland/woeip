@@ -1,3 +1,5 @@
+# Live environment with all services cenralized to one machine
+
 version: '3.3'
 
 services:
@@ -25,10 +27,10 @@ services:
     tty: true
   web:
     build:
-      dockerfile: Dockerfile.ci
+      dockerfile: Dockerfile.prod
     ports:
       - ${WEB_PORT}
-      - 3001:3001
+      - 3000:80
     environment: 
       LETSENCRYPT_HOST: ${WEB_DOMAIN}
       VIRTUAL_HOST: ${WEB_DOMAIN}

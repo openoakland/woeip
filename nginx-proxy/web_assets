@@ -1,3 +1,0 @@
-location /static/ {
-    alias /var/www/html/static/;
-}

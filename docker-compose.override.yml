@@ -1,3 +1,4 @@
+# Development Environment
 version: '3.3'
 
 services:
@@ -27,15 +28,16 @@ services:
     tty: true
 
   web:
-    command: npm run start
+    build:
+      dockerfile: Dockerfile
     environment:
       VIRTUAL_HOST: lvh.me
       VIRTUAL_PORT: 3000
     ports:
-      - 3000
-      - 3001:3001
+      - 3000:3000
     volumes:
       - ./web:/usr/src/app:rw
+      - '/usr/src/app/node_modules'
 
   db:
     environment:
