@@ -11,12 +11,9 @@ import {
   fallbackCollection,
   getPollutantsByCollectionId,
   getCollectionFileByLink,
-} from "./utils";
-
-import {
   canceledCollectionsMessage,
   canceledPollutantsMessage,
-} from "../../api.util";
+} from "./utils";
 
 import { Grid } from "../ui";
 
@@ -39,8 +36,8 @@ export const Map = () => {
     axios.CancelToken.source()
   );
 
-  const setIsNoLongerLoading = () => setIsPendingResponse(false);
   const cancelCall = (tokenSource) => tokenSource && tokenSource.cancel();
+
   /**
    * Load Collections on date
    */
@@ -56,7 +53,7 @@ export const Map = () => {
         setIsPendingResponse(true);
         setPollutantsTokenSource(axios.CancelToken.source());
       } catch (thrown) {
-        canceledCollectionsMessage(thrown, setIsNoLongerLoading);
+        canceledCollectionsMessage(thrown);
       }
     })();
     // cancel call on unmount
@@ -99,7 +96,7 @@ export const Map = () => {
         setPollutants(pendingPollutants);
         setIsPendingResponse(false);
       } catch (thrown) {
-        canceledPollutantsMessage(thrown, setIsNoLongerLoading);
+        canceledPollutantsMessage(thrown);
       }
     })();
     // cancel call on unmount

@@ -87,3 +87,18 @@ export const getPollutantsByCollectionId = async (
  */
 export const fallbackCollection = (pendingCollections) =>
   pendingCollections[pendingCollections.length - 1] || {};
+
+/**
+ * Standard handling of a cancel thrown
+ * @param {string} dataRequest
+ */
+export const canceledRequestMessage = (dataRequested) => (thrown) => {
+  if (axios.isCancel(thrown)) {
+    console.log(`Canceled request for ${dataRequested}`);
+  } else {
+    console.error(`Failed to get data for ${dataRequested}`);
+  }
+};
+
+export const canceledCollectionsMessage = canceledRequestMessage("collections");
+export const canceledPollutantsMessage = canceledRequestMessage("pollutants");

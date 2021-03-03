@@ -1,4 +1,4 @@
-import { Button, Icon, Input, Message, Header } from "semantic-ui-react";
+import { Button, Icon, Input, Message } from "semantic-ui-react";
 import "./index.css";
 
 export {
@@ -19,6 +19,7 @@ export {
 } from "semantic-ui-react";
 
 export const LinkedHeader = ({ ...props }) => (
+  // eslint-disable-next-line jsx-a11y/heading-has-content
   <h4 {...props} className="linked-header" />
 );
 

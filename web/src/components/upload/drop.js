@@ -173,7 +173,7 @@ export const UploadDrop = ({
             .csv
           </FlexColumnDiv>
         </FlexRowCenterDiv>
-        <Header fitted as="h3">
+        <Header as="h3" fitted="true">
           Drag a pair of DusTrak and GPS files here
         </Header>
         <Divider horizontal>or</Divider>
