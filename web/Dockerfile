@@ -9,7 +9,7 @@ ENV PATH usr/src/app/node_modules/.bin:$PATH
 # install app dependencies
 COPY package*.json ./
 RUN npm i
-RUN npm i react-scripts@3.4.1 -g
+RUN npm i react-scripts@4.0.3 -g
 
 # add app
 COPY . .

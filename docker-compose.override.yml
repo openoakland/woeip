@@ -33,6 +33,7 @@ services:
     environment:
       VIRTUAL_HOST: lvh.me
       VIRTUAL_PORT: 3000
+      CHOKIDAR_USEPOLLING: 'true'
     ports:
       - 3000:3000
     volumes:
