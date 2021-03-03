@@ -1,8 +1,8 @@
 import axios from "axios";
 
 export const apiUrl = (endpoint) => {
-  const protocol = "http";
-  const domain = "api.lvh.me";
+  const protocol = process.env.REACT_APP_PROTOCOL;
+  const domain = process.env.REACT_APP_API_DOMAIN;
   return `${protocol}://${domain}/${endpoint}`;
 };
 

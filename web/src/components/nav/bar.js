@@ -5,7 +5,7 @@ const Navbar = () => {
   return (
     <Container>
       <Menu pointing secondary style={{ borderBottom: "none" }}>
-        <Menu.Menu position="Left">
+        <Menu.Menu position="left">
           <Menu.Item as={Link} to={"/"}>
             <h1>
               WO

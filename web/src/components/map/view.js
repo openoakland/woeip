@@ -17,8 +17,7 @@ mapboxgl.workerClass = require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worke
  */
 export const MapView = ({ isLoading, pollutants }) => {
   const mapStyle = "mapbox://styles/mapbox/streets-v11";
-  const mapboxApiAccessToken =
-    "pk.eyJ1IjoibHVrZWh0cmF2aXMiLCJhIjoiY2p2djlmY2sxM3pzcDQzb2p3MXN3aGl2aSJ9.6b2Kp7pfaV-cNiwtYRhRZw";
+  const mapboxApiAccessToken = process.env.REACT_APP_MAPBOX_TOKEN;
   const initialViewport = {
     height: "100%",
     width: "100%",
