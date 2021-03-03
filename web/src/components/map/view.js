@@ -1,10 +1,14 @@
 import { useState } from "react";
+import { Dimmer, Loader, Container } from "../ui";
+import "./view.css";
 
 import ReactMapGL, { Marker, NavigationControl } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
-
-import { Dimmer, Loader, Container } from "../ui";
-import "./view.css";
+// Hack: https://github.com/mapbox/mapbox-gl-js/issues/10173#issuecomment-753662795
+import mapboxgl from 'mapbox-gl';
+// @ts-ignore
+// eslint-disable-next-line import/no-webpack-loader-syntax
+mapboxgl.workerClass = require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
 
 /**
  * The map itself
