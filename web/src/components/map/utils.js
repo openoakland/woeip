@@ -35,9 +35,17 @@ export const getPollutantsByCollectionId = async (
   const options = {
     cancelToken: cancelTokenSource.token,
   };
+  console.log("collectionId", collectionId);
   if (!collectionId) return [];
   return (await axios.get(apiUrlCollectionById(collectionId), options)).data;
 };
+
+/**
+ * Extract and parse the pollutant values, or return an empty array
+ * @param {Array<PollutantValue>} pollutantValueData
+ */
+export const fallbackPollutants = (pollutantValueData) =>
+  pollutantValueData?.pollutant_values?.map(parsePollutant) || [];
 
 /**
  * Process the pollutant data to make it consumable by the client

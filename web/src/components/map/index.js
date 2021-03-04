@@ -9,8 +9,8 @@ import { MapMenu } from "./menu";
 import {
   getCollectionsOnDate,
   fallbackCollection,
+  fallbackPollutants,
   getPollutantsByCollectionId,
-  parsePollutant,
   getCollectionFileByLink,
   canceledCollectionsMessage,
   canceledPollutantsMessage,
@@ -88,11 +88,11 @@ export const Map = () => {
   useEffect(() => {
     (async () => {
       try {
-        const pendingPollutants = await getPollutantsByCollectionId(
+        const pendingPollutantValues = await getPollutantsByCollectionId(
           activeCollection.id,
           pollutantsTokenSource
         );
-        setPollutants(pendingPollutants.pollutant_values.map(parsePollutant));
+        setPollutants(fallbackPollutants(pendingPollutantValues));
         setIsPendingResponse(false);
       } catch (thrown) {
         canceledPollutantsMessage(thrown);
