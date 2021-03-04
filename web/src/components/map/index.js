@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import moment from "moment-timezone";
 import axios from "axios";
 
-import { useLocation } from "react-router-dom";
-import { MapView } from "./view";
+import { MapBox } from "./box";
 import { MapMenu } from "./menu";
 
 import {
   getCollectionsOnDate,
   fallbackCollection,
   getPollutantsByCollectionId,
+  parsePollutant,
   getCollectionFileByLink,
   canceledCollectionsMessage,
   canceledPollutantsMessage,
@@ -22,7 +23,7 @@ import { Grid } from "../ui";
  * Data are read only
  */
 export const Map = () => {
-  const location = useLocation();
+  const location = useLocation(); // location for the url
   const initialDate = moment(location?.state?.date) || moment(); // Date either from upload or current day
   const [mapDate, setMapDate] = useState(initialDate);
   const [collectionsOnDate, setCollectionsOnDate] = useState([]);
@@ -36,10 +37,11 @@ export const Map = () => {
     axios.CancelToken.source()
   );
 
+  // Pair axios cancel token source function with a guard to protect calling undefined tokens
   const cancelCall = (tokenSource) => tokenSource && tokenSource.cancel();
 
   /**
-   * Load Collections on date
+   * Call the api to get collection sessions that happened on a date
    */
   useEffect(() => {
     (async () => {
@@ -56,28 +58,26 @@ export const Map = () => {
         canceledCollectionsMessage(thrown);
       }
     })();
-    // cancel call on unmount
+    // cancel call on component unmount
     return () => cancelCall(collectionsTokenSource);
   }, [mapDate, collectionsTokenSource]);
 
   /**
-   * Load source files for collection when a new one is set
+   * Call the api to load the urls for gps+dustrak source files of a collection
    */
   useEffect(() => {
     (async () => {
-      const collectionFileLinks = activeCollection.collection_files;
-      if (collectionFileLinks) {
-        const [gpsFileLink, dustFileLink] = collectionFileLinks;
-        try {
-          const [pendingGpsFile, pendingDustrakFile] = await Promise.all([
-            getCollectionFileByLink(gpsFileLink),
-            getCollectionFileByLink(dustFileLink),
-          ]);
-          setGpsFileUrl(pendingGpsFile.file);
-          setDustrakFileUrl(pendingDustrakFile.file);
-        } catch {
-          console.error("could not retrieve files for collection");
-        }
+      try {
+        const collectionFileLinks = activeCollection.collection_files;
+        const [gpsFileLink, dustFileLink] = collectionFileLinks || ["", ""];
+        const [pendingGpsFile, pendingDustrakFile] = await Promise.all([
+          getCollectionFileByLink(gpsFileLink),
+          getCollectionFileByLink(dustFileLink),
+        ]);
+        setGpsFileUrl(pendingGpsFile.file);
+        setDustrakFileUrl(pendingDustrakFile.file);
+      } catch {
+        console.error("could not retrieve files for collection");
       }
     })();
   }, [activeCollection]);
@@ -87,13 +87,12 @@ export const Map = () => {
    */
   useEffect(() => {
     (async () => {
-      let pendingPollutants = [];
       try {
-        pendingPollutants = await getPollutantsByCollectionId(
+        const pendingPollutants = await getPollutantsByCollectionId(
           activeCollection.id,
           pollutantsTokenSource
         );
-        setPollutants(pendingPollutants);
+        setPollutants(pendingPollutants.pollutant_values.map(parsePollutant));
         setIsPendingResponse(false);
       } catch (thrown) {
         canceledPollutantsMessage(thrown);
@@ -150,7 +149,7 @@ export const Map = () => {
   return (
     <Grid columns={2} textAlign="left">
       <Grid.Column size="massive">
-        <MapView isLoading={isPendingResponse} pollutants={pollutants} />
+        <MapBox isLoading={isPendingResponse} pollutants={pollutants} />
       </Grid.Column>
       <Grid.Column>
         <MapMenu

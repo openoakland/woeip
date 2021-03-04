@@ -1,4 +1,5 @@
 import moment from "moment-timezone";
+import { PropTypes } from "prop-types";
 
 import "react-semantic-ui-datepickers/dist/react-semantic-ui-datepickers.css";
 
@@ -9,9 +10,11 @@ import { Container, List } from "../ui";
  * Menu for Dates and Collections to map
  * @property {moment} mapDate Day viewed on mapped
  * @property {Array<Collection>} collectionsOnDate Collections from the viewed day
- * @property {Collection} collection collection actively viewed on map
- * @property {string} gpsFileUrl
- * @property {string} dustFileUrl
+ * @property {Collection} activeCollection collection actively viewed on map
+ * @property {function} stageLoadingDate start the process to load collections on date
+ * @property {function} stageLoadingCollection start the process to load pollutants from a colletion
+ * @property {string} gpsFileUrl url to a gps file
+ * @property {string} dustrakFileUrl url to a dustrak file
  */
 export const MapMenu = ({
   mapDate,
@@ -22,6 +25,10 @@ export const MapMenu = ({
   gpsFileUrl,
   dustrakFileUrl,
 }) => {
+  /**
+   * From the collections, composed React Components to display each collection
+   * Exclude the active collection
+   */
   const collectionsDisplay = collectionsOnDate
     .filter((eachCollection) => eachCollection.id !== activeCollection.id)
     .map((eachCollection) => {
@@ -83,4 +90,14 @@ export const MapMenu = ({
       </List>
     </Container>
   );
+};
+
+MapMenu.propTypes = {
+  mapDate: PropTypes.object,
+  collectionsOnDate: PropTypes.array,
+  activeCollection: PropTypes.object,
+  stageLoadingDate: PropTypes.func,
+  stageLoadingCollection: PropTypes.func,
+  gpsFileUrl: PropTypes.string,
+  dustrakFileUrl: PropTypes.string,
 };

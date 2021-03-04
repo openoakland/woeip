@@ -3,14 +3,17 @@ import axios from "axios";
 import { apiUrlCollectionById, apiUrlCollections } from "../../api.util";
 
 /**
- * Geo-Coordinates
- * @typedef Coordinates
+ * Shape of pollutant data stored in database
+ * @typedef PollutantValue
+ * @property {number} value
+ * @property {string} time_geo
+ * @property {string} pollutant
  * @property {number} latitude
  * @property {number} longitude
  */
 
 /**
- * Pollutant data
+ * Shape of pollutant as the client wants to consume it
  * @typedef Pollutant
  * @property {string} name
  * @property {string} timestamp
@@ -20,16 +23,26 @@ import { apiUrlCollectionById, apiUrlCollections } from "../../api.util";
  */
 
 /**
- * Shape of pollutant data stored in database
- * @typedef PollutantValue
- * @property {number} value
- * @property {string} time_geo
- * @property {string} pollutant
+ * Retrieve the pollutants that were detected by a given collection session
+ * @param {string} collectionId the integer-like database id of the collection
+ * @param {axios.CancelToken} cancelTokenSource an axios token to cancel the request
+ * @returns {Array<PollutantValue>} pollutants as they are stored in the database
  */
+export const getPollutantsByCollectionId = async (
+  collectionId,
+  cancelTokenSource
+) => {
+  const options = {
+    cancelToken: cancelTokenSource.token,
+  };
+  if (!collectionId) return [];
+  return (await axios.get(apiUrlCollectionById(collectionId), options)).data;
+};
 
 /**
- * @param {PollutantValue} item
- * @returns {Pollutant}
+ * Process the pollutant data to make it consumable by the client
+ * @param {PollutantValue} item the shape of the pollutant as it stored in the database
+ * @returns {Pollutant} the shape of the pollutant as the client wants to consume it
  */
 export const parsePollutant = (item) => {
   const timeGeoSplit = item.time_geo.split("(");
@@ -44,7 +57,7 @@ export const parsePollutant = (item) => {
 };
 
 /**
- *
+ * Retrieve all of the collections that occured on the given date
  * @param {moment} mapDate
  * @param {CancelToken} cancelTokenSource
  * @returns {Array<Collection>}
@@ -60,37 +73,28 @@ export const getCollectionsOnDate = async (mapDate, cancelTokenSource) => {
 };
 
 /**
- * Retrieve data about the file
+ * Retrieve data about the collection file, gps or dustrak
  * @param {string} fileLink the full url to the file
- * @returns {CollectionFile}
+ * @returns {CollectionFile} data about the collection file
  */
 export const getCollectionFileByLink = async (fileLink) => {
+  if (!fileLink) return "";
   return (await axios.get(fileLink)).data;
 };
 
-export const getPollutantsByCollectionId = async (
-  collectionId,
-  cancelTokenSource
-) => {
-  if (!collectionId) return [];
-  const options = {
-    cancelToken: cancelTokenSource.token,
-  };
-  const response = await axios.get(apiUrlCollectionById(collectionId), options);
-  return response.data.pollutant_values.map(parsePollutant);
-};
-
 /**
+ * Return the collection that was last added to a date.
  * If no collections were returned for a date, fall back to using an empty object
- * @param {Array<Collection>} pendingCollection
- * @returns {Collection || Object }
+ * @param {Array<Collection>} pendingCollections possible collections
+ * @returns {Collection || Object } Lastest collection or an empty object
  */
 export const fallbackCollection = (pendingCollections) =>
   pendingCollections[pendingCollections.length - 1] || {};
 
 /**
- * Standard handling of a cancel thrown
- * @param {string} dataRequest
+ * Handle axios throw that may have been a cancel request
+ * @param {string} dataRequested type of request being made when error occurred
+ * @param {Error} thrown type of error thrown
  */
 export const canceledRequestMessage = (dataRequested) => (thrown) => {
   if (axios.isCancel(thrown)) {
@@ -100,5 +104,12 @@ export const canceledRequestMessage = (dataRequested) => (thrown) => {
   }
 };
 
+/**
+ * Overload cancel request message with collections
+ */
 export const canceledCollectionsMessage = canceledRequestMessage("collections");
+
+/**
+ * Overload cancel request message with collections
+ */
 export const canceledPollutantsMessage = canceledRequestMessage("pollutants");

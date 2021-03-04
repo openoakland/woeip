@@ -1,6 +1,7 @@
 import { useState } from "react";
+import { PropTypes } from "prop-types";
 import { Dimmer, Loader, Container } from "../ui";
-import "./view.css";
+import "./box.css";
 
 import ReactMapGL, { Marker, NavigationControl } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
@@ -15,7 +16,7 @@ mapboxgl.workerClass = require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worke
  * @property {boolean} isLoading track whether we are in any state of loading
  * @property {Array<Pollutant>} pollutants
  */
-export const MapView = ({ isLoading, pollutants }) => {
+export const MapBox = ({ isLoading, pollutants }) => {
   const mapStyle = "mapbox://styles/mapbox/streets-v11";
   const mapboxApiAccessToken = process.env.REACT_APP_MAPBOX_TOKEN;
   const initialViewport = {
@@ -30,6 +31,10 @@ export const MapView = ({ isLoading, pollutants }) => {
 
   const [viewport, setViewport] = useState(initialViewport);
 
+  /**
+   * For each pollutant, create a "marker" component at its lat and long
+   * Use css to give each pollutant its appearance
+   */
   const markers = pollutants.map((coordinates, index) => (
     <Marker key={index} {...coordinates} className="circle-marker" />
   ));
@@ -55,4 +60,9 @@ export const MapView = ({ isLoading, pollutants }) => {
       </ReactMapGL>
     </Container>
   );
+};
+
+MapBox.protoTypes = {
+  isLoading: PropTypes.bool,
+  pollutants: PropTypes.array,
 };

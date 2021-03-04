@@ -110,7 +110,7 @@ export const getDustrakStart = (textLines) => {
 };
 
 /**
- *
+ * Find the stop datetime of the Dustrak File
  * @param {Array<string>} textLines content of the file as a list of each line
  * @param {moment} startDatetime start datetime of dustrak file- valid or invalid
  * @returns {moment} the end datetime of dustrak file - valid or invalid

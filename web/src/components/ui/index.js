@@ -33,14 +33,14 @@ export const RevertActionButton = ({ ...props }) => (
   <Button basic color="black" {...props} />
 );
 
+export const AffirmActionButton = ({ ...props }) => (
+  <Button color="black" {...props} />
+);
+
 export const TrashButton = ({ ...props }) => (
   <IconButton {...props}>
     <Icon name="trash" />
   </IconButton>
-);
-
-export const AffirmActionButton = ({ ...props }) => (
-  <Button color="black" {...props} />
 );
 
 export const IconButton = ({ ...props }) => (
