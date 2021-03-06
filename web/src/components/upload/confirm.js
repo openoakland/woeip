@@ -152,7 +152,10 @@ export const UploadConfirm = ({
           >
             Save
           </PositiveActionButton>
-          <NeutralActionButton onClick={() => setShouldShowCancelModal(true)}>
+          {/* Turn off the ability to cancel once the upload has started. 
+          While we support cancel tokens, they may leave the data in a half-uploaded state.
+          Activate the ability once we have the functionality to rollback "half-uploads" */}
+          <NeutralActionButton onClick={() => setShouldShowCancelModal(true)} disabled={isSaving}>
             Cancel
           </NeutralActionButton>
         </Segment.Inline>
