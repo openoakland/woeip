@@ -35,7 +35,6 @@ export const getPollutantsByCollectionId = async (
   const options = {
     cancelToken: cancelTokenSource.token,
   };
-  console.log("collectionId", collectionId);
   if (!collectionId) return [];
   return (await axios.get(apiUrlCollectionById(collectionId), options)).data;
 };
