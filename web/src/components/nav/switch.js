@@ -14,6 +14,9 @@ export const Navswitch = () => {
   );
 };
 
+/**
+ * Route data: includes the components to render
+ */
 export const routes = [
   {
     path: "/",

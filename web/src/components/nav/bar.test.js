@@ -15,7 +15,7 @@ describe("Navbar", () => {
 
   it("should contain three links", () => {
     renderWithRouter(history);
-    expect(screen.getByText(/WOAQ/).href).toMatch("/");
+    expect(screen.getByText(/WO/).closest("a").href).toMatch("/");
     expect(screen.getByText(/Upload/).href).toMatch("/upload");
     expect(screen.getByText(/Maps/).href).toMatch("/maps");
   });
@@ -27,7 +27,7 @@ describe("Navbar", () => {
     expect(history.location.pathname).toEqual("/upload");
     fireEvent.click(screen.getByText(/Maps/));
     expect(history.location.pathname).toEqual("/maps");
-    fireEvent.click(screen.getByText(/WOAQ/));
+    fireEvent.click(screen.getByText(/WOAQ/).closest("a"));
     expect(history.location.pathname).toEqual("/");
   });
 });

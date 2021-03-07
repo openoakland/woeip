@@ -17,10 +17,7 @@ const Navbar = () => {
         <Menu.Menu position="right">
           {links.map(({ text, route }) => (
             <Menu.Item
-              // className="menu-item"
               key={route}
-              // name={route}
-              // link={true}
               as={NavLink}
               to={`/${route}`}
             >
@@ -35,6 +32,9 @@ const Navbar = () => {
 
 export const NavbarWithRouter = withRouter(Navbar);
 
+/**
+ * Data for Navigation Routes
+ */
 const links = [
   { text: "Upload", route: "upload" },
   { text: "Maps", route: "maps" },
