@@ -2,16 +2,16 @@ import fs from "fs";
 import moment from "moment-timezone";
 import {
   messageForFileCount,
-  messageForMissingFileType,
   messageForInvalidTime,
   messageForMismatchedTimes,
-  getDustrakSerial,
+  messageForMissingFileType,
   identFiles,
+  getDustrakSerial,
   getGpsStart,
   getDustrakStart,
   getDustrakEnd,
   extractFileMetaContent,
-} from "./utils";
+} from "./drop.utils";
 
 describe("Message for File Count", () => {
   it("should return an empty error when count is zero or two", () => {

@@ -28,15 +28,15 @@ import {
   getGpsStart,
   getDustrakSerial,
   getDustrakEnd,
-} from "./utils";
+} from "./drop.utils";
 
 /**
  * @property {Array<File>} files Array of files uploaded by user
  * @property {function} setFiles Change the array of files
  * @property {function} proceedToConfirm Overload setPhase with 'confirm' value
- * @property {funtion} setDustrakStart To be used for display on the confirmation page and in session meta data
- * @property {funtion} setDustrakEnd To be used for display on the confirmation page and in session meta data
- * @property {funtion} setDustrakSerial To be used for display on the confirmation page
+ * @property {function} setDustrakStart To be used for display on the confirmation page and in session meta data
+ * @property {function} setDustrakEnd To be used for display on the confirmation page and in session meta data
+ * @property {function} setDustrakSerial To be used for display on the confirmation page
  */
 export const UploadDrop = ({
   files,

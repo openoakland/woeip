@@ -5,7 +5,7 @@ import { Navswitch } from "./switch";
 import mapboxgl from "mapbox-gl";
 
 // https://github.com/mapbox/mapbox-gl-js/issues/3436
-jest.mock('mapbox-gl/dist/mapbox-gl', () => ({
+jest.mock("mapbox-gl/dist/mapbox-gl", () => ({
   GeolocateControl: jest.fn(),
   Map: jest.fn(() => ({
     addControl: jest.fn(),
@@ -19,7 +19,7 @@ jest.mock('mapbox-gl/dist/mapbox-gl', () => ({
 describe("Navswitch", () => {
   let history;
   beforeEach(() => {
-    window.URL.createObjectURL = () => {}
+    window.URL.createObjectURL = () => {};
     history = createMemoryHistory();
   });
 

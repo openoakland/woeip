@@ -62,7 +62,6 @@ export const identFiles = (files) => {
   return [gpsFile, dustrakFile];
 };
 
-// TODO: Retest
 /**
  * Serial number for the dustrak file is metadata in a specific place of the file
  * @param {Array<string>} textLines content of the file as a list of each line

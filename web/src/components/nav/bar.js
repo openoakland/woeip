@@ -16,11 +16,7 @@ const Navbar = () => {
         </Menu.Menu>
         <Menu.Menu position="right">
           {links.map(({ text, route }) => (
-            <Menu.Item
-              key={route}
-              as={NavLink}
-              to={`/${route}`}
-            >
+            <Menu.Item key={route} as={NavLink} to={`/${route}`}>
               {text}
             </Menu.Item>
           ))}
