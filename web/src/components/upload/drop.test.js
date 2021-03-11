@@ -13,7 +13,6 @@ describe("Actions after extracting files", () => {
   /**
    * It is time-intensive to extract files.
    * Run the process exactly once and make the data available to the whole test block
-   * Any test suites that rely on file data are placed in this test block
    */
   const testDir = `${__dirname}/test-data`;
   beforeAll(async () => {
@@ -106,7 +105,7 @@ describe("Actions after extracting files", () => {
     );
   });
 
-  it("should remove a file when click a trash icon", async () => {
+  it("should remove a file when click a trash icon", () => {
     const files = [csvFileValid, csvFileWrong, logFile];
     const setFiles = jest.fn();
     renderUploadDrop({ files, setFiles });
@@ -116,7 +115,7 @@ describe("Actions after extracting files", () => {
     expect(setFiles).toHaveBeenCalledWith([files[1], files[2]]);
   });
 
-  it("should proceed to the confirm page when there are two valid files", async () => {
+  it("should proceed to the confirm page when there are two valid files", () => {
     const files = [csvFileValid, logFile];
     const proceedToConfirm = jest.fn();
     renderUploadDrop({ files, proceedToConfirm });

@@ -131,17 +131,38 @@ export const UploadConfirm = ({
         <h2>Step 2. Confirm your session details</h2>
         <List>
           <List.Item>
-            <CalendarInput value={dustrakStart.format("MM/DD/YYYY")} disabled />
+            <CalendarInput
+              name="collection-date"
+              id="collection-date"
+              value={dustrakStart.format("MM/DD/YYYY")}
+              disabled
+            />
           </List.Item>
-          <List.Item>Collection date</List.Item>
+          <List.Item as="label" htmlFor="collection-date">
+            Collection date
+          </List.Item>
           <List.Item>
-            <Input disabled value={dustrakStart.format("h:mm A")} />
+            <Input
+              disabled
+              name="start-time"
+              id="start-time"
+              value={dustrakStart.format("h:mm A")}
+            />
           </List.Item>
-          <List.Item>Start Time</List.Item>
+          <List.Item as="label" htmlFor="start-time">
+            Start Time
+          </List.Item>
           <List.Item>
-            <Input disabled value={dustrakSerialToLabel[dustrakSerial]}></Input>
+            <Input
+              disabled
+              name="device"
+              id="device"
+              value={dustrakSerialToLabel[dustrakSerial]}
+            ></Input>
           </List.Item>
-          <List.Item>Device</List.Item>
+          <List.Item as="label" htmlFor="device">
+            Device
+          </List.Item>
         </List>
 
         <Segment.Inline>
