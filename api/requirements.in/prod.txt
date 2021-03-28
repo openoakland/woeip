@@ -5,7 +5,7 @@ django-environ
 django-extensions
 django-model-utils
 django-storages
-djangorestframework==3.11.0
+djangorestframework==3.11.2
 drf-yasg
 gevent
 gunicorn==19.9.0
