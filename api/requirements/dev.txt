@@ -5,7 +5,7 @@
 #    pip-compile --output-file=requirements/dev.txt requirements.in/dev.txt
 #
 argon2-cffi==19.1.0
-asgiref==3.2.3            # via django
+asgiref~=3.2.3            # via django
 astroid==2.2.5
 atomicwrites==1.3.0       # via pytest
 attrs==19.1.0             # via pytest
@@ -22,7 +22,7 @@ django-environ==0.4.5
 django-extensions==2.1.9
 django-model-utils==3.2.0
 django-storages==1.7.1
-django==3.0.7
+django==3.1.6
 djangorestframework==3.11.2
 drf-yasg==1.17.0
 factory-boy==2.12.0
