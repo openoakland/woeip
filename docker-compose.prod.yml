@@ -1,3 +1,6 @@
+# Based on AWS providing separate DB and S3 services
+# Also configured before switching from Server to Client side web rendering
+
 version: '3.3'
 
 services:
