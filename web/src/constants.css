@@ -1,0 +1,19 @@
+/*MDN documentation: for CSS Var https://developer.mozilla.org/en-US/docs/Web/CSS/var%28%29*/
+/* Set the constants on the "root" scope to make them available everywhere */
+:root {
+    /* Variable names should generally reflect their use, as opposed to their value.
+    In other words, "we use this value to achieve this effect". In the future, 
+    if we want to use a different value to achieve the effect, it's a simple change.
+    If the variable name is the same as the variable value, then changing the value means changing
+    the name to keep it accurate. This could mean changing hundreds of variable names 
+    throughout the application. Might as well have just used the values directly and skipped
+    using the variables!
+    */
+
+    /* fonts */
+    /* all variables start with dashes*/
+    --reserved-font: Verdana, Geneva, Tahoma, sans-serif, Helvetica, sans-serif;
+
+    /* colors */
+    --reassure-color: #000000;
+}

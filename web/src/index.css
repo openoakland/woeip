@@ -1,10 +1,16 @@
+/* import the constants into the application's index file.
+this makes them available throughout the whole application
+*/
+@import './constants.css';
+
 html{
     /* 1rem is 10px on default browser setting */
     font-size: 62.5%;
 }
 
 html, body, #root, .app-container {
-    font-family: Verdana, Geneva, Tahoma, sans-serif, Helvetica, sans-serif;
+    /* Use the value of the custom fonts here. */
+    font-family: var(--reserved-fonts);
     height: 100%;
     width: 100%;
     padding: 0;
