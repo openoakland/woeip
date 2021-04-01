@@ -30,3 +30,16 @@
     background: none;
     outline: none;
 }
+
+/* add custom variables */
+/* variables are imported in the application's base css file and are available here */
+.button.affirm {
+    background-color: var(--reassure-color);
+    color: var(--light-text);
+}
+
+/* Keep adding classes until specificity is higher than Semantic's */
+/* Use !important when Semantic uses !important because two can play that game */
+.basic.button.revert {
+    color: var(--dark-text) !important;
+}

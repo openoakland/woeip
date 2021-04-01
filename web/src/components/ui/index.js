@@ -30,11 +30,11 @@ export const PositiveActionButton = ({ ...props }) => (
 export const NeutralActionButton = ({ ...props }) => <Button {...props} />;
 
 export const RevertActionButton = ({ ...props }) => (
-  <Button basic color={--reassure-color} {...props} />
+  <Button basic className="revert" {...props} />
 );
 
 export const AffirmActionButton = ({ ...props }) => (
-  <Button color='--reassure-color' {...props} />
+  <Button className="affirm" {...props} />
 );
 
 export const TrashButton = ({ ...props }) => (

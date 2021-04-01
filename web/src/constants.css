@@ -15,5 +15,8 @@
     --reserved-font: Verdana, Geneva, Tahoma, sans-serif, Helvetica, sans-serif;
 
     /* colors */
+    /* see css file of UI components for example of color variables */
     --reassure-color: #000000;
+    --dark-text: #222;
+    --light-text:#ffffff;
 }
