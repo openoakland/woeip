@@ -38,7 +38,9 @@
     color: var(--light-text);
 }
 
-/* Keep adding classes until specificity is higher than Semantic's */
+/* Keep adding classes until specificity is higher than Semantic's 
+The easiest way to get the full list of classes is to run the application and 
+inspect it with developer tools */
 /* Use !important when Semantic uses !important because two can play that game */
 .basic.button.revert {
     color: var(--dark-text) !important;
