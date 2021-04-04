@@ -3,7 +3,7 @@ import "./index.css";
 
 export const About = () => (
   <Container>
-      {/* 
+    {/* 
       About page content goes here.
       React uses "JSX" to couple HTML and Javascript into one file https://reactjs.org/docs/introducing-jsx.html. 
       As the about component is static content, it shouldn't need any of the JS-like features.
