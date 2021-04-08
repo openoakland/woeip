@@ -30,11 +30,13 @@ export const messageForInvalidTime = (dustrakStart, dustrakEnd, gpsStart) =>
  * @param {moment}  gpsStart
  */
 export const messageForMismatchedTimes = (dustrakStart, gpsStart) =>
-  !(
-    dustrakStart.subtract(2, "minutes") <= gpsStart &&
-    gpsStart <= dustrakStart.add(2, "minutes")
-  )
+  !gpsStart.isSame(dustrakStart, "day")
     ? "Dates don't match. Please replace one of your files to continue."
+    : !(
+        dustrakStart.subtract(2, "minutes") <= gpsStart &&
+        gpsStart <= dustrakStart.add(2, "minutes")
+      )
+    ? "Times don't match. Please replace one of your files to continue."
     : "";
 
 /**
