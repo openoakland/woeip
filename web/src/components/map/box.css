@@ -7,8 +7,15 @@
 .circle-marker {
     height: 0.1rem;
     width: 0.1rem;
-    background-color: #f00;
     border-radius: 50%;
+}
+
+.circle-marker.blue {
+    background-color: #00f;
+}
+
+.circle-marker.red {
+    background-color: #f00;
 }
 
 .navigation-control {
