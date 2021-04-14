@@ -54,6 +54,8 @@ You can now open your web browser and access the services at the following [lvh]
 
 Follow testing and linting instructions in the [Pull Request Template](/.github/pull_request_template.md)
 
+TODO: add e2e testing documentation
+
 # Contributing as a non-developer
 
 ## Design & research options
