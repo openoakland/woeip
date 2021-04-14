@@ -27,3 +27,10 @@ services:
       - 80:80
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
+  
+  codeceptjs:
+    image: codeceptjs/codeceptjs
+    depends_on:
+      - web
+    volumes:
+      - ./web/codecept.config.js:/tests

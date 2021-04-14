@@ -36,7 +36,7 @@
       "prettier/prettier": "warn"
     }
   },
-  "eslintIgnore":[
+  "eslintIgnore": [
     "build"
   ],
   "browserslist": {
@@ -56,8 +56,10 @@
     "@testing-library/react": "^11.2.5",
     "@testing-library/user-event": "^12.7.1",
     "@typescript-eslint/parser": "^4.15.1",
+    "codeceptjs": "^3.0.6",
     "eslint-config-prettier": "^7.2.0",
     "eslint-plugin-prettier": "^3.3.1",
+    "playwright": "^1.10.0",
     "prettier": "^2.2.1",
     "typescript": "^4.1.5"
   }
