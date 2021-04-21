@@ -34,3 +34,6 @@ collectstatic: ## Collect static files
 
 seed_pollutant: ## Save initial pollutant type
 	python manage.py loaddata pollutant.json
+
+seed_device: ## Save device information
+	python manage.py loaddata device.json
