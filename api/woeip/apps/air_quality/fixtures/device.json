@@ -1,7 +1,6 @@
 [
     {
         "model": "air_quality.device",
-        "pk": 1,
         "fields": {
             "name": "DustTrak A",
             "serial": "8530091203",
@@ -10,7 +9,6 @@
     },
     {
         "model": "air_quality.device",
-        "pk": 2,
         "fields": {
             "name": "DustTrak B",
             "serial": "8530094612",
@@ -19,7 +17,6 @@
     },
     {
         "model": "air_quality.device",
-        "pk": 3,
         "fields": {
             "name": "DustTrak C",
             "serial": "8530100707",

@@ -9,7 +9,7 @@ class Device(models.Model):
     """
 
     name = models.CharField(max_length=256)
-    serial = models.CharField(max_length=256)
+    serial = models.CharField(max_length=256, primary_key=True) 
     firmware = models.CharField(max_length=256)
 
     def __str__(self):
