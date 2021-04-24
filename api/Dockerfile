@@ -8,6 +8,7 @@ RUN apt-get update \
       libffi-dev \
       libgdal-dev \
       libssl-dev \
+      postgresql-client\
     && rm -rf /var/lib/apt/lists/* \
     && pip install -U pip
 
