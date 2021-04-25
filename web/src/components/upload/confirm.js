@@ -105,6 +105,7 @@ export const UploadConfirm = ({
         secondFile: files[1],
         dustrakStart,
         dustrakEnd,
+        dustrakSerial,
       })
     );
     setCancelTokenSource(axios.CancelToken.source());
