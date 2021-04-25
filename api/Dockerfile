@@ -4,6 +4,7 @@ WORKDIR /usr/src/app
 
 RUN apt-get update \
     && apt-get install --no-install-recommends -y \
+      postgresql-client \
       build-essential \
       libffi-dev \
       libgdal-dev \
