@@ -1,10 +1,19 @@
-FROM node:12.6.0-alpine
+FROM node:14-alpine
 
+# set working directory
 WORKDIR /usr/src/app
 
-ENV PATH /usr/src/app/node_modules/.bin:$PATH
+# add `/app/node_modules/.bin` to $PATH
+ENV PATH usr/src/app/node_modules/.bin:$PATH
 
-COPY package.json package-lock.json ./
-RUN npm ci
+# install app dependencies
+COPY package*.json ./
+RUN npm i
+RUN npm i react-scripts@4.0.3 -g
 
-ENTRYPOINT ["npm", "start"]
+# add app
+COPY . .
+
+EXPOSE 3000
+# start app
+CMD ["npm", "start"]

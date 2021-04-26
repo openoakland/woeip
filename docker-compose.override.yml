@@ -1,3 +1,4 @@
+# Development Environment
 version: '3.3'
 
 services:
@@ -27,17 +28,17 @@ services:
     tty: true
 
   web:
+    build:
+      dockerfile: Dockerfile
     environment:
-      NODE_ENV: development
       VIRTUAL_HOST: lvh.me
       VIRTUAL_PORT: 3000
+      CHOKIDAR_USEPOLLING: 'true'
     ports:
-      - 3000
-      - 3001:3001
+      - 3000:3000
     volumes:
-      - ./web:/usr/src/app
-      - /usr/src/app/node_modules/
-      - /usr/src/app/build/
+      - ./web:/usr/src/app:rw
+      - '/usr/src/app/node_modules'
 
   db:
     environment:
