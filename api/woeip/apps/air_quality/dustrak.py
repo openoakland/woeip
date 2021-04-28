@@ -245,7 +245,7 @@ def join(air_quality, gps, tolerance=3.0):
     return joined_data
 
 
-def save(joined_data, gps_collection_file, pollutant_collection_file, pollutant, device):
+def save(joined_data, gps_collection_file, pollutant_collection_file, pollutant):
     """Save a table of joined data to the database
 
     Parameters
@@ -257,7 +257,6 @@ def save(joined_data, gps_collection_file, pollutant_collection_file, pollutant,
         CollectionFile object for pollutant data
     pollutant : woeip.apps.air_quality.models.Pollutant
         Pollutant that was collected
-    device: woeip.apps.air_quality.models.Device
     """
     for _, row in joined_data.iterrows():
         time_geo = models.TimeGeo(
@@ -273,9 +272,3 @@ def save(joined_data, gps_collection_file, pollutant_collection_file, pollutant,
             value=row["measurement"],
         )
         pollutant_value.save()
-        device_value = models.Device(
-            name="", #get name from device serial
-            serial=device,
-            firmware="",
-        )
-        device_value.save()

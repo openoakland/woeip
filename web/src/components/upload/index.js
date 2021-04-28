@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import moment from "moment-timezone";
 
 import { UploadDrop } from "./drop";
 import { UploadConfirm } from "./confirm";
 import { Container } from "../ui";
+import { getDevices } from "./drop.utils";
 
 export const Upload = () => {
   const [files, setFiles] = useState([]);
@@ -11,15 +12,21 @@ export const Upload = () => {
   const [dustrakStart, setDustrakStart] = useState(moment(""));
   const [dustrakEnd, setDustrakEnd] = useState(moment(""));
   const [dustrakSerial, setDustrakSerial] = useState("");
+  const [devices, setDevices] = useState([]);
 
-  /**
-   * Map of each dustrak serial number to its label
-   */
-  const dustrakSerialToLabel = {
-    8530091203: "Device A",
-    8530094612: "Device B",
-    8530100707: "Device C",
-  };
+  useEffect(() => {
+    (async () => {
+      try {
+        const deviceList = await getDevices();
+        setDevices(deviceList);
+      } catch(err) {
+        console.error(err);
+      }
+    })()
+  }, [devices]);
+
+  const matchedDevice = devices.filter(device => device.serial === dustrakSerial);
+  const deviceName = matchedDevice.length ? matchedDevice[0] : null;
 
   return (
     <Container>
@@ -35,7 +42,7 @@ export const Upload = () => {
       )}
       {phase === "confirm" && (
         <UploadConfirm
-          dustrakSerialToLabel={dustrakSerialToLabel}
+          dustrakSerialToLabel={deviceName}
           files={files}
           dustrakStart={dustrakStart}
           dustrakEnd={dustrakEnd}

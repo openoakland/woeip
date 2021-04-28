@@ -64,9 +64,6 @@ class CollectionSerializer(serializers.HyperlinkedModelSerializer):
     pollutant = serializers.PrimaryKeyRelatedField(
         queryset=Pollutant.objects.all(), write_only=True, required=True
     )
-    device = serializers.PrimaryKeyRelatedField(
-        queryset=Device.objects.all(), write_only=True, required=True
-    )
 
     class Meta:
         model = Collection
@@ -77,7 +74,6 @@ class CollectionSerializer(serializers.HyperlinkedModelSerializer):
             "collection_files",
             "upload_files",
             "pollutant",
-            "device"
         ]
         extra_kwargs = {"collection_files": {"required": False}}
 
@@ -166,7 +162,6 @@ class CollectionSerializer(serializers.HyperlinkedModelSerializer):
             gps_collection_file=gps_collection_file,
             pollutant_collection_file=dustrak_collection_file,
             pollutant=validated_data.pop("pollutant"),
-            device=validated_data.pop("device"),
         )
 
         return collection

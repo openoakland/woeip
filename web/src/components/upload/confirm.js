@@ -105,7 +105,6 @@ export const UploadConfirm = ({
         secondFile: files[1],
         dustrakStart,
         dustrakEnd,
-        dustrakSerial,
       })
     );
     setCancelTokenSource(axios.CancelToken.source());
@@ -158,8 +157,9 @@ export const UploadConfirm = ({
               disabled
               name="device"
               id="device"
-              value={dustrakSerialToLabel[dustrakSerial]}
+              value={dustrakSerialToLabel}
             ></Input>
+            debugger;
           </List.Item>
           <List.Item as="label" htmlFor="device">
             Device
