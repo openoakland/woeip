@@ -23,10 +23,10 @@ export const Upload = () => {
         console.error(err);
       }
     })()
-  }, [devices]);
+  }, [dustrakSerial]);
 
   const matchedDevice = devices.filter(device => device.serial === dustrakSerial);
-  const deviceName = matchedDevice.length ? matchedDevice[0] : null;
+  const deviceName = matchedDevice.length ? matchedDevice[0].name : null;
 
   return (
     <Container>

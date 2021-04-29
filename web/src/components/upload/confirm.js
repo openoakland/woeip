@@ -159,7 +159,6 @@ export const UploadConfirm = ({
               id="device"
               value={dustrakSerialToLabel}
             ></Input>
-            debugger;
           </List.Item>
           <List.Item as="label" htmlFor="device">
             Device
