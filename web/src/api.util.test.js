@@ -14,7 +14,7 @@ it("should create the url to get a collection by its ID", () => {
   );
 });
 
-// TODO: Move this test to its own level file.
+// Moved this test to its own level file.
 // See '.github/pull_request_template##Checklist' for instructions to run tests
 // To run a specific test, instead of all of them: `run test src/[sub-path-to-file]/[file-name.test.js]`
 it("should create the url to get all devices", () => {
