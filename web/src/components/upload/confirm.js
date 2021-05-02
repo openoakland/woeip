@@ -23,7 +23,8 @@ import { apiUrlCollections } from "../../api.util";
 /**
  * Allow the user to view data about their files
  * The may choose whether to proceed with saving their files on the server
- * @property {Object} dustrakSerialToLabel Map of each dustrak serial number to its label
+ * // TODO: update JSDoc with device
+ * @property {Object} device Meta-data for the device
  * @property {Array<FileWithPath} files GPS and Dustrak Pair, validated during drop phase
  * @property {Moment} dustrakStart Reference point to when the data collection session started
  * @property {Moment} dustrakEnd Reference point to when the data collection session ended
@@ -35,11 +36,10 @@ import { apiUrlCollections } from "../../api.util";
  * @modifies {database} Confirmation of files will send them to the server to be saved
  */
 export const UploadConfirm = ({
-  dustrakSerialToLabel,
+  device,
   files,
   dustrakStart,
   dustrakEnd,
-  dustrakSerial,
   clearFiles,
   clearDustrakTimes,
   clearDustrakSerial,
@@ -157,7 +157,10 @@ export const UploadConfirm = ({
               disabled
               name="device"
               id="device"
-              value={dustrakSerialToLabel}
+              // TODO: Take advantage of the device being an empty object, instead of null
+              // If device is an empty object with no name,
+              // then the name is unknown
+              value={device.name || 'unknown'}
             ></Input>
           </List.Item>
           <List.Item as="label" htmlFor="device">
@@ -195,11 +198,14 @@ export const UploadConfirm = ({
 };
 
 UploadConfirm.propTypes = {
-  dustrakSerialToLabel: PropTypes.object,
+  // TODO: Change to device of type 'object'
+  // This also gives us the id, which we soon use to save the device to the database
+  device: PropTypes.object,
   files: PropTypes.array,
   dustrakStart: PropTypes.object,
   dustrakEnd: PropTypes.object,
-  dustrakSerial: PropTypes.string,
+  // TODO: Remove
+  // No longer used dustrakSerial
   clearDustrakTimes: PropTypes.func.isRequired,
   clearDustrakSerial: PropTypes.func.isRequired,
   clearFiles: PropTypes.func.isRequired,

@@ -12,8 +12,11 @@ it("should create the url to get a collection by its ID", () => {
   expect(apiUrlCollectionById(1)).toEqual(
     "http://api.lvh.me/collection/1/data"
   );
+});
 
-  it("should create the url to get all devices", () => {
-    expect(apiUrlDevices()).toEqual("http://api.lvh.me/devices");
-  });
+// TODO: Move this test to its own level file.
+// See '.github/pull_request_template##Checklist' for instructions to run tests
+// To run a specific test, instead of all of them: `run test src/[sub-path-to-file]/[file-name.test.js]`
+it("should create the url to get all devices", () => {
+  expect(apiUrlDevices()).toEqual("http://api.lvh.me/devices");
 });

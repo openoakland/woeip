@@ -8,6 +8,7 @@
   - exit container `ctrl/command+D` or `exit`
   - enter web container `docker-compose exec web /bin/sh`
   - run front-end tests `npm run test` or `npx jest`
+  - run a specific front end test `npm run test src/[sub-path-to-file]/[name of file]`
   - lint `npm run lint-fix`
   - exit container as above
 - [ ] Request code review

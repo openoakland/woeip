@@ -4,7 +4,7 @@ import moment from "moment-timezone";
 import { UploadDrop } from "./drop";
 import { UploadConfirm } from "./confirm";
 import { Container } from "../ui";
-import { getDevices } from "./drop.utils";
+import { findDevice, getDevices } from "./utils";
 
 export const Upload = () => {
   const [files, setFiles] = useState([]);
@@ -12,21 +12,29 @@ export const Upload = () => {
   const [dustrakStart, setDustrakStart] = useState(moment(""));
   const [dustrakEnd, setDustrakEnd] = useState(moment(""));
   const [dustrakSerial, setDustrakSerial] = useState("");
-  const [devices, setDevices] = useState([]);
+  // TODO: Place the device in the react state.
+  // This is because we the treat device as something that may change and needs to be accessed across the component.
+  // Default to empty object
+  const [device, setDevice] = useState({})
+  // TODO: Remove the whole list of devices from state
+  // Because we're really only interested in one device, 
+  // we can relegate it to an intermediate variable that we only access within `useEffect`
+  // const [devices, setDevices] = useState([]);
 
   useEffect(() => {
     (async () => {
       try {
-        const deviceList = await getDevices();
-        setDevices(deviceList);
+        // TODO: rename
+        // Convention is to use plural to represent lists 
+        const devices= await getDevices();
+        // TODO: Place it within the useEffect
+        // This will allow us to reliably update the state of 'device', if the device list changes
+        setDevice(findDevice(devices, dustrakSerial));
       } catch(err) {
         console.error(err);
       }
     })()
   }, [dustrakSerial]);
-
-  const matchedDevice = devices.filter(device => device.serial === dustrakSerial);
-  const deviceName = matchedDevice.length ? matchedDevice[0].name : null;
 
   return (
     <Container>
@@ -42,11 +50,15 @@ export const Upload = () => {
       )}
       {phase === "confirm" && (
         <UploadConfirm
-          dustrakSerialToLabel={deviceName}
+          // TODO: The next feature we will want is to save the device to the database
+          // This feature will require access to the device id, as well.
+          // In which case, we should pass the entire device object
+          device={device}
           files={files}
           dustrakStart={dustrakStart}
           dustrakEnd={dustrakEnd}
-          dustrakSerial={dustrakSerial}
+          // TODO: Remove dustrakSerial variable
+          // No longer need to pass dustrak serial to confirmation page
           clearFiles={() => setFiles([])}
           clearDustrakTimes={() => {
             setDustrakStart(moment(""));
