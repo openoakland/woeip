@@ -23,11 +23,10 @@ import { apiUrlCollections } from "../../api.util";
 /**
  * Allow the user to view data about their files
  * The may choose whether to proceed with saving their files on the server
- * @property {Object} dustrakSerialToLabel Map of each dustrak serial number to its label
+ * @property {Object} device device Meta-data for the device 
  * @property {Array<FileWithPath} files GPS and Dustrak Pair, validated during drop phase
  * @property {Moment} dustrakStart Reference point to when the data collection session started
  * @property {Moment} dustrakEnd Reference point to when the data collection session ended
- * @property {Moment} dustrakSerial Reference point to what device was used to collect session data
  * @property {function} clearFiles Overloads setFiles with empty array
  * @property {function} clearDustrakTimes Overloads setDustrakStart and setDustrakEnd with invalid moments
  * @property {function} clearDustrakSerial Overloads setDustrakSerial with empty string
@@ -35,11 +34,10 @@ import { apiUrlCollections } from "../../api.util";
  * @modifies {database} Confirmation of files will send them to the server to be saved
  */
 export const UploadConfirm = ({
-  dustrakSerialToLabel,
+  device,
   files,
   dustrakStart,
   dustrakEnd,
-  dustrakSerial,
   clearFiles,
   clearDustrakTimes,
   clearDustrakSerial,
@@ -157,7 +155,7 @@ export const UploadConfirm = ({
               disabled
               name="device"
               id="device"
-              value={dustrakSerialToLabel}
+              value={device.name || 'unknown'}
             ></Input>
           </List.Item>
           <List.Item as="label" htmlFor="device">
@@ -195,11 +193,10 @@ export const UploadConfirm = ({
 };
 
 UploadConfirm.propTypes = {
-  dustrakSerialToLabel: PropTypes.object,
+  device: PropTypes.object,
   files: PropTypes.array,
   dustrakStart: PropTypes.object,
   dustrakEnd: PropTypes.object,
-  dustrakSerial: PropTypes.string,
   clearDustrakTimes: PropTypes.func.isRequired,
   clearDustrakSerial: PropTypes.func.isRequired,
   clearFiles: PropTypes.func.isRequired,

@@ -5,6 +5,7 @@ import { UploadDrop } from "./drop";
 import { UploadConfirm } from "./confirm";
 import { Container } from "../ui";
 import { getDevices } from "./drop.utils";
+import { findDevice, getDevices } from "./utils";
 
 export const Upload = () => {
   const [files, setFiles] = useState([]);
@@ -12,21 +13,18 @@ export const Upload = () => {
   const [dustrakStart, setDustrakStart] = useState(moment(""));
   const [dustrakEnd, setDustrakEnd] = useState(moment(""));
   const [dustrakSerial, setDustrakSerial] = useState("");
-  const [devices, setDevices] = useState([]);
+  const [device, setDevice] = useState({});
 
   useEffect(() => {
     (async () => {
       try {
-        const deviceList = await getDevices();
-        setDevices(deviceList);
+        const devices = await getDevices();
+        setDevice(findDevice(devices, dustrakSerial));
       } catch(err) {
         console.error(err);
       }
     })()
   }, [dustrakSerial]);
-
-  const matchedDevice = devices.filter(device => device.serial === dustrakSerial);
-  const deviceName = matchedDevice.length ? matchedDevice[0].name : null;
 
   return (
     <Container>
@@ -42,11 +40,10 @@ export const Upload = () => {
       )}
       {phase === "confirm" && (
         <UploadConfirm
-          dustrakSerialToLabel={deviceName}
+          device={device}
           files={files}
           dustrakStart={dustrakStart}
           dustrakEnd={dustrakEnd}
-          dustrakSerial={dustrakSerial}
           clearFiles={() => setFiles([])}
           clearDustrakTimes={() => {
             setDustrakStart(moment(""));

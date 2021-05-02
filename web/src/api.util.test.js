@@ -12,8 +12,8 @@ it("should create the url to get a collection by its ID", () => {
   expect(apiUrlCollectionById(1)).toEqual(
     "http://api.lvh.me/collection/1/data"
   );
+});
 
-  it("should create the url to get all devices", () => {
-    expect(apiUrlDevices()).toEqual("http://api.lvh.me/devices");
-  });
+it("should create the url to get all devices", () => {
+  expect(apiUrlDevices()).toEqual("http://api.lvh.me/devices");
 });

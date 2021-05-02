@@ -1,6 +1,4 @@
 import moment from "moment-timezone";
-import axios from "axios";
-import { apiUrlDevices } from "../../api.util";
 
 /**
  * If there are files, there must be exactly two. Otherwise, return an error message
@@ -145,11 +143,3 @@ export const extractFileMetaContent = async (file, endLine = 10) => {
     return [""];
   }
 };
-
-/**
- * Retrieve all of the devices
- * @returns {Array<Device>}
- */
-export const getDevices = async () => {
-  return (await axios.get(apiUrlDevices())).data;
-}
