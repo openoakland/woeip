@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { PropTypes } from "prop-types";
 import { Dimmer, Loader, Container } from "../ui";
 import "./box.css";
 
-import ReactMapGL, { Marker, NavigationControl } from "react-map-gl";
+import ReactMapGL, { NavigationControl, Source, Layer } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 // Hack: https://github.com/mapbox/mapbox-gl-js/issues/10173#issuecomment-753662795
 import mapboxgl from "mapbox-gl";
@@ -30,17 +30,39 @@ export const MapBox = ({ isLoading, pollutants }) => {
 
   const [viewport, setViewport] = useState(initialViewport);
 
-  /**
-   * For each pollutant, create a "marker" component at its lat and long
-   * Use css to give each pollutant its appearance
-   */
-  const markers = pollutants.map((pollutant, index) => {
-    const markerColor = pollutant.value > 0.05 ? "red": "blue"
-    return (
-    <Marker key={index} {...pollutant} className={`circle-marker ${markerColor}`}
-    />
-    )
-  });
+  const geojson = useMemo(
+    () => ({
+      type: "FeatureCollection",
+      features: pollutants.map(({ longitude, latitude, ...properties }) => ({
+        type: "Feature",
+        geometry: {
+          type: "Point",
+          coordinates: [longitude, latitude],
+        },
+        properties,
+      })),
+    }),
+    [pollutants]
+  );
+
+  const layerStyle = {
+    type: "circle",
+    layout: {},
+    paint: {
+      "circle-color": [
+        "case",
+        ["<=", ["get", "value"], 0.005],
+        "hsl(134, 71%, 55%)",
+        ["<=", ["get", "value"], 0.01],
+        "hsl(65, 87%, 62%)",
+        ["<=", ["get", "value"], 0.02],
+        "hsl(36, 74%, 49%)",
+        ["<=", ["get", "value"], 0.05],
+        "hsl(0, 88%, 62%)",
+        "hsl(281, 85%, 27%)",
+      ],
+    },
+  };
 
   return (
     <Container className="map-view-container">
@@ -59,7 +81,9 @@ export const MapBox = ({ isLoading, pollutants }) => {
           showCompass={false}
           className={"navigation-control"}
         />
-        {markers}
+        <Source id="session-data" type="geojson" data={geojson}>
+          <Layer {...layerStyle} />
+        </Source>
       </ReactMapGL>
     </Container>
   );
