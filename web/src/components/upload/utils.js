@@ -1,4 +1,5 @@
-import axios from 'axios';
+import axios from "axios";
+import { apiUrlDevices } from "../../api.util";
 
 /**
  * Shape of device data stored in database

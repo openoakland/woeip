@@ -4,7 +4,6 @@ import moment from "moment-timezone";
 import { UploadDrop } from "./drop";
 import { UploadConfirm } from "./confirm";
 import { Container } from "../ui";
-import { getDevices } from "./drop.utils";
 import { findDevice, getDevices } from "./utils";
 
 export const Upload = () => {
