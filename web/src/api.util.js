@@ -24,3 +24,9 @@ export const apiUrlCollections = () => apiUrl("collection");
  */
 export const apiUrlCollectionById = (collectionId) =>
   apiUrl(`collection/${collectionId}/data`);
+
+/**
+ * Constructs the api endpoint for all devices
+ * @returns {string}
+ */
+ export const apiUrlDevices = () => apiUrl("devices");

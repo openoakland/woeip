@@ -11,6 +11,7 @@ make migrate
 
 echo Saving initial pollutant type...
 make seed_pollutant
+make seed_device
 
 # Build static assets
 echo Building static assets...

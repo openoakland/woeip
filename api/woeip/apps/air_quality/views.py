@@ -100,7 +100,7 @@ class DeviceViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(serial=serial)
 
         return queryset
-
+        
 
 class PollutantViewSet(viewsets.ModelViewSet):
     queryset = models.Pollutant.objects.all()

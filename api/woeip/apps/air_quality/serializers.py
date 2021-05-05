@@ -41,7 +41,7 @@ class CollectionFileSerializer(serializers.ModelSerializer):
 class DeviceSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Device
-        fields = ["name", "serial", "firmware"]
+        fields = ["id", "name", "serial", "firmware"]
 
 
 class PollutantSerializer(serializers.HyperlinkedModelSerializer):

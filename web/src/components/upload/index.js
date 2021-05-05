@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import moment from "moment-timezone";
 
 import { UploadDrop } from "./drop";
 import { UploadConfirm } from "./confirm";
 import { Container } from "../ui";
+import { findDevice, getDevices } from "./utils";
 
 export const Upload = () => {
   const [files, setFiles] = useState([]);
@@ -11,15 +12,18 @@ export const Upload = () => {
   const [dustrakStart, setDustrakStart] = useState(moment(""));
   const [dustrakEnd, setDustrakEnd] = useState(moment(""));
   const [dustrakSerial, setDustrakSerial] = useState("");
+  const [device, setDevice] = useState({});
 
-  /**
-   * Map of each dustrak serial number to its label
-   */
-  const dustrakSerialToLabel = {
-    8530091203: "Device A",
-    8530094612: "Device B",
-    8530100707: "Device C",
-  };
+  useEffect(() => {
+    (async () => {
+      try {
+        const devices = await getDevices();
+        setDevice(findDevice(devices, dustrakSerial));
+      } catch(err) {
+        console.error(err);
+      }
+    })()
+  }, [dustrakSerial]);
 
   return (
     <Container>
@@ -35,11 +39,10 @@ export const Upload = () => {
       )}
       {phase === "confirm" && (
         <UploadConfirm
-          dustrakSerialToLabel={dustrakSerialToLabel}
+          device={device}
           files={files}
           dustrakStart={dustrakStart}
           dustrakEnd={dustrakEnd}
-          dustrakSerial={dustrakSerial}
           clearFiles={() => setFiles([])}
           clearDustrakTimes={() => {
             setDustrakStart(moment(""));
