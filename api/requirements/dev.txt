@@ -45,7 +45,7 @@ packaging==19.0           # via drf-yasg, pytest
 pandas==0.24.2
 pluggy==0.12.0            # via pytest
 psycopg2-binary==2.8.3
-py==1.8.0                 # via pytest
+py==1.10.0                 # via pytest
 pycparser==2.19           # via cffi
 pynmea2==1.15.0
 pyparsing==2.4.0          # via packaging
@@ -62,7 +62,7 @@ text-unidecode==1.2       # via faker
 typed-ast==1.4.0          # via astroid, mypy
 typing-extensions==3.7.4  # via mypy
 uritemplate==3.0.0        # via coreapi, drf-yasg
-urllib3==1.25.7           # via requests
+urllib3==1.25.8           # via requests
 wcwidth==0.1.7            # via pytest
 wrapt==1.11.2             # via astroid
 zipp==0.5.2               # via importlib-metadata
