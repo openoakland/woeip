@@ -120,3 +120,27 @@ export const canceledCollectionsMessage = canceledRequestMessage("collections");
  * Overload cancel request message with collections
  */
 export const canceledPollutantsMessage = canceledRequestMessage("pollutants");
+
+export const formatPollutantsToGeoJSON = (pollutants) => ({
+  type: "FeatureCollection",
+  features: pollutants.map(({ longitude, latitude, ...properties }) => ({
+    type: "Feature",
+    geometry: {
+      type: "Point",
+      coordinates: [longitude, latitude],
+    },
+    properties,
+  })),
+});
+
+export const getSessionDataLayerStyle = (stylesheet) => {
+  if (!stylesheet) return;
+  const dataStyle = {
+    ...stylesheet.layers.find(({ id }) => id === "sample-data-c7dpx7"),
+  };
+  delete dataStyle["source-layer"];
+  delete dataStyle.id;
+  delete dataStyle.layout.visibility;
+
+  return dataStyle;
+};

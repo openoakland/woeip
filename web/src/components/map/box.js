@@ -1,6 +1,7 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import { PropTypes } from "prop-types";
 import { Dimmer, Loader, Container } from "../ui";
+import { formatPollutantsToGeoJSON, getSessionDataLayerStyle } from "./utils";
 import "./box.css";
 
 import ReactMapGL, { NavigationControl, Source, Layer } from "react-map-gl";
@@ -16,8 +17,9 @@ mapboxgl.workerClass = require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worke
  * @property {Array<Pollutant>} pollutants
  */
 export const MapBox = ({ isLoading, pollutants }) => {
-  const mapStyle = "mapbox://styles/mapbox/streets-v11";
-  const mapboxApiAccessToken = process.env.REACT_APP_MAPBOX_TOKEN;
+  const mapStyle = "mapbox://styles/kbrdsk/cklmsulop45dm17r0e50s471k";
+  const mapboxApiAccessToken =
+    "pk.eyJ1Ijoia2JyZHNrIiwiYSI6ImNrbGpyc2d2dDA5MjMydnAzdjZheHoyOW0ifQ.28bD5wud6KEpjNakfMZh0Q";
   const initialViewport = {
     height: "100%",
     width: "100%",
@@ -27,42 +29,18 @@ export const MapBox = ({ isLoading, pollutants }) => {
     bearing: 0,
     pitch: 0,
   };
+  const geojson = useMemo(() => formatPollutantsToGeoJSON(pollutants), [
+    pollutants,
+  ]);
+  const mapRef = useRef();
+  const stylesheet = mapRef.current?.getMap().style.stylesheet;
 
   const [viewport, setViewport] = useState(initialViewport);
+  const [layerStyle, setLayerStyle] = useState(null);
 
-  const geojson = useMemo(
-    () => ({
-      type: "FeatureCollection",
-      features: pollutants.map(({ longitude, latitude, ...properties }) => ({
-        type: "Feature",
-        geometry: {
-          type: "Point",
-          coordinates: [longitude, latitude],
-        },
-        properties,
-      })),
-    }),
-    [pollutants]
-  );
-
-  const layerStyle = {
-    type: "circle",
-    layout: {},
-    paint: {
-      "circle-color": [
-        "case",
-        ["<=", ["get", "value"], 0.005],
-        "hsl(134, 71%, 55%)",
-        ["<=", ["get", "value"], 0.01],
-        "hsl(65, 87%, 62%)",
-        ["<=", ["get", "value"], 0.02],
-        "hsl(36, 74%, 49%)",
-        ["<=", ["get", "value"], 0.05],
-        "hsl(0, 88%, 62%)",
-        "hsl(281, 85%, 27%)",
-      ],
-    },
-  };
+  useEffect(() => {
+    setLayerStyle(getSessionDataLayerStyle(stylesheet));
+  }, [stylesheet]);
 
   return (
     <Container className="map-view-container">
@@ -76,14 +54,17 @@ export const MapBox = ({ isLoading, pollutants }) => {
         mapStyle={mapStyle}
         onViewStateChange={setViewport}
         mapboxApiAccessToken={mapboxApiAccessToken}
+        ref={mapRef}
       >
         <NavigationControl
           showCompass={false}
           className={"navigation-control"}
         />
-        <Source id="session-data" type="geojson" data={geojson}>
-          <Layer {...layerStyle} />
-        </Source>
+        {layerStyle ? (
+          <Source id="session-data" type="geojson" data={geojson}>
+            <Layer {...layerStyle} />
+          </Source>
+        ) : null}
       </ReactMapGL>
     </Container>
   );
