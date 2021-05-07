@@ -75,7 +75,7 @@ def combine_date_and_time(date_series, time_series):
     """
     datetimes = []
     for date, time in zip(date_series.values, time_series.values):
-        dt = pd.datetime.combine(date, time)
+        dt = datetime.datetime.combine(date, time)
         datetimes.append(dt)
 
     return datetimes
@@ -172,7 +172,7 @@ def load_gps(filepath):
     gps = pd.DataFrame(gps)
 
     sample_times = combine_date_and_time(gps.datestamp, gps.timestamp)
-    sample_times = pd.DatetimeIndex(sample_times, tz="UTC")
+    sample_times = datetime.DatetimeIndex(sample_times, tz="UTC")
     gps["time"] = sample_times
     gps.sort_values(by="time", inplace=True)
 
