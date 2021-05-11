@@ -90,6 +90,14 @@ export const getCollectionFileByLink = async (fileLink) => {
 };
 
 /**
+ * url is stored in database as http. To prevent mixed content errors (https://developer.mozilla.org/en-US/docs/Web/Security/Mixed_content),
+ * the production protocol needs to access the link through https.
+ * @param {string} link to file download 
+ * @returns {string} protocol set based on environment 
+ */
+export const swapProtocol = (link) => link.replace('http', process.env.REACT_APP_PROTOCOL || 'http');
+
+/**
  * Return the collection that was last added to a date.
  * If no collections were returned for a date, fall back to using an empty object
  * @param {Array<Collection>} pendingCollections possible collections

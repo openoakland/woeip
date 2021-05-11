@@ -12,6 +12,7 @@ import {
   fallbackPollutants,
   getPollutantsByCollectionId,
   getCollectionFileByLink,
+  swapProtocol,
   canceledCollectionsMessage,
   canceledPollutantsMessage,
 } from "./utils";
@@ -71,8 +72,8 @@ export const Map = () => {
         const collectionFileLinks = activeCollection.collection_files;
         const [gpsFileLink, dustFileLink] = collectionFileLinks || ["", ""];
         const [pendingGpsFile, pendingDustrakFile] = await Promise.all([
-          getCollectionFileByLink(gpsFileLink),
-          getCollectionFileByLink(dustFileLink),
+          getCollectionFileByLink(swapProtocol(gpsFileLink)),
+          getCollectionFileByLink(swapProtocol(dustFileLink)),
         ]);
         setGpsFileUrl(pendingGpsFile.file);
         setDustrakFileUrl(pendingDustrakFile.file);
