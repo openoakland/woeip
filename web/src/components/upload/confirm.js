@@ -82,6 +82,7 @@ export const UploadConfirm = ({
           if (axios.isCancel(thrown)) {
             alert("Canceled request to save uploads");
           } else {
+            // alert(thrown.response.data);
             alert("Failed to save uploads");
           }
         }
