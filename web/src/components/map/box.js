@@ -22,9 +22,8 @@ mapboxgl.workerClass = require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worke
  * @property {Array<Pollutant>} pollutants
  */
 export const MapBox = ({ isLoading, pollutants }) => {
-  const mapStyle = "mapbox://styles/kbrdsk/cklmsulop45dm17r0e50s471k";
-  const mapboxApiAccessToken =
-    "pk.eyJ1Ijoia2JyZHNrIiwiYSI6ImNrbGpyc2d2dDA5MjMydnAzdjZheHoyOW0ifQ.28bD5wud6KEpjNakfMZh0Q";
+  const mapStyle = process.env.REACT_APP_MAPBOX_STYLE_URL;
+  const mapboxApiAccessToken = process.env.REACT_APP_MAPBOX_TOKEN;
   const initialViewport = {
     height: "100%",
     width: "100%",

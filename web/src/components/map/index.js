@@ -14,6 +14,7 @@ import {
   getCollectionFileByLink,
   canceledCollectionsMessage,
   canceledPollutantsMessage,
+  geoJsonWrapper,
 } from "./utils";
 
 import { Grid } from "../ui";
@@ -31,8 +32,8 @@ export const Map = () => {
   const [gpsFileUrl, setGpsFileUrl] = useState("");
   const [dustrakFileUrl, setDustrakFileUrl] = useState("");
   const [pollutants, setPollutants] = useReducer(
-    (_, features) => ({ type: "FeatureCollection", features }),
-    []
+    geoJsonWrapper,
+    geoJsonWrapper()
   );
   const [isPendingResponse, setIsPendingResponse] = useState(true);
   const [pollutantsTokenSource, setPollutantsTokenSource] = useState(null); //Initialized when called by collections loader

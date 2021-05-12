@@ -131,7 +131,9 @@ export const canceledPollutantsMessage = canceledRequestMessage("pollutants");
 export const getSessionDataLayerStyle = (stylesheet) => {
   if (!stylesheet) return;
   const dataStyle = {
-    ...stylesheet.layers.find(({ id }) => id === "sample-data-c7dpx7"),
+    ...stylesheet.layers.find(
+      ({ id }) => id === process.env.REACT_APP_MAPBOX_LAYER_ID
+    ),
   };
   delete dataStyle["source-layer"];
   delete dataStyle.id;
@@ -139,3 +141,8 @@ export const getSessionDataLayerStyle = (stylesheet) => {
 
   return dataStyle;
 };
+
+export const geoJsonWrapper = (_, features) => ({
+  type: "FeatureCollection",
+  features: features || [],
+});
