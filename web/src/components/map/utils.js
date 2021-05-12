@@ -45,7 +45,6 @@ export const getPollutantsByCollectionId = async (
  */
 export const fallbackPollutants = (pollutantValueData) =>
   pollutantValueData?.pollutant_values?.map(parsePollutant) || [];
-
 /**
  * Process the pollutant data to make it consumable by the client
  * @param {PollutantValue} item the shape of the pollutant as it stored in the database
@@ -54,12 +53,20 @@ export const fallbackPollutants = (pollutantValueData) =>
 export const parsePollutant = (item) => {
   const timeGeoSplit = item.time_geo.split("(");
   const coordsSplit = timeGeoSplit[1].split(", ");
+  const longitude = Number(coordsSplit[0].trim());
+  const latitude = Number(coordsSplit[1].replace(")", "").trim());
+
   return {
-    timestamp: timeGeoSplit[0].trim(),
-    longitude: Number(coordsSplit[0].trim()),
-    latitude: Number(coordsSplit[1].replace(")", "").trim()),
-    name: item.pollutant,
-    value: item.value,
+    type: "Feature",
+    geometry: {
+      type: "Point",
+      coordinates: [longitude, latitude],
+    },
+    properties: {
+      timestamp: timeGeoSplit[0].trim(),
+      name: item.pollutant,
+      value: item.value,
+    },
   };
 };
 
@@ -120,18 +127,6 @@ export const canceledCollectionsMessage = canceledRequestMessage("collections");
  * Overload cancel request message with collections
  */
 export const canceledPollutantsMessage = canceledRequestMessage("pollutants");
-
-export const formatPollutantsToGeoJSON = (pollutants) => ({
-  type: "FeatureCollection",
-  features: pollutants.map(({ longitude, latitude, ...properties }) => ({
-    type: "Feature",
-    geometry: {
-      type: "Point",
-      coordinates: [longitude, latitude],
-    },
-    properties,
-  })),
-});
 
 export const getSessionDataLayerStyle = (stylesheet) => {
   if (!stylesheet) return;

@@ -1,10 +1,15 @@
-import { useState, useMemo, useRef, useEffect } from "react";
+import { useState, useContext } from "react";
 import { PropTypes } from "prop-types";
 import { Dimmer, Loader, Container } from "../ui";
-import { formatPollutantsToGeoJSON, getSessionDataLayerStyle } from "./utils";
+import { getSessionDataLayerStyle } from "./utils";
 import "./box.css";
 
-import ReactMapGL, { NavigationControl, Source, Layer } from "react-map-gl";
+import ReactMapGL, {
+  NavigationControl,
+  Source,
+  Layer,
+  MapContext,
+} from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 // Hack: https://github.com/mapbox/mapbox-gl-js/issues/10173#issuecomment-753662795
 import mapboxgl from "mapbox-gl";
@@ -29,18 +34,8 @@ export const MapBox = ({ isLoading, pollutants }) => {
     bearing: 0,
     pitch: 0,
   };
-  const geojson = useMemo(() => formatPollutantsToGeoJSON(pollutants), [
-    pollutants,
-  ]);
-  const mapRef = useRef();
-  const stylesheet = mapRef.current?.getMap().style.stylesheet;
 
   const [viewport, setViewport] = useState(initialViewport);
-  const [layerStyle, setLayerStyle] = useState(null);
-
-  useEffect(() => {
-    setLayerStyle(getSessionDataLayerStyle(stylesheet));
-  }, [stylesheet]);
 
   return (
     <Container className="map-view-container">
@@ -54,19 +49,30 @@ export const MapBox = ({ isLoading, pollutants }) => {
         mapStyle={mapStyle}
         onViewStateChange={setViewport}
         mapboxApiAccessToken={mapboxApiAccessToken}
-        ref={mapRef}
       >
         <NavigationControl
           showCompass={false}
           className={"navigation-control"}
         />
-        {layerStyle ? (
-          <Source id="session-data" type="geojson" data={geojson}>
-            <Layer {...layerStyle} />
-          </Source>
-        ) : null}
+        <SessionData pollutants={pollutants} />
       </ReactMapGL>
     </Container>
+  );
+};
+
+const SessionData = ({ pollutants }) => {
+  const {
+    map: {
+      style: { stylesheet },
+    },
+  } = useContext(MapContext);
+  const layerStyle = getSessionDataLayerStyle(stylesheet);
+  const pollutantGeoJSON = { type: "FeatureCollection", features: pollutants };
+
+  return (
+    <Source id="session-data" type="geojson" data={pollutantGeoJSON}>
+      {layerStyle ? <Layer {...layerStyle} /> : null}
+    </Source>
   );
 };
 
