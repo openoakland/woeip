@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useReducer } from "react";
 import { useLocation } from "react-router-dom";
 import moment from "moment-timezone";
 import axios from "axios";
@@ -30,7 +30,10 @@ export const Map = () => {
   const [activeCollection, setActiveCollection] = useState({});
   const [gpsFileUrl, setGpsFileUrl] = useState("");
   const [dustrakFileUrl, setDustrakFileUrl] = useState("");
-  const [pollutants, setPollutants] = useState([]);
+  const [pollutants, setPollutants] = useReducer(
+    (_, features) => ({ type: "FeatureCollection", features }),
+    []
+  );
   const [isPendingResponse, setIsPendingResponse] = useState(true);
   const [pollutantsTokenSource, setPollutantsTokenSource] = useState(null); //Initialized when called by collections loader
   const [collectionsTokenSource, setCollectionsTokenSource] = useState(

@@ -61,16 +61,11 @@ export const MapBox = ({ isLoading, pollutants }) => {
 };
 
 const SessionData = ({ pollutants }) => {
-  const {
-    map: {
-      style: { stylesheet },
-    },
-  } = useContext(MapContext);
-  const layerStyle = getSessionDataLayerStyle(stylesheet);
-  const pollutantGeoJSON = { type: "FeatureCollection", features: pollutants };
+  const context = useContext(MapContext);
+  const layerStyle = getSessionDataLayerStyle(context.map.style.stylesheet);
 
   return (
-    <Source id="session-data" type="geojson" data={pollutantGeoJSON}>
+    <Source id="session-data" type="geojson" data={pollutants}>
       {layerStyle ? <Layer {...layerStyle} /> : null}
     </Source>
   );
