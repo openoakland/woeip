@@ -61,11 +61,22 @@ export const MapBox = ({ isLoading, pollutants }) => {
 
 const SessionData = ({ pollutants }) => {
   const context = useContext(MapContext);
-  const layerStyle = getSessionDataLayerStyle(context.map.style.stylesheet);
+  const stylesheet = context.map.style.stylesheet;
+  if (stylesheet) {
+    const dataLayers = stylesheet.layers.slice(118).map(({ id }) => id);
+    for (let layer of dataLayers) {
+      context.map.setLayoutProperty(layer, "visibility", "none");
+    }
+  }
+
+  const getStyle = getSessionDataLayerStyle.bind(null, stylesheet);
+  const markerStyle = getStyle("data-driven-circles");
+  const labelStyle = getStyle("data-driven-circles-labels");
 
   return (
     <Source id="session-data" type="geojson" data={pollutants}>
-      {layerStyle ? <Layer {...layerStyle} /> : null}
+      {markerStyle ? <Layer {...markerStyle} /> : null}
+      {labelStyle ? <Layer {...labelStyle} /> : null}
     </Source>
   );
 };

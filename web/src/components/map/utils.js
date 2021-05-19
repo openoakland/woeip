@@ -66,6 +66,7 @@ export const parsePollutant = (item) => {
       timestamp: timeGeoSplit[0].trim(),
       name: item.pollutant,
       value: item.value,
+      measurement: item.value,
     },
   };
 };
@@ -128,18 +129,16 @@ export const canceledCollectionsMessage = canceledRequestMessage("collections");
  */
 export const canceledPollutantsMessage = canceledRequestMessage("pollutants");
 
-export const getSessionDataLayerStyle = (stylesheet) => {
+export const getSessionDataLayerStyle = (stylesheet, layerId) => {
   if (!stylesheet) return;
-  const dataStyle = {
-    ...stylesheet.layers.find(
-      ({ id }) => id === process.env.REACT_APP_MAPBOX_LAYER_ID
-    ),
+  const layerStyle = {
+    ...stylesheet.layers.find(({ id }) => id === layerId),
   };
-  delete dataStyle["source-layer"];
-  delete dataStyle.id;
-  delete dataStyle.layout.visibility;
+  delete layerStyle["source-layer"];
+  delete layerStyle.id;
+  delete layerStyle.layout.visibility;
 
-  return dataStyle;
+  return layerStyle;
 };
 
 export const geoJsonWrapper = (_, features) => ({
