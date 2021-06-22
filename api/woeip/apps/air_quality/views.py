@@ -30,11 +30,19 @@ class CollectionViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.CollectionSerializer
 
     def check_duplicate(self, data):
-        start_date = data.get("starts_at")
-        end_date = data.get("ends_at")
-        # Checks if the collection date already exitst in the database
-        if self.queryset.filter(starts_at=start_date, ends_at=end_date).exists():
-            return True
+        queryset = models.FileHash.objects.all()
+        files = data.pop("upload_files", [])
+        file_hash = ""
+        for file in files:
+            file_hash = hash(file.file)
+            if queryset.filter(hash=file_hash):
+                return True
+        # queryset = models.CollectionFile.objects.all()
+        # start_date = data.get("starts_at")
+        # end_date = data.get("ends_at")
+        # # Checks if the collection date already exitst in the database
+        # if self.queryset.filter(starts_at=start_date, ends_at=end_date).exists():
+        #     return True
         return False
 
     def get_queryset(self):
@@ -69,10 +77,10 @@ class CollectionViewSet(viewsets.ModelViewSet):
 
     @transaction.atomic
     def create(self, request, *args, **kwargs):
-        if self.check_duplicate(request.data):
-            raise ValidationError(
-                detail=("Duplicate GPS/Dustrak files.")
-            )
+        # if self.check_duplicate(request.data):
+        #     raise ValidationError(
+        #         detail=("Duplicate GPS/Dustrak files.")
+        #     )
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()

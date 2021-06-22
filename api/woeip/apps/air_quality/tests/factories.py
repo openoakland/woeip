@@ -49,6 +49,13 @@ class DeviceFactory(factory.DjangoModelFactory):
     firmware = factory.Faker("pyint")
 
 
+class FileHashFactory(factory.DjangoModelFactory):
+    class Meta:
+        model = models.FileHash
+
+    hash = factory.django.Faker("hash")
+
+
 class PollutantFactory(factory.DjangoModelFactory):
     class Meta:
         model = models.Pollutant

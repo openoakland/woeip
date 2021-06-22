@@ -12,10 +12,12 @@ from woeip.apps.air_quality.models import Calibration
 from woeip.apps.air_quality.models import Collection
 from woeip.apps.air_quality.models import CollectionFile
 from woeip.apps.air_quality.models import Device
+from woeip.apps.air_quality.models import FileHash
 from woeip.apps.air_quality.models import Pollutant
 from woeip.apps.air_quality.models import PollutantValue
 from woeip.apps.air_quality.models import Sensor
 from woeip.apps.air_quality.models import TimeGeo
+
 
 
 class CalibrationSerializer(serializers.HyperlinkedModelSerializer):
@@ -42,6 +44,12 @@ class DeviceSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Device
         fields = ["id", "name", "serial", "firmware"]
+
+
+class FileHashSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = FileHash
+        fields = ["hash"]
 
 
 class PollutantSerializer(serializers.HyperlinkedModelSerializer):
@@ -108,6 +116,18 @@ class CollectionSerializer(serializers.HyperlinkedModelSerializer):
                 "No Dustrak file found. "
                 + "Please upload a Dustrak file with a .csv extension. "
             )
+        else: # Create file hash, check if hash already exists.
+            dusktrak_upload_hash = hash(dustrak_upload_file)
+            hashes = FileHash.objects.all()
+            if hashes.filter(hash=dusktrak_upload_hash):
+                missing_file_errors.append(
+                    "Dusktrak file already in database"
+                )
+            else: # If hash doesn't exist, save hash.
+                file_hash = FileHash.objects.create()
+                file_hash.save(
+                    dusktrak_upload_hash
+                ) # TODO: figure out how to save hash to database.
         if gps_upload_file is None:
             missing_file_errors.append(
                 "No GPS file found. "

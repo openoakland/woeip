@@ -15,6 +15,15 @@ class Device(models.Model):
     def __str__(self):
         return f"{self.name} {self.serial} {self.firmware}"
 
+class FileHash(models.Model):
+    """A file hash is the hash of a file, eg. DusTrak or GPS files.
+    There should be no duplicate file hashes.
+    """
+
+    hash = models.CharField(max_length=256, null=True)
+
+    def __str__(self):
+        return self.hash
 
 class Pollutant(models.Model):
     """Pollutants are measured during air quality data collection.

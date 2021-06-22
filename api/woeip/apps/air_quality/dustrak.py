@@ -264,7 +264,7 @@ def save(joined_data, gps_collection_file, pollutant_collection_file, pollutant)
             time=row["time"],
             location=geos.Point(row["lon"], row["lat"]),
         )
-        time_geo.save()
+        time_geo
         pollutant_value = models.PollutantValue(
             collection_file=pollutant_collection_file,
             time_geo=time_geo,
