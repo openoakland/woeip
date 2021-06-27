@@ -49,7 +49,7 @@ class DeviceSerializer(serializers.HyperlinkedModelSerializer):
 class FileHashSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = FileHash
-        fields = ["hash"]
+        fields = ["collection", "hash"]
 
 
 class PollutantSerializer(serializers.HyperlinkedModelSerializer):
@@ -116,18 +116,6 @@ class CollectionSerializer(serializers.HyperlinkedModelSerializer):
                 "No Dustrak file found. "
                 + "Please upload a Dustrak file with a .csv extension. "
             )
-        else: # Create file hash, check if hash already exists.
-            dusktrak_upload_hash = hash(dustrak_upload_file)
-            hashes = FileHash.objects.all()
-            if hashes.filter(hash=dusktrak_upload_hash):
-                missing_file_errors.append(
-                    "Dusktrak file already in database"
-                )
-            else: # If hash doesn't exist, save hash.
-                file_hash = FileHash.objects.create()
-                file_hash.save(
-                    dusktrak_upload_hash
-                ) # TODO: figure out how to save hash to database.
         if gps_upload_file is None:
             missing_file_errors.append(
                 "No GPS file found. "
@@ -141,6 +129,21 @@ class CollectionSerializer(serializers.HyperlinkedModelSerializer):
             starts_at=validated_data.get("starts_at"),
             ends_at=validated_data.get("ends_at"),
         )
+
+        # Create file hash, check if hash already exists.
+        dusktrak_upload_hash = str(hash(dustrak_upload_file.read()))
+        hashes = FileHash.objects.all()
+        if hashes.filter(hash=dusktrak_upload_hash):
+            missing_file_errors.append(
+                "Dusktrak file already in database"
+            )
+            raise exceptions.ValidationError(detail=missing_file_errors)
+        else: # If hash doesn't exist, save hash.
+            file_hash = FileHash.objects.create(
+                collection=collection,
+                hash=dusktrak_upload_hash,
+            )
+            file_hash.save()
 
         ## Create Collection, safe files, read into dataframe ##
 
