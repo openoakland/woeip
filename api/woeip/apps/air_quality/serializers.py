@@ -132,8 +132,8 @@ class CollectionSerializer(serializers.HyperlinkedModelSerializer):
 
         # Create file hash, check if hash already exists.
         dusktrak_upload_hash = str(hash(dustrak_upload_file.read()))
-        hashes = FileHash.objects.all()
-        if hashes.filter(hash=dusktrak_upload_hash):
+        hashes = set([filehash.hash for filehash in FileHash.objects.iterator()])
+        if dusktrak_upload_hash in hashes: #If hash exists, stop file upload.
             missing_file_errors.append(
                 "Dusktrak file already in database"
             )
