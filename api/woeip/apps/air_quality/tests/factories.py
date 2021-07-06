@@ -53,7 +53,7 @@ class FileHashFactory(factory.DjangoModelFactory):
     class Meta:
         model = models.FileHash
 
-    hash = factory.django.Faker("hash")
+    hash = factory.Faker("hash")
 
 
 class PollutantFactory(factory.DjangoModelFactory):
