@@ -1,5 +1,6 @@
 # pylint: disable=abstract-method
 import os
+import hashlib
 from django.core.files.base import ContentFile
 from rest_framework import serializers, exceptions
 from woeip.apps.air_quality.dustrak import (
@@ -131,7 +132,7 @@ class CollectionSerializer(serializers.HyperlinkedModelSerializer):
         )
 
         # Create file hash, check if hash already exists.
-        dustrak_upload_hash = str(hash(dustrak_upload_file.read()))
+        dustrak_upload_hash = hashlib.md5(dustrak_upload_file.read()).hexdigest()
         if FileHash.objects.filter(hash=dustrak_upload_hash).exists(): #If hash exists, stop file upload.
             missing_file_errors.append(
                 "Dustrak file already in database"
