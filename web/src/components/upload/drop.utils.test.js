@@ -128,15 +128,22 @@ describe("messageForMismatchedTimes", () => {
     dustrakStart = null;
   });
 
-  it("should error when gps time is too high", () => {
+  it("should error when gps time is too high and dates match", () => {
     const gpsStart = dustrakStart.clone().add(3, "minutes");
     expect(messageForMismatchedTimes(dustrakStart, gpsStart)).toMatch(
-      "Dates don't match"
+      "Times don't match"
     );
   });
 
-  it("should error when gps time is too low", () => {
+  it("should error when gps time is too low and dates match", () => {
     const gpsStart = dustrakStart.clone().subtract(3, "minutes");
+    expect(messageForMismatchedTimes(dustrakStart, gpsStart)).toMatch(
+      "Times don't match"
+    );
+  });
+
+  it("should error when gps date doesn't match", () => {
+    const gpsStart = dustrakStart.clone().subtract(3, "days");
     expect(messageForMismatchedTimes(dustrakStart, gpsStart)).toMatch(
       "Dates don't match"
     );
@@ -144,6 +151,9 @@ describe("messageForMismatchedTimes", () => {
 
   it("should not error when gps time in range", () => {
     const gpsStart = dustrakStart.clone().subtract(1, "minutes");
+    expect(messageForMismatchedTimes(dustrakStart, gpsStart)).toBeFalsy();
+
+    gpsStart.add(2, "minutes");
     expect(messageForMismatchedTimes(dustrakStart, gpsStart)).toBeFalsy();
   });
 });

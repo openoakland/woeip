@@ -4,13 +4,11 @@ import moment from "moment-timezone";
 
 describe("Upload Confirm", () => {
   it("should render with a summary of data", () => {
-    const dustrakSerialToLabel = { 0: "A" };
-    const dustrakSerial = "0";
+    const device = { name: 'A', serial: '1234' };
     const dustrakStart = moment();
     const dustrakEnd = moment();
     renderUploadConfirm({
-      dustrakSerialToLabel,
-      dustrakSerial,
+      device,
       dustrakStart,
       dustrakEnd,
     });
@@ -31,11 +29,10 @@ describe("Upload Confirm", () => {
 });
 
 const renderUploadConfirm = ({
-  dustrakSerialToLabel = {},
+  device = {},
   files = [],
   dustrakStart = moment(),
   dustrakEnd = moment(),
-  dustrakSerial = "",
   clearDustrakTimes = jest.fn(),
   clearDustrakSerial = jest.fn(),
   clearFiles = jest.fn(),
@@ -44,11 +41,10 @@ const renderUploadConfirm = ({
   render(
     <UploadConfirm
       {...{
-        dustrakSerialToLabel,
+        device,
         files,
         dustrakStart,
         dustrakEnd,
-        dustrakSerial,
         clearDustrakTimes,
         clearDustrakSerial,
         clearFiles,

@@ -75,7 +75,7 @@ def combine_date_and_time(date_series, time_series):
     """
     datetimes = []
     for date, time in zip(date_series.values, time_series.values):
-        dt = pd.datetime.combine(date, time)
+        dt = datetime.datetime.combine(date, time)
         datetimes.append(dt)
 
     return datetimes
