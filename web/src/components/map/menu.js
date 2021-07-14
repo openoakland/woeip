@@ -4,7 +4,8 @@ import { PropTypes } from "prop-types";
 import "react-semantic-ui-datepickers/dist/react-semantic-ui-datepickers.css";
 
 import SemanticDatepicker from "react-semantic-ui-datepickers";
-import { Container, List } from "../ui";
+import { Container, List, WarningMessage } from "../ui";
+import "./menu.css";
 
 /**
  * Menu for Dates and Collections to map
@@ -88,6 +89,11 @@ export const MapMenu = ({
           <List.Item>None</List.Item>
         )}
       </List>
+      {!collectionsOnDate.length && 
+        <WarningMessage>
+          We haven't collected data for this time period. Please select another date.
+        </WarningMessage>
+      }
     </Container>
   );
 };
