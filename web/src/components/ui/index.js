@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Button, Icon, Input, Message } from "semantic-ui-react";
 import "./index.css";
 
@@ -58,6 +59,13 @@ export const CalendarInput = ({ ...props }) => (
 export const SuccessMessage = ({ ...props }) => <Message success {...props} />;
 
 export const WarningMessage = ({ ...props }) => <Message warning {...props} />;
+
+export const DismissableMessage = ({ ...props }) => {
+  const [visible, setVisible] = useState(true);
+  const handleDismiss = () => setVisible(false);
+
+  return visible ? <Message onDismiss={handleDismiss} {...props} /> : null;
+};
 
 export const FlexColumnDiv = ({ ...props }) => (
   <div className="flex-column" {...props} />
