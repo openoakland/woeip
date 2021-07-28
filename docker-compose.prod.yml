@@ -19,16 +19,16 @@ services:
       - VIRTUAL_HOST=${API_DOMAIN}
       - VIRTUAL_PORT=${API_PORT}      
 
-  web:
-    build:
-      dockerfile: Dockerfile.ci
-    ports:
-      - ${WEB_PORT}
-    environment:
-      - NODE_ENV=production
-      - LETSENCRYPT_HOST=${WEB_DOMAIN}
-      - VIRTUAL_HOST=${WEB_DOMAIN}
-      - VIRTUAL_PORT=${WEB_PORT}
+  # web:
+  #   build:
+  #     dockerfile: Dockerfile.ci
+  #   ports:
+  #     - ${WEB_PORT}
+  #   environment:
+  #     - NODE_ENV=production
+  #     - LETSENCRYPT_HOST=${WEB_DOMAIN}
+  #     - VIRTUAL_HOST=${WEB_DOMAIN}
+  #     - VIRTUAL_PORT=${WEB_PORT}
 
   proxy:
     build:

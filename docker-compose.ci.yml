@@ -1,10 +1,8 @@
-# CI Environment
-# Not properly configured
+# Live environment with all services cenralized to one machine
 
 version: '3.3'
 
 services:
-
   api:
     build:
       args:
@@ -12,30 +10,82 @@ services:
     ports:
       - ${API_PORT}
     environment:
-      - SECRET_KEY=${SECRET_KEY}
-      - DATABASE_URL=${DATABASE_URL}
-      - DEFAULT_FILE_STORAGE=${DEFAULT_FILE_STORAGE}
-      - VIRTUAL_HOST=${API_DOMAIN}
-      - VIRTUAL_PORT=${API_PORT}
+      SECRET_KEY: ${SECRET_KEY}
+      DATABASE_URL: postgis://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/woaq
+      DEFAULT_FILE_STORAGE: django.core.files.storage.FileSystemStorage
+      LETSENCRYPT_HOST: ${API_DOMAIN}
+      VIRTUAL_HOST: ${API_DOMAIN}
+      VIRTUAL_PORT: ${API_PORT}
+    volumes:
+      - ./api:/usr/src/app
+      - logs:/usr/src/app/logs
+      - static:/usr/src/app/public/static
     depends_on:
       - db
-    # NOTE: Override entrypoint from gunicorn to bash so CI scripts can be run
+      # NOTE: Override entrypoint from gunicorn to bash so CI scripts can be run
     # Also wait for db to be ready before running scripts
-    entrypoint: dockerize -wait tcp://db:5432 -timeout 1m bash -c
-
-  web:
-    build:
-      dockerfile: Dockerfile.ci
-
+    restart: always
+    stdin_open: true
+    tty: 
+  # DEPRECATED Web moved to a static node.js deployment
+  # web:
+  #   build:
+  #     dockerfile: Dockerfile.prod
+  #   ports:
+  #     - ${WEB_PORT}
+  #     - 3000:80
+  #   environment: 
+  #     LETSENCRYPT_HOST: ${WEB_DOMAIN}
+  #     VIRTUAL_HOST: ${WEB_DOMAIN}
+  #     VIRTUAL_PORT: ${WEB_PORT}
+  #     API_DOMAIN: ${API_DOMAIN}
   db:
-    ports:
-      - 5432    
     environment:
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_DB=${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: woaq
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    ports:
+      - 5432
+    restart: always
 
   proxy:
     build:
       args:
         - API_DOMAIN=${API_DOMAIN}
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - 'html:/usr/share/nginx/html'
+      - "dhparam:/etc/nginx/dhparam"
+      - 'vhost:/etc/nginx/vhost.d'
+      - 'certs:/etc/nginx/certs'
+      - '/var/run/docker.sock:/tmp/docker.sock:ro'
+      - static:/var/www/html/static/
+
+  ssl:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    volumes:
+      - 'html:/usr/share/nginx/html'
+      - "dhparam:/etc/nginx/dhparam"
+      - 'vhost:/etc/nginx/vhost.d'
+      - 'certs:/etc/nginx/certs'
+      - "/run/docker.sock:/var/run/docker.sock:ro"
+    environment:
+      NGINX_PROXY_CONTAINER: "woaq-proxy"
+      DEFAULT_EMAIL: ${DEFAULT_EMAIL}
+    restart: always
+    depends_on: 
+      - "proxy"
+
+          
+volumes:
+  logs:
+  postgres:
+  static:
+  certs:
+  html:
+  vhost:
+  dhparam:

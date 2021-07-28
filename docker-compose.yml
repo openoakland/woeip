@@ -8,11 +8,11 @@ services:
     container_name: woaq-api
     image: openoakland/woaq-api
 
-  web:
-    build:
-      context: web
-    container_name: woaq-web
-    image: openoakland/woaq-web
+  # web:
+  #   build:
+  #     context: web
+  #   container_name: woaq-web
+  #   image: openoakland/woaq-web
 
   db:
     container_name: woaq-db
