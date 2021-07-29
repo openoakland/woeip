@@ -7,6 +7,6 @@ const MESSAGE_CONTENT =
 
 export const BetaNotice = () => (
 	<Route path={["/maps", "/upload"]}>
-		<DismissableMessage className="beta-notice" content={MESSAGECONTENT} />
+		<DismissableMessage className="beta-notice" content={MESSAGE_CONTENT} />
 	</Route>
 );
