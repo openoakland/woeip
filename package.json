@@ -1,0 +1,19 @@
+{
+  "name": "woeip",
+  "version": "1.0.0",
+  "description": "West Oakland Air Quality Project (WOAQ)",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/openoakland/woeip.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/openoakland/woeip/issues"
+  },
+  "homepage": "https://github.com/openoakland/woeip#readme"
+}
