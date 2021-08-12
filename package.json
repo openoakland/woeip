@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "description": "West Oakland Air Quality Project (WOAQ)",
   "scripts": {
+    "dev:api": "docker-compose up -d --build",
+    "api": "run-s -l build:api",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -17,6 +19,7 @@
   },
   "homepage": "https://github.com/openoakland/woeip#readme",
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "npm-run-all": "^4.1.5"
   }
 }
