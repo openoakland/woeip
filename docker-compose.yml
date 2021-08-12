@@ -7,7 +7,8 @@ services:
       context: api
     container_name: woaq-api
     image: openoakland/woaq-api
-
+    
+  # DEPRECATED Web moved to a static node.js deployment
   # web:
   #   build:
   #     context: web

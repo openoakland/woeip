@@ -26,7 +26,7 @@ services:
     restart: always
     stdin_open: true
     tty: true
-
+  # DEPRECATED Web moved to a static node.js deployment
   # web:
   #   build:
   #     dockerfile: Dockerfile

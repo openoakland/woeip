@@ -18,7 +18,7 @@ services:
       - LETSENCRYPT_HOST=${API_DOMAIN}
       - VIRTUAL_HOST=${API_DOMAIN}
       - VIRTUAL_PORT=${API_PORT}      
-
+  # DEPRECATED Web moved to a static node.js deployment
   # web:
   #   build:
   #     dockerfile: Dockerfile.ci
