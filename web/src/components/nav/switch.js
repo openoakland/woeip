@@ -3,6 +3,8 @@ import { Route, Switch } from "react-router-dom";
 import { Map } from "../map";
 import { Upload } from "../upload";
 import { Home } from "../home";
+import { Login } from "../auth/login";
+import { Register } from "../auth/register";
 
 export const Navswitch = () => {
   return (
@@ -33,4 +35,14 @@ export const routes = [
     exact: true,
     component: Map,
   },
+  {
+    path: "/login",
+    exact: true,
+    component: Login,
+  },
+  {
+    path: "/register",
+    exact: true,
+    component: Register,
+  }
 ];
