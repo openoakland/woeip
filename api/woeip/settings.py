@@ -35,12 +35,7 @@ THIRD_PARTY_APPS = [
     "rest_framework",
     "storages",
     "drf_yasg",
-    "rest_framework.authtoken",
-    "allauth",
-    "allauth.account",
-    "allauth.socialaccount",
-    "rest_auth.registration",
-    "corsheaders",
+    "djoser",
 ]
 
 LOCAL_APPS = ["woeip.apps.core", "woeip.apps.air_quality"]
@@ -83,6 +78,7 @@ TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [str(project_root.path("templates"))],
+        # "DIRS": [os.path.join(BASE_DIR, 'build')]
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -205,33 +201,41 @@ LOGGING = {
 LOGIN_REDIRECT_URL = "upload"
 LOGOUT_REDIRECT_URL = "login"
 
-# Specifies localhost port 3000 where the React
-# server will be running is safe to receive requests
-# from. All all of this.
-CORS_ALLOWED_ORIGINS = [    
-'http://localhost:3000'
-]
+# EMAIL
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'openoakland.woaq@gmail.com'
+EMAIL_HOST_PASSWORD = 'hnblkkmrmfwotkbi'
+EMAIL_USE_TLS = True
 
-# Django All Auth config
-EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
-EMAIL_FILE_PATH = str(project_root.path("sent_emails"))
+#DJOSER
+DJOSER = {
+    'LOGIN_FIELD': 'email',
+    'USER_CREATE_PASSWORD_RETYPE': True,
+    'USERNAME_CHANGED_EMAIL_CONFIRMATION': True,
+    'PASSWORD_CHANGED_EMAIL_CONFIRMATION': True,
+    'SEND_CONFIRMATION_EMAIL': True,
+    'SET_USERNAME_RETYPE': True,
+    'SET_PASSWORD_RETYPE': True,
+    'PASSWORD_RESET_CONFIRM_URL': 'password/reset/confirm/{uid}/{token}',
+    'USERNAME_RESET_CONFIRM_URL': 'email/reset/confirm/{uid}/{token}',
+    'ACTIVATION_URL': 'activate/{uid}/{token}',
+    'END_ACTIVATION_EMAIL': True,
+    'SERIALIZERS': {
+        'user_create': 'woeip.apps.core.serializers.UserCreateSerializer',
+        'user': 'woeip.apps.core.serializers.UserCreateSerializer',
+        'user_delete': 'djoser.serializers.UserDeleteSerializer',
+    }
+}
 
-AUTHENTICATION_BACKENDS = (
-    "django.contrib.auth.backends.ModelBackend",
-    "allauth.account.auth_backends.AuthenticationBackend",
-)
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        (...)
+    ),
+}
 
-SITE_ID = 1 
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_USERNAME_REQUIRED = False
-ACCOUNT_SESSION_REMEMBER = True
-ACCOUNT_AUTHENTICATION_METHOD = 'email'
-ACCOUNT_UNIQUE_EMAIL = True
-
-# Rest Framework config
-REST_FRAMEWORK = {    
-'DATETIME_FORMAT': "%m/%d/%Y %I:%M%P",
-'DEFAULT_AUTHENTICATION_CLASSES': [
-    'rest_framework.authentication.TokenAuthentication',    
-],
+SIMPLE_JWT = {
+   'AUTH_HEADER_TYPES': ('JWT',),
 }

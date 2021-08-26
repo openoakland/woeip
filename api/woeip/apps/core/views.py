@@ -2,6 +2,7 @@
 from rest_framework import viewsets
 from woeip.apps.core import models
 from woeip.apps.core import serializers
+from django.shortcuts import redirect, render
 
 
 class UserViewSet(viewsets.ModelViewSet):
