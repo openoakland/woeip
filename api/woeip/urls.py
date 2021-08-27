@@ -7,7 +7,6 @@ from rest_framework import routers
 
 from .apps.air_quality import views
 from .apps.core import views as core_views
-from .apps.core import urls
 from .swagger import urlpatterns as swagger_urlpatterns
 
 router = routers.DefaultRouter(trailing_slash=False)
