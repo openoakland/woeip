@@ -2,7 +2,13 @@ import { render, screen } from "@testing-library/react";
 import { Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
 import { Navswitch } from "./switch";
-import mapboxgl from "mapbox-gl";
+
+
+/**
+* gl-js used in "box" component has hard requirements for browser apis. it cannot run in jest
+* https://github.com/mapbox/mapbox-gl-js/issues/10487#issuecomment-805106543
+*/
+jest.mock("../map/box", () => () => <></>);
 
 // https://github.com/mapbox/mapbox-gl-js/issues/3436
 jest.mock("mapbox-gl/dist/mapbox-gl", () => ({
@@ -27,20 +33,18 @@ describe("Navswitch", () => {
     history = null;
   });
 
-  it.skip("should render home by default", () => {
-    // const mockUrl = jest.spyOn(window.URL, "createObjectURL");
-    // window.URL.createObjectURL = () => {}
+  it("should render home by default", () => {
     renderWithRouter(history);
-    expect(screen.getByText(/Welcome to WOAQ!/)).toBeInTheDocument();
+    expect(screen.getByText(/Welcome/)).toBeInTheDocument();
   });
 
-  // Update with Upload component
-  it.skip("should render upload", () => {
+  it("should render upload when navigating to route", () => {
     renderWithRouter(history);
     history.push("/upload");
+    expect(screen.getByText(/DusTrak and GPS files/)).toBeInTheDocument();
   });
 
-  // Update with Map component
+  // TODO: mock fetch for intial page render
   it.skip("should render map", () => {
     renderWithRouter(history);
     history.push("/maps");
