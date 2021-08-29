@@ -19,10 +19,10 @@ export const Upload = () => {
       try {
         const devices = await getDevices();
         setDevice(findDevice(devices, dustrakSerial));
-      } catch(err) {
+      } catch (err) {
         console.error(err);
       }
-    })()
+    })();
   }, [dustrakSerial]);
 
   return (

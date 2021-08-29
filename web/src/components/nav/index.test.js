@@ -2,17 +2,16 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import { Navigation } from "./";
 
 /**
-* gl-js used in "box" component has hard requirements for browser apis. it cannot run in jest
-* https://github.com/mapbox/mapbox-gl-js/issues/10487#issuecomment-805106543
-* Mocking the whole map page also allows us to avoid mocking a network call
-*/
+ * gl-js used in "box" component has hard requirements for browser apis. it cannot run in jest
+ * https://github.com/mapbox/mapbox-gl-js/issues/10487#issuecomment-805106543
+ * Mocking the whole map page also allows us to avoid mocking a network call
+ */
 jest.mock("../map", () => () => <></>);
 
 /**
  * Reduce the error spam from UploadDrop by mocking its render.
  */
 jest.mock("../upload", () => () => <></>);
-
 
 describe("Navigation", () => {
   it("should stay on home page", () => {
