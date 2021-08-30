@@ -4,6 +4,6 @@ import { Home } from "./";
 describe("Home", () => {
   it("should show welcome message", () => {
     render(<Home />);
-    expect(screen.getByText("Welcome to WOAQ!")).toBeInTheDocument();
+    expect(screen.getByText(/Welcome/)).toBeInTheDocument();
   });
 });
