@@ -4,7 +4,7 @@ import moment from "moment-timezone";
 
 describe("Upload Confirm", () => {
   it("should render with a summary of data", () => {
-    const device = { name: 'A', serial: '1234' };
+    const device = { name: "A", serial: "1234" };
     const dustrakStart = moment();
     const dustrakEnd = moment();
     renderUploadConfirm({

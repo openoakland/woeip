@@ -13,15 +13,15 @@ import { apiUrlDevices } from "../../api.util";
  * Retrieve all of the devices
  * @returns {Array<Device>}
  */
- export const getDevices = async () => {
+export const getDevices = async () => {
   return (await axios.get(apiUrlDevices())).data;
-}
+};
 
 /**
- * Find device by serial 
- * @param {Array<Device>} devices from the api 
- * @param {string} serial the serial number of the uploaded device 
- * @returns {Device || Object} the device of interest or an empty object 
+ * Find device by serial
+ * @param {Array<Device>} devices from the api
+ * @param {string} serial the serial number of the uploaded device
+ * @returns {Device || Object} the device of interest or an empty object
  */
-export const findDevice = (devices, serial) => 
-  devices.find(device => device.serial === serial) || {}; 
+export const findDevice = (devices, serial) =>
+  devices.find((device) => device.serial === serial) || {};
