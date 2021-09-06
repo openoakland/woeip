@@ -67,7 +67,7 @@ export const parsePollutant = (item) => {
  * Retrieve all of the collections that occurred on the given date
  * @param {moment} mapDate
  * @param {CancelToken} cancelTokenSource
- * @returns { collectionsOnDate: Array<Collection> | errorMessage: string } validity of each value depends on whether fetch was successful 
+ * @returns { collectionsOnDate: Array<Collection> | errorMessage: string } validity of each value depends on whether fetch was successful
  */
 export const getCollectionsOnDate = async (mapDate, cancelTokenSource) => {
   const options = {
@@ -79,20 +79,22 @@ export const getCollectionsOnDate = async (mapDate, cancelTokenSource) => {
   try {
     const response = await axios.get(apiUrlCollections(), options);
     const collectionsOnDate = response.data;
-    if(!collectionsOnDate) {
-      throw new Error('Failed to get collections for selected date');
+    if (!collectionsOnDate) {
+      throw new Error("Failed to get collections for selected date");
     }
-    return {collectionsOnDate: collectionsOnDate, errorMessage: ''};
-  } catch (error){
-    let errorMessage = '';
-    if(error.response){
-      errorMessage = error.response.data;
-    } else if (error.request){
-      errorMessage = error.request;
-    } else {
+    return { collectionsOnDate: collectionsOnDate, errorMessage: "" };
+  } catch (error) {
+    let errorMessage = "";
+    if (error.response) {
+      errorMessage = "Error in server response for collections on date"
+    } else if (error.request) {
+      errorMessage = "Error in network request for collections on date";
+    } else if(error.message) {
       errorMessage = error.message;
-    }
-    return {collectionsOnDate: [], errorMessage: errorMessage};
+    } else (
+      errorMessage = "Unknown error when retrieving collections on date"
+    )
+    return { collectionsOnDate: [], errorMessage: errorMessage };
   }
 };
 

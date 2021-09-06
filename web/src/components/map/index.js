@@ -20,9 +20,15 @@ import {
 import { Grid } from "../ui";
 
 const initialDate = (location) => moment(location?.state?.date) || moment(); // Date either from upload or current day
-const INIT_GPS_FILE_URL = 'initGpsFileUrl';
-const INIT_DUSTRAK_FILE_URL = 'initDustrakFileUrl'; 
-const INIT_ACTIVE_COLLECTION = { id: -1, collection_files: [{ file: INIT_GPS_FILE_URL }, {file: INIT_DUSTRAK_FILE_URL}] }; // Indicates that data are pending meaningful values
+const INIT_GPS_FILE_URL = "initGpsFileUrl";
+const INIT_DUSTRAK_FILE_URL = "initDustrakFileUrl";
+const INIT_ACTIVE_COLLECTION = {
+  id: -1,
+  collection_files: [
+    { file: INIT_GPS_FILE_URL },
+    { file: INIT_DUSTRAK_FILE_URL },
+  ],
+}; // Indicates that data are pending meaningful values
 
 /**
  * View Map of data sessions and related meta-data
@@ -32,7 +38,9 @@ export const Map = () => {
   const location = useLocation(); // location for the url
   const [mapDate, setMapDate] = useState(initialDate(location));
   const [collectionsOnDate, setCollectionsOnDate] = useState([]);
-  const [activeCollection, setActiveCollection] = useState(INIT_ACTIVE_COLLECTION);
+  const [activeCollection, setActiveCollection] = useState(
+    INIT_ACTIVE_COLLECTION
+  );
   const [gpsFileUrl, setGpsFileUrl] = useState(INIT_GPS_FILE_URL);
   const [dustrakFileUrl, setDustrakFileUrl] = useState(INIT_DUSTRAK_FILE_URL);
   const [pollutants, setPollutants] = useState([]);
@@ -47,7 +55,7 @@ export const Map = () => {
 
   /**
    * Invoke the cancellation of a pending axios request
-   * @param {axios.CancelToken.source()} tokenSource 
+   * @param {axios.CancelToken.source()} tokenSource
    * @modifies the axios call by cancelling it
    */
   const cancelCall = (tokenSource) => tokenSource && tokenSource.cancel();
@@ -82,7 +90,8 @@ export const Map = () => {
         const activeCollectionId = activeCollection.id;
         // pending assignment to meaningful value
         if (activeCollectionId === INIT_ACTIVE_COLLECTION.id) return;
-        if (!activeCollection.id) throw new Error('Invalid Id for selected collection');
+        if (!activeCollection.id)
+          throw new Error("Invalid Id for selected collection");
         const pendingPollutantValues = await getPollutantsByCollectionId(
           activeCollectionId,
           pollutantsTokenSource
@@ -111,8 +120,9 @@ export const Map = () => {
           dustrakFileLink,
         ] = activeCollection.collection_files;
         // pending assignment to meaningful value
-        if(gpsFileLink.file === INIT_GPS_FILE_URL) return;
-        if (!activeCollection.collection_files) throw new Error('Invalid data files for selected function');
+        if (gpsFileLink.file === INIT_GPS_FILE_URL) return;
+        if (!activeCollection.collection_files)
+          throw new Error("Invalid data files for selected function");
         const [pendingGpsFile, pendingDustrakFile] = await Promise.all([
           getCollectionFileByLink(swapProtocol(gpsFileLink)),
           getCollectionFileByLink(swapProtocol(dustrakFileLink)),
@@ -171,7 +181,7 @@ export const Map = () => {
     setGpsFileUrl(INIT_GPS_FILE_URL);
     setDustrakFileUrl(INIT_DUSTRAK_FILE_URL);
     setPollutants([]);
-    setErrorMessage('');
+    setErrorMessage("");
     setIsPendingResponse(true);
     setPollutantsTokenSource(axios.CancelToken.source());
   };
