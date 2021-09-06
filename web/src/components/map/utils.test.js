@@ -55,6 +55,17 @@ describe("get collections from a specific date", () => {
     expect(collectionsOnDate).toEqual([]);
     expect(errorMessage).toMatch("Error in network request");
   });
+
+  it("should handle canceling a request", async () => {
+    const cancelTokenSource = axios.CancelToken.source();
+    cancelTokenSource.cancel();
+    const {
+      collectionsOnDate,
+      errorMessage,
+    } = await getCollectionsOnDate(moment(), cancelTokenSource);
+    expect(collectionsOnDate).toEqual([]);
+    expect(errorMessage).toMatch("Canceled");
+  });
 });
 
 describe("get pollutants for a specific collection", () => {

@@ -112,6 +112,8 @@ export const getCollectionsOnDate = async (mapDate, cancelTokenSource) => {
       errorMessage = "Error in network request for collections on date";
     } else if (error.message) {
       errorMessage = error.message;
+    } else if (axios.isCancel(error)) {
+      errorMessage = "Canceled request for collections on date";
     } else errorMessage = "Unknown error when retrieving collections on date";
     return { collectionsOnDate: [], errorMessage: errorMessage };
   }
