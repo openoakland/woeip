@@ -4,7 +4,7 @@ import { apiUrlCollections } from "../src/api.util";
 
 const handlers = [
   rest.get(apiUrlCollections(), async (req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: [1, 2, 3] }));
+    return res(ctx.status(200), ctx.json([1, 2, 3]));
   }),
 ];
 

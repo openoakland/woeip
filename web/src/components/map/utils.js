@@ -67,7 +67,7 @@ export const parsePollutant = (item) => {
  * Retrieve all of the collections that occurred on the given date
  * @param {moment} mapDate
  * @param {CancelToken} cancelTokenSource
- * @returns {Array<Collection>}
+ * @returns { collectionsOnDate: Array<Collection> | errorMessage: string } validity of each value depends on whether fetch was successful 
  */
 export const getCollectionsOnDate = async (mapDate, cancelTokenSource) => {
   const options = {
@@ -76,7 +76,24 @@ export const getCollectionsOnDate = async (mapDate, cancelTokenSource) => {
     },
     cancelToken: cancelTokenSource.token,
   };
-  return (await axios.get(apiUrlCollections(), options)).data;
+  try {
+    const response = await axios.get(apiUrlCollections(), options);
+    const collectionsOnDate = response.data;
+    if(!collectionsOnDate) {
+      throw new Error('Failed to get collections for selected date');
+    }
+    return {collectionsOnDate: collectionsOnDate, errorMessage: ''};
+  } catch (error){
+    let errorMessage = '';
+    if(error.response){
+      errorMessage = error.response.data;
+    } else if (error.request){
+      errorMessage = error.request;
+    } else {
+      errorMessage = error.message;
+    }
+    return {collectionsOnDate: [], errorMessage: errorMessage};
+  }
 };
 
 /**
