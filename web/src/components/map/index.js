@@ -32,6 +32,7 @@ export const Map = () => {
   const [gpsFileUrl, setGpsFileUrl] = useState("");
   const [dustrakFileUrl, setDustrakFileUrl] = useState("");
   const [pollutants, setPollutants] = useState([]);
+  const [errorMessage, setErrorMessage] = useState("");
   const [isPendingResponse, setIsPendingResponse] = useState(true);
   const [pollutantsTokenSource, setPollutantsTokenSource] = useState(null); //Initialized when called by collections loader
   const [collectionsTokenSource, setCollectionsTokenSource] = useState(
@@ -47,10 +48,12 @@ export const Map = () => {
   useEffect(() => {
     (async () => {
       try {
+        console.log('before requesting collections on date')
         const pendingCollectionsOnDate = await getCollectionsOnDate(
           mapDate,
           collectionsTokenSource
         );
+        console.log('after requesting collections on date')
         setCollectionsOnDate(pendingCollectionsOnDate);
         setActiveCollection(fallbackCollection(pendingCollectionsOnDate));
         setIsPendingResponse(true);
@@ -148,21 +151,29 @@ export const Map = () => {
   };
 
   return (
-    <Grid columns={2} textAlign="left">
-      <Grid.Column size="massive">
-        <MapBox isLoading={isPendingResponse} pollutants={pollutants} />
-      </Grid.Column>
-      <Grid.Column>
-        <MapMenu
-          mapDate={mapDate}
-          collectionsOnDate={collectionsOnDate}
-          activeCollection={activeCollection}
-          stageLoadingDate={stageLoadingDate}
-          stageLoadingCollection={stageLoadingCollection}
-          gpsFileUrl={gpsFileUrl}
-          dustrakFileUrl={dustrakFileUrl}
-        />
-      </Grid.Column>
-    </Grid>
+        <div>
+            <p>collectionsOnDate: { collectionsOnDate.length }</p>
+            <p>activeCollection: { activeCollection.id }</p>
+            <p>gpdFileUrl: { gpsFileUrl }</p>
+            <p>dustFileLink: { dustrakFileUrl }</p>
+            <p>pollutants: { pollutants.length }</p>
+            <p>isPendingResponse: { isPendingResponse ? 'yes' : 'no' }</p>
+        </div>
+    // <Grid columns={2} textAlign="left">
+    //   <Grid.Column size="massive">
+    //     <MapBox isLoading={isPendingResponse} pollutants={pollutants} />
+    //   </Grid.Column>
+    //   <Grid.Column>
+    //     <MapMenu
+    //       mapDate={mapDate}
+    //       collectionsOnDate={collectionsOnDate}
+    //       activeCollection={activeCollection}
+    //       stageLoadingDate={stageLoadingDate}
+    //       stageLoadingCollection={stageLoadingCollection}
+    //       gpsFileUrl={gpsFileUrl}
+    //       dustrakFileUrl={dustrakFileUrl}
+    //     />
+    //   </Grid.Column>
+    // </Grid>
   );
 };

@@ -64,7 +64,7 @@ export const parsePollutant = (item) => {
 };
 
 /**
- * Retrieve all of the collections that occured on the given date
+ * Retrieve all of the collections that occurred on the given date
  * @param {moment} mapDate
  * @param {CancelToken} cancelTokenSource
  * @returns {Array<Collection>}
