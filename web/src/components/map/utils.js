@@ -111,14 +111,12 @@ export const fallbackCollection = (pendingCollections) =>
  * Handle axios throw that may have been a cancel request
  * @param {string} dataRequested type of request being made when error occurred
  * @param {Error} thrown type of error thrown
+ * @return {string} the message associated with the error
  */
-export const canceledRequestMessage = (dataRequested) => (thrown) => {
-  if (axios.isCancel(thrown)) {
-    console.log(`Canceled request for ${dataRequested}`);
-  } else {
-    console.error(`Failed to get data for ${dataRequested}`);
-  }
-};
+export const canceledRequestMessage = (dataRequested) => (thrown) =>
+  axios.isCancel(thrown)
+    ? `Canceled request for ${dataRequested}`
+    : `Failed to get data for ${dataRequested}`;
 
 /**
  * Overload cancel request message with collections

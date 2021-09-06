@@ -19,27 +19,37 @@ import {
 
 import { Grid } from "../ui";
 
+const initialDate = (location) => moment(location?.state?.date) || moment(); // Date either from upload or current day
+const INIT_GPS_FILE_URL = 'initGpsFileUrl';
+const INIT_DUSTRAK_FILE_URL = 'initDustrakFileUrl'; 
+const INIT_ACTIVE_COLLECTION = { id: -1, collection_files: [{ file: INIT_GPS_FILE_URL }, {file: INIT_DUSTRAK_FILE_URL}] }; // Indicates that data are pending meaningful values
+
 /**
  * View Map of data sessions and related meta-data
  * Data are read only
  */
 export const Map = () => {
   const location = useLocation(); // location for the url
-  const initialDate = moment(location?.state?.date) || moment(); // Date either from upload or current day
-  const [mapDate, setMapDate] = useState(initialDate);
+  const [mapDate, setMapDate] = useState(initialDate(location));
   const [collectionsOnDate, setCollectionsOnDate] = useState([]);
-  const [activeCollection, setActiveCollection] = useState({});
-  const [gpsFileUrl, setGpsFileUrl] = useState("");
-  const [dustrakFileUrl, setDustrakFileUrl] = useState("");
+  const [activeCollection, setActiveCollection] = useState(INIT_ACTIVE_COLLECTION);
+  const [gpsFileUrl, setGpsFileUrl] = useState(INIT_GPS_FILE_URL);
+  const [dustrakFileUrl, setDustrakFileUrl] = useState(INIT_DUSTRAK_FILE_URL);
   const [pollutants, setPollutants] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
   const [isPendingResponse, setIsPendingResponse] = useState(true);
-  const [pollutantsTokenSource, setPollutantsTokenSource] = useState(null); //Initialized when called by collections loader
+  const [pollutantsTokenSource, setPollutantsTokenSource] = useState(
+    axios.CancelToken.source()
+  );
   const [collectionsTokenSource, setCollectionsTokenSource] = useState(
     axios.CancelToken.source()
   );
 
-  // Pair axios cancel token source function with a guard to protect calling undefined tokens
+  /**
+   * Invoke the cancellation of a pending axios request
+   * @param {axios.CancelToken.source()} tokenSource 
+   * @modifies the axios call by cancelling it
+   */
   const cancelCall = (tokenSource) => tokenSource && tokenSource.cancel();
 
   /**
@@ -48,43 +58,20 @@ export const Map = () => {
   useEffect(() => {
     (async () => {
       try {
-        console.log('before requesting collections on date')
+        if (!mapDate) throw new Error("Failed to read date selected for map");
         const pendingCollectionsOnDate = await getCollectionsOnDate(
           mapDate,
           collectionsTokenSource
         );
-        console.log('after requesting collections on date')
         setCollectionsOnDate(pendingCollectionsOnDate);
         setActiveCollection(fallbackCollection(pendingCollectionsOnDate));
-        setIsPendingResponse(true);
-        setPollutantsTokenSource(axios.CancelToken.source());
       } catch (thrown) {
-        canceledCollectionsMessage(thrown);
+        setIsPendingResponse(false); // data loading process ends with failure to get collections
+        setErrorMessage(canceledCollectionsMessage(thrown));
       }
     })();
-    // cancel call on component unmount
     return () => cancelCall(collectionsTokenSource);
   }, [mapDate, collectionsTokenSource]);
-
-  /**
-   * Call the api to load the urls for gps+dustrak source files of a collection
-   */
-  useEffect(() => {
-    (async () => {
-      try {
-        const collectionFileLinks = activeCollection.collection_files;
-        const [gpsFileLink, dustFileLink] = collectionFileLinks || ["", ""];
-        const [pendingGpsFile, pendingDustrakFile] = await Promise.all([
-          getCollectionFileByLink(swapProtocol(gpsFileLink)),
-          getCollectionFileByLink(swapProtocol(dustFileLink)),
-        ]);
-        setGpsFileUrl(swapProtocol(pendingGpsFile.file));
-        setDustrakFileUrl(swapProtocol(pendingDustrakFile.file));
-      } catch {
-        console.error("could not retrieve files for collection");
-      }
-    })();
-  }, [activeCollection]);
 
   /**
    * Load pollutants in collection
@@ -92,27 +79,53 @@ export const Map = () => {
   useEffect(() => {
     (async () => {
       try {
+        const activeCollectionId = activeCollection.id;
+        // pending assignment to meaningful value
+        if (activeCollectionId === INIT_ACTIVE_COLLECTION.id) return;
+        if (!activeCollection.id) throw new Error('Invalid Id for selected collection');
         const pendingPollutantValues = await getPollutantsByCollectionId(
-          activeCollection.id,
+          activeCollectionId,
           pollutantsTokenSource
         );
         setPollutants(fallbackPollutants(pendingPollutantValues));
+        // place behind short-circuit, rather than finally block,
+        // because response should stop pending only after successful call or complete error
         setIsPendingResponse(false);
       } catch (thrown) {
-        canceledPollutantsMessage(thrown);
+        setErrorMessage(canceledPollutantsMessage(thrown));
+        setIsPendingResponse(false);
       }
     })();
     // cancel call on unmount
     return () => cancelCall(pollutantsTokenSource);
   }, [activeCollection, pollutantsTokenSource]);
 
-  const clearActiveCollection = () => {
-    cancelCall(collectionsTokenSource);
-    cancelCall(pollutantsTokenSource);
-    setGpsFileUrl("");
-    setDustrakFileUrl("");
-    setPollutants([]);
-  };
+  /**
+   * Call the api to load the urls for gps+dustrak source files of a collection
+   */
+  useEffect(() => {
+    (async () => {
+      try {
+        const [
+          gpsFileLink,
+          dustrakFileLink,
+        ] = activeCollection.collection_files;
+        // pending assignment to meaningful value
+        if(gpsFileLink.file === INIT_GPS_FILE_URL) return;
+        if (!activeCollection.collection_files) throw new Error('Invalid data files for selected function');
+        const [pendingGpsFile, pendingDustrakFile] = await Promise.all([
+          getCollectionFileByLink(swapProtocol(gpsFileLink)),
+          getCollectionFileByLink(swapProtocol(dustrakFileLink)),
+        ]);
+        if (!pendingDustrakFile.file || !pendingDustrakFile.file)
+          throw new Error("missing a data file for the active collection");
+        setGpsFileUrl(swapProtocol(pendingGpsFile.file));
+        setDustrakFileUrl(swapProtocol(pendingDustrakFile.file));
+      } catch (thrown) {
+        setErrorMessage(thrown.message);
+      }
+    })();
+  }, [activeCollection]);
 
   /**
    * Load collections from a new date
@@ -126,9 +139,10 @@ export const Map = () => {
     const rawDate = data.value;
     // guard against double click
     if (rawDate) {
-      clearActiveCollection();
       setMapDate(moment(rawDate.toISOString()));
+      setActiveCollection(INIT_ACTIVE_COLLECTION);
       setCollectionsTokenSource(axios.CancelToken.source());
+      resetCommonData();
     }
   };
 
@@ -143,22 +157,35 @@ export const Map = () => {
   const stageLoadingCollection = (pendingCollection) => {
     //guard against double click
     if (pendingCollection.id) {
-      clearActiveCollection();
       setActiveCollection(pendingCollection);
-      setIsPendingResponse(true);
-      setPollutantsTokenSource(axios.CancelToken.source());
+      resetCommonData();
     }
   };
 
+  /**
+   * Place functions that are common to "stageLoadingDate" and"stageLoadingCollection" into single function
+   */
+  const resetCommonData = () => {
+    cancelCall(collectionsTokenSource);
+    cancelCall(pollutantsTokenSource);
+    setGpsFileUrl(INIT_GPS_FILE_URL);
+    setDustrakFileUrl(INIT_DUSTRAK_FILE_URL);
+    setPollutants([]);
+    setErrorMessage('');
+    setIsPendingResponse(true);
+    setPollutantsTokenSource(axios.CancelToken.source());
+  };
+
   return (
-        <div>
-            <p>collectionsOnDate: { collectionsOnDate.length }</p>
-            <p>activeCollection: { activeCollection.id }</p>
-            <p>gpdFileUrl: { gpsFileUrl }</p>
-            <p>dustFileLink: { dustrakFileUrl }</p>
-            <p>pollutants: { pollutants.length }</p>
-            <p>isPendingResponse: { isPendingResponse ? 'yes' : 'no' }</p>
-        </div>
+    <div>
+      <p>collectionsOnDate: {collectionsOnDate.length}</p>
+      <p>activeCollection: {activeCollection.id}</p>
+      <p>gpdFileUrl: {gpsFileUrl}</p>
+      <p>dustFileLink: {dustrakFileUrl}</p>
+      <p>pollutants: {pollutants.length}</p>
+      <p>isPendingResponse: {isPendingResponse ? "yes" : "no"}</p>
+      <p>errorMessage: {errorMessage}</p>
+    </div>
     // <Grid columns={2} textAlign="left">
     //   <Grid.Column size="massive">
     //     <MapBox isLoading={isPendingResponse} pollutants={pollutants} />
