@@ -86,14 +86,12 @@ export const getCollectionsOnDate = async (mapDate, cancelTokenSource) => {
   } catch (error) {
     let errorMessage = "";
     if (error.response) {
-      errorMessage = "Error in server response for collections on date"
+      errorMessage = "Error in server response for collections on date";
     } else if (error.request) {
       errorMessage = "Error in network request for collections on date";
-    } else if(error.message) {
+    } else if (error.message) {
       errorMessage = error.message;
-    } else (
-      errorMessage = "Unknown error when retrieving collections on date"
-    )
+    } else errorMessage = "Unknown error when retrieving collections on date";
     return { collectionsOnDate: [], errorMessage: errorMessage };
   }
 };

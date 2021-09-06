@@ -6,12 +6,12 @@ import { server, rest } from "../../serverHandlers";
 
 describe("get collections from a specific date", () => {
   it("should successfully receive a list of collections from the data", async () => {
-    const {collectionsOnDate, errorMessage} = await getCollectionsOnDate(
+    const { collectionsOnDate, errorMessage } = await getCollectionsOnDate(
       moment(),
       axios.CancelToken.source()
     );
     expect(collectionsOnDate).toEqual([1, 2, 3]);
-    expect(errorMessage).toEqual('');
+    expect(errorMessage).toEqual("");
   });
 
   it("should handle corrupt data response", async () => {
@@ -20,12 +20,12 @@ describe("get collections from a specific date", () => {
         return res(ctx.status(200));
       })
     );
-    const {collectionsOnDate, errorMessage } = await getCollectionsOnDate(
+    const { collectionsOnDate, errorMessage } = await getCollectionsOnDate(
       moment(),
       axios.CancelToken.source()
     );
     expect(collectionsOnDate).toEqual([]);
-    expect(errorMessage).toMatch('Failed to get collections');
+    expect(errorMessage).toMatch("Failed to get collections");
   });
 
   it("should handle error responses", async () => {
@@ -35,9 +35,12 @@ describe("get collections from a specific date", () => {
       })
     );
 
-    const {collectionsOnDate, errorMessage} = await getCollectionsOnDate(moment(), axios.CancelToken.source());
+    const { collectionsOnDate, errorMessage } = await getCollectionsOnDate(
+      moment(),
+      axios.CancelToken.source()
+    );
     expect(collectionsOnDate).toEqual([]);
-    expect(errorMessage).toMatch('Error in server response');
+    expect(errorMessage).toMatch("Error in server response");
   });
 
   it("should handle network error", async () => {
@@ -45,8 +48,11 @@ describe("get collections from a specific date", () => {
       rest.get(apiUrlCollections(), (_req, res, _ctx) => res.networkError())
     );
 
-    const {collectionsOnDate, errorMessage} = await getCollectionsOnDate(moment(), axios.CancelToken.source());
+    const { collectionsOnDate, errorMessage } = await getCollectionsOnDate(
+      moment(),
+      axios.CancelToken.source()
+    );
     expect(collectionsOnDate).toEqual([]);
-    expect(errorMessage).toMatch('Error in network request');
+    expect(errorMessage).toMatch("Error in network request");
   });
 });

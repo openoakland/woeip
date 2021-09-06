@@ -65,17 +65,17 @@ export const Map = () => {
    */
   useEffect(() => {
     (async () => {
-      try {
-        if (!mapDate) throw new Error("Failed to read date selected for map");
-        const pendingCollectionsOnDate = await getCollectionsOnDate(
-          mapDate,
-          collectionsTokenSource
-        );
-        setCollectionsOnDate(pendingCollectionsOnDate);
-        setActiveCollection(fallbackCollection(pendingCollectionsOnDate));
-      } catch (thrown) {
+      if (!mapDate) return;
+      const {
+        collectionsOnDate: collectionsOnDateResponse,
+        errorMessage,
+      } = await getCollectionsOnDate(mapDate, collectionsTokenSource);
+      if (errorMessage) {
+        setErrorMessage(errorMessage);
         setIsPendingResponse(false); // data loading process ends with failure to get collections
-        setErrorMessage(canceledCollectionsMessage(thrown));
+      } else {
+        setCollectionsOnDate(collectionsOnDateResponse);
+        setActiveCollection(fallbackCollection(collectionsOnDateResponse));
       }
     })();
     return () => cancelCall(collectionsTokenSource);
