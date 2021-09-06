@@ -1,5 +1,5 @@
-import { apiUrlCollections } from "../../api.util";
-import { getCollectionsOnDate } from "./utils";
+import { apiUrlCollectionById, apiUrlCollections } from "../../api.util";
+import { getCollectionsOnDate, getPollutantsByCollectionId } from "./utils";
 import axios from "axios";
 import moment from "moment-timezone";
 import { server, rest } from "../../serverHandlers";
@@ -54,5 +54,72 @@ describe("get collections from a specific date", () => {
     );
     expect(collectionsOnDate).toEqual([]);
     expect(errorMessage).toMatch("Error in network request");
+  });
+});
+
+describe("get pollutants for a specific collection", () => {
+  it("should successfully receive pollutants", async () => {
+    const {
+      pollutantsInCollection,
+      errorMessage,
+    } = await getPollutantsByCollectionId(1, axios.CancelToken.source());
+    expect(pollutantsInCollection).toEqual([{ time_geo: "Place and time" }]);
+    expect(errorMessage).toEqual("");
+  });
+
+  it("should handle response with corrupt data", async () => {
+    server.use(
+      rest.get(apiUrlCollectionById("*"), (_req, res, ctx) => {
+        return res(ctx.status(200));
+      })
+    );
+
+    const {
+      pollutantsInCollection,
+      errorMessage,
+    } = await getPollutantsByCollectionId(0, axios.CancelToken.source());
+    expect(pollutantsInCollection).toEqual([]);
+    expect(errorMessage).toMatch("Failed to get");
+  });
+
+  it("should handle server response error", async () => {
+    server.use(
+      rest.get(apiUrlCollectionById("*"), (_req, res, ctx) => {
+        return res(ctx.status(503));
+      })
+    );
+
+    const {
+      pollutantsInCollection,
+      errorMessage,
+    } = await getPollutantsByCollectionId(0, axios.CancelToken.source());
+    expect(pollutantsInCollection).toEqual([]);
+    expect(errorMessage).toMatch("Error in server response");
+  });
+
+  it("should handle network request error", async () => {
+    server.use(
+      rest.get(apiUrlCollectionById("*"), (_req, res, _ctx) =>
+        res.networkError()
+      )
+    );
+
+    const {
+      pollutantsInCollection,
+      errorMessage,
+    } = await getPollutantsByCollectionId(0, axios.CancelToken.source());
+    expect(pollutantsInCollection).toEqual([]);
+    expect(errorMessage).toMatch("Error in network request");
+  });
+
+  it("should handle canceling a request", async () => {
+    const cancelTokenSource = axios.CancelToken.source();
+    cancelTokenSource.cancel();
+    const {
+      pollutantsInCollection,
+      errorMessage,
+    } = await getPollutantsByCollectionId(0, cancelTokenSource);
+    expect(pollutantsInCollection).toEqual([]);
+    expect(errorMessage).toMatch("Canceled");
   });
 });

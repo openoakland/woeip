@@ -35,8 +35,29 @@ export const getPollutantsByCollectionId = async (
   const options = {
     cancelToken: cancelTokenSource.token,
   };
-  if (!collectionId) return [];
-  return (await axios.get(apiUrlCollectionById(collectionId), options)).data;
+  try {
+    const response = await axios.get(
+      apiUrlCollectionById(collectionId),
+      options
+    );
+    const pollutantsInCollection = response.data;
+    if (!response.data)
+      throw new Error("Failed to get pollutants in collection");
+    return { pollutantsInCollection: pollutantsInCollection, errorMessage: "" };
+  } catch (error) {
+    let errorMessage = "";
+    if (error.response) {
+      errorMessage = "Error in server response for pollutants in collection";
+    } else if (error.request) {
+      errorMessage = "Error in network request for pollutants in collection";
+    } else if (error.message) {
+      errorMessage = error.message;
+    } else if (axios.isCancel(error)) {
+      errorMessage = "Canceled request for pollutants in collection";
+    } else
+      errorMessage = "Unknown error when retrieving pollutants in collection";
+    return { pollutantsInCollection: [], errorMessage: errorMessage };
+  }
 };
 
 /**
