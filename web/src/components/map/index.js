@@ -86,26 +86,26 @@ export const Map = () => {
    */
   useEffect(() => {
     (async () => {
-      try {
-        const activeCollectionId = activeCollection.id;
-        // pending assignment to meaningful value
-        if (activeCollectionId === INIT_ACTIVE_COLLECTION.id) return;
-        if (!activeCollection.id)
-          throw new Error("Invalid Id for selected collection");
-        const pendingPollutantValues = await getPollutantsByCollectionId(
-          activeCollectionId,
-          pollutantsTokenSource
-        );
-        setPollutants(fallbackPollutants(pendingPollutantValues));
-        // place behind short-circuit, rather than finally block,
-        // because response should stop pending only after successful call or complete error
-        setIsPendingResponse(false);
-      } catch (thrown) {
-        setErrorMessage(canceledPollutantsMessage(thrown));
-        setIsPendingResponse(false);
+      const activeCollectionId = activeCollection.id;
+      if (
+        !activeCollectionId ||
+        activeCollectionId === INIT_ACTIVE_COLLECTION.id
+      )
+        return;
+      const {
+        pollutantsInCollection,
+        errorMessage,
+      } = await getPollutantsByCollectionId(
+        activeCollectionId,
+        pollutantsTokenSource
+      );
+      if (errorMessage) {
+        setErrorMessage(errorMessage);
+      } else {
+        setPollutants(fallbackPollutants(pollutantsInCollection));
       }
+      setIsPendingResponse(false);
     })();
-    // cancel call on unmount
     return () => cancelCall(pollutantsTokenSource);
   }, [activeCollection, pollutantsTokenSource]);
 

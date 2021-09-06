@@ -59,10 +59,10 @@ describe("get collections from a specific date", () => {
   it("should handle canceling a request", async () => {
     const cancelTokenSource = axios.CancelToken.source();
     cancelTokenSource.cancel();
-    const {
-      collectionsOnDate,
-      errorMessage,
-    } = await getCollectionsOnDate(moment(), cancelTokenSource);
+    const { collectionsOnDate, errorMessage } = await getCollectionsOnDate(
+      moment(),
+      cancelTokenSource
+    );
     expect(collectionsOnDate).toEqual([]);
     expect(errorMessage).toMatch("Canceled");
   });
