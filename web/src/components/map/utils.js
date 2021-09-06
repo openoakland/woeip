@@ -125,8 +125,24 @@ export const getCollectionsOnDate = async (mapDate, cancelTokenSource) => {
  * @returns {CollectionFile} data about the collection file
  */
 export const getCollectionFileByLink = async (fileLink) => {
-  if (!fileLink) return "";
-  return (await axios.get(fileLink)).data;
+  try {
+    const response = await axios.get(fileLink);
+    const file = response.data;
+    if (!file) throw new Error("Failed to get file for collection");
+    return { file: file, errorMessage: "" };
+  } catch (error) {
+    let errorMessage = "";
+    if (error.response) {
+      errorMessage = "Error in server response for file for collection";
+    } else if (error.request) {
+      errorMessage = "Error in network request for file for collection";
+    } else if (error.message) {
+      errorMessage = error.message;
+    } else if (axios.isCancel(error)) {
+      errorMessage = "Canceled request for file for collection";
+    } else errorMessage = "Unknown error when retrieving file for collection";
+    return { file: null, errorMessage: errorMessage };
+  }
 };
 
 /**

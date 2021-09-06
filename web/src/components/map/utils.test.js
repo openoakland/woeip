@@ -1,5 +1,13 @@
-import { apiUrlCollectionById, apiUrlCollections } from "../../api.util";
-import { getCollectionsOnDate, getPollutantsByCollectionId } from "./utils";
+import {
+  apiUrl,
+  apiUrlCollectionById,
+  apiUrlCollections,
+} from "../../api.util";
+import {
+  getCollectionFileByLink,
+  getCollectionsOnDate,
+  getPollutantsByCollectionId,
+} from "./utils";
 import axios from "axios";
 import moment from "moment-timezone";
 import { server, rest } from "../../serverHandlers";
@@ -132,5 +140,58 @@ describe("get pollutants for a specific collection", () => {
     } = await getPollutantsByCollectionId(0, cancelTokenSource);
     expect(pollutantsInCollection).toEqual([]);
     expect(errorMessage).toMatch("Canceled");
+  });
+});
+
+describe("get files for a specific collection", () => {
+  it("should successfully receive files", async () => {
+    const fileLink = apiUrl("/link/to/file");
+    const fileFoo = new File(["foo"], "foo.csv", { type: "text/csv" });
+    server.use(
+      rest.get(fileLink, (req, res, ctx) => {
+        return res(
+          ctx.status(200),
+          ctx.set("Content-Type", "text/csv"),
+          ctx.body(fileFoo)
+        );
+      })
+    );
+    const { file, errorMessage } = await getCollectionFileByLink(fileLink);
+    expect(file).toEqual(fileFoo);
+    expect(errorMessage).toEqual("");
+  });
+
+  it("should handle response with corrupt data", async () => {
+    const fileLink = apiUrl("link/to/file");
+    server.use(
+      rest.get(fileLink, (req, res, ctx) => {
+        return res(ctx.status(200));
+      })
+    );
+
+    const { file, errorMessage } = await getCollectionFileByLink(fileLink);
+    expect(file).toBe(null);
+    expect(errorMessage).toMatch("Failed to get file");
+  });
+
+  it("should handle server response error", async () => {
+    const fileLink = apiUrl("link/to/file");
+    server.use(
+      rest.get(fileLink, (req, res, ctx) => {
+        return res(ctx.status(503));
+      })
+    );
+
+    const { file, errorMessage } = await getCollectionFileByLink(fileLink);
+    expect(file).toBe(null);
+    expect(errorMessage).toMatch("Error in server response");
+  });
+
+  it("should handle network request error", async () => {
+    const fileLink = apiUrl("link/to/file");
+    server.use(rest.get(fileLink, (req, res, ctx) => res.networkError()));
+    const { file, errorMessage } = await getCollectionFileByLink(fileLink);
+    expect(file).toBe(null);
+    expect(errorMessage).toMatch("Error in network request");
   });
 });
