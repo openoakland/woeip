@@ -114,25 +114,22 @@ export const Map = () => {
    */
   useEffect(() => {
     (async () => {
-      try {
-        const [
-          gpsFileLink,
-          dustrakFileLink,
-        ] = activeCollection.collection_files;
-        // pending assignment to meaningful value
-        if (gpsFileLink.file === INIT_GPS_FILE_URL) return;
-        if (!activeCollection.collection_files)
-          throw new Error("Invalid data files for selected function");
-        const [pendingGpsFile, pendingDustrakFile] = await Promise.all([
-          getCollectionFileByLink(swapProtocol(gpsFileLink)),
-          getCollectionFileByLink(swapProtocol(dustrakFileLink)),
-        ]);
-        if (!pendingDustrakFile.file || !pendingDustrakFile.file)
-          throw new Error("missing a data file for the active collection");
-        setGpsFileUrl(swapProtocol(pendingGpsFile.file));
-        setDustrakFileUrl(swapProtocol(pendingDustrakFile.file));
-      } catch (thrown) {
-        setErrorMessage(thrown.message);
+      if (!activeCollection.collection_files) return;
+      const [gpsFileLink, dustrakFileLink] = activeCollection.collection_files;
+      // pending assignment to meaningful value
+      if (gpsFileLink.file === INIT_GPS_FILE_URL) return;
+      const [
+        { file: gpsFileResponse, errorMessage: gpsFileError },
+        { file: dustrakFileResponse, errorMessage: dustrakFileError },
+      ] = await Promise.all([
+        getCollectionFileByLink(swapProtocol(gpsFileLink)),
+        getCollectionFileByLink(swapProtocol(dustrakFileLink)),
+      ]);
+      if (gpsFileError || dustrakFileError) {
+        setErrorMessage("Error retrieving data files for collection");
+      } else {
+        setGpsFileUrl(swapProtocol(gpsFileResponse.file));
+        setDustrakFileUrl(swapProtocol(dustrakFileResponse.file));
       }
     })();
   }, [activeCollection]);
