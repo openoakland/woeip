@@ -1,17 +1,19 @@
-import { Container, DefaultInput, AffirmActionButton } from "../ui";
+import { AffirmActionButton, Form } from "../ui";
 
 export const Login = () => {
-
-
   return (
     <div className="login-container">
-      <Container>
-        Username: <DefaultInput />
-        <br />
-        Password: <DefaultInput />
-        <br />
+      <Form>
+        <Form.Field>
+          <label>Email</label>
+          <input placeholder="Email" />
+        </Form.Field>
+        <Form.Field>
+          <label>Password</label>
+          <input placeholder="Password" />
+        </Form.Field>
         <AffirmActionButton>Sign In</AffirmActionButton>
-      </Container>
+      </Form>
     </div>
   );
 };
