@@ -7,6 +7,9 @@ import { Home } from "../home";
 import { About } from "../about";
 import { Login } from "../auth/login";
 import { Register } from "../auth/register";
+import { ResetPassword } from "../auth/resetPassword";
+import { ResetPasswordConfirm } from "../auth/resetPasswordConfirm";
+import { Activate } from "../auth/activate";
 
 export const Navswitch = () => {
   return (
@@ -51,5 +54,20 @@ export const routes = [
     path: "/register",
     exact: true,
     component: Register,
-  }
+  },
+  {
+    path: "/reset-password",
+    exact: true,
+    component: ResetPassword,
+  },
+  {
+    path: "/password/reset/confirm/:uid/:token",
+    exact: true,
+    component: ResetPasswordConfirm,
+  },
+  {
+    path: "/activate/:uid/:token",
+    exact: true,
+    component: Activate,
+  },
 ];
