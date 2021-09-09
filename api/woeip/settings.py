@@ -1,4 +1,5 @@
 import environ
+import datetime
 from django.core.exceptions import ImproperlyConfigured
 
 repo_root = environ.Path(__file__) - 2
@@ -210,7 +211,7 @@ EMAIL_HOST_PASSWORD = 'hnblkkmrmfwotkbi'
 EMAIL_USE_TLS = True
 
 SITE_NAME = ('WOAQ')
-DOMAIN = ('http://lvh.me') 
+DOMAIN = ('lvh.me') 
 #DJOSER
 DJOSER = {
     'LOGIN_FIELD': 'email',
@@ -240,4 +241,7 @@ REST_FRAMEWORK = {
 
 SIMPLE_JWT = {
    'AUTH_HEADER_TYPES': ('JWT',),
+   'JWT_ALLOW_REFRESH': True,
+   'JWT_EXPIRATION_DELTA': datetime.timedelta(minutes=60),
+   'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=1),
 }
