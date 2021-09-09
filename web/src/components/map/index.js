@@ -20,9 +20,9 @@ import {
 import { Grid } from "../ui";
 
 const initialDate = (location) => moment(location?.state?.date) || moment(); // Date either from upload or current day
-const INIT_GPS_FILE_URL = "initGpsFileUrl";
-const INIT_DUSTRAK_FILE_URL = "initDustrakFileUrl";
-const INIT_ACTIVE_COLLECTION = {
+export const INIT_GPS_FILE_URL = "initGpsFileUrl";
+export const INIT_DUSTRAK_FILE_URL = "initDustrakFileUrl";
+export const INIT_ACTIVE_COLLECTION = {
   id: -1,
   collection_files: [
     { file: INIT_GPS_FILE_URL },

@@ -26,6 +26,15 @@ export const MapMenu = ({
   gpsFileUrl,
   dustrakFileUrl,
 }) => {
+  const activeCollectionIsPending = activeCollection.id === -1;
+  const activeCollectionIsMissing = activeCollection.id === -2;
+
+  const sessionIdDisplay = () => {
+    if (activeCollectionIsPending)
+      return "Pending valid collection from database";
+    if (activeCollectionIsMissing) return "None";
+    return activeCollection.id + ""; //coerce id to string for consistent return type
+  };
   /**
    * From the collections, composed React Components to display each collection
    * Exclude the active collection
@@ -60,12 +69,12 @@ export const MapMenu = ({
       <h3>Collection Details</h3>
       <List>
         <List.Item>
-          <b>Session:</b> {activeCollection.id || "None"}
+          <b>Session:</b> {sessionIdDisplay()}
         </List.Item>
         <b>Start Time:</b>{" "}
         {activeCollection.starts_at
           ? moment(activeCollection.starts_at).format("h:mm A")
-          : "None"}
+          : "Data for start time are not available"}
         {gpsFileUrl ? (
           <List.Item as="a" href={gpsFileUrl}>
             Download GPS File
@@ -89,7 +98,7 @@ export const MapMenu = ({
           <List.Item>None</List.Item>
         )}
       </List>
-      {!collectionsOnDate.length && (
+      {activeCollectionIsMissing && (
         <WarningMessage>
           We haven't collected data for this time period. Please select another
           date.

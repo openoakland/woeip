@@ -154,6 +154,8 @@ export const getCollectionFileByLink = async (fileLink) => {
 export const swapProtocol = (link) =>
   link.replace("http", process.env.REACT_APP_PROTOCOL || "http");
 
+// TODO: Rename to highlight primary utility
+// TODO: Use fallback value that can illuminate the application state
 /**
  * Return the collection that was last added to a date.
  * If no collections were returned for a date, fall back to using an empty object
@@ -161,7 +163,7 @@ export const swapProtocol = (link) =>
  * @returns {Collection || Object } Lastest collection or an empty object
  */
 export const fallbackCollection = (pendingCollections) =>
-  pendingCollections[pendingCollections.length - 1] || {};
+  pendingCollections[pendingCollections.length - 1] || { id: -2 };
 
 /**
  * Handle axios throw that may have been a cancel request
