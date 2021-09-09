@@ -1,8 +1,6 @@
 import { Form, AffirmActionButton } from "../ui";
 
 export const Register = () => {
-
-
   return (
     <div className="register-container">
       <Form>
