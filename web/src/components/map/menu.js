@@ -5,6 +5,12 @@ import "react-semantic-ui-datepickers/dist/react-semantic-ui-datepickers.css";
 
 import SemanticDatepicker from "react-semantic-ui-datepickers";
 import { Container, List, WarningMessage } from "../ui";
+import { sessionIdDisplay } from "./menu.util";
+import {
+  FILE_MESSAGES,
+  ACTIVE_COLLECTION_ID_MESSAGES,
+  ACTIVE_COLLECTION_ID_STATES,
+} from "./constants";
 import "./menu.css";
 
 /**
@@ -26,15 +32,6 @@ export const MapMenu = ({
   gpsFileUrl,
   dustrakFileUrl,
 }) => {
-  const activeCollectionIsPending = activeCollection.id === -1;
-  const activeCollectionIsMissing = activeCollection.id === -2;
-
-  const sessionIdDisplay = () => {
-    if (activeCollectionIsPending)
-      return "Pending valid collection from database";
-    if (activeCollectionIsMissing) return "None";
-    return activeCollection.id + ""; //coerce id to string for consistent return type
-  };
   /**
    * From the collections, composed React Components to display each collection
    * Exclude the active collection
@@ -69,7 +66,8 @@ export const MapMenu = ({
       <h3>Collection Details</h3>
       <List>
         <List.Item>
-          <b>Session:</b> {sessionIdDisplay()}
+          <b>Session:</b>
+          {sessionIdDisplay(activeCollection.id)}
         </List.Item>
         <b>Start Time:</b>{" "}
         {activeCollection.starts_at
@@ -98,10 +96,9 @@ export const MapMenu = ({
           <List.Item>None</List.Item>
         )}
       </List>
-      {activeCollectionIsMissing && (
+      {activeCollection.id === ACTIVE_COLLECTION_ID_STATES.NONE_FOUND && (
         <WarningMessage>
-          We haven't collected data for this time period. Please select another
-          date.
+          {ACTIVE_COLLECTION_ID_MESSAGES[activeCollection.id]}
         </WarningMessage>
       )}
     </Container>

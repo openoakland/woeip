@@ -17,18 +17,14 @@ import {
   canceledPollutantsMessage,
 } from "./utils";
 
+import { FILE_STATES, ACTIVE_COLLECTION_ID_STATES } from "./constants";
+
 import { Grid } from "../ui";
 
 const initialDate = (location) => moment(location?.state?.date) || moment(); // Date either from upload or current day
-export const INIT_GPS_FILE_URL = "initGpsFileUrl";
-export const INIT_DUSTRAK_FILE_URL = "initDustrakFileUrl";
 export const INIT_ACTIVE_COLLECTION = {
-  id: -1,
-  collection_files: [
-    { file: INIT_GPS_FILE_URL },
-    { file: INIT_DUSTRAK_FILE_URL },
-  ],
-}; // Indicates that data are pending meaningful values
+  id: ACTIVE_COLLECTION_ID_STATES.PENDING_RESPONSE,
+};
 
 /**
  * View Map of data sessions and related meta-data
@@ -41,8 +37,12 @@ export const Map = () => {
   const [activeCollection, setActiveCollection] = useState(
     INIT_ACTIVE_COLLECTION
   );
-  const [gpsFileUrl, setGpsFileUrl] = useState(INIT_GPS_FILE_URL);
-  const [dustrakFileUrl, setDustrakFileUrl] = useState(INIT_DUSTRAK_FILE_URL);
+  const [gpsFileUrl, setGpsFileUrl] = useState(
+    FILE_STATES.GPS_FILE_URL.PENDING_RESPONSE
+  );
+  const [dustrakFileUrl, setDustrakFileUrl] = useState(
+    FILE_STATES.DUSTRAK_FILE_URL.PENDING_RESPONSE
+  );
   const [pollutants, setPollutants] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
   const [isPendingResponse, setIsPendingResponse] = useState(true);
@@ -73,9 +73,10 @@ export const Map = () => {
       if (errorMessage) {
         setErrorMessage(errorMessage);
         setIsPendingResponse(false); // data loading process ends with failure to get collections
+        // todo: set active collection to error version
       } else {
         setCollectionsOnDate(collectionsOnDateResponse);
-        setActiveCollection(fallbackCollection(collectionsOnDateResponse));
+        setActiveCollection(fallbackCollection(collectionsOnDateResponse)); // todo: update with fallback to none_found
       }
     })();
     return () => cancelCall(collectionsTokenSource);
@@ -87,9 +88,10 @@ export const Map = () => {
   useEffect(() => {
     (async () => {
       const activeCollectionId = activeCollection.id;
+      // todo: once active collection value is predictable, replace with call to messages
       if (
         !activeCollectionId ||
-        activeCollectionId === INIT_ACTIVE_COLLECTION.id
+        activeCollectionId === ACTIVE_COLLECTION_ID_STATES.PENDING_RESPONSE
       )
         return;
       const {
@@ -117,7 +119,9 @@ export const Map = () => {
       if (!activeCollection.collection_files) return;
       const [gpsFileLink, dustrakFileLink] = activeCollection.collection_files;
       // pending assignment to meaningful value
-      if (gpsFileLink.file === INIT_GPS_FILE_URL) return;
+      // todo: replace with check for non-valid state that prompts message
+      if (gpsFileLink.file === FILE_STATES.GPS_FILE_URL.PENDING_RESPONSE)
+        return;
       const [
         { file: gpsFileResponse, errorMessage: gpsFileError },
         { file: dustrakFileResponse, errorMessage: dustrakFileError },
@@ -127,6 +131,7 @@ export const Map = () => {
       ]);
       if (gpsFileError || dustrakFileError) {
         setErrorMessage("Error retrieving data files for collection");
+        // todo: set errored version of files
       } else {
         setGpsFileUrl(swapProtocol(gpsFileResponse.file));
         setDustrakFileUrl(swapProtocol(dustrakFileResponse.file));
@@ -175,8 +180,8 @@ export const Map = () => {
   const resetCommonData = () => {
     cancelCall(collectionsTokenSource);
     cancelCall(pollutantsTokenSource);
-    setGpsFileUrl(INIT_GPS_FILE_URL);
-    setDustrakFileUrl(INIT_DUSTRAK_FILE_URL);
+    setGpsFileUrl(FILE_STATES.GPS_FILE_URL.PENDING_RESPONSE);
+    setDustrakFileUrl(FILE_STATES.DUSTRAK_FILE_URL.PENDING_RESPONSE);
     setPollutants([]);
     setErrorMessage("");
     setIsPendingResponse(true);

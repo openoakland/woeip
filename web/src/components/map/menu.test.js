@@ -1,9 +1,5 @@
-import {
-  INIT_GPS_FILE_URL,
-  INIT_DUSTRAK_FILE,
-  INIT_ACTIVE_COLLECTION,
-  INIT_DUSTRAK_FILE_URL,
-} from ".";
+import { INIT_ACTIVE_COLLECTION } from ".";
+import { FILE_STATES } from "./constants";
 
 import { MapMenu } from "./menu";
 import { render, screen } from "@testing-library/react";
@@ -38,8 +34,8 @@ const renderMapMenu = ({
   activeCollection = INIT_ACTIVE_COLLECTION,
   stageLoadingDate = jest.fn(),
   stageLoadingCollection = jest.fn(),
-  gpsFileUrl = INIT_GPS_FILE_URL,
-  dustrakFileUrl = INIT_DUSTRAK_FILE_URL,
+  gpsFileUrl = FILE_STATES.GPS_FILE_URL.PENDING_RESPONSE,
+  dustrakFileUrl = FILE_STATES.DUSTRAK_FILE_URL.PENDING_RESPONSE,
 } = {}) =>
   render(
     <MapMenu
