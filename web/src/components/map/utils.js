@@ -1,6 +1,7 @@
 import axios from "axios";
 
 import { apiUrlCollectionById, apiUrlCollections } from "../../api.util";
+import { ACTIVE_COLLECTION_ID_STATES } from "./constants";
 
 /**
  * Shape of pollutant data stored in database
@@ -160,10 +161,12 @@ export const swapProtocol = (link) =>
  * Return the collection that was last added to a date.
  * If no collections were returned for a date, fall back to using an empty object
  * @param {Array<Collection>} pendingCollections possible collections
- * @returns {Collection || Object } Lastest collection or an empty object
+ * @returns {Collection || Object } Last collection or an indicator that none was found
  */
-export const fallbackCollection = (pendingCollections) =>
-  pendingCollections[pendingCollections.length - 1] || { id: -2 };
+export const findActiveCollection = (pendingCollections) =>
+  pendingCollections[pendingCollections.length - 1] || {
+    id: ACTIVE_COLLECTION_ID_STATES.NONE_FOUND,
+  };
 
 /**
  * Handle axios throw that may have been a cancel request

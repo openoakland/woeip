@@ -36,8 +36,9 @@ export const MapMenu = ({
    * From the collections, composed React Components to display each collection
    * Exclude the active collection
    */
+  const activeCollectionId = activeCollection.id;
   const collectionsDisplay = collectionsOnDate
-    .filter((eachCollection) => eachCollection.id !== activeCollection.id)
+    .filter((eachCollection) => eachCollection.id !== activeCollectionId)
     .map((eachCollection) => {
       const id = eachCollection.id;
       const startsAt = eachCollection.starts_at;
@@ -67,25 +68,25 @@ export const MapMenu = ({
       <List>
         <List.Item>
           <b>Session:</b>
-          {sessionIdDisplay(activeCollection.id)}
+          {sessionIdDisplay(activeCollectionId)}
         </List.Item>
         <b>Start Time:</b>{" "}
         {activeCollection.starts_at
           ? moment(activeCollection.starts_at).format("h:mm A")
           : "Data for start time are not available"}
-        {gpsFileUrl ? (
+        {!FILE_MESSAGES[gpsFileUrl] ? (
           <List.Item as="a" href={gpsFileUrl}>
             Download GPS File
           </List.Item>
         ) : (
-          <List.Item>No GPS File</List.Item>
+          <List.Item>{FILE_MESSAGES[gpsFileUrl]}</List.Item>
         )}
-        {dustrakFileUrl ? (
+        {!FILE_MESSAGES[dustrakFileUrl] ? (
           <List.Item as="a" href={dustrakFileUrl}>
             Download DusTrak File
           </List.Item>
         ) : (
-          <List.Item>No Dustrak File</List.Item>
+          <List.Item>{FILE_MESSAGES[dustrakFileUrl]}</List.Item>
         )}
       </List>
       <h4>Other Collections from this day:</h4>
@@ -96,9 +97,9 @@ export const MapMenu = ({
           <List.Item>None</List.Item>
         )}
       </List>
-      {activeCollection.id === ACTIVE_COLLECTION_ID_STATES.NONE_FOUND && (
+      {activeCollectionId === ACTIVE_COLLECTION_ID_STATES.NONE_FOUND && (
         <WarningMessage>
-          {ACTIVE_COLLECTION_ID_MESSAGES[activeCollection.id]}
+          {ACTIVE_COLLECTION_ID_MESSAGES[activeCollectionId]}
         </WarningMessage>
       )}
     </Container>

@@ -8,7 +8,7 @@ import { MapMenu } from "./menu";
 
 import {
   getCollectionsOnDate,
-  fallbackCollection,
+  findActiveCollection,
   fallbackPollutants,
   getPollutantsByCollectionId,
   getCollectionFileByLink,
@@ -73,10 +73,10 @@ export const Map = () => {
       if (errorMessage) {
         setErrorMessage(errorMessage);
         setIsPendingResponse(false); // data loading process ends with failure to get collections
-        // todo: set active collection to error version
+        setActiveCollection({ id: ACTIVE_COLLECTION_ID_STATES.REQUEST_FAILED });
       } else {
         setCollectionsOnDate(collectionsOnDateResponse);
-        setActiveCollection(fallbackCollection(collectionsOnDateResponse)); // todo: update with fallback to none_found
+        setActiveCollection(findActiveCollection(collectionsOnDateResponse));
       }
     })();
     return () => cancelCall(collectionsTokenSource);
@@ -88,12 +88,9 @@ export const Map = () => {
   useEffect(() => {
     (async () => {
       const activeCollectionId = activeCollection.id;
-      // todo: once active collection value is predictable, replace with call to messages
-      if (
-        !activeCollectionId ||
-        activeCollectionId === ACTIVE_COLLECTION_ID_STATES.PENDING_RESPONSE
-      )
-        return;
+      // The "active_collection_states" object only lists invalid states
+      // We want to short-circuit when we see these states
+      if (ACTIVE_COLLECTION_ID_STATES[activeCollectionId]) return;
       const {
         pollutantsInCollection,
         errorMessage,
@@ -118,10 +115,7 @@ export const Map = () => {
     (async () => {
       if (!activeCollection.collection_files) return;
       const [gpsFileLink, dustrakFileLink] = activeCollection.collection_files;
-      // pending assignment to meaningful value
-      // todo: replace with check for non-valid state that prompts message
-      if (gpsFileLink.file === FILE_STATES.GPS_FILE_URL.PENDING_RESPONSE)
-        return;
+
       const [
         { file: gpsFileResponse, errorMessage: gpsFileError },
         { file: dustrakFileResponse, errorMessage: dustrakFileError },
@@ -129,12 +123,30 @@ export const Map = () => {
         getCollectionFileByLink(swapProtocol(gpsFileLink)),
         getCollectionFileByLink(swapProtocol(dustrakFileLink)),
       ]);
+
+      let gpsFileUrlValue;
+      if (gpsFileError) {
+        gpsFileUrlValue = FILE_STATES.GPS_FILE_URL.REQUEST_FAILED;
+      } else if (gpsFileResponse.link) {
+        gpsFileUrlValue = gpsFileResponse.link;
+      } else {
+        gpsFileUrlValue = FILE_STATES.GPS_FILE_URL.NONE_FOUND;
+      }
+
+      let dustrakFileUrlValue;
+      if (dustrakFileError) {
+        dustrakFileUrlValue = FILE_STATES.DUSTRAK_FILE_URL.REQUEST_FAILED;
+      } else if (dustrakFileResponse.file) {
+        dustrakFileUrlValue = dustrakFileResponse.file;
+      } else {
+        dustrakFileUrlValue = FILE_STATES.DUSTRAK_FILE_URL.NONE_FOUND;
+      }
+
       if (gpsFileError || dustrakFileError) {
         setErrorMessage("Error retrieving data files for collection");
-        // todo: set errored version of files
       } else {
-        setGpsFileUrl(swapProtocol(gpsFileResponse.file));
-        setDustrakFileUrl(swapProtocol(dustrakFileResponse.file));
+        setGpsFileUrl(swapProtocol(gpsFileUrlValue));
+        setDustrakFileUrl(swapProtocol(dustrakFileUrlValue));
       }
     })();
   }, [activeCollection]);
