@@ -17,7 +17,7 @@ import {
   canceledPollutantsMessage,
 } from "./utils";
 
-import { FILE_STATES, ACTIVE_COLLECTION_ID_STATES } from "./constants";
+import { FILE_STATES, ACTIVE_COLLECTION_ID_STATES, ACTIVE_COLLECTION_ID_MESSAGES } from "./constants";
 
 import { Grid } from "../ui";
 
@@ -75,11 +75,14 @@ export const Map = () => {
         setIsPendingResponse(false); // data loading process ends with failure to get collections
         setActiveCollection({ id: ACTIVE_COLLECTION_ID_STATES.REQUEST_FAILED });
       } else {
+        console.log('response of collection on date', collectionsOnDateResponse);
         setCollectionsOnDate(collectionsOnDateResponse);
         setActiveCollection(findActiveCollection(collectionsOnDateResponse));
       }
     })();
-    return () => cancelCall(collectionsTokenSource);
+    return () => {
+      cancelCall(collectionsTokenSource);
+    };
   }, [mapDate, collectionsTokenSource]);
 
   /**
@@ -90,7 +93,8 @@ export const Map = () => {
       const activeCollectionId = activeCollection.id;
       // The "active_collection_states" object only lists invalid states
       // We want to short-circuit when we see these states
-      if (ACTIVE_COLLECTION_ID_STATES[activeCollectionId]) return;
+      if (ACTIVE_COLLECTION_ID_MESSAGES[activeCollectionId]) return;
+      console.log('made it beyond the active collection guard with id: ', activeCollectionId);
       const {
         pollutantsInCollection,
         errorMessage,
@@ -105,7 +109,10 @@ export const Map = () => {
       }
       setIsPendingResponse(false);
     })();
-    return () => cancelCall(pollutantsTokenSource);
+    return () => { 
+        cancelCall(pollutantsTokenSource);
+    };
+
   }, [activeCollection, pollutantsTokenSource]);
 
   /**
@@ -115,7 +122,7 @@ export const Map = () => {
     (async () => {
       if (!activeCollection.collection_files) return;
       const [gpsFileLink, dustrakFileLink] = activeCollection.collection_files;
-
+      console.log('made it beyond the file link guard');
       const [
         { file: gpsFileResponse, errorMessage: gpsFileError },
         { file: dustrakFileResponse, errorMessage: dustrakFileError },
@@ -201,30 +208,32 @@ export const Map = () => {
   };
 
   return (
-    <div>
-      <p>collectionsOnDate: {collectionsOnDate.length}</p>
-      <p>activeCollection: {activeCollection.id}</p>
-      <p>gpdFileUrl: {gpsFileUrl}</p>
-      <p>dustFileLink: {dustrakFileUrl}</p>
-      <p>pollutants: {pollutants.length}</p>
-      <p>isPendingResponse: {isPendingResponse ? "yes" : "no"}</p>
-      <p>errorMessage: {errorMessage}</p>
-    </div>
-    // <Grid columns={2} textAlign="left">
-    //   <Grid.Column size="massive">
-    //     <MapBox isLoading={isPendingResponse} pollutants={pollutants} />
-    //   </Grid.Column>
-    //   <Grid.Column>
-    //     <MapMenu
-    //       mapDate={mapDate}
-    //       collectionsOnDate={collectionsOnDate}
-    //       activeCollection={activeCollection}
-    //       stageLoadingDate={stageLoadingDate}
-    //       stageLoadingCollection={stageLoadingCollection}
-    //       gpsFileUrl={gpsFileUrl}
-    //       dustrakFileUrl={dustrakFileUrl}
-    //     />
-    //   </Grid.Column>
-    // </Grid>
+    // <div>
+    //   <p>collectionsOnDate: {collectionsOnDate.length}</p>
+    //   <p>activeCollection: {activeCollection.id}</p>
+    //   <p>gpdFileUrl: {gpsFileUrl}</p>
+    //   <p>dustFileLink: {dustrakFileUrl}</p>
+    //   <p>pollutants: {pollutants.length}</p>
+    //   <p>isPendingResponse: {isPendingResponse ? "yes" : "no"}</p>
+    //   <p>errorMessage: {errorMessage}</p>
+    // </div>
+    <Grid columns={2} textAlign="left">
+      <Grid.Column size="massive">
+        <MapBox isLoading={isPendingResponse} pollutants={pollutants} />
+      </Grid.Column>
+      <Grid.Column>
+        <MapMenu
+          isPendingResponse={isPendingResponse}
+          mapDate={mapDate}
+          collectionsOnDate={collectionsOnDate}
+          activeCollection={activeCollection}
+          stageLoadingDate={stageLoadingDate}
+          stageLoadingCollection={stageLoadingCollection}
+          gpsFileUrl={gpsFileUrl}
+          dustrakFileUrl={dustrakFileUrl}
+          errorMessage={errorMessage}
+        />
+      </Grid.Column>
+    </Grid>
   );
 };

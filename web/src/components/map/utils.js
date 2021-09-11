@@ -54,7 +54,8 @@ export const getPollutantsByCollectionId = async (
     } else if (error.message) {
       errorMessage = error.message;
     } else if (axios.isCancel(error)) {
-      errorMessage = "Canceled request for pollutants in collection";
+      // suppress message because it is not an error
+      errorMessage = "";
     } else
       errorMessage = "Unknown error when retrieving pollutants in collection";
     return { pollutantsInCollection: [], errorMessage: errorMessage };
@@ -103,6 +104,8 @@ export const getCollectionsOnDate = async (mapDate, cancelTokenSource) => {
     const collectionsOnDate = response.data;
     if (!collectionsOnDate) {
       throw new Error("Failed to get collections for selected date");
+    } else if (!Array.isArray(collectionsOnDate)) {
+      throw new Error("Received data are not in valid list form");
     }
     return { collectionsOnDate: collectionsOnDate, errorMessage: "" };
   } catch (error) {
@@ -114,7 +117,8 @@ export const getCollectionsOnDate = async (mapDate, cancelTokenSource) => {
     } else if (error.message) {
       errorMessage = error.message;
     } else if (axios.isCancel(error)) {
-      errorMessage = "Canceled request for collections on date";
+      // suppress message because it is not an error
+      errorMessage = "";
     } else errorMessage = "Unknown error when retrieving collections on date";
     return { collectionsOnDate: [], errorMessage: errorMessage };
   }
@@ -140,7 +144,8 @@ export const getCollectionFileByLink = async (fileLink) => {
     } else if (error.message) {
       errorMessage = error.message;
     } else if (axios.isCancel(error)) {
-      errorMessage = "Canceled request for file for collection";
+      // suppress message because it is not an error
+      errorMessage = "";
     } else errorMessage = "Unknown error when retrieving file for collection";
     return { file: null, errorMessage: errorMessage };
   }

@@ -60,6 +60,8 @@ export const SuccessMessage = ({ ...props }) => <Message success {...props} />;
 
 export const WarningMessage = ({ ...props }) => <Message warning {...props} />;
 
+export const ErrorMessage = ({ ...props }) => <Message error {...props} />;
+
 export const DismissableMessage = ({ ...props }) => {
   const [visible, setVisible] = useState(true);
   const handleDismiss = () => setVisible(false);

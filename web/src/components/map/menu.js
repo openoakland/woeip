@@ -4,7 +4,7 @@ import { PropTypes } from "prop-types";
 import "react-semantic-ui-datepickers/dist/react-semantic-ui-datepickers.css";
 
 import SemanticDatepicker from "react-semantic-ui-datepickers";
-import { Container, List, WarningMessage } from "../ui";
+import { Container, ErrorMessage, List, WarningMessage } from "../ui";
 import { sessionIdDisplay } from "./menu.util";
 import {
   FILE_MESSAGES,
@@ -24,6 +24,7 @@ import "./menu.css";
  * @property {string} dustrakFileUrl url to a dustrak file
  */
 export const MapMenu = ({
+  isPendingResponse,
   mapDate,
   collectionsOnDate,
   activeCollection,
@@ -31,12 +32,14 @@ export const MapMenu = ({
   stageLoadingCollection,
   gpsFileUrl,
   dustrakFileUrl,
+  errorMessage,
 }) => {
   /**
    * From the collections, composed React Components to display each collection
    * Exclude the active collection
    */
   const activeCollectionId = activeCollection.id;
+  console.log('activeCollectionId', activeCollectionId);
   const collectionsDisplay = collectionsOnDate
     .filter((eachCollection) => eachCollection.id !== activeCollectionId)
     .map((eachCollection) => {
@@ -97,16 +100,18 @@ export const MapMenu = ({
           <List.Item>None</List.Item>
         )}
       </List>
-      {activeCollectionId === ACTIVE_COLLECTION_ID_STATES.NONE_FOUND && (
+      {!isPendingResponse && activeCollectionId === ACTIVE_COLLECTION_ID_STATES.NONE_FOUND && (
         <WarningMessage>
           {ACTIVE_COLLECTION_ID_MESSAGES[activeCollectionId]}
         </WarningMessage>
       )}
+      { !isPendingResponse && errorMessage && <ErrorMessage>{ errorMessage }</ErrorMessage>}
     </Container>
   );
 };
 
 MapMenu.propTypes = {
+  isPendingResponse: PropTypes.bool,
   mapDate: PropTypes.object,
   collectionsOnDate: PropTypes.array,
   activeCollection: PropTypes.object,
@@ -114,4 +119,5 @@ MapMenu.propTypes = {
   stageLoadingCollection: PropTypes.func,
   gpsFileUrl: PropTypes.string,
   dustrakFileUrl: PropTypes.string,
+  errorMessage: PropTypes.string,
 };
