@@ -51,6 +51,7 @@ export const Map = () => {
           mapDate,
           collectionsTokenSource
         );
+        if (!Array.isArray(pendingCollectionsOnDate)) throw new Error("Did not receive list of collections")
         setCollectionsOnDate(pendingCollectionsOnDate);
         setActiveCollection(fallbackCollection(pendingCollectionsOnDate));
         setIsPendingResponse(true);
