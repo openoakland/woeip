@@ -1,7 +1,7 @@
 import { useState, useContext } from "react";
 import { PropTypes } from "prop-types";
 import { Dimmer, Loader, Container } from "../ui";
-import { getSessionDataLayerStyle } from "./utils";
+import { getSessionDataLayerStyles, cleanSessionStyle } from "./utils";
 import "./box.css";
 
 import ReactMapGL, {
@@ -59,24 +59,23 @@ export const MapBox = ({ isLoading, pollutants }) => {
   );
 };
 
+/**
+ * Session data to be displayed on the map
+ * @property {Array<Pollutant>} pollutants
+ */
 const SessionData = ({ pollutants }) => {
   const context = useContext(MapContext);
-  const stylesheet = context.map.style.stylesheet;
-  if (stylesheet) {
-    const dataLayers = stylesheet.layers.slice(118).map(({ id }) => id);
-    for (let layer of dataLayers) {
-      context.map.setLayoutProperty(layer, "visibility", "none");
-    }
-  }
-
-  const getStyle = getSessionDataLayerStyle.bind(null, stylesheet);
-  const markerStyle = getStyle("data-driven-circles");
-  const labelStyle = getStyle("data-driven-circles-labels");
+  const sessionStyles = getSessionDataLayerStyles(context.map.style.stylesheet);
+  sessionStyles.forEach((style) => {
+    context.map.setLayoutProperty(style.id, "visibility", "none");
+    cleanSessionStyle(style);
+  });
 
   return (
     <Source id="session-data" type="geojson" data={pollutants}>
-      {markerStyle ? <Layer {...markerStyle} /> : null}
-      {labelStyle ? <Layer {...labelStyle} /> : null}
+      {sessionStyles.map((style) => (
+        <Layer {...style} />
+      ))}
     </Source>
   );
 };

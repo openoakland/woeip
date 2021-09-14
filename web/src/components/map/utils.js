@@ -129,16 +129,29 @@ export const canceledCollectionsMessage = canceledRequestMessage("collections");
  */
 export const canceledPollutantsMessage = canceledRequestMessage("pollutants");
 
-export const getSessionDataLayerStyle = (stylesheet, layerId) => {
-  if (!stylesheet) return;
-  const layerStyle = {
-    ...stylesheet.layers.find(({ id }) => id === layerId),
-  };
-  delete layerStyle["source-layer"];
-  delete layerStyle.id;
-  delete layerStyle.layout.visibility;
+/**
+ * @param {Object} stylesheet MapBox stylesheet
+ * @returns {Array<Object>} Copies of style layers with ids matching session prefix
+ */
+export const getSessionDataLayersStyles = (stylesheet) => {
+  const sessionStylePrefix = process.env.REACT_APP_MAPBOX_SESSION_STYLE_PREFIX;
+  const styles = [];
+  stylesheet?.layers.forEach((layer) => {
+    if (layer.id.match(`^${sessionStylePrefix}`)) {
+      styles.push({ ...layer });
+    }
+  });
+  return styles;
+};
 
-  return layerStyle;
+/**
+ * Decouples style from sample data to be used for session data instead
+ * @param {Object} style MapBox layer style
+ */
+export const cleanSessionStyle = (style) => {
+  delete style["source-layer"];
+  delete style.id;
+  delete style.layout.visibility;
 };
 
 export const geoJsonWrapper = (_, features) => ({
