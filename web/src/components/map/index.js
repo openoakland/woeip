@@ -26,50 +26,80 @@ import { Grid } from "../ui";
 export const Map = () => {
   const location = useLocation(); // location for the url
   const initialDate = moment(location?.state?.date) || moment(); // Date either from upload or current day
+  const [formattedDate, setFormattedDate] = useState(initialDate.toISOString());
   const [mapDate, setMapDate] = useState(initialDate);
   const [collectionsOnDate, setCollectionsOnDate] = useState([]);
   const [activeCollection, setActiveCollection] = useState({});
+  const [activeCollectionId, setActiveCollectionId] = useState(0);
   const [gpsFileUrl, setGpsFileUrl] = useState("");
   const [dustrakFileUrl, setDustrakFileUrl] = useState("");
   const [pollutants, setPollutants] = useState([]);
   const [isPendingResponse, setIsPendingResponse] = useState(true);
-  const [pollutantsTokenSource, setPollutantsTokenSource] = useState(null); //Initialized when called by collections loader
-  const [collectionsTokenSource, setCollectionsTokenSource] = useState(
-    axios.CancelToken.source()
-  );
-
-  // Pair axios cancel token source function with a guard to protect calling undefined tokens
-  const cancelCall = (tokenSource) => tokenSource && tokenSource.cancel();
 
   /**
    * Call the api to get collection sessions that happened on a date
    */
   useEffect(() => {
+    const collectionsSource = axios.CancelToken.source();
     (async () => {
       try {
         const pendingCollectionsOnDate = await getCollectionsOnDate(
           mapDate,
-          collectionsTokenSource
+          collectionsSource.token,
         );
+        console.log('pendingCollectionsOnDate', pendingCollectionsOnDate);
         setCollectionsOnDate(pendingCollectionsOnDate);
-        setActiveCollection(fallbackCollection(pendingCollectionsOnDate));
-        setIsPendingResponse(true);
-        setPollutantsTokenSource(axios.CancelToken.source());
+        const fallbackCollection = fallbackCollection(pendingCollectionsOnDate);
+        console.log('fallback collection', fallbackCollection)
+        setActiveCollection(fallbackCollection);
+        const fallbackCollectionId = fallbackCollection.id ? fallbackCollection.id : 0;
+        setActiveCollectionId(fallbackCollectionId); 
       } catch (thrown) {
         canceledCollectionsMessage(thrown);
       }
     })();
-    // cancel call on component unmount
-    return () => cancelCall(collectionsTokenSource);
-  }, [mapDate, collectionsTokenSource]);
+    return () => {
+      console.log('cleanup collection');
+      collectionsSource.cancel();
+    }
+
+ }, [formattedDate]);
+
+  /**
+   * Load pollutants in collection
+   */
+  useEffect(() => {
+    const pollutantsSource = axios.CancelToken.source();
+    if(!activeCollectionId) return;
+    (async () => {
+      try {
+          const pendingPollutantValues = await getPollutantsByCollectionId(
+            activeCollectionId,
+            pollutantsSource.token,
+          );
+          setPollutants(fallbackPollutants(pendingPollutantValues));
+          setIsPendingResponse(false);
+        
+      } catch (thrown) {
+        canceledPollutantsMessage(thrown);
+      }
+    })();
+    return () => {
+      console.log('cleanup pollutants');
+      pollutantsSource.cancel();
+    }
+  }, [activeCollectionId]);
 
   /**
    * Call the api to load the urls for gps+dustrak source files of a collection
    */
   useEffect(() => {
+    const collectionFileLinks = activeCollection.collection_files;
+    let collectionFilesSource;
+    if(!collectionFileLinks) return;
+    collectionFilesSource = axios.CancelToken.source();
     (async () => {
       try {
-        const collectionFileLinks = activeCollection.collection_files;
         const [gpsFileLink, dustFileLink] = collectionFileLinks || ["", ""];
         const [pendingGpsFile, pendingDustrakFile] = await Promise.all([
           getCollectionFileByLink(swapProtocol(gpsFileLink)),
@@ -81,31 +111,10 @@ export const Map = () => {
         console.error("could not retrieve files for collection");
       }
     })();
-  }, [activeCollection]);
-
-  /**
-   * Load pollutants in collection
-   */
-  useEffect(() => {
-    (async () => {
-      try {
-        const pendingPollutantValues = await getPollutantsByCollectionId(
-          activeCollection.id,
-          pollutantsTokenSource
-        );
-        setPollutants(fallbackPollutants(pendingPollutantValues));
-        setIsPendingResponse(false);
-      } catch (thrown) {
-        canceledPollutantsMessage(thrown);
-      }
-    })();
-    // cancel call on unmount
-    return () => cancelCall(pollutantsTokenSource);
-  }, [activeCollection, pollutantsTokenSource]);
+    return () => collectionFilesSource && collectionFilesSource.cancel();
+  }, [activeCollectionId]);
 
   const clearActiveCollection = () => {
-    cancelCall(collectionsTokenSource);
-    cancelCall(pollutantsTokenSource);
     setGpsFileUrl("");
     setDustrakFileUrl("");
     setPollutants([]);
@@ -121,11 +130,13 @@ export const Map = () => {
    */
   const stageLoadingDate = async (_event, data) => {
     const rawDate = data.value;
+    console.log('click loading date')
     // guard against double click
     if (rawDate) {
       clearActiveCollection();
-      setMapDate(moment(rawDate.toISOString()));
-      setCollectionsTokenSource(axios.CancelToken.source());
+      const newDate = moment(rawDate.toISOString())
+      setMapDate(newDate);
+      setFormattedDate(newDate.format("YYYY-MM-DD"));
     }
   };
 
@@ -143,7 +154,6 @@ export const Map = () => {
       clearActiveCollection();
       setActiveCollection(pendingCollection);
       setIsPendingResponse(true);
-      setPollutantsTokenSource(axios.CancelToken.source());
     }
   };
 
