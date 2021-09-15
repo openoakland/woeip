@@ -31,48 +31,65 @@ export const Map = () => {
   const [collectionsOnDate, setCollectionsOnDate] = useState([]);
   const [activeCollection, setActiveCollection] = useState({});
   const [activeId, setActiveId] = useState(-1);
+  const [gpsFile, setGpsFile] = useState("");
+  const [dustrak, setDustrakFile] = useState("");
   const [gpsFileUrl, setGpsFileUrl] = useState("");
   const [dustrakFileUrl, setDustrakFileUrl] = useState("");
   const [pollutants, setPollutants] = useState([]);
-  const [isPendingResponse, setIsPendingResponse] = useState(true);
-  const [pollutantsTokenSource, setPollutantsTokenSource] = useState(null); //Initialized when called by collections loader
-  const [collectionsTokenSource, setCollectionsTokenSource] = useState(
-    axios.CancelToken.source()
-  );
-
-  // Pair axios cancel token source function with a guard to protect calling undefined tokens
-  const cancelCall = (tokenSource) => tokenSource && tokenSource.cancel();
+  const [isPendingResponse, setIsPendingResponse] = useState(false);
 
   /**
    * Call the api to get collection sessions that happened on a date
    */
   useEffect(() => {
+    const source = axios.CancelToken.source();
     (async () => {
-      console.log("formattedDate", formattedDate)
       try {
         const pendingCollectionsOnDate = await getCollectionsOnDate(
-          mapDate,
-          collectionsTokenSource
+          formattedDate,
+          source
         );
         setCollectionsOnDate(pendingCollectionsOnDate);
         const fallbackActive = fallbackCollection(pendingCollectionsOnDate)
         const { id } = fallbackActive;
         setActiveCollection(fallbackActive);
         setActiveId(id);
-        setIsPendingResponse(true);
-        setPollutantsTokenSource(axios.CancelToken.source());
+        if(id && id > -1) setIsPendingResponse(true);
       } catch (thrown) {
         canceledCollectionsMessage(thrown);
       }
     })();
-    // cancel call on component unmount
-    return () => cancelCall(collectionsTokenSource);
+    return source.cancel;
   }, [formattedDate]);
 
   /**
-   * Call the api to load the urls for gps+dustrak source files of a collection
+   * Load pollutants in collection
    */
   useEffect(() => {
+    const source = axios.CancelToken.source();
+    (async () => {
+      if(activeId && activeId > -1){
+        try {
+          const pendingPollutantValues = await getPollutantsByCollectionId(
+            activeId,
+            source
+          );
+          setPollutants(fallbackPollutants(pendingPollutantValues));
+        } catch (thrown) {
+          canceledPollutantsMessage(thrown);
+        } finally{
+          setIsPendingResponse(false);
+        }
+      }
+    })();
+    return source.cancel;
+  }, [activeId]);
+
+  /**
+ * Call the api to load the urls for gps+dustrak source files of a collection
+ */
+  useEffect(() => {
+    const source = axios.CancelToken.source();
     (async () => {
       console.log("activeId", activeId);
       try {
@@ -88,34 +105,11 @@ export const Map = () => {
         console.error("could not retrieve files for collection");
       }
     })();
-  }, [activeId]);
 
-  /**
-   * Load pollutants in collection
-   */
-  useEffect(() => {
-    const source = axios.CancelToken.source();
-    (async () => {
-      if(activeId && activeId > -1){
-        try {
-          const pendingPollutantValues = await getPollutantsByCollectionId(
-            activeId,
-            pollutantsTokenSource
-          );
-          setPollutants(fallbackPollutants(pendingPollutantValues));
-          setIsPendingResponse(false);
-        } catch (thrown) {
-          canceledPollutantsMessage(thrown);
-        }
-      }
-    })();
-    // cancel call on unmount
     return () => source.cancel();
   }, [activeId]);
 
   const clearActiveCollection = () => {
-    // cancelCall(collectionsTokenSource);
-    // cancelCall(pollutantsTokenSource);
     setGpsFileUrl("");
     setDustrakFileUrl("");
     setPollutants([]);
@@ -137,7 +131,6 @@ export const Map = () => {
       const newMapDate = moment(rawDate.toISOString())
       setMapDate(newMapDate);
       setFormattedDate(newMapDate.format("YYYY-MM-DD"));
-      setCollectionsTokenSource(axios.CancelToken.source());
     }
   };
 
@@ -153,9 +146,9 @@ export const Map = () => {
     //guard against double click
     if (pendingCollection.id) {
       clearActiveCollection();
+      setActiveId(pendingCollection.id);
       setActiveCollection(pendingCollection);
       setIsPendingResponse(true);
-      setPollutantsTokenSource(axios.CancelToken.source());
     }
   };
 

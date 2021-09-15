@@ -72,7 +72,7 @@ export const parsePollutant = (item) => {
 export const getCollectionsOnDate = async (mapDate, cancelTokenSource) => {
   const options = {
     params: {
-      start_date: mapDate.format("YYYY-MM-DD"),
+      start_date: mapDate,
     },
     cancelToken: cancelTokenSource.token,
   };
