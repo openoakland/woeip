@@ -85,9 +85,9 @@ export const getCollectionsOnDate = async (mapDate, cancelTokenSource) => {
  * @returns {CollectionFile} data about the collection file
  */
 export const getCollectionFileByLink = async (fileLink, cancelTokenSource) => {
-  const options ={
-    cancelToken: cancelTokenSource.token
-  }
+  const options = {
+    cancelToken: cancelTokenSource.token,
+  };
   return (await axios.get(fileLink, options)).data;
 };
 
@@ -98,12 +98,7 @@ export const getCollectionFileByLink = async (fileLink, cancelTokenSource) => {
  * @param {string} link to file download
  * @returns {string} protocol set based on environment
  */
-export const swapProtocol = (link) => {
-  const protomatch = /^(https?|ftp):\/\//;
-  link.replace(protomatch, "");
-  console.log('link', link);
-  return link;
-}
+export const swapProtocol = (link) => link.replace(/^(https?|ftp):\/\//, "//");
 
 /**
  * Return the collection that was last added to a date.

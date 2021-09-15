@@ -27,7 +27,9 @@ export const Map = () => {
   const location = useLocation(); // location for the url
   const initialDate = moment(location?.state?.date) || moment(); // Date either from upload or current day
   const [mapDate, setMapDate] = useState(initialDate);
-  const [formattedDate, setFormattedDate] = useState(initialDate.format("YYYY-MM-DD"))
+  const [formattedDate, setFormattedDate] = useState(
+    initialDate.format("YYYY-MM-DD")
+  );
   const [collectionsOnDate, setCollectionsOnDate] = useState([]);
   const [activeCollection, setActiveCollection] = useState({});
   const [activeId, setActiveId] = useState(-1);
@@ -50,17 +52,17 @@ export const Map = () => {
           source
         );
         setCollectionsOnDate(pendingCollectionsOnDate);
-        const fallbackActive = fallbackCollection(pendingCollectionsOnDate)
+        const fallbackActive = fallbackCollection(pendingCollectionsOnDate);
         const { id, collection_files: collectionFiles } = fallbackActive;
         console.log(collectionFiles);
-        const [ activeGpsFile, activeDustrakFile] = collectionFiles;
+        const [activeGpsFile, activeDustrakFile] = collectionFiles;
         setActiveCollection(fallbackActive);
         setActiveId(id);
-        if(id && id > -1) setIsPendingResponse(true);
-        if(activeGpsFile && activeDustrakFile){
+        if (id && id > -1) setIsPendingResponse(true);
+        if (activeGpsFile && activeDustrakFile) {
           setGpsFile(activeGpsFile);
           setDustrakFile(activeDustrakFile);
-        };
+        }
       } catch (thrown) {
         canceledCollectionsMessage(thrown);
       }
@@ -74,7 +76,7 @@ export const Map = () => {
   useEffect(() => {
     const source = axios.CancelToken.source();
     (async () => {
-      if(activeId && activeId > -1){
+      if (activeId && activeId > -1) {
         try {
           const pendingPollutantValues = await getPollutantsByCollectionId(
             activeId,
@@ -83,7 +85,7 @@ export const Map = () => {
           setPollutants(fallbackPollutants(pendingPollutantValues));
         } catch (thrown) {
           canceledPollutantsMessage(thrown);
-        } finally{
+        } finally {
           setIsPendingResponse(false);
         }
       }
@@ -92,12 +94,12 @@ export const Map = () => {
   }, [activeId]);
 
   /**
- * Call the api to load the urls for gps+dustrak source files of a collection
- */
+   * Call the api to load the urls for gps+dustrak source files of a collection
+   */
   useEffect(() => {
     const source = axios.CancelToken.source();
     (async () => {
-      if(gpsFile && dustrakFile){
+      if (gpsFile && dustrakFile) {
         try {
           const [pendingGpsFile, pendingDustrakFile] = await Promise.all([
             getCollectionFileByLink(swapProtocol(gpsFile), source),
@@ -135,7 +137,7 @@ export const Map = () => {
     // guard against double click
     if (rawDate) {
       clearActiveCollection();
-      const newMapDate = moment(rawDate.toISOString())
+      const newMapDate = moment(rawDate.toISOString());
       setMapDate(newMapDate);
       setFormattedDate(newMapDate.format("YYYY-MM-DD"));
     }
