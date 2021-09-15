@@ -32,7 +32,7 @@ export const Map = () => {
   const [activeCollection, setActiveCollection] = useState({});
   const [activeId, setActiveId] = useState(-1);
   const [gpsFile, setGpsFile] = useState("");
-  const [dustrak, setDustrakFile] = useState("");
+  const [dustrakFile, setDustrakFile] = useState("");
   const [gpsFileUrl, setGpsFileUrl] = useState("");
   const [dustrakFileUrl, setDustrakFileUrl] = useState("");
   const [pollutants, setPollutants] = useState([]);
@@ -51,10 +51,16 @@ export const Map = () => {
         );
         setCollectionsOnDate(pendingCollectionsOnDate);
         const fallbackActive = fallbackCollection(pendingCollectionsOnDate)
-        const { id } = fallbackActive;
+        const { id, collection_files: collectionFiles } = fallbackActive;
+        console.log(collectionFiles);
+        const [ activeGpsFile, activeDustrakFile] = collectionFiles;
         setActiveCollection(fallbackActive);
         setActiveId(id);
         if(id && id > -1) setIsPendingResponse(true);
+        if(activeGpsFile && activeDustrakFile){
+          setGpsFile(activeGpsFile);
+          setDustrakFile(activeDustrakFile);
+        };
       } catch (thrown) {
         canceledCollectionsMessage(thrown);
       }
@@ -91,25 +97,26 @@ export const Map = () => {
   useEffect(() => {
     const source = axios.CancelToken.source();
     (async () => {
-      console.log("activeId", activeId);
-      try {
-        const collectionFileLinks = activeCollection.collection_files;
-        const [gpsFileLink, dustFileLink] = collectionFileLinks || ["", ""];
-        const [pendingGpsFile, pendingDustrakFile] = await Promise.all([
-          getCollectionFileByLink(swapProtocol(gpsFileLink)),
-          getCollectionFileByLink(swapProtocol(dustFileLink)),
-        ]);
-        setGpsFileUrl(swapProtocol(pendingGpsFile.file));
-        setDustrakFileUrl(swapProtocol(pendingDustrakFile.file));
-      } catch {
-        console.error("could not retrieve files for collection");
+      if(gpsFile && dustrakFile){
+        try {
+          const [pendingGpsFile, pendingDustrakFile] = await Promise.all([
+            getCollectionFileByLink(swapProtocol(gpsFile), source),
+            getCollectionFileByLink(swapProtocol(dustrakFile), source),
+          ]);
+          setGpsFileUrl(swapProtocol(pendingGpsFile.file));
+          setDustrakFileUrl(swapProtocol(pendingDustrakFile.file));
+        } catch {
+          console.error("could not retrieve files for collection");
+        }
       }
     })();
 
-    return () => source.cancel();
-  }, [activeId]);
+    return source.cancel;
+  }, [gpsFile, dustrakFile]);
 
   const clearActiveCollection = () => {
+    setGpsFile("");
+    setDustrakFile("");
     setGpsFileUrl("");
     setDustrakFileUrl("");
     setPollutants([]);

@@ -84,19 +84,26 @@ export const getCollectionsOnDate = async (mapDate, cancelTokenSource) => {
  * @param {string} fileLink the full url to the file
  * @returns {CollectionFile} data about the collection file
  */
-export const getCollectionFileByLink = async (fileLink) => {
-  if (!fileLink) return "";
-  return (await axios.get(fileLink)).data;
+export const getCollectionFileByLink = async (fileLink, cancelTokenSource) => {
+  const options ={
+    cancelToken: cancelTokenSource.token
+  }
+  return (await axios.get(fileLink, options)).data;
 };
 
 /**
  * url is stored in database as http. To prevent mixed content errors (https://developer.mozilla.org/en-US/docs/Web/Security/Mixed_content),
  * the production protocol needs to access the link through https.
+ * use empty protocol to match application protocol
  * @param {string} link to file download
  * @returns {string} protocol set based on environment
  */
-export const swapProtocol = (link) =>
-  link.replace("http", process.env.REACT_APP_PROTOCOL || "http");
+export const swapProtocol = (link) => {
+  const protomatch = /^(https?|ftp):\/\//;
+  link.replace(protomatch, "");
+  console.log('link', link);
+  return link;
+}
 
 /**
  * Return the collection that was last added to a date.
