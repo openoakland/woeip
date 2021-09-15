@@ -5,6 +5,7 @@ from django.core.exceptions import ImproperlyConfigured
 repo_root = environ.Path(__file__) - 2
 project_root = environ.Path(__file__) - 1
 env = environ.Env(DEBUG=(bool, False))
+env.read_env() #needed to read .env file. TODO: store DJOSER password with other passwords.
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env("SECRET_KEY")
@@ -207,7 +208,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'openoakland.woaq@gmail.com'
-EMAIL_HOST_PASSWORD = 'hnblkkmrmfwotkbi'
+EMAIL_HOST_PASSWORD = env("DJOSER_ACCESS_KEY")
 EMAIL_USE_TLS = True
 
 SITE_NAME = ('WOAQ')
