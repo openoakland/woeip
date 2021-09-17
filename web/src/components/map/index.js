@@ -140,6 +140,9 @@ export const Map = () => {
       const newMapDate = moment(rawDate.toISOString());
       setMapDate(newMapDate);
       setFormattedDate(newMapDate.format("YYYY-MM-DD"));
+      setActiveId(-1);
+      setActiveCollection({});
+      setCollectionsOnDate([]);
     }
   };
 
