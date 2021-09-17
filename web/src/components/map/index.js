@@ -8,7 +8,6 @@ import { MapMenu } from "./menu";
 
 import {
   BLANK_ACTIVE_ID,
-  BLANK_ACTIVE_COLLECTION,
   getCollectionsOnDate,
   getFirstCollection,
   fallbackPollutants,
@@ -55,7 +54,11 @@ export const Map = () => {
           source
         );
         setCollectionsOnDate(localCollectionsOnDate);
-        const { id, collection_files: [localGpsFile, localDustrakFile], starts_at} = getFirstCollection(localCollectionsOnDate);
+        const {
+          id,
+          collection_files: [localGpsFile, localDustrakFile],
+          starts_at,
+        } = getFirstCollection(localCollectionsOnDate);
         setActiveId(id);
         setActiveStartsAt(starts_at);
         if (id !== BLANK_ACTIVE_ID) setIsLoadingPollutants(true);
@@ -134,13 +137,12 @@ export const Map = () => {
       setFormattedDate(newMapDate.format("YYYY-MM-DD"));
       setCollectionsOnDate([]);
 
-
       setActiveId(BLANK_ACTIVE_ID);
       setActiveStartsAt(BLANK_ACTIVE_STARTS_AT);
 
       setGpsFile("");
       setDustrakFile("");
-      setGpsFileUrl ("");
+      setGpsFileUrl("");
       setDustrakFileUrl("");
 
       setPollutants([]);
@@ -158,10 +160,14 @@ export const Map = () => {
   const changeActiveCollection = (pendingCollection) => {
     //guard against double click
     if (pendingCollection.id) {
-      const {id, collection_files: [localGpsFile, localDustrakFile], starts_at} = pendingCollection;
+      const {
+        id,
+        collection_files: [localGpsFile, localDustrakFile],
+        starts_at,
+      } = pendingCollection;
       setActiveId(id);
       setActiveStartsAt(starts_at);
-      
+
       setGpsFile(localGpsFile);
       setDustrakFile(localDustrakFile);
       setGpsFileUrl("");

@@ -22,10 +22,13 @@ import { apiUrlCollectionById, apiUrlCollections } from "../../api.util";
  * @property {number} value
  */
 
-
- export const BLANK_ACTIVE_ID = -1;
- export const BLANK_ACTIVE_STARTS_AT = ""
- export const BLANK_ACTIVE_COLLECTION = { id: BLANK_ACTIVE_ID, collection_files: ["", ""], starts_at: BLANK_ACTIVE_STARTS_AT}
+export const BLANK_ACTIVE_ID = -1;
+export const BLANK_ACTIVE_STARTS_AT = "";
+export const BLANK_ACTIVE_COLLECTION = {
+  id: BLANK_ACTIVE_ID,
+  collection_files: ["", ""],
+  starts_at: BLANK_ACTIVE_STARTS_AT,
+};
 
 /**
  * Retrieve the pollutants that were detected by a given collection session

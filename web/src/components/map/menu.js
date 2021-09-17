@@ -65,9 +65,7 @@ export const MapMenu = ({
           <b>Session:</b> {activeId !== BLANK_ACTIVE_ID ? activeId : "None"}
         </List.Item>
         <b>Start Time:</b>{" "}
-        {activeStartsAt
-          ? moment(activeStartsAt).format("h:mm A")
-          : "None"}
+        {activeStartsAt ? moment(activeStartsAt).format("h:mm A") : "None"}
         {gpsFileUrl ? (
           <List.Item as="a" href={gpsFileUrl}>
             Download GPS File
