@@ -7,14 +7,17 @@ import { MapBox } from "./box";
 import { MapMenu } from "./menu";
 
 import {
+  BLANK_ACTIVE_ID,
+  BLANK_ACTIVE_COLLECTION,
   getCollectionsOnDate,
-  fallbackCollection,
+  getFirstCollection,
   fallbackPollutants,
   getPollutantsByCollectionId,
   getCollectionFileByLink,
   swapProtocol,
   canceledCollectionsMessage,
   canceledPollutantsMessage,
+  BLANK_ACTIVE_STARTS_AT,
 } from "./utils";
 
 import { Grid } from "../ui";
@@ -31,14 +34,14 @@ export const Map = () => {
     initialDate.format("YYYY-MM-DD")
   );
   const [collectionsOnDate, setCollectionsOnDate] = useState([]);
-  const [activeCollection, setActiveCollection] = useState({});
-  const [activeId, setActiveId] = useState(-1);
+  const [activeId, setActiveId] = useState(BLANK_ACTIVE_ID);
+  const [activeStartsAt, setActiveStartsAt] = useState(BLANK_ACTIVE_STARTS_AT);
   const [gpsFile, setGpsFile] = useState("");
   const [dustrakFile, setDustrakFile] = useState("");
   const [gpsFileUrl, setGpsFileUrl] = useState("");
   const [dustrakFileUrl, setDustrakFileUrl] = useState("");
   const [pollutants, setPollutants] = useState([]);
-  const [isPendingResponse, setIsPendingResponse] = useState(false);
+  const [isLoadingPollutants, setIsLoadingPollutants] = useState(false);
 
   /**
    * Call the api to get collection sessions that happened on a date
@@ -47,21 +50,18 @@ export const Map = () => {
     const source = axios.CancelToken.source();
     (async () => {
       try {
-        const pendingCollectionsOnDate = await getCollectionsOnDate(
+        const localCollectionsOnDate = await getCollectionsOnDate(
           formattedDate,
           source
         );
-        setCollectionsOnDate(pendingCollectionsOnDate);
-        const fallbackActive = fallbackCollection(pendingCollectionsOnDate);
-        const { id, collection_files: collectionFiles } = fallbackActive;
-        console.log(collectionFiles);
-        const [activeGpsFile, activeDustrakFile] = collectionFiles;
-        setActiveCollection(fallbackActive);
+        setCollectionsOnDate(localCollectionsOnDate);
+        const { id, collection_files: [localGpsFile, localDustrakFile], starts_at} = getFirstCollection(localCollectionsOnDate);
         setActiveId(id);
-        if (id && id > -1) setIsPendingResponse(true);
-        if (activeGpsFile && activeDustrakFile) {
-          setGpsFile(activeGpsFile);
-          setDustrakFile(activeDustrakFile);
+        setActiveStartsAt(starts_at);
+        if (id !== BLANK_ACTIVE_ID) setIsLoadingPollutants(true);
+        if (localGpsFile && localDustrakFile) {
+          setGpsFile(localGpsFile);
+          setDustrakFile(localDustrakFile);
         }
       } catch (thrown) {
         canceledCollectionsMessage(thrown);
@@ -76,7 +76,7 @@ export const Map = () => {
   useEffect(() => {
     const source = axios.CancelToken.source();
     (async () => {
-      if (activeId && activeId > -1) {
+      if (activeId !== BLANK_ACTIVE_ID) {
         try {
           const pendingPollutantValues = await getPollutantsByCollectionId(
             activeId,
@@ -86,7 +86,7 @@ export const Map = () => {
         } catch (thrown) {
           canceledPollutantsMessage(thrown);
         } finally {
-          setIsPendingResponse(false);
+          setIsLoadingPollutants(false);
         }
       }
     })();
@@ -101,12 +101,12 @@ export const Map = () => {
     (async () => {
       if (gpsFile && dustrakFile) {
         try {
-          const [pendingGpsFile, pendingDustrakFile] = await Promise.all([
+          const [localGpsFile, localDustrakFile] = await Promise.all([
             getCollectionFileByLink(swapProtocol(gpsFile), source),
             getCollectionFileByLink(swapProtocol(dustrakFile), source),
           ]);
-          setGpsFileUrl(swapProtocol(pendingGpsFile.file));
-          setDustrakFileUrl(swapProtocol(pendingDustrakFile.file));
+          setGpsFileUrl(swapProtocol(localGpsFile.file));
+          setDustrakFileUrl(swapProtocol(localDustrakFile.file));
         } catch {
           console.error("could not retrieve files for collection");
         }
@@ -116,14 +116,6 @@ export const Map = () => {
     return source.cancel;
   }, [gpsFile, dustrakFile]);
 
-  const clearActiveCollection = () => {
-    setGpsFile("");
-    setDustrakFile("");
-    setGpsFileUrl("");
-    setDustrakFileUrl("");
-    setPollutants([]);
-  };
-
   /**
    * Load collections from a new date
    * @param {HTMLButtonEvent} event Accept the data from the calendar to start loading a date
@@ -132,17 +124,26 @@ export const Map = () => {
    * @modifies {mapDate}
    * @modifies {cancelTokenSource}
    */
-  const stageLoadingDate = async (_event, data) => {
+  const changeMapDate = async (_event, data) => {
     const rawDate = data.value;
     // guard against double click
     if (rawDate) {
-      clearActiveCollection();
       const newMapDate = moment(rawDate.toISOString());
+
       setMapDate(newMapDate);
       setFormattedDate(newMapDate.format("YYYY-MM-DD"));
-      setActiveId(-1);
-      setActiveCollection({});
       setCollectionsOnDate([]);
+
+
+      setActiveId(BLANK_ACTIVE_ID);
+      setActiveStartsAt(BLANK_ACTIVE_STARTS_AT);
+
+      setGpsFile("");
+      setDustrakFile("");
+      setGpsFileUrl ("");
+      setDustrakFileUrl("");
+
+      setPollutants([]);
     }
   };
 
@@ -154,28 +155,36 @@ export const Map = () => {
    * @modifies {collection}
    * @modifies {cancelTokenSource}
    */
-  const stageLoadingCollection = (pendingCollection) => {
+  const changeActiveCollection = (pendingCollection) => {
     //guard against double click
     if (pendingCollection.id) {
-      clearActiveCollection();
-      setActiveId(pendingCollection.id);
-      setActiveCollection(pendingCollection);
-      setIsPendingResponse(true);
+      const {id, collection_files: [localGpsFile, localDustrakFile], starts_at} = pendingCollection;
+      setActiveId(id);
+      setActiveStartsAt(starts_at);
+      
+      setGpsFile(localGpsFile);
+      setDustrakFile(localDustrakFile);
+      setGpsFileUrl("");
+      setDustrakFile("");
+
+      setPollutants([]);
+      setIsLoadingPollutants(true);
     }
   };
 
   return (
     <Grid columns={2} textAlign="left">
       <Grid.Column size="massive">
-        <MapBox isLoading={isPendingResponse} pollutants={pollutants} />
+        <MapBox isLoading={isLoadingPollutants} pollutants={pollutants} />
       </Grid.Column>
       <Grid.Column>
         <MapMenu
           mapDate={mapDate}
           collectionsOnDate={collectionsOnDate}
-          activeCollection={activeCollection}
-          stageLoadingDate={stageLoadingDate}
-          stageLoadingCollection={stageLoadingCollection}
+          activeId={activeId}
+          activeStartsAt={activeStartsAt}
+          changeMapDate={changeMapDate}
+          changeActiveCollection={changeActiveCollection}
           gpsFileUrl={gpsFileUrl}
           dustrakFileUrl={dustrakFileUrl}
         />

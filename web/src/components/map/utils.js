@@ -22,6 +22,11 @@ import { apiUrlCollectionById, apiUrlCollections } from "../../api.util";
  * @property {number} value
  */
 
+
+ export const BLANK_ACTIVE_ID = -1;
+ export const BLANK_ACTIVE_STARTS_AT = ""
+ export const BLANK_ACTIVE_COLLECTION = { id: BLANK_ACTIVE_ID, collection_files: ["", ""], starts_at: BLANK_ACTIVE_STARTS_AT}
+
 /**
  * Retrieve the pollutants that were detected by a given collection session
  * @param {string} collectionId the integer-like database id of the collection
@@ -106,8 +111,8 @@ export const swapProtocol = (link) => link.replace(/^(https?|ftp):\/\//, "//");
  * @param {Array<Collection>} pendingCollections possible collections
  * @returns {Collection || Object } Lastest collection or an empty object
  */
-export const fallbackCollection = (pendingCollections) =>
-  pendingCollections[pendingCollections.length - 1] || {};
+export const getFirstCollection = (pendingCollections) =>
+  pendingCollections[pendingCollections.length - 1] || BLANK_ACTIVE_COLLECTION;
 
 /**
  * Handle axios throw that may have been a cancel request
