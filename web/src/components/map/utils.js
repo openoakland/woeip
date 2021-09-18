@@ -30,11 +30,20 @@ export const BLANK_ACTIVE_COLLECTION = {
   starts_at: BLANK_ACTIVE_STARTS_AT,
 };
 
+export const THROWN_CODE = {
+  NONE: 0,
+  FAILED: 1,
+  CANCELED: 2,
+};
+
 /**
  * Retrieve the pollutants that were detected by a given collection session
  * @param {string} collectionId the integer-like database id of the collection
  * @param {axios.CancelToken} cancelTokenSource an axios token to cancel the request
- * @returns {Array<PollutantValue>} pollutants as they are stored in the database
+ * @returns {{
+ * pollutants: Array<PollutantValue>,
+ * thrownCode: number
+ * }} pollutants as they are stored in the database. If the response threw, the code for its reason
  */
 export const getPollutantsByCollectionId = async (
   collectionId,
@@ -43,8 +52,22 @@ export const getPollutantsByCollectionId = async (
   const options = {
     cancelToken: cancelTokenSource.token,
   };
-  if (!collectionId) return [];
-  return (await axios.get(apiUrlCollectionById(collectionId), options)).data;
+  try {
+    const response = await axios.get(
+      apiUrlCollectionById(collectionId),
+      options
+    );
+    const pollutants = response?.data;
+    if (!pollutants) throw new Error("Failed to get pollutants data");
+    if (!Array.isArray(pollutants))
+      throw new Error("Response data for pollutants is not an array");
+    return { pollutants: pollutants, thrownCode: THROWN_CODE.NONE };
+  } catch (thrown) {
+    const thrownCode = axios.isCancel(thrown)
+      ? THROWN_CODE.CANCELED
+      : THROWN_CODE.FAILED;
+    return { pollutants: [], thrownCode: thrownCode };
+  }
 };
 
 /**

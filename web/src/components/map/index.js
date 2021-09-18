@@ -94,9 +94,9 @@ export const Map = () => {
       }
     })();
     return () => {
-      setIsLoadingPollutants(false)
+      setIsLoadingPollutants(false);
       source.cancel();
-    }
+    };
   }, [activeId]);
 
   /**
@@ -105,8 +105,8 @@ export const Map = () => {
   useEffect(() => {
     const source = axios.CancelToken.source();
     (async () => {
-      console.log('dustrakFile', dustrakFile);
-      console.log('gpsFile', gpsFile);
+      console.log("dustrakFile", dustrakFile);
+      console.log("gpsFile", gpsFile);
       if (gpsFile || dustrakFile) {
         try {
           const [localGpsFile, localDustrakFile] = await Promise.all([
