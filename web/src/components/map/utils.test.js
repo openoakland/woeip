@@ -78,7 +78,7 @@ describe("get collections from a specific date", () => {
 });
 
 describe.only("get pollutants for a specific collection", () => {
-  it.only("should successfully receive pollutants", async () => {
+  it("should successfully receive pollutants", async () => {
     const { pollutants, thrownCode } = await getPollutantsByCollectionId(
       1,
       axios.CancelToken.source()
@@ -95,11 +95,11 @@ describe.only("get pollutants for a specific collection", () => {
     );
 
     const {
-      pollutantsInCollection,
-      errorMessage,
+      pollutants,
+      thrownCode,
     } = await getPollutantsByCollectionId(0, axios.CancelToken.source());
-    expect(pollutantsInCollection).toEqual([]);
-    expect(errorMessage).toMatch("Failed to get");
+    expect(pollutants).toEqual([]);
+    expect(thrownCode).toEqual(THROWN_CODE.FAILED);
   });
 
   it("should handle server response error", async () => {
@@ -110,11 +110,11 @@ describe.only("get pollutants for a specific collection", () => {
     );
 
     const {
-      pollutantsInCollection,
-      errorMessage,
+      pollutants,
+      thrownCode,
     } = await getPollutantsByCollectionId(0, axios.CancelToken.source());
-    expect(pollutantsInCollection).toEqual([]);
-    expect(errorMessage).toMatch("Error in server response");
+    expect(pollutants).toEqual([]);
+    expect(thrownCode).toEqual(THROWN_CODE.FAILED);
   });
 
   it("should handle network request error", async () => {
@@ -125,22 +125,22 @@ describe.only("get pollutants for a specific collection", () => {
     );
 
     const {
-      pollutantsInCollection,
-      errorMessage,
+      pollutants,
+      thrownCode,
     } = await getPollutantsByCollectionId(0, axios.CancelToken.source());
-    expect(pollutantsInCollection).toEqual([]);
-    expect(errorMessage).toMatch("Error in network request");
+    expect(pollutants).toEqual([]);
+    expect(thrownCode).toEqual(THROWN_CODE.FAILED);
   });
 
   it("should handle canceling a request", async () => {
     const cancelTokenSource = axios.CancelToken.source();
     cancelTokenSource.cancel();
     const {
-      pollutantsInCollection,
-      errorMessage,
+      pollutants,
+      thrownCode,
     } = await getPollutantsByCollectionId(0, cancelTokenSource);
-    expect(pollutantsInCollection).toEqual([]);
-    expect(errorMessage).toMatch("Canceled");
+    expect(pollutants).toEqual([]);
+    expect(thrownCode).toEqual(THROWN_CODE.CANCELED);
   });
 });
 

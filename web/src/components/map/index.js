@@ -17,6 +17,7 @@ import {
   canceledCollectionsMessage,
   canceledPollutantsMessage,
   BLANK_ACTIVE_STARTS_AT,
+  THROWN_CODE,
 } from "./utils";
 
 import { Grid } from "../ui";
@@ -80,23 +81,18 @@ export const Map = () => {
     const source = axios.CancelToken.source();
     (async () => {
       if (activeId !== BLANK_ACTIVE_ID) {
-        try {
           setIsLoadingPollutants(true);
-          const pendingPollutantValues = await getPollutantsByCollectionId(
+          const {pollutants: rawPollutants, thrownCode }= await getPollutantsByCollectionId(
             activeId,
             source
           );
-          setPollutants(fallbackPollutants(pendingPollutantValues));
+          if(thrownCode === THROWN_CODE.NONE) setPollutants(fallbackPollutants(rawPollutants));
+          if(thrownCode !== THROWN_CODE.CANCELED) setIsLoadingPollutants(false);
+        } else {
           setIsLoadingPollutants(false);
-        } catch (thrown) {
-          canceledPollutantsMessage(thrown);
         }
-      }
     })();
-    return () => {
-      setIsLoadingPollutants(false);
-      source.cancel();
-    };
+    return source.cancel;
   }, [activeId]);
 
   /**
@@ -105,8 +101,6 @@ export const Map = () => {
   useEffect(() => {
     const source = axios.CancelToken.source();
     (async () => {
-      console.log("dustrakFile", dustrakFile);
-      console.log("gpsFile", gpsFile);
       if (gpsFile || dustrakFile) {
         try {
           const [localGpsFile, localDustrakFile] = await Promise.all([
