@@ -49,27 +49,25 @@ export const Map = () => {
   useEffect(() => {
     const source = axios.CancelToken.source();
     (async () => {
-      try {
-        const localCollectionsOnDate = await getCollectionsOnDate(
+        const {collectionsOnDate: localCollectionsOnDate, thrownCode} = await getCollectionsOnDate(
           formattedDate,
           source
         );
-        setCollectionsOnDate(localCollectionsOnDate);
-        const {
-          id,
-          collection_files: [localGpsFile, localDustrakFile],
-          starts_at,
-        } = getFirstCollection(localCollectionsOnDate);
-        setActiveId(id);
-        setActiveStartsAt(starts_at);
-        if (id !== BLANK_ACTIVE_ID) setIsLoadingPollutants(true);
-        if (localGpsFile && localDustrakFile) {
-          setGpsFile(localGpsFile);
-          setDustrakFile(localDustrakFile);
+        if(thrownCode === THROWN_CODE.NONE) {
+          setCollectionsOnDate(localCollectionsOnDate);
+          const {
+            id,
+            collection_files: [localGpsFile, localDustrakFile],
+            starts_at,
+          } = getFirstCollection(localCollectionsOnDate);
+          setActiveId(id);
+          setActiveStartsAt(starts_at);
+          if (id !== BLANK_ACTIVE_ID) setIsLoadingPollutants(true);
+          if (localGpsFile && localDustrakFile) {
+            setGpsFile(localGpsFile);
+            setDustrakFile(localDustrakFile);
+          }
         }
-      } catch (thrown) {
-        canceledCollectionsMessage(thrown);
-      }
     })();
     return source.cancel;
   }, [formattedDate]);
