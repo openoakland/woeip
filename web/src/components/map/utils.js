@@ -61,10 +61,7 @@ export const getPollutantsByCollectionId = async (
     if (!pollutants) throw new Error("Failed to get pollutants data");
     return { pollutants: pollutants, thrownCode: THROWN_CODE.NONE };
   } catch (thrown) {
-    const thrownCode = axios.isCancel(thrown)
-      ? THROWN_CODE.CANCELED
-      : THROWN_CODE.FAILED;
-    return { pollutants: {}, thrownCode: thrownCode };
+    return { pollutants: {}, thrownCode: getThrownCode(thrown) };
   }
 };
 
@@ -93,19 +90,30 @@ export const parsePollutant = (item) => {
 };
 
 /**
- * Retrieve all of the collections that occured on the given date
- * @param {moment} mapDate
+ * Retrieve all of the collections that occurred on the given date
+ * @param {string} formattedDate requested date, already in expected format
  * @param {CancelToken} cancelTokenSource
- * @returns {Array<Collection>}
+ * @returns { 
+ *  {collectionsOnDate: Array<Collection>, thrownCode: THROWN_CODE} 
+ * }
  */
-export const getCollectionsOnDate = async (mapDate, cancelTokenSource) => {
+export const getCollectionsOnDate = async (formattedDate, cancelTokenSource) => {
   const options = {
     params: {
-      start_date: mapDate,
+      start_date: formattedDate,
     },
     cancelToken: cancelTokenSource.token,
   };
-  return (await axios.get(apiUrlCollections(), options)).data;
+  try {
+    const response = await axios.get(apiUrlCollections(), options);
+    const collectionsOnDate = response.data;
+    if(!collectionsOnDate) throw new Error("Failed to retrieve collection data for day");
+    if(!Array.isArray(collectionsOnDate)) throw new Error("Retrieved collection data for day failed to conform to array structure");
+    return { collectionsOnDate: collectionsOnDate, thrownCode: THROWN_CODE.NONE};
+
+  } catch(thrown){
+    return {collectionsOnDate: [], thrownCode: getThrownCode(thrown)}
+  }
 };
 
 /**
@@ -119,6 +127,13 @@ export const getCollectionFileByLink = async (fileLink, cancelTokenSource) => {
   };
   return (await axios.get(fileLink, options)).data;
 };
+
+/**
+ * Return a code for axios catch block depending on whether the request failed because it was canceled
+ * @param {Error} thrown error sent to a catch block after  
+ * @returns {THROWN_CODE} the number associated with a type of failure 
+ */
+const getThrownCode = (thrown) => axios.isCancel(thrown) ? THROWN_CODE.CANCELED : THROWN_CODE.FAILED;
 
 /**
  * url is stored in database as http. To prevent mixed content errors (https://developer.mozilla.org/en-US/docs/Web/Security/Mixed_content),
