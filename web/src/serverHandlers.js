@@ -8,7 +8,7 @@ const handlers = [
   }),
 
   rest.get(apiUrlCollectionById("*"), (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json([{ time_geo: "Place and time" }]));
+    return res(ctx.status(200), ctx.json({pollutant_values: [{ time_geo: "Place and time" }]}));
   }),
 ];
 

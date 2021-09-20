@@ -77,13 +77,13 @@ describe("get collections from a specific date", () => {
   });
 });
 
-describe.only("get pollutants for a specific collection", () => {
+describe("get pollutants for a specific collection", () => {
   it("should successfully receive pollutants", async () => {
     const { pollutants, thrownCode } = await getPollutantsByCollectionId(
       1,
       axios.CancelToken.source()
     );
-    expect(pollutants).toEqual([{ time_geo: "Place and time" }]);
+    expect(pollutants.pollutant_values).toEqual([{ time_geo: "Place and time" }]);
     expect(thrownCode).toEqual(THROWN_CODE.NONE);
   });
 
@@ -98,7 +98,7 @@ describe.only("get pollutants for a specific collection", () => {
       pollutants,
       thrownCode,
     } = await getPollutantsByCollectionId(0, axios.CancelToken.source());
-    expect(pollutants).toEqual([]);
+    expect(pollutants).toEqual({});
     expect(thrownCode).toEqual(THROWN_CODE.FAILED);
   });
 
@@ -113,7 +113,7 @@ describe.only("get pollutants for a specific collection", () => {
       pollutants,
       thrownCode,
     } = await getPollutantsByCollectionId(0, axios.CancelToken.source());
-    expect(pollutants).toEqual([]);
+    expect(pollutants).toEqual({});
     expect(thrownCode).toEqual(THROWN_CODE.FAILED);
   });
 
@@ -128,7 +128,7 @@ describe.only("get pollutants for a specific collection", () => {
       pollutants,
       thrownCode,
     } = await getPollutantsByCollectionId(0, axios.CancelToken.source());
-    expect(pollutants).toEqual([]);
+    expect(pollutants).toEqual({});
     expect(thrownCode).toEqual(THROWN_CODE.FAILED);
   });
 
@@ -139,7 +139,7 @@ describe.only("get pollutants for a specific collection", () => {
       pollutants,
       thrownCode,
     } = await getPollutantsByCollectionId(0, cancelTokenSource);
-    expect(pollutants).toEqual([]);
+    expect(pollutants).toEqual({});
     expect(thrownCode).toEqual(THROWN_CODE.CANCELED);
   });
 });
