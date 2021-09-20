@@ -14,8 +14,6 @@ import {
   getPollutantsByCollectionId,
   getCollectionFileByLink,
   swapProtocol,
-  canceledCollectionsMessage,
-  canceledPollutantsMessage,
   BLANK_ACTIVE_STARTS_AT,
   THROWN_CODE,
 } from "./utils";
@@ -49,25 +47,25 @@ export const Map = () => {
   useEffect(() => {
     const source = axios.CancelToken.source();
     (async () => {
-        const {collectionsOnDate: localCollectionsOnDate, thrownCode} = await getCollectionsOnDate(
-          formattedDate,
-          source
-        );
-        if(thrownCode === THROWN_CODE.NONE) {
-          setCollectionsOnDate(localCollectionsOnDate);
-          const {
-            id,
-            collection_files: [localGpsFile, localDustrakFile],
-            starts_at,
-          } = getFirstCollection(localCollectionsOnDate);
-          setActiveId(id);
-          setActiveStartsAt(starts_at);
-          if (id !== BLANK_ACTIVE_ID) setIsLoadingPollutants(true);
-          if (localGpsFile && localDustrakFile) {
-            setGpsFile(localGpsFile);
-            setDustrakFile(localDustrakFile);
-          }
+      const {
+        collectionsOnDate: localCollectionsOnDate,
+        thrownCode,
+      } = await getCollectionsOnDate(formattedDate, source);
+      if (thrownCode === THROWN_CODE.NONE) {
+        setCollectionsOnDate(localCollectionsOnDate);
+        const {
+          id,
+          collection_files: [localGpsFile, localDustrakFile],
+          starts_at,
+        } = getFirstCollection(localCollectionsOnDate);
+        setActiveId(id);
+        setActiveStartsAt(starts_at);
+        if (id !== BLANK_ACTIVE_ID) setIsLoadingPollutants(true);
+        if (localGpsFile && localDustrakFile) {
+          setGpsFile(localGpsFile);
+          setDustrakFile(localDustrakFile);
         }
+      }
     })();
     return source.cancel;
   }, [formattedDate]);
@@ -79,16 +77,17 @@ export const Map = () => {
     const source = axios.CancelToken.source();
     (async () => {
       if (activeId !== BLANK_ACTIVE_ID) {
-          setIsLoadingPollutants(true);
-          const {pollutants: rawPollutants, thrownCode }= await getPollutantsByCollectionId(
-            activeId,
-            source
-          );
-          if(thrownCode === THROWN_CODE.NONE) setPollutants(fallbackPollutants(rawPollutants));
-          if(thrownCode !== THROWN_CODE.CANCELED) setIsLoadingPollutants(false);
-        } else {
-          setIsLoadingPollutants(false);
-        }
+        setIsLoadingPollutants(true);
+        const {
+          pollutants: rawPollutants,
+          thrownCode,
+        } = await getPollutantsByCollectionId(activeId, source);
+        if (thrownCode === THROWN_CODE.NONE)
+          setPollutants(fallbackPollutants(rawPollutants));
+        if (thrownCode !== THROWN_CODE.CANCELED) setIsLoadingPollutants(false);
+      } else {
+        setIsLoadingPollutants(false);
+      }
     })();
     return source.cancel;
   }, [activeId]);
@@ -100,16 +99,18 @@ export const Map = () => {
     const source = axios.CancelToken.source();
     (async () => {
       if (gpsFile || dustrakFile) {
-        try {
-          const [localGpsFile, localDustrakFile] = await Promise.all([
-            getCollectionFileByLink(swapProtocol(gpsFile), source),
-            getCollectionFileByLink(swapProtocol(dustrakFile), source),
-          ]);
+        const [
+          { file: localGpsFile, thrownCode: thrownCodeGps },
+          { file: localDustrakFile, thrownCode: thrownCodeDustrak },
+        ] = await Promise.all([
+          getCollectionFileByLink(swapProtocol(gpsFile), source),
+          getCollectionFileByLink(swapProtocol(dustrakFile), source),
+        ]);
+
+        if (thrownCodeGps === THROWN_CODE.NONE)
           setGpsFileUrl(swapProtocol(localGpsFile.file));
+        if (thrownCodeDustrak === THROWN_CODE.NONE)
           setDustrakFileUrl(swapProtocol(localDustrakFile.file));
-        } catch {
-          console.error("could not retrieve files for collection");
-        }
       }
     })();
 

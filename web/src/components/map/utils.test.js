@@ -83,7 +83,9 @@ describe("get pollutants for a specific collection", () => {
       1,
       axios.CancelToken.source()
     );
-    expect(pollutants.pollutant_values).toEqual([{ time_geo: "Place and time" }]);
+    expect(pollutants.pollutant_values).toEqual([
+      { time_geo: "Place and time" },
+    ]);
     expect(thrownCode).toEqual(THROWN_CODE.NONE);
   });
 
@@ -94,10 +96,10 @@ describe("get pollutants for a specific collection", () => {
       })
     );
 
-    const {
-      pollutants,
-      thrownCode,
-    } = await getPollutantsByCollectionId(0, axios.CancelToken.source());
+    const { pollutants, thrownCode } = await getPollutantsByCollectionId(
+      0,
+      axios.CancelToken.source()
+    );
     expect(pollutants).toEqual({});
     expect(thrownCode).toEqual(THROWN_CODE.FAILED);
   });
@@ -109,10 +111,10 @@ describe("get pollutants for a specific collection", () => {
       })
     );
 
-    const {
-      pollutants,
-      thrownCode,
-    } = await getPollutantsByCollectionId(0, axios.CancelToken.source());
+    const { pollutants, thrownCode } = await getPollutantsByCollectionId(
+      0,
+      axios.CancelToken.source()
+    );
     expect(pollutants).toEqual({});
     expect(thrownCode).toEqual(THROWN_CODE.FAILED);
   });
@@ -124,10 +126,10 @@ describe("get pollutants for a specific collection", () => {
       )
     );
 
-    const {
-      pollutants,
-      thrownCode,
-    } = await getPollutantsByCollectionId(0, axios.CancelToken.source());
+    const { pollutants, thrownCode } = await getPollutantsByCollectionId(
+      0,
+      axios.CancelToken.source()
+    );
     expect(pollutants).toEqual({});
     expect(thrownCode).toEqual(THROWN_CODE.FAILED);
   });
@@ -135,10 +137,10 @@ describe("get pollutants for a specific collection", () => {
   it("should handle canceling a request", async () => {
     const cancelTokenSource = axios.CancelToken.source();
     cancelTokenSource.cancel();
-    const {
-      pollutants,
-      thrownCode,
-    } = await getPollutantsByCollectionId(0, cancelTokenSource);
+    const { pollutants, thrownCode } = await getPollutantsByCollectionId(
+      0,
+      cancelTokenSource
+    );
     expect(pollutants).toEqual({});
     expect(thrownCode).toEqual(THROWN_CODE.CANCELED);
   });
@@ -157,9 +159,12 @@ describe("get files for a specific collection", () => {
         );
       })
     );
-    const { file, errorMessage } = await getCollectionFileByLink(fileLink);
+    const { file, thrownCode } = await getCollectionFileByLink(
+      fileLink,
+      axios.CancelToken.source()
+    );
     expect(file).toEqual(fileFoo);
-    expect(errorMessage).toEqual("");
+    expect(thrownCode).toEqual(THROWN_CODE.NONE);
   });
 
   it("should handle response with corrupt data", async () => {
@@ -170,9 +175,12 @@ describe("get files for a specific collection", () => {
       })
     );
 
-    const { file, errorMessage } = await getCollectionFileByLink(fileLink);
+    const { file, thrownCode } = await getCollectionFileByLink(
+      fileLink,
+      axios.CancelToken.source()
+    );
     expect(file).toBe(null);
-    expect(errorMessage).toMatch("Failed to get file");
+    expect(thrownCode).toEqual(THROWN_CODE.FAILED);
   });
 
   it("should handle server response error", async () => {
@@ -183,16 +191,41 @@ describe("get files for a specific collection", () => {
       })
     );
 
-    const { file, errorMessage } = await getCollectionFileByLink(fileLink);
+    const { file, thrownCode } = await getCollectionFileByLink(
+      fileLink,
+      axios.CancelToken.source()
+    );
     expect(file).toBe(null);
-    expect(errorMessage).toMatch("Error in server response");
+    expect(thrownCode).toEqual(THROWN_CODE.FAILED);
   });
 
   it("should handle network request error", async () => {
     const fileLink = apiUrl("link/to/file");
     server.use(rest.get(fileLink, (req, res, ctx) => res.networkError()));
-    const { file, errorMessage } = await getCollectionFileByLink(fileLink);
+    const { file, thrownCode } = await getCollectionFileByLink(
+      fileLink,
+      axios.CancelToken.source()
+    );
     expect(file).toBe(null);
-    expect(errorMessage).toMatch("Error in network request");
+    expect(thrownCode).toEqual(THROWN_CODE.FAILED);
+  });
+
+  it("should handle canceling a request", async () => {
+    const source = axios.CancelToken.source();
+    source.cancel();
+
+    const fileLink = apiUrl("link/to/file");
+    server.use(
+      rest.get(fileLink, (req, res, ctx) => {
+        return res(ctx.status(200));
+      })
+    );
+
+    const { file, thrownCode } = await getCollectionFileByLink(
+      fileLink,
+      source
+    );
+    expect(file).toBe(null);
+    expect(thrownCode).toEqual(THROWN_CODE.CANCELED);
   });
 });

@@ -93,11 +93,14 @@ export const parsePollutant = (item) => {
  * Retrieve all of the collections that occurred on the given date
  * @param {string} formattedDate requested date, already in expected format
  * @param {CancelToken} cancelTokenSource
- * @returns { 
- *  {collectionsOnDate: Array<Collection>, thrownCode: THROWN_CODE} 
+ * @returns {
+ *  {collectionsOnDate: Array<Collection>, thrownCode: THROWN_CODE}
  * }
  */
-export const getCollectionsOnDate = async (formattedDate, cancelTokenSource) => {
+export const getCollectionsOnDate = async (
+  formattedDate,
+  cancelTokenSource
+) => {
   const options = {
     params: {
       start_date: formattedDate,
@@ -107,12 +110,18 @@ export const getCollectionsOnDate = async (formattedDate, cancelTokenSource) => 
   try {
     const response = await axios.get(apiUrlCollections(), options);
     const collectionsOnDate = response.data;
-    if(!collectionsOnDate) throw new Error("Failed to retrieve collection data for day");
-    if(!Array.isArray(collectionsOnDate)) throw new Error("Retrieved collection data for day failed to conform to array structure");
-    return { collectionsOnDate: collectionsOnDate, thrownCode: THROWN_CODE.NONE};
-
-  } catch(thrown){
-    return {collectionsOnDate: [], thrownCode: getThrownCode(thrown)}
+    if (!collectionsOnDate)
+      throw new Error("Failed to retrieve collection data for day");
+    if (!Array.isArray(collectionsOnDate))
+      throw new Error(
+        "Retrieved collection data for day failed to conform to array structure"
+      );
+    return {
+      collectionsOnDate: collectionsOnDate,
+      thrownCode: THROWN_CODE.NONE,
+    };
+  } catch (thrown) {
+    return { collectionsOnDate: [], thrownCode: getThrownCode(thrown) };
   }
 };
 
@@ -125,15 +134,22 @@ export const getCollectionFileByLink = async (fileLink, cancelTokenSource) => {
   const options = {
     cancelToken: cancelTokenSource.token,
   };
-  return (await axios.get(fileLink, options)).data;
+  try {
+    const file = (await axios.get(fileLink, options)).data;
+    if (!file) throw new Error("Failed to retrieve file data");
+    return { file: file, thrownCode: THROWN_CODE.NONE };
+  } catch (thrown) {
+    return { file: null, thrownCode: getThrownCode(thrown) };
+  }
 };
 
 /**
  * Return a code for axios catch block depending on whether the request failed because it was canceled
- * @param {Error} thrown error sent to a catch block after  
- * @returns {THROWN_CODE} the number associated with a type of failure 
+ * @param {Error} thrown error sent to a catch block after
+ * @returns {THROWN_CODE} the number associated with a type of failure
  */
-const getThrownCode = (thrown) => axios.isCancel(thrown) ? THROWN_CODE.CANCELED : THROWN_CODE.FAILED;
+const getThrownCode = (thrown) =>
+  axios.isCancel(thrown) ? THROWN_CODE.CANCELED : THROWN_CODE.FAILED;
 
 /**
  * url is stored in database as http. To prevent mixed content errors (https://developer.mozilla.org/en-US/docs/Web/Security/Mixed_content),
@@ -152,26 +168,3 @@ export const swapProtocol = (link) => link.replace(/^(https?|ftp):\/\//, "//");
  */
 export const getFirstCollection = (pendingCollections) =>
   pendingCollections[pendingCollections.length - 1] || BLANK_ACTIVE_COLLECTION;
-
-/**
- * Handle axios throw that may have been a cancel request
- * @param {string} dataRequested type of request being made when error occurred
- * @param {Error} thrown type of error thrown
- */
-export const canceledRequestMessage = (dataRequested) => (thrown) => {
-  if (axios.isCancel(thrown)) {
-    console.log(`Canceled request for ${dataRequested}`);
-  } else {
-    console.error(`Failed to get data for ${dataRequested}`);
-  }
-};
-
-/**
- * Overload cancel request message with collections
- */
-export const canceledCollectionsMessage = canceledRequestMessage("collections");
-
-/**
- * Overload cancel request message with collections
- */
-export const canceledPollutantsMessage = canceledRequestMessage("pollutants");
