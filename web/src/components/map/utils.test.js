@@ -146,6 +146,18 @@ describe("get pollutants for a specific collection", () => {
   });
 });
 
+describe("parse a list of pollutants", () => {
+  it.todo("should return a list of two properly parsed pollutants");
+
+  it.todo("should return an empty list when source data are undefined");
+});
+
+describe("parse each pollutant", () => {
+  it.todo("should return a properly parsed pollutant");
+
+  it.todo("should return a malformed pollutant");
+});
+
 describe("get files for a specific collection", () => {
   it("should successfully receive files", async () => {
     const fileLink = apiUrl("/link/to/file");
@@ -228,4 +240,20 @@ describe("get files for a specific collection", () => {
     expect(file).toBe(null);
     expect(thrownCode).toEqual(THROWN_CODE.CANCELED);
   });
+});
+
+describe("get the code associated with a thrown value on api call", () => {
+  it.todo("should return a 'canceled' code when caused by canceling");
+
+  it.todo("should return a 'failed' code when unrelated to canceling");
+});
+
+describe("get first collection from a list of collections", () => {
+  it.todo("should get the only collection in a list of one");
+
+  it.todo("should get the first collection in a list of two");
+
+  it.todo("should return the blank collection in an empty list");
+
+  it.todo("should return the blank collection in an undefined list");
 });
