@@ -152,15 +152,6 @@ const getThrownCode = (thrown) =>
   axios.isCancel(thrown) ? THROWN_CODE.CANCELED : THROWN_CODE.FAILED;
 
 /**
- * url is stored in database as http. To prevent mixed content errors (https://developer.mozilla.org/en-US/docs/Web/Security/Mixed_content),
- * the production protocol needs to access the link through https.
- * use empty protocol to match application protocol
- * @param {string} link to file download
- * @returns {string} protocol set based on environment
- */
-export const swapProtocol = (link) => link.replace(/^(https?|ftp):\/\//, "//");
-
-/**
  * Return the collection that was last added to a date.
  * If no collections were returned for a date, fall back to using an empty object
  * @param {Array<Collection>} pendingCollections possible collections

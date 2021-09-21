@@ -35,3 +35,12 @@ export const apiUrlCollectionById = (collectionId) =>
  * @returns {string}
  */
 export const apiUrlDevices = () => apiUrl("devices");
+
+/**
+ * Removes the protocol from a url so that it is an empty protocol.
+ * This prevents mixed content errors (https://developer.mozilla.org/en-US/docs/Web/Security/Mixed_content), 
+ * when one environment is http and the other is https
+ * @param {string} link
+ * @returns {string} the link in the form "//domain.io"
+ */
+export const emptyProtocol = (link) => link.replace(/^(https?|ftp):/, "");

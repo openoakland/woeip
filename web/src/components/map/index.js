@@ -13,10 +13,11 @@ import {
   fallbackPollutants,
   getPollutantsByCollectionId,
   getCollectionFileByLink,
-  swapProtocol,
   BLANK_ACTIVE_STARTS_AT,
   THROWN_CODE,
 } from "./utils";
+
+import { emptyProtocol } from "../../api.util";
 
 import { Grid } from "../ui";
 
@@ -103,14 +104,14 @@ export const Map = () => {
           { file: localGpsFile, thrownCode: thrownCodeGps },
           { file: localDustrakFile, thrownCode: thrownCodeDustrak },
         ] = await Promise.all([
-          getCollectionFileByLink(swapProtocol(gpsFile), source),
-          getCollectionFileByLink(swapProtocol(dustrakFile), source),
+          getCollectionFileByLink(emptyProtocol(gpsFile), source),
+          getCollectionFileByLink(emptyProtocol(dustrakFile), source),
         ]);
 
         if (thrownCodeGps === THROWN_CODE.NONE)
-          setGpsFileUrl(swapProtocol(localGpsFile.file));
+          setGpsFileUrl(emptyProtocol(localGpsFile.file));
         if (thrownCodeDustrak === THROWN_CODE.NONE)
-          setDustrakFileUrl(swapProtocol(localDustrakFile.file));
+          setDustrakFileUrl(emptyProtocol(localDustrakFile.file));
       }
     })();
 
