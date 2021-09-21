@@ -10,7 +10,7 @@ import {
   BLANK_ACTIVE_ID,
   getCollectionsOnDate,
   getFirstCollection,
-  fallbackPollutants,
+  parsePollutants,
   getPollutantsByCollectionId,
   getCollectionFileByLink,
   BLANK_ACTIVE_STARTS_AT,
@@ -84,7 +84,7 @@ export const Map = () => {
           thrownCode,
         } = await getPollutantsByCollectionId(activeId, source);
         if (thrownCode === THROWN_CODE.NONE)
-          setPollutants(fallbackPollutants(rawPollutants));
+          setPollutants(parsePollutants(rawPollutants));
         if (thrownCode !== THROWN_CODE.CANCELED) setIsLoadingPollutants(false);
       } else {
         setIsLoadingPollutants(false);
@@ -151,7 +151,6 @@ export const Map = () => {
   /**
    * Load a new collection from the current date
    * @param {HTMLButtonEvent} event
-   * @modifies {api} Cancel any pending loads
    * @modifies {shouldLoadCollections}
    * @modifies {collection}
    * @modifies {cancelTokenSource}

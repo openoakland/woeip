@@ -22,6 +22,20 @@ import { apiUrlCollectionById, apiUrlCollections } from "../../api.util";
  * @property {number} value
  */
 
+/**
+ * Meta-data for a collection
+ * @typedef Collection
+ * @property {number} id
+ * @property {Array<string>} collection_files
+ * @property {number} starts_at
+ */
+
+/**
+ * Link to the Collection File
+ * @typedef CollectionFile
+ * @property {string} file
+ */
+
 export const BLANK_ACTIVE_ID = -1;
 export const BLANK_ACTIVE_STARTS_AT = "";
 export const BLANK_ACTIVE_COLLECTION = {
@@ -69,7 +83,7 @@ export const getPollutantsByCollectionId = async (
  * Extract and parse the pollutant values, or return an empty array
  * @param {Array<PollutantValue>} pollutantValueData
  */
-export const fallbackPollutants = (pollutantValueData) =>
+export const parsePollutants = (pollutantValueData) =>
   pollutantValueData?.pollutant_values?.map(parsePollutant) || [];
 
 /**
@@ -127,8 +141,8 @@ export const getCollectionsOnDate = async (
 
 /**
  * Retrieve data about the collection file, gps or dustrak
- * @param {string} fileLink the full url to the file
- * @returns {CollectionFile} data about the collection file
+ * @param {string} fileLink the url to the file
+ * @returns {{ file: CollectionFile || null, thrownCode: THROWN_CODE}} data about the collection file
  */
 export const getCollectionFileByLink = async (fileLink, cancelTokenSource) => {
   const options = {
@@ -155,7 +169,7 @@ const getThrownCode = (thrown) =>
  * Return the collection that was last added to a date.
  * If no collections were returned for a date, fall back to using an empty object
  * @param {Array<Collection>} pendingCollections possible collections
- * @returns {Collection || Object } Lastest collection or an empty object
+ * @returns { Collection } Lastest collection or an empty object
  */
 export const getFirstCollection = (pendingCollections) =>
   pendingCollections[pendingCollections.length - 1] || BLANK_ACTIVE_COLLECTION;
