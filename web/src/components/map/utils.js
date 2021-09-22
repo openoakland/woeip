@@ -168,8 +168,9 @@ const getThrownCode = (thrown) =>
 /**
  * Return the collection that was last added to a date.
  * If no collections were returned for a date, fall back to using an empty object
- * @param {Array<Collection>} pendingCollections possible collections
- * @returns { Collection } Lastest collection or an empty object
+ * @param {Array<Collection>} collections possible collections
+ * @returns { Collection } Latest collection or an empty object
  */
-export const getFirstCollection = (pendingCollections) =>
-  pendingCollections[pendingCollections.length - 1] || BLANK_ACTIVE_COLLECTION;
+export const getFirstCollection = (collections) =>
+  (collections && collections[collections.length - 1]) ||
+  BLANK_ACTIVE_COLLECTION;

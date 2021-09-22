@@ -4,8 +4,10 @@ import {
   apiUrlCollections,
 } from "../../api.util";
 import {
+  BLANK_ACTIVE_COLLECTION,
   getCollectionFileByLink,
   getCollectionsOnDate,
+  getFirstCollection,
   getPollutantsByCollectionId,
   parsePollutant,
   parsePollutants,
@@ -319,11 +321,55 @@ describe("get the code associated with a thrown value on api call", () => {
 });
 
 describe("get first collection from a list of collections", () => {
-  it.todo("should get the only collection in a list of one");
+  it("should get the only collection in a list of one", () => {
+    const inputCollections = [
+      {
+        id: 1,
+        starts_at: "2014-07-17T19:40:35Z",
+        ends_at: "2014-07-17T20:33:35Z",
+        collection_files: [
+          "http://api.lvh.me/collection_files/2",
+          "http://api.lvh.me/collection_files/1",
+        ],
+      },
+    ];
+    expect(getFirstCollection(inputCollections)).toStrictEqual(
+      inputCollections[0]
+    );
+  });
 
-  it.todo("should get the first collection in a list of two");
+  it("should get the first collection in a list of two", () => {
+    const inputCollections = [
+      {
+        id: 1,
+        starts_at: "2014-07-17T19:40:35Z",
+        ends_at: "2014-07-17T20:33:35Z",
+        collection_files: [
+          "http://api.lvh.me/collection_files/2",
+          "http://api.lvh.me/collection_files/1",
+        ],
+      },
+      {
+        id: 8,
+        starts_at: "2014-07-17T19:40:35Z",
+        ends_at: "2014-07-17T20:33:35Z",
+        collection_files: [
+          "http://api.lvh.me/collection_files/12",
+          "http://api.lvh.me/collection_files/11",
+        ],
+      },
+    ];
 
-  it.todo("should return the blank collection in an empty list");
+    expect(getFirstCollection(inputCollections)).toStrictEqual(
+      inputCollections[1]
+    );
+  });
 
-  it.todo("should return the blank collection in an undefined list");
+  it("should return the blank collection in an empty list", () =>
+    expect(getFirstCollection([])).toStrictEqual(BLANK_ACTIVE_COLLECTION));
+
+  it("should return the blank collection in an undefined list", () =>
+    expect(getFirstCollection(undefined)).toStrictEqual(
+      BLANK_ACTIVE_COLLECTION
+    ));
 });
