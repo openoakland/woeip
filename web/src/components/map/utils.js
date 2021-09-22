@@ -133,7 +133,7 @@ export const canceledPollutantsMessage = canceledRequestMessage("pollutants");
  * @param {Object} stylesheet MapBox stylesheet
  * @returns {Array<Object>} Copies of style layers with ids matching session prefix
  */
-export const getSessionDataLayersStyles = (stylesheet) => {
+export const getSessionDataLayerStyles = (stylesheet) => {
   const sessionStylePrefix = process.env.REACT_APP_MAPBOX_SESSION_STYLE_PREFIX;
   const styles = [];
   stylesheet?.layers.forEach((layer) => {
