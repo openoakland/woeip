@@ -92,14 +92,14 @@ export const parsePollutants = (pollutantValueData) =>
  * @returns {Pollutant} the shape of the pollutant as the client wants to consume it
  */
 export const parsePollutant = (item) => {
-  const timeGeoSplit = item.time_geo.split("(");
-  const coordsSplit = timeGeoSplit[1].split(", ");
+  const timeGeoSplit = item?.time_geo && item.time_geo.split("(");
+  const coordsSplit = timeGeoSplit && timeGeoSplit[1].split(", ");
   return {
-    timestamp: timeGeoSplit[0].trim(),
-    longitude: Number(coordsSplit[0].trim()),
-    latitude: Number(coordsSplit[1].replace(")", "").trim()),
-    name: item.pollutant,
-    value: item.value,
+    timestamp: timeGeoSplit && timeGeoSplit[0].trim(),
+    longitude: coordsSplit && Number(coordsSplit[0].trim()),
+    latitude: coordsSplit && Number(coordsSplit[1].replace(")", "").trim()),
+    name: item?.pollutant,
+    value: item?.value,
   };
 };
 

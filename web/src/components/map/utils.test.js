@@ -7,6 +7,8 @@ import {
   getCollectionFileByLink,
   getCollectionsOnDate,
   getPollutantsByCollectionId,
+  parsePollutant,
+  parsePollutants,
   THROWN_CODE,
 } from "./utils";
 import axios from "axios";
@@ -147,15 +149,83 @@ describe("get pollutants for a specific collection", () => {
 });
 
 describe("parse a list of pollutants", () => {
-  it.todo("should return a list of two properly parsed pollutants");
+  it("should return a list of two properly parsed pollutants", () => {
+    const firstInputPollutant = {
+      pollutant: "particulates",
+      time_geo: "2014-07-17 19:40:36 (-122.29460333333333, 37.803158333333336)",
+      value: 0.008,
+    };
 
-  it.todo("should return an empty list when source data are undefined");
+    const firstOutputPollutant = {
+      timestamp: "2014-07-17 19:40:36",
+      longitude: -122.29460333333333,
+      latitude: 37.803158333333336,
+      name: "particulates",
+      value: 0.008,
+    };
+
+    const secondInputPollutant = {
+      pollutant: "particulates",
+      time_geo: "2014-07-17 19:40:37 (-122.29460333333555, 37.744458333333336)",
+      value: 0.009,
+    };
+
+    const secondOutputPollutant = {
+      timestamp: "2014-07-17 19:40:37",
+      longitude: -122.29460333333555,
+      latitude: 37.744458333333336,
+      name: "particulates",
+      value: 0.009,
+    };
+
+    const inputPollutantValues = {
+      pollutant_values: [firstInputPollutant, secondInputPollutant],
+    };
+    const outputPollutantValues = parsePollutants(inputPollutantValues);
+    expect(outputPollutantValues[0]).toStrictEqual(firstOutputPollutant);
+    expect(outputPollutantValues[1]).toStrictEqual(secondOutputPollutant);
+  });
+
+  it("should return an empty list when source data are undefined", () =>
+    expect(parsePollutants(undefined)).toEqual([]));
 });
 
 describe("parse each pollutant", () => {
-  it.todo("should return a properly parsed pollutant");
+  it("should return a properly parsed pollutant", () => {
+    const inputPollutant = {
+      pollutant: "particulates",
+      time_geo: "2014-07-17 19:40:36 (-122.29460333333333, 37.803158333333336)",
+      value: 0.008,
+    };
 
-  it.todo("should return a malformed pollutant");
+    const outputPollutant = {
+      timestamp: "2014-07-17 19:40:36",
+      longitude: -122.29460333333333,
+      latitude: 37.803158333333336,
+      name: "particulates",
+      value: 0.008,
+    };
+
+    expect(parsePollutant(inputPollutant)).toStrictEqual(outputPollutant);
+  });
+
+  it("should return from a malformed pollutant", () =>
+    expect(parsePollutant({})).toStrictEqual({
+      timestamp: undefined,
+      longitude: undefined,
+      latitude: undefined,
+      name: undefined,
+      value: undefined,
+    }));
+
+  it("should return from an undefined pollutant", () =>
+    expect(parsePollutant(undefined)).toStrictEqual({
+      timestamp: undefined,
+      longitude: undefined,
+      latitude: undefined,
+      name: undefined,
+      value: undefined,
+    }));
 });
 
 describe("get files for a specific collection", () => {
