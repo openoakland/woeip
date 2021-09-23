@@ -162,7 +162,7 @@ export const getCollectionFileByLink = async (fileLink, cancelTokenSource) => {
  * @param {Error} thrown error sent to a catch block after
  * @returns {THROWN_CODE} the number associated with a type of failure
  */
-const getThrownCode = (thrown) =>
+export const getThrownCode = (thrown) =>
   axios.isCancel(thrown) ? THROWN_CODE.CANCELED : THROWN_CODE.FAILED;
 
 /**

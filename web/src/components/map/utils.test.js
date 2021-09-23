@@ -9,6 +9,7 @@ import {
   getCollectionsOnDate,
   getFirstCollection,
   getPollutantsByCollectionId,
+  getThrownCode,
   parsePollutant,
   parsePollutants,
   THROWN_CODE,
@@ -315,9 +316,28 @@ describe("get files for a specific collection", () => {
 });
 
 describe("get the code associated with a thrown value on api call", () => {
-  it.todo("should return a 'canceled' code when caused by canceling");
+  it("should return a 'canceled' code when caused by canceling", async () => {
+    let thrownCode;
+    const source = axios.CancelToken.source();
+    source.cancel();
+    server.use(rest.get('/'), (req, res, ctx) => { return res(ctx.status(200))});
+    try {
+      await axios.get('/', {cancelToken: source.token})
+    } catch(thrown) {
+      thrownCode = getThrownCode(thrown);
+    }
+    expect(thrownCode).toEqual(THROWN_CODE.CANCELED);
+  });
 
-  it.todo("should return a 'failed' code when unrelated to canceling");
+  it("should return a 'failed' code when unrelated to canceling", () => {
+    let thrownCode;
+    try{
+      throw new Error("failed");
+    } catch(thrown){
+      thrownCode = getThrownCode(thrown);
+    }
+    expect(thrownCode).toEqual(THROWN_CODE.FAILED);
+  });
 });
 
 describe("get first collection from a list of collections", () => {
