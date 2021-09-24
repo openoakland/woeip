@@ -9,12 +9,17 @@ describe("MapMenu", () => {
         mapDate = moment();
     });
 
-    it("should render the default map menu, with no collections", () => {
+    it.only("should render the default map menu, with no collections", () => {
         renderMapMenu({mapDate});
         expect(screen.getByText(mapDate.format("LL"))).toBeInTheDocument();
         expect(screen.getByText("No GPS File")).toBeInTheDocument();
         expect(screen.getByText("No Dustrak File")).toBeInTheDocument();
+        expect(screen.getByText("Session:").closest("div")).toHaveTextContent('None');
+        expect(screen.getByText("Start Time:").closest("div")).toHaveTextContent('None');
         expect(screen.getByText(/We haven't collected data for this time period./)).toBeInTheDocument();
+        expect(screen.getByTestId('datepicker-input').value).toMatch(mapDate.format('YYYY-MM-DD'));
+        // console.log(mapDate.format('YYYY-MM-DD'));
+        screen.debug();
     });
 
     it.skip("should render a single collection", () => {
