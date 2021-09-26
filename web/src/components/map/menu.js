@@ -103,7 +103,7 @@ MapMenu.propTypes = {
   mapDate: PropTypes.object,
   collectionsOnDate: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.string,
+      id: PropTypes.number,
       collection_files: PropTypes.arrayOf(PropTypes.string),
       starts_at: PropTypes.string,
     })
