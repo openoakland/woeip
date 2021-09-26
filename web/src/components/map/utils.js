@@ -142,6 +142,7 @@ export const getCollectionsOnDate = async (
 /**
  * Retrieve data about the collection file, gps or dustrak
  * @param {string} fileLink the url to the file
+ * @param {CancelToken} cancelTokenSource
  * @returns {{ file: CollectionFile || null, thrownCode: THROWN_CODE}} data about the collection file
  */
 export const getCollectionFileByLink = async (fileLink, cancelTokenSource) => {
