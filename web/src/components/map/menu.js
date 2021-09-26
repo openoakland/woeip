@@ -67,16 +67,16 @@ export const MapMenu = ({
         </List.Item>
         <b>Start Time:</b>{" "}
         {activeStartsAt ? moment(activeStartsAt).format("h:mm A") : "None"}
-        {gpsFileUrl &&
+        {gpsFileUrl && (
           <List.Item as="a" href={gpsFileUrl}>
             Download GPS File
           </List.Item>
-        }
-        {dustrakFileUrl && 
+        )}
+        {dustrakFileUrl && (
           <List.Item as="a" href={dustrakFileUrl}>
             Download DusTrak File
           </List.Item>
-        }
+        )}
       </List>
       <h4>Other Collections from this day:</h4>
       <List>

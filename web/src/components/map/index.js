@@ -35,7 +35,7 @@ export const Map = () => {
   const [activeId, setActiveId] = useState(BLANK_ACTIVE_ID);
   const [activeStartsAt, setActiveStartsAt] = useState(BLANK_ACTIVE_STARTS_AT);
   // the database endpoint for file metadata
-  const [gpsFile, setGpsFile] = useState(""); 
+  const [gpsFile, setGpsFile] = useState("");
   const [dustrakFile, setDustrakFile] = useState("");
   // the direct download link for the file itself
   const [gpsFileUrl, setGpsFileUrl] = useState("");
