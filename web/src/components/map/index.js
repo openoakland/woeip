@@ -23,7 +23,6 @@ import { Grid } from "../ui";
 
 /**
  * View Map of data sessions and related meta-data
- * Data are read only
  */
 export const Map = () => {
   const location = useLocation(); // location for the url
@@ -43,7 +42,15 @@ export const Map = () => {
   const [isLoadingPollutants, setIsLoadingPollutants] = useState(false);
 
   /**
-   * Call the api to get collection sessions that happened on a date
+   * Load the collections that happened on a date
+   * @param {string} formattedDate
+   * @modifies {api} calls to get collections on a data
+   * @modifies {collectionsOnDate}
+   * @modifies {activeId}
+   * @modifies {activeStartsAt}
+   * @modifies {gpsFile}
+   * @modifies {dustrakFile}
+   * @returns {axios.CancelToken.source().cancel} cancel the api call
    */
   useEffect(() => {
     const source = axios.CancelToken.source();
@@ -61,7 +68,7 @@ export const Map = () => {
         } = getFirstCollection(localCollectionsOnDate);
         setActiveId(id);
         setActiveStartsAt(starts_at);
-        if (id !== BLANK_ACTIVE_ID) setIsLoadingPollutants(true);
+        // if (id !== BLANK_ACTIVE_ID) setIsLoadingPollutants(true);
         if (localGpsFile && localDustrakFile) {
           setGpsFile(localGpsFile);
           setDustrakFile(localDustrakFile);
@@ -72,7 +79,12 @@ export const Map = () => {
   }, [formattedDate]);
 
   /**
-   * Load pollutants in collection
+   * Load pollutants from the active collection
+   * @param {number} activeId
+   * @modifies {api} calls to the collection endpoint to retrieve its pollutants
+   * @modifies {isLoadingPollutants} update the status of pending pollutants
+   * @modifies {pollutants} will be an empty array or filled with pollutants from collection
+   * @returns {axios.CancelToken.source().cancel} cancel the api call
    */
   useEffect(() => {
     const source = axios.CancelToken.source();
@@ -94,7 +106,13 @@ export const Map = () => {
   }, [activeId]);
 
   /**
-   * Call the api to load the urls for gps+dustrak source files of a collection
+   * Call the api to load the urls for gps and dustrak source files of a collection
+   * @param {string} gpsFile
+   * @param {string} dustrakFile
+   * @modifies {api} calls to the each url for the gps and dustrak files
+   * @modifies {gpsFileUrl}
+   * @modifies {dustrakFileUrl}
+   * @returns {axios.CancelToken.source().cancel} cancel the api call
    */
   useEffect(() => {
     const source = axios.CancelToken.source();
@@ -121,14 +139,19 @@ export const Map = () => {
   /**
    * Load collections from a new date
    * @param {HTMLButtonEvent} event Accept the data from the calendar to start loading a date
-   * @modifies {api} Cancel any pending loads
-   * @modifies {isLoadingCollectionsOnDate}
    * @modifies {mapDate}
-   * @modifies {cancelTokenSource}
+   * @modifies {formattedDate}
+   * @modifies {activeId}
+   * @modifies {activeStartsAt}
+   * @modifies {gpsFile}
+   * @modifies {dustrakFile}
+   * @modifies {gpsFileUrl}
+   * @modifies {dustrakFileUrl}
+   * @modifies {pollutants}
    */
   const changeMapDate = async (_event, data) => {
     const rawDate = data.value;
-    // guard against double click
+    // guard against double clicks
     if (rawDate) {
       const newMapDate = moment(rawDate.toISOString());
 
@@ -150,19 +173,23 @@ export const Map = () => {
 
   /**
    * Load a new collection from the current date
-   * @param {HTMLButtonEvent} event
-   * @modifies {shouldLoadCollections}
-   * @modifies {collection}
-   * @modifies {cancelTokenSource}
+   * @param {import('./utils').Collection} collection the collection to change to
+   * @modifies {activeId}
+   * @modifies {activeStartsAt}
+   * @modifies {gpsFile}
+   * @modifies {dustrakFile}
+   * @modifies {gpsFileUrl}
+   * @modifies {dustrakFileUrl}
+   * @modifies {pollutants}
    */
-  const changeActiveCollection = (pendingCollection) => {
+  const changeActiveCollection = (collection) => {
     //guard against double click
-    if (pendingCollection.id) {
+    if (collection.id) {
       const {
         id,
         collection_files: [localGpsFile, localDustrakFile],
         starts_at,
-      } = pendingCollection;
+      } = collection;
       // setIsLoadingPollutants(true);
       setActiveId(id);
       setActiveStartsAt(starts_at);
