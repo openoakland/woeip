@@ -10,13 +10,14 @@ import { BLANK_ACTIVE_ID } from "./utils";
 
 /**
  * Menu for Dates and Collections to map
- * @property {moment} mapDate Day viewed on mapped
- * @property {Array<Collection>} collectionsOnDate Collections from the viewed day
- * @property {Collection} activeCollection collection actively viewed on map
- * @property {function} changeMapDate start the process to load collections on date
- * @property {function} changeActiveCollection start the process to load pollutants from a colletion
- * @property {string} gpsFileUrl url to a gps file
- * @property {string} dustrakFileUrl url to a dustrak file
+ * @param {moment} mapDate Day viewed on mapped
+ * @param {Array<import('./utils.js').Collection>} collectionsOnDate Collections from the viewed day
+ * @param {number} activeId id of collection actively viewed on map
+ * @param {string} activeStartsAt start time of the collection as it is stored in the database
+ * @param {function} changeMapDate start the process to load collections on date
+ * @param {function} changeActiveCollection start the process to load pollutants from a colletion
+ * @param {string} gpsFileUrl url to a gps file
+ * @param {string} dustrakFileUrl url to a dustrak file
  */
 export const MapMenu = ({
   mapDate,
@@ -66,20 +67,16 @@ export const MapMenu = ({
         </List.Item>
         <b>Start Time:</b>{" "}
         {activeStartsAt ? moment(activeStartsAt).format("h:mm A") : "None"}
-        {gpsFileUrl ? (
+        {gpsFileUrl &&
           <List.Item as="a" href={gpsFileUrl}>
             Download GPS File
           </List.Item>
-        ) : (
-          <List.Item>No GPS File</List.Item>
-        )}
-        {dustrakFileUrl ? (
+        }
+        {dustrakFileUrl && 
           <List.Item as="a" href={dustrakFileUrl}>
             Download DusTrak File
           </List.Item>
-        ) : (
-          <List.Item>No Dustrak File</List.Item>
-        )}
+        }
       </List>
       <h4>Other Collections from this day:</h4>
       <List>

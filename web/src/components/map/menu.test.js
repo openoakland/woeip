@@ -25,8 +25,8 @@ describe("MapMenu", () => {
   it("should render the default map menu, with no collections", () => {
     renderMapMenu({ mapDate });
     expect(screen.getByText(mapDate.format("LL"))).toBeInTheDocument();
-    expect(screen.getByText("No GPS File")).toBeInTheDocument();
-    expect(screen.getByText("No Dustrak File")).toBeInTheDocument();
+    expect(screen.queryByText(/Download GPS File/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Download Dustrak File/)).not.toBeInTheDocument();
     expect(screen.getByText("Session:").closest("div")).toHaveTextContent(
       "None"
     );
