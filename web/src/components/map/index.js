@@ -34,8 +34,10 @@ export const Map = () => {
   const [collectionsOnDate, setCollectionsOnDate] = useState([]);
   const [activeId, setActiveId] = useState(BLANK_ACTIVE_ID);
   const [activeStartsAt, setActiveStartsAt] = useState(BLANK_ACTIVE_STARTS_AT);
-  const [gpsFile, setGpsFile] = useState("");
+  // the database endpoint for file metadata
+  const [gpsFile, setGpsFile] = useState(""); 
   const [dustrakFile, setDustrakFile] = useState("");
+  // the direct download link for the file itself
   const [gpsFileUrl, setGpsFileUrl] = useState("");
   const [dustrakFileUrl, setDustrakFileUrl] = useState("");
   const [pollutants, setPollutants] = useState([]);
@@ -68,7 +70,6 @@ export const Map = () => {
         } = getFirstCollection(localCollectionsOnDate);
         setActiveId(id);
         setActiveStartsAt(starts_at);
-        // if (id !== BLANK_ACTIVE_ID) setIsLoadingPollutants(true);
         if (localGpsFile && localDustrakFile) {
           setGpsFile(localGpsFile);
           setDustrakFile(localDustrakFile);
@@ -190,7 +191,6 @@ export const Map = () => {
         collection_files: [localGpsFile, localDustrakFile],
         starts_at,
       } = collection;
-      // setIsLoadingPollutants(true);
       setActiveId(id);
       setActiveStartsAt(starts_at);
 
