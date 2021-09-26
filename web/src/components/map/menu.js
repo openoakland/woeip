@@ -101,7 +101,13 @@ export const MapMenu = ({
 
 MapMenu.propTypes = {
   mapDate: PropTypes.object,
-  collectionsOnDate: PropTypes.array,
+  collectionsOnDate: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string,
+      collection_files: PropTypes.arrayOf(PropTypes.string),
+      starts_at: PropTypes.string,
+    })
+  ),
   activeId: PropTypes.number,
   activeStartsAt: PropTypes.string,
   changeMapDate: PropTypes.func,

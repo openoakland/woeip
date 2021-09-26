@@ -320,10 +320,12 @@ describe("get the code associated with a thrown value on api call", () => {
     let thrownCode;
     const source = axios.CancelToken.source();
     source.cancel();
-    server.use(rest.get('/'), (req, res, ctx) => { return res(ctx.status(200))});
+    server.use(rest.get("/"), (req, res, ctx) => {
+      return res(ctx.status(200));
+    });
     try {
-      await axios.get('/', {cancelToken: source.token})
-    } catch(thrown) {
+      await axios.get("/", { cancelToken: source.token });
+    } catch (thrown) {
       thrownCode = getThrownCode(thrown);
     }
     expect(thrownCode).toEqual(THROWN_CODE.CANCELED);
@@ -331,9 +333,9 @@ describe("get the code associated with a thrown value on api call", () => {
 
   it("should return a 'failed' code when unrelated to canceling", () => {
     let thrownCode;
-    try{
+    try {
       throw new Error("failed");
-    } catch(thrown){
+    } catch (thrown) {
       thrownCode = getThrownCode(thrown);
     }
     expect(thrownCode).toEqual(THROWN_CODE.FAILED);
