@@ -4,6 +4,7 @@
   "description": "West Oakland Air Quality Project (WOAQ)",
   "scripts": {
     "dev:api": "docker-compose up -d --build",
+    "dev:frontend": "(cd web) && npm start",
     "api": "run-s -l build:api",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
