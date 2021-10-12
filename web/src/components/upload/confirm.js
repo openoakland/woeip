@@ -23,7 +23,7 @@ import { apiUrlCollections } from "../../api.util";
 /**
  * Allow the user to view data about their files
  * The may choose whether to proceed with saving their files on the server
- * @property {Object} device device Meta-data for the device 
+ * @property {Object} device device Meta-data for the device
  * @property {Array<FileWithPath} files GPS and Dustrak Pair, validated during drop phase
  * @property {Moment} dustrakStart Reference point to when the data collection session started
  * @property {Moment} dustrakEnd Reference point to when the data collection session ended
@@ -82,7 +82,11 @@ export const UploadConfirm = ({
           if (axios.isCancel(thrown)) {
             alert("Canceled request to save uploads");
           } else {
-            alert("Failed to save uploads");
+            if (thrown.response) {
+              alert(`Failed to save uploads: ${thrown.response.data}`);
+            } else {
+              alert("Failed to save uploads");
+            }
           }
         }
         setIsSaving(false);
@@ -155,7 +159,7 @@ export const UploadConfirm = ({
               disabled
               name="device"
               id="device"
-              value={device.name || 'unknown'}
+              value={device.name || "unknown"}
             ></Input>
           </List.Item>
           <List.Item as="label" htmlFor="device">

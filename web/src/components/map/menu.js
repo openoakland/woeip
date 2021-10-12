@@ -89,11 +89,12 @@ export const MapMenu = ({
           <List.Item>None</List.Item>
         )}
       </List>
-      {!collectionsOnDate.length && 
+      {!collectionsOnDate.length && (
         <WarningMessage>
-          We haven't collected data for this time period. Please select another date.
+          We haven't collected data for this time period. Please select another
+          date.
         </WarningMessage>
-      }
+      )}
     </Container>
   );
 };

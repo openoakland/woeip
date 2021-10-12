@@ -1,4 +1,9 @@
-import { apiUrl, apiUrlCollections, apiUrlCollectionById, apiUrlDevices } from "./api.util";
+import {
+  apiUrl,
+  apiUrlCollections,
+  apiUrlCollectionById,
+  apiUrlDevices,
+} from "./api.util";
 
 it("should create the base api url with an endpoint", () => {
   expect(apiUrl("path")).toEqual("http://api.lvh.me/path");

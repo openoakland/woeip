@@ -1,5 +1,6 @@
 # pylint: disable=abstract-method
 import os
+import hashlib
 from django.core.files.base import ContentFile
 from rest_framework import serializers, exceptions
 from woeip.apps.air_quality.dustrak import (
@@ -12,10 +13,12 @@ from woeip.apps.air_quality.models import Calibration
 from woeip.apps.air_quality.models import Collection
 from woeip.apps.air_quality.models import CollectionFile
 from woeip.apps.air_quality.models import Device
+from woeip.apps.air_quality.models import FileHash
 from woeip.apps.air_quality.models import Pollutant
 from woeip.apps.air_quality.models import PollutantValue
 from woeip.apps.air_quality.models import Sensor
 from woeip.apps.air_quality.models import TimeGeo
+
 
 
 class CalibrationSerializer(serializers.HyperlinkedModelSerializer):
@@ -42,6 +45,12 @@ class DeviceSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Device
         fields = ["id", "name", "serial", "firmware"]
+
+
+class FileHashSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = FileHash
+        fields = ["collection", "hash"]
 
 
 class PollutantSerializer(serializers.HyperlinkedModelSerializer):
@@ -121,6 +130,20 @@ class CollectionSerializer(serializers.HyperlinkedModelSerializer):
             starts_at=validated_data.get("starts_at"),
             ends_at=validated_data.get("ends_at"),
         )
+
+        # Create file hash, check if hash already exists.
+        dustrak_upload_hash = hashlib.md5(dustrak_upload_file.read()).hexdigest()
+        if FileHash.objects.filter(hash=dustrak_upload_hash).exists(): #If hash exists, stop file upload.
+            missing_file_errors.append(
+                "Dustrak file already in database"
+            )
+            raise exceptions.ValidationError(detail=missing_file_errors)
+        else: # If hash doesn't exist, save hash.
+            file_hash = FileHash.objects.create(
+                collection=collection,
+                hash=dustrak_upload_hash,
+            )
+            file_hash.save()
 
         ## Create Collection, safe files, read into dataframe ##
 
