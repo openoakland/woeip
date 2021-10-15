@@ -3,10 +3,14 @@
   "version": "1.0.0",
   "description": "West Oakland Air Quality Project (WOAQ)",
   "scripts": {
+    "dev": "run-p -l dev:*",
     "dev:api": "docker-compose up -d --build",
     "dev:frontend": "(cd web) && npm start",
+    "test:api": "node ./testApi.js",
+    "test:frontend": "(cd web) && npm run test",
     "api": "run-s -l build:api",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npm run dev:api && run-s -l test:*",
+    "postinstall": "(cd web) && npm install"
   },
   "repository": {
     "type": "git",

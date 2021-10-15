@@ -36,7 +36,7 @@
       "prettier/prettier": "warn"
     }
   },
-  "eslintIgnore":[
+  "eslintIgnore": [
     "build"
   ],
   "browserslist": {
