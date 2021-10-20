@@ -12,7 +12,7 @@ export const About = () => (
       For example, "class" (https://www.w3schools.com/html/html_classes.asp) becomes "className" ("https://developer.mozilla.org/en-US/docs/Web/API/Element/className")
       Meanwhile, "for" (https://www.w3schools.com/html/html_form_attributes_form.asp) becomes ("https://developer.mozilla.org/en-US/docs/Web/API/HTMLLabelElement/htmlFor")
       */}
-    <div class="ui container">
+    <div class="ui container about-container">
 
     <h2 className="ui header">About WOAQ</h2>
 
@@ -31,8 +31,6 @@ export const About = () => (
 
     <p>WOAQ is the result of years of hard work and contributions by many, many people. We’re thankful for and inspired by those who have contributed both directly and indirectly  through code, design, expertise, research, and advocacy. We’re especially grateful for the many WOEIP volunteers who spent hours collecting air quality data in West Oakland.</p>
 
-    </div>
-
     <div class="ui grid container">
 
     <div class="three wide column">
@@ -41,7 +39,6 @@ export const About = () => (
         <div class="item">Brian Beveridge</div>
         <div class="item">Angela Kwon</div>
         <div class="item">Tim Miller</div>
-        <div class="item">Jonathan Mitchell</div>
         <div class="item">Jess Sand</div>
         <div class="item">Niels Thorsen</div>
         <div class="item">Alana Tran</div>
@@ -62,6 +59,7 @@ export const About = () => (
         <div class="item">Attila Kovács</div>
         <div class="item">Joshua Ling</div>
         <div class="item">Kimberly Low</div>
+        <div class="item">Jonathan Mitchell</div>
         <div class="item">Luke Travis</div>
         <div class="item">Jay Qi</div>
         <div class="item">Robert Soden</div>
@@ -80,6 +78,8 @@ export const About = () => (
     </div>
 
     </div>
+    </div>
+
 
     {/* Made the color red in the "./index.css" file, just to show how it's all linked up */}
   </Container>
