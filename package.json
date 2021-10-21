@@ -6,7 +6,7 @@
     "dev": "run-p -l dev:*",
     "dev:api": "docker-compose up -d --build",
     "dev:frontend": "(cd web) && npm start",
-    "test:api": "node ./testApi.js",
+    "test:api": "node ./config/dockerTests.js",
     "test:frontend": "(cd web) && npm run test",
     "api": "run-s -l build:api",
     "test": "npm run dev:api && run-s -l test:*",
