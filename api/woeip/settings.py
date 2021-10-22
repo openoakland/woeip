@@ -38,9 +38,20 @@ THIRD_PARTY_APPS = [
     "storages",
     "drf_yasg",
     "djoser",
+    "corsheaders"
 ]
 
 LOCAL_APPS = ["woeip.apps.core", "woeip.apps.air_quality"]
+
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_WHITELIST = (
+    'http://lvh.me',
+)
+CORS_ALLOWED_ORIGINS = [
+"https://lvh.me",
+"https://lvh.me",
+]
+ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
@@ -72,6 +83,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django.contrib.flatpages.middleware.FlatpageFallbackMiddleware",
     "corsheaders.middleware.CorsMiddleware",
+    'django.middleware.common.CommonMiddleware',
 ]
 
 ROOT_URLCONF = "woeip.urls"

@@ -59,7 +59,7 @@ export const login = async (email, password) => {
     if (res && res.data && res.data.access) {
       setAccessTokenOnSuccess(res.data.access);
     }
-    // loadUser();
+    loadUser();
   } catch (err) {
     console.error("Logging-in was unsuccessful", err);
     setTokensOnFailure();
