@@ -57,13 +57,13 @@ export const CalendarInput = ({ ...props }) => (
   <Input icon="calendar outline" {...props} />
 );
 
-export const DefaultInput = ({ ...props }) => (
-  <Input type="text" {...props} />
-);
+export const DefaultInput = ({ ...props }) => <Input type="text" {...props} />;
 
 export const SuccessMessage = ({ ...props }) => <Message success {...props} />;
 
 export const WarningMessage = ({ ...props }) => <Message warning {...props} />;
+
+export const ErrorMessage = ({ ...props }) => <Message negative {...props} />;
 
 export const DismissableMessage = ({ ...props }) => {
   const [visible, setVisible] = useState(true);
