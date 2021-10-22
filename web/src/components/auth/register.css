@@ -1,0 +1,11 @@
+.register-container {
+  width: 40%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+a.login-link {
+  text-decoration: underline;
+  color: #353535;
+  font-weight: 500;
+}
