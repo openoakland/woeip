@@ -34,4 +34,34 @@ export const apiUrlCollectionById = (collectionId) =>
  * Constructs the api endpoint for all devices
  * @returns {string}
  */
- export const apiUrlDevices = () => apiUrl("devices");
+export const apiUrlDevices = () => apiUrl("devices");
+
+/**
+ * Constructs the api endpoint that takes a set of user credentials and returns an access and refresh JSON web token pair to prove the authentication of those credentials.
+ * @returns {string}
+ */
+export const apiUrlCreateJWTToken = () => apiUrl("auth/jwt/create");
+
+/**
+ * Constructs the api endpoint that registers a user
+ * @returns {string}
+ */
+export const apiUrlRegister = () => apiUrl("auth/users");
+
+/**
+ * Constructs the api endpoint that loads a user
+ * @returns {string}
+ */
+export const apiUrlLoadUser = () => apiUrl("auth/users/me");
+
+/**
+ * Constructs the api endpoint that verifies token
+ * @returns {string}
+ */
+export const apiUrlVerifyToken = () => apiUrl("auth/jwt/verify");
+
+/**
+ * Constructs the api endpoint that verifies user activation
+ * @returns {string}
+ */
+export const apiUrlVerifyActivation = () => apiUrl("auth/users/activation");
