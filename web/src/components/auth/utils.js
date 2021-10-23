@@ -49,11 +49,8 @@ const setTokensOnFailure = () => {
 export const login = async (email, password) => {
   const options = {
     headers: {
-      "Access-Control-Allow-Origin": "true",
-      "Content-Type": "application/x-www-form-urlencoded",
+      "Content-Type": "application/json",
     },
-    url: "http://api.lvh.me/auth/jwt/create",
-
   };
   const body = JSON.stringify({ email, password });
 
