@@ -43,15 +43,18 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = ["woeip.apps.core", "woeip.apps.air_quality"]
 
-CORS_ORIGIN_ALLOW_ALL = True
-CORS_ORIGIN_WHITELIST = (
-    'http://lvh.me',
-)
-CORS_ALLOWED_ORIGINS = [
-"https://lvh.me",
-"https://lvh.me",
-]
-ALLOWED_HOSTS = ['*']
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
+
+# CORS_ALLOWED_ORIGINS = [
+# "https://lvh.me",
+# "https://api.lvh.me",
+# ]
+
+# CSRF_TRUSTED_ORIGINS = [
+#     "https://lvh.me",
+#     "https://api.lvh.me",
+# ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
