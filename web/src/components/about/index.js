@@ -12,7 +12,7 @@ export const About = () => (
       For example, "class" (https://www.w3schools.com/html/html_classes.asp) becomes "className" ("https://developer.mozilla.org/en-US/docs/Web/API/Element/className")
       Meanwhile, "for" (https://www.w3schools.com/html/html_form_attributes_form.asp) becomes ("https://developer.mozilla.org/en-US/docs/Web/API/HTMLLabelElement/htmlFor")
       */}
-    <div class="ui container about-container">
+    <div className="ui container about-container">
 
     <h2 className="ui header">About WOAQ</h2>
 
@@ -31,56 +31,53 @@ export const About = () => (
 
     <p>WOAQ is the result of years of hard work and contributions by many, many people. We’re thankful for and inspired by those who have contributed both directly and indirectly  through code, design, expertise, research, and advocacy. We’re especially grateful for the many WOEIP volunteers who spent hours collecting air quality data in West Oakland.</p>
 
-    <div class="ui grid container">
+    <div className="ui grid container">
 
-    <div class="three wide column">
+    <div className="three wide column">
       <h4 className="ui header">Core team</h4>
-      <div class="ui bulleted list">
-        <div class="item">Brian Beveridge</div>
-        <div class="item">Angela Kwon</div>
-        <div class="item">Tim Miller</div>
-        <div class="item">Jess Sand</div>
-        <div class="item">Niels Thorsen</div>
-        <div class="item">Alana Tran</div>
-        <div class="item">Wendy Wu</div>
+      <div className="ui bulleted list">
+        <div className="item">Brian Beveridge</div>
+        <div className="item">Angela Kwon</div>
+        <div className="item">Tim Miller</div>
+        <div className="item">Jess Sand</div>
+        <div className="item">Niels Thorsen</div>
+        <div className="item">Alana Tran</div>
+        <div className="item">Wendy Wu</div>
       </div>
     </div>
 
-    <div class="three wide column">
+    <div className="three wide column">
       <h4 className="ui header">Additional contributors</h4>
-      <div class="ui bulleted list">
-        <div class="item">Ife Ajiboye</div>
-        <div class="item">Natalia Bilenko</div>
-        <div class="item">Clinton Blackburn</div>
-        <div class="item">Ethan Bradley</div>
-        <div class="item">Robert Gibboni</div>
-        <div class="item">Kabirdas Henry</div>
-        <div class="item">Brooks Jessup</div>
-        <div class="item">Attila Kovács</div>
-        <div class="item">Joshua Ling</div>
-        <div class="item">Kimberly Low</div>
-        <div class="item">Jonathan Mitchell</div>
-        <div class="item">Luke Travis</div>
-        <div class="item">Jay Qi</div>
-        <div class="item">Robert Soden</div>
-        <div class="item">Ki Song</div>
+      <div className="ui bulleted list">
+        <div className="item">Ife Ajiboye</div>
+        <div className="item">Natalia Bilenko</div>
+        <div className="item">Clinton Blackburn</div>
+        <div className="item">Ethan Bradley</div>
+        <div className="item">Robert Gibboni</div>
+        <div className="item">Kabirdas Henry</div>
+        <div className="item">Brooks Jessup</div>
+        <div className="item">Attila Kovács</div>
+        <div className="item">Joshua Ling</div>
+        <div className="item">Kimberly Low</div>
+        <div className="item">Jonathan Mitchell</div>
+        <div className="item">Luke Travis</div>
+        <div className="item">Jay Qi</div>
+        <div className="item">Robert Soden</div>
+        <div className="item">Ki Song</div>
       </div>
     </div>
 
-    <div class="three wide column">
+    <div className="three wide column">
       <h4 className="ui header">Foundational inspiration and expertise</h4>
-      <div class="ui bulleted list">
-        <div class="item">Ms. Margaret Gordon and Brian Beveridge</div>
-        <div class="item">The INTEL and UCB development team</div>
-        <div class="item">The many students, residents, and other volunteers who took to the streets to collect air quality data over the years</div>
-        <div class="item">The civil servants and experts at BAAQMD, CARB, and the City of Oakland who continue to move the <i><a href="https://woeip.org/featured-work/owning-our-air/">Owning Our Air</a></i> initiative forward</div>
+      <div className="ui bulleted list">
+        <div className="item">Ms. Margaret Gordon and Brian Beveridge</div>
+        <div className="item">The INTEL and UCB development team</div>
+        <div className="item">The many students, residents, and other volunteers who took to the streets to collect air quality data over the years</div>
+        <div className="item">The civil servants and experts at BAAQMD, CARB, and the City of Oakland who continue to move the <i><a href="https://woeip.org/featured-work/owning-our-air/">Owning Our Air</a></i> initiative forward</div>
       </div>
     </div>
 
     </div>
     </div>
-
-
-    {/* Made the color red in the "./index.css" file, just to show how it's all linked up */}
   </Container>
 );
