@@ -23,6 +23,14 @@ import { apiUrlCollectionById, apiUrlCollections } from "../../api.util";
  */
 
 /**
+ * Shape of the pollutant as the map markers want to consume it
+ * @typedef PollutantDisplay
+ * @property {number} latitude
+ * @property {number} longitude
+ * @property {string} category
+ */
+
+/**
  * Meta-data for a collection
  * @typedef Collection
  * @property {number} id
@@ -79,9 +87,83 @@ export const getPollutantsByCollectionId = async (
   }
 };
 
+export const PM25_CATEGORIES = {
+  GOOD: "good",
+  MODERATE: "moderate",
+  UNHEALTHY_SENSITIVE: "unhealthy-sensitive",
+  UNHEALTHY: "unhealthy",
+  VERY_UNHEALTHY: "very-unhealthy",
+  HAZARDOUS: "hazardous",
+};
+
+/**
+ * find the health category of the pollutant based on its value
+ * @param {number} value
+ * @returns {string}
+ */
+export const categorizePollutant = (value) => {
+  // 0.000 <= value <= 0.012 good
+  if (value <= 0.012) return PM25_CATEGORIES.GOOD;
+  // 0.012 < value <= 0.035 moderate
+  if (value <= 0.035) return PM25_CATEGORIES.MODERATE;
+  // 0.035 < value <= 0.055 unhealthy-sensitive
+  if (value <= 0.055) return PM25_CATEGORIES.UNHEALTHY_SENSITIVE;
+  // 0.055 < value <= 0.150 unhealthy
+  if (value <= 0.15) return PM25_CATEGORIES.UNHEALTHY;
+  // 0.150 < value <= 0.250 very-unhealthy
+  if (value <= 0.25) return PM25_CATEGORIES.VERY_UNHEALTHY;
+  // 0.250 < value hazardous
+  return PM25_CATEGORIES.HAZARDOUS;
+};
+
+/**
+ *
+ * @param {*} pollutants
+ * @returns
+ */
+export const formatPollutants = (pollutants) =>
+  pollutants.map((pollutant) => {
+    return {
+      longitude: pollutant.longitude,
+      latitude: pollutant.latitude,
+      category: categorizePollutant(pollutant.value),
+    };
+  });
+
+/** For all readings taken at the same location,
+ * keep the highest value and discard the rest.
+ * @param {Array<Pollutant>}
+ * @returns {Array<Pollutant>}
+ */
+export const mergePollutants = (pollutants) => {
+  const seenPollutants = {};
+  pollutants.forEach((pollutant) => {
+    const locationKey = `${pollutant.latitude},${pollutant.longitude}`;
+    const higherPollutant = comparePollutantValues(
+      seenPollutants[locationKey],
+      pollutant
+    );
+    seenPollutants[locationKey] = higherPollutant;
+  });
+  return Object.values(seenPollutants);
+};
+
+/**
+ * Find the highest of two pollutant values, with the previous value possibly undefined
+ * @param {Pollutant | undefined} seenPollutant
+ * @param {Pollutant} currentPollutant
+ * @returns {Pollutant}
+ */
+export const comparePollutantValues = (seenPollutant, currentPollutant) => {
+  if (!seenPollutant) return currentPollutant;
+  const maxValue = Math.max(seenPollutant.value, currentPollutant.value);
+  return maxValue === currentPollutant.value ? currentPollutant : seenPollutant;
+};
+
 /**
  * Extract and parse the pollutant values, or return an empty array
  * @param {Array<PollutantValue>} pollutantValueData
+ * @returns {Array<Pollutant>}
  */
 export const parsePollutants = (pollutantValueData) =>
   pollutantValueData?.pollutant_values?.map(parsePollutant) || [];

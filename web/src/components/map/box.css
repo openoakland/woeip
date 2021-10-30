@@ -5,10 +5,34 @@
 }
 
 .circle-marker {
-    height: 0.1rem;
-    width: 0.1rem;
-    background-color: #f00;
+    height: 0.25rem;
+    width: 0.25rem;
+    background-color: #000;
     border-radius: 50%;
+}
+
+.circle-marker.good {
+    background-color: green;
+}
+
+.circle-marker.moderate {
+    background-color: yellow;
+}
+
+.circle-marker.unhealthy-sensitive {
+    background-color: orange;
+}
+
+.circle-marker.unhealthy {
+    background-color: red;
+}
+
+.circle-marker.very-unhealthy {
+    background-color: purple;
+}
+
+.circle-marker.hazardous {
+    background-color: maroon;
 }
 
 .navigation-control {

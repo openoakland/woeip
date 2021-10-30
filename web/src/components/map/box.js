@@ -34,8 +34,13 @@ export const MapBox = ({ isLoading, pollutants }) => {
    * For each pollutant, create a "marker" component at its lat and long
    * Use css to give each pollutant its appearance
    */
-  const markers = pollutants.map((coordinates, index) => (
-    <Marker key={index} {...coordinates} className="circle-marker" />
+  const markers = pollutants.map((pollutant, index) => (
+    <Marker
+      key={index}
+      latitude={pollutant.latitude}
+      longitude={pollutant.longitude}
+      className={`circle-marker ${pollutant.category}`}
+    />
   ));
 
   return (

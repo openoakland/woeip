@@ -15,6 +15,8 @@ import {
   getCollectionFileByLink,
   BLANK_ACTIVE_STARTS_AT,
   THROWN_CODE,
+  mergePollutants,
+  formatPollutants,
 } from "./utils";
 
 import { emptyProtocol } from "../../api.util";
@@ -96,8 +98,12 @@ export const Map = () => {
           pollutants: rawPollutants,
           thrownCode,
         } = await getPollutantsByCollectionId(activeId, source);
-        if (thrownCode === THROWN_CODE.NONE)
-          setPollutants(parsePollutants(rawPollutants));
+        if (thrownCode === THROWN_CODE.NONE) {
+          const parsed = parsePollutants(rawPollutants);
+          const merged = mergePollutants(parsed);
+          const formatted = formatPollutants(merged);
+          setPollutants(formatted);
+        }
         if (thrownCode !== THROWN_CODE.CANCELED) setIsLoadingPollutants(false);
       } else {
         setIsLoadingPollutants(false);
