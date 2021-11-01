@@ -30,7 +30,7 @@ const pollutantLayer = {
     "circle-radius": 2,
     "circle-color": [
       "step",
-      ["get", "reading"],
+      ["get", "value"],
       PM25_CATEGORY_COLORS.GOOD,
       0.012,
       PM25_CATEGORY_COLORS.MODERATE,
@@ -98,7 +98,7 @@ MapBox.protoTypes = {
     features: PropTypes.arrayOf(
       PropTypes.shape({
         type: PropTypes.oneOf(["Feature"]),
-        properties: PropTypes.shape({ reading: PropTypes.number }),
+        properties: PropTypes.shape({ value: PropTypes.number }),
         geometry: PropTypes.shape({
           type: PropTypes.oneOf(["Point"]),
           coordinates: PropTypes.arrayOf(PropTypes.number),

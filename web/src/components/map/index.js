@@ -17,6 +17,7 @@ import {
   THROWN_CODE,
   mergePollutants,
   spatializePollutants,
+  EMPTY_POLLUTANTS,
 } from "./utils";
 
 import { emptyProtocol } from "../../api.util";
@@ -42,7 +43,7 @@ export const Map = () => {
   // the direct download link for the file itself
   const [gpsFileUrl, setGpsFileUrl] = useState("");
   const [dustrakFileUrl, setDustrakFileUrl] = useState("");
-  const [pollutants, setPollutants] = useState({});
+  const [pollutants, setPollutants] = useState(EMPTY_POLLUTANTS);
   const [isLoadingPollutants, setIsLoadingPollutants] = useState(false);
 
   /**
@@ -174,7 +175,7 @@ export const Map = () => {
       setGpsFileUrl("");
       setDustrakFileUrl("");
 
-      setPollutants({});
+      setPollutants(EMPTY_POLLUTANTS);
     }
   };
 
@@ -205,7 +206,7 @@ export const Map = () => {
       setGpsFileUrl("");
       setDustrakFileUrl("");
 
-      setPollutants({});
+      setPollutants(EMPTY_POLLUTANTS);
     }
   };
 

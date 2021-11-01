@@ -52,6 +52,11 @@ import { apiUrlCollectionById, apiUrlCollections } from "../../api.util";
  * @property {string} file
  */
 
+export const EMPTY_POLLUTANTS = {
+  type: "FeatureCollection",
+  features: []
+};
+
 export const BLANK_ACTIVE_ID = -1;
 export const BLANK_ACTIVE_STARTS_AT = "";
 export const BLANK_ACTIVE_COLLECTION = {
@@ -107,7 +112,7 @@ export const spatializePollutants = (pollutants) => {
     features: pollutants.map((pollutant) => {
       return {
         type: "Feature",
-        properties: { reading: pollutant.value },
+        properties: { value: pollutant.value },
         geometry: {
           type: "Point",
           coordinates: [pollutant.longitude, pollutant.latitude],
