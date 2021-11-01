@@ -23,6 +23,22 @@ import { apiUrlCollectionById, apiUrlCollections } from "../../api.util";
  */
 
 /**
+ * Shape of pollutants in geojson format
+ * @typedef SpatialPollutants
+ * @property {string} type 
+ * @property {Array<{
+ *  type: string,
+ *  properties: {
+ *    reading: number,  
+ *  }
+ *  geometry: {
+ *    type: string,
+ *    coordinates: Array<number>
+ *  }
+ * }>} features
+ */
+
+/**
  * Meta-data for a collection
  * @typedef Collection
  * @property {number} id
@@ -79,41 +95,13 @@ export const getPollutantsByCollectionId = async (
   }
 };
 
-export const PM25_CATEGORIES = {
-  GOOD: "good",
-  MODERATE: "moderate",
-  UNHEALTHY_SENSITIVE: "unhealthy-sensitive",
-  UNHEALTHY: "unhealthy",
-  VERY_UNHEALTHY: "very-unhealthy",
-  HAZARDOUS: "hazardous",
-};
-
 /**
- * find the health category of the pollutant based on its value
- * @param {number} value
- * @returns {string}
+ * Create a geojson object for pollutants
+ * Change "value" to "reading" as "value" does not register with mapbox
+ * @param {Array<Pollutant>} pollutants
+ * @returns {SpatialPollutants}
  */
-export const categorizePollutant = (value) => {
-  // 0.000 <= value <= 0.012 good
-  if (value <= 0.012) return PM25_CATEGORIES.GOOD;
-  // 0.012 < value <= 0.035 moderate
-  if (value <= 0.035) return PM25_CATEGORIES.MODERATE;
-  // 0.035 < value <= 0.055 unhealthy-sensitive
-  if (value <= 0.055) return PM25_CATEGORIES.UNHEALTHY_SENSITIVE;
-  // 0.055 < value <= 0.150 unhealthy
-  if (value <= 0.15) return PM25_CATEGORIES.UNHEALTHY;
-  // 0.150 < value <= 0.250 very-unhealthy
-  if (value <= 0.25) return PM25_CATEGORIES.VERY_UNHEALTHY;
-  // 0.250 < value hazardous
-  return PM25_CATEGORIES.HAZARDOUS;
-};
-
-/**
- *
- * @param {*} pollutants
- * @returns
- */
-export const formatPollutants = (pollutants) => {
+export const spatializePollutants = (pollutants) => {
   return {
     type: "FeatureCollection",
     features: pollutants.map((pollutant) => {
@@ -129,13 +117,6 @@ export const formatPollutants = (pollutants) => {
   };
 };
 
-// pollutants.map((pollutant) => {
-//   return {
-//     longitude: pollutant.longitude,
-//     latitude: pollutant.latitude,
-//     value: pollutant.value,
-//   };
-// });
 
 /** For all readings taken at the same location,
  * keep the highest value and discard the rest.

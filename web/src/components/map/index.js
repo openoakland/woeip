@@ -16,7 +16,7 @@ import {
   BLANK_ACTIVE_STARTS_AT,
   THROWN_CODE,
   mergePollutants,
-  formatPollutants,
+  spatializePollutants,
 } from "./utils";
 
 import { emptyProtocol } from "../../api.util";
@@ -101,8 +101,8 @@ export const Map = () => {
         if (thrownCode === THROWN_CODE.NONE) {
           const parsed = parsePollutants(rawPollutants);
           const merged = mergePollutants(parsed);
-          const formatted = formatPollutants(merged);
-          setPollutants(formatted);
+          const spatialized = spatializePollutants(merged);
+          setPollutants(spatialized);
         }
         if (thrownCode !== THROWN_CODE.CANCELED) setIsLoadingPollutants(false);
       } else {
