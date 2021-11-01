@@ -3,12 +3,40 @@ import { PropTypes } from "prop-types";
 import { Dimmer, Loader, Container } from "../ui";
 import "./box.css";
 
-import ReactMapGL, { Marker, NavigationControl } from "react-map-gl";
+import ReactMapGL, {
+  Layer,
+  Marker,
+  NavigationControl,
+  Source,
+} from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 // Hack: https://github.com/mapbox/mapbox-gl-js/issues/10173#issuecomment-753662795
 import mapboxgl from "mapbox-gl";
 // eslint-disable-next-line import/no-webpack-loader-syntax
 mapboxgl.workerClass = require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
+
+const layerStyle = {
+  id: "point",
+  type: "circle",
+  paint: {
+    "circle-radius": 3,
+    "circle-color": [
+      "step",
+      ["get", "reading"],
+      "#00E400",
+      0.012,
+      "#FFFF00",
+      0.035,
+      "#FF7E00",
+      0.055,
+      "#FF0000",
+      0.15,
+      "#8F3F97",
+      0.25,
+      "#7E0023",
+    ],
+  },
+};
 
 /**
  * The map itself
@@ -29,19 +57,7 @@ export const MapBox = ({ isLoading, pollutants }) => {
   };
 
   const [viewport, setViewport] = useState(initialViewport);
-
-  /**
-   * For each pollutant, create a "marker" component at its lat and long
-   * Use css to give each pollutant its appearance
-   */
-  const markers = pollutants.map((pollutant, index) => (
-    <Marker
-      key={index}
-      latitude={pollutant.latitude}
-      longitude={pollutant.longitude}
-      className={`circle-marker ${pollutant.category}`}
-    />
-  ));
+  console.log(pollutants);
 
   return (
     <Container className="map-view-container">
@@ -60,7 +76,9 @@ export const MapBox = ({ isLoading, pollutants }) => {
           showCompass={false}
           className={"navigation-control"}
         />
-        {markers}
+        <Source id="pollutant-values" type="geojson" data={pollutants}>
+          <Layer {...layerStyle} />
+        </Source>
       </ReactMapGL>
     </Container>
   );
@@ -68,5 +86,17 @@ export const MapBox = ({ isLoading, pollutants }) => {
 
 MapBox.protoTypes = {
   isLoading: PropTypes.bool,
-  pollutants: PropTypes.array,
+  pollutants: PropTypes.shape({
+    type: PropTypes.oneOf(["FeatureCollection"]),
+    features: PropTypes.arrayOf(
+      PropTypes.shape({
+        type: PropTypes.oneOf(["Feature"]),
+        properties: PropTypes.shape({ reading: PropTypes.number }),
+        geometry: PropTypes.shape({
+          type: PropTypes.oneOf("Point"),
+          coordinates: PropTypes.arrayOf(PropTypes.number),
+        }),
+      })
+    ),
+  }),
 };

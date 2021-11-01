@@ -42,7 +42,7 @@ export const Map = () => {
   // the direct download link for the file itself
   const [gpsFileUrl, setGpsFileUrl] = useState("");
   const [dustrakFileUrl, setDustrakFileUrl] = useState("");
-  const [pollutants, setPollutants] = useState([]);
+  const [pollutants, setPollutants] = useState({});
   const [isLoadingPollutants, setIsLoadingPollutants] = useState(false);
 
   /**
@@ -174,7 +174,7 @@ export const Map = () => {
       setGpsFileUrl("");
       setDustrakFileUrl("");
 
-      setPollutants([]);
+      setPollutants({});
     }
   };
 
@@ -205,7 +205,7 @@ export const Map = () => {
       setGpsFileUrl("");
       setDustrakFileUrl("");
 
-      setPollutants([]);
+      setPollutants({});
     }
   };
 

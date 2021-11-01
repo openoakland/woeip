@@ -23,14 +23,6 @@ import { apiUrlCollectionById, apiUrlCollections } from "../../api.util";
  */
 
 /**
- * Shape of the pollutant as the map markers want to consume it
- * @typedef PollutantDisplay
- * @property {number} latitude
- * @property {number} longitude
- * @property {string} category
- */
-
-/**
  * Meta-data for a collection
  * @typedef Collection
  * @property {number} id
@@ -121,14 +113,29 @@ export const categorizePollutant = (value) => {
  * @param {*} pollutants
  * @returns
  */
-export const formatPollutants = (pollutants) =>
-  pollutants.map((pollutant) => {
-    return {
-      longitude: pollutant.longitude,
-      latitude: pollutant.latitude,
-      category: categorizePollutant(pollutant.value),
-    };
-  });
+export const formatPollutants = (pollutants) => {
+  return {
+    type: "FeatureCollection",
+    features: pollutants.map((pollutant) => {
+      return {
+        type: "Feature",
+        properties: { reading: pollutant.value },
+        geometry: {
+          type: "Point",
+          coordinates: [pollutant.longitude, pollutant.latitude],
+        },
+      };
+    }),
+  };
+};
+
+// pollutants.map((pollutant) => {
+//   return {
+//     longitude: pollutant.longitude,
+//     latitude: pollutant.latitude,
+//     value: pollutant.value,
+//   };
+// });
 
 /** For all readings taken at the same location,
  * keep the highest value and discard the rest.
