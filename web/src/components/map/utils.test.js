@@ -395,3 +395,16 @@ describe("get first collection from a list of collections", () => {
       BLANK_ACTIVE_COLLECTION
     ));
 });
+
+describe("spatializePollutants", () => {
+  it.todo('should format the pollutant readings as into geojson')
+})
+
+describe('mergePollutants', () => {
+  it.todo('should merge pollutants at the same location, keeping the higher valued pollutant')
+})
+
+describe('comparePollutants', () => {
+  it.todo('should keep the pollutant with the higher reading');
+  it.todo('should handle when the first reading is undefined');
+})

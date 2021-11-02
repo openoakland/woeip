@@ -102,7 +102,6 @@ export const getPollutantsByCollectionId = async (
 
 /**
  * Create a geojson object for pollutants
- * Change "value" to "reading" as "value" does not register with mapbox
  * @param {Array<Pollutant>} pollutants
  * @returns {SpatialPollutants}
  */
