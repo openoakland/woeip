@@ -16,7 +16,7 @@ DEBUG = env("DEBUG")
 # NOTE: This setting assumes all requests are proxied through a web server (e.g. nginx). If that is not the case,
 # ensure this is set to a more restrictive value. See https://docs.djangoproject.com/en/2.1/ref/settings/#allowed-hosts
 # for more information.
-ALLOWED_HOSTS = ["*"]
+# ALLOWED_HOSTS = ["*"]
 
 # Application definition
 
@@ -43,19 +43,6 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = ["woeip.apps.core", "woeip.apps.air_quality"]
 
-CORS_ALLOW_ALL_ORIGINS = True
-CORS_ALLOW_CREDENTIALS = True
-
-# CORS_ALLOWED_ORIGINS = [
-# "https://lvh.me",
-# "https://api.lvh.me",
-# ]
-
-# CSRF_TRUSTED_ORIGINS = [
-#     "https://lvh.me",
-#     "https://api.lvh.me",
-# ]
-
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 DEFAULT_FILE_STORAGE = env(
@@ -77,17 +64,31 @@ if DEFAULT_FILE_STORAGE == "storages.backends.s3boto.S3BotoStorage" and (
 
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
+    "corsheaders.middleware.CorsPostCsrfMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django.contrib.flatpages.middleware.FlatpageFallbackMiddleware",
-    "corsheaders.middleware.CorsMiddleware",
-    'django.middleware.common.CommonMiddleware',
 ]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://api.lvh.me",
+    "http://lvh.me",
+]
+ALLOWED_HOSTS = [
+    "api.lvh.me",
+]
+CORS_ALLOW_METHODS = [
+    "GET",
+    "OPTIONS",
+    "POST",
+]
+CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = "woeip.urls"
 
