@@ -3,11 +3,7 @@ import { PropTypes } from "prop-types";
 import { Dimmer, Loader, Container } from "../ui";
 import "./box.css";
 
-import ReactMapGL, {
-  Layer,
-  NavigationControl,
-  Source,
-} from "react-map-gl";
+import ReactMapGL, { Layer, NavigationControl, Source } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 // Hack: https://github.com/mapbox/mapbox-gl-js/issues/10173#issuecomment-753662795
 import mapboxgl from "mapbox-gl";

@@ -25,11 +25,11 @@ import { apiUrlCollectionById, apiUrlCollections } from "../../api.util";
 /**
  * Shape of pollutants in geojson format
  * @typedef SpatialPollutants
- * @property {string} type 
+ * @property {string} type
  * @property {Array<{
  *  type: string,
  *  properties: {
- *    reading: number,  
+ *    reading: number,
  *  }
  *  geometry: {
  *    type: string,
@@ -54,7 +54,7 @@ import { apiUrlCollectionById, apiUrlCollections } from "../../api.util";
 
 export const EMPTY_POLLUTANTS = {
   type: "FeatureCollection",
-  features: []
+  features: [],
 };
 
 export const BLANK_ACTIVE_ID = -1;
@@ -120,7 +120,6 @@ export const spatializePollutants = (pollutants) => {
     }),
   };
 };
-
 
 /** For all readings taken at the same location,
  * keep the highest value and discard the rest.
