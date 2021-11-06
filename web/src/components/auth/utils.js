@@ -61,7 +61,6 @@ export const login = async (email, password) => {
     }
     loadUser();
   } catch (err) {
-    debugger;
     console.error("Logging-in was unsuccessful", err);
     setTokensOnFailure();
   }
