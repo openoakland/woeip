@@ -44,10 +44,9 @@ const setTokensOnFailure = () => {
  * Logs-in a user
  * @param {string} email the user's email
  * @param {string} password the user's password
- * @returns {WebToken}
+ * @returns {boolean}
  */
 export const login = async (email, password) => {
-  debugger;
   const options = {
     headers: {
       "Content-Type": "application/json",
@@ -57,10 +56,16 @@ export const login = async (email, password) => {
 
   try {
     const res = await axios.post(apiUrlCreateJWTToken(), body, options);
+    console.debug("login res : {}", res);
+    let isAuthenticated = false;
     if (res && res.data && res.data.access) {
-      setAccessTokenOnSuccess(res.data.access);
+      isAuthenticated = checkAuthenticated(res.data.access);
     }
-    loadUser();
+    if (isAuthenticated) {
+      setAccessTokenOnSuccess(res.data.access);
+      loadUser(res.data.access);
+    }
+    return isAuthenticated;
   } catch (err) {
     console.error("Logging-in was unsuccessful", err);
     setTokensOnFailure();
@@ -127,9 +132,10 @@ export const verify = async (uid, token) => {
 
 /**
  * Checks user authentication
+ * @param {string} token
  * @returns {boolean}
  */
-export const checkAuthenticated = async () => {
+export const checkAuthenticated = async (token) => {
   if (localStorage.getItem("access")) {
     const options = {
       headers: {
@@ -138,13 +144,12 @@ export const checkAuthenticated = async () => {
       },
     };
 
-    const body = JSON.stringify({ token: localStorage.getItem("access") });
+    const body = JSON.stringify({ token });
 
     try {
       const res = await axios.post(apiUrlVerifyToken(), body, options);
       console.debug("check authenticated res : {}", res);
       if (res.data && res.data.code !== "token_not_valid") {
-        console.debug("entering truthy");
         return true;
       } else {
         console.error("Token is invalid", res);
@@ -160,23 +165,22 @@ export const checkAuthenticated = async () => {
 
 /**
  * Loads a user
+ * @param {string} token
  * @returns {User}
  */
-export const loadUser = async () => {
-  if (localStorage.getItem("access")) {
-    const options = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `JWT ${localStorage.getItem("access")}`,
-        Accept: "application/json",
-      },
-    };
+export const loadUser = async (token) => {
+  const options = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `JWT ${token}`,
+      Accept: "application/json",
+    },
+  };
 
-    try {
-      await axios.get(apiUrlLoadUser(), options);
-    } catch (err) {
-      console.error("Loading user was unsuccessful", err);
-    }
+  try {
+    await axios.get(apiUrlLoadUser(), options);
+  } catch (err) {
+    console.error("Loading user was unsuccessful", err);
   }
 };
 
