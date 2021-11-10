@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { AffirmActionButton, Form, ErrorMessage } from "../ui"
 import { Link, useHistory } from "react-router-dom";
 import { login } from "./utils";
-import { checkAuthenticated } from "./utils";
 import "./login.css";
 
 export const Login = () => {
@@ -19,14 +18,12 @@ export const Login = () => {
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  const checkAccessAndSetMsg = () => {
-    const access = localStorage.getItem("access");
-
-    if (!access) {
+  const checkAccessAndSetMsg = (isAuthenticated) => {
+    if (!isAuthenticated) {
       setErrorMsg(true);
     }
 
-    if (access && errorMsg) {
+    if (isAuthenticated && errorMsg) {
       setErrorMsg(false);
     }
   };
@@ -34,15 +31,10 @@ export const Login = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    await login(email, password);
+    const isAuthenticated = await login(email, password);
 
-    checkAccessAndSetMsg();
+    checkAccessAndSetMsg(isAuthenticated);
 
-    await checkAuthentication();
-  };
-
-  const checkAuthentication = async () => {
-    const isAuthenticated = await checkAuthenticated();
     if (isAuthenticated) {
       history.push({
         pathname: "/",
