@@ -76,13 +76,17 @@ MIDDLEWARE = [
     "django.contrib.flatpages.middleware.FlatpageFallbackMiddleware",
 ]
 
+# Origin host/header names that are authorized to send cross-site HTTP requests.
 CORS_ALLOWED_ORIGINS = [
     "http://api.lvh.me",
     "http://lvh.me",
 ]
+
+# Host/domain names that can recieve requests from this Django site.
 ALLOWED_HOSTS = [
     "api.lvh.me",
 ]
+
 CORS_ALLOW_METHODS = [
     "GET",
     "OPTIONS",

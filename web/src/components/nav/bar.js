@@ -34,4 +34,5 @@ export const NavbarWithRouter = withRouter(Navbar);
 const links = [
   { text: "Upload", route: "upload" },
   { text: "Maps", route: "maps" },
+  { text: "Login", route: "login"},
 ];
