@@ -47,7 +47,7 @@ const setTokensOnFailure = () => {
  * @returns {WebToken}
  */
 export const login = async (email, password) => {
-  debugger;
+  // debugger;
   const options = {
     headers: {
       "Content-Type": "application/json",
@@ -185,7 +185,7 @@ export const loadUser = async () => {
  */
 export const logout = async () => {
   try {
-    localStorage.clear()
+    localStorage.removeItem("access");
   } catch (err) {
     console.error("Logging-out was unsuccessful", err);
   }
