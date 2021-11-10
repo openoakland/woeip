@@ -47,6 +47,7 @@ const setTokensOnFailure = () => {
  * @returns {WebToken}
  */
 export const login = async (email, password) => {
+  debugger;
   const options = {
     headers: {
       "Content-Type": "application/json",
@@ -182,4 +183,10 @@ export const loadUser = async () => {
 /**
  * Logs-out a user
  */
-export const logout = () => {};
+export const logout = async () => {
+  try {
+    localStorage.clear()
+  } catch (err) {
+    console.error("Logging-out was unsuccessful", err);
+  }
+};
