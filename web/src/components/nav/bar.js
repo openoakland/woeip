@@ -1,5 +1,6 @@
 import { Link, NavLink, withRouter } from "react-router-dom";
 import { Container, Menu } from "../ui";
+import { logout } from "../../../src/components/auth/utils";
 
 const Navbar = () => {
   return (
@@ -16,7 +17,7 @@ const Navbar = () => {
         </Menu.Menu>
         <Menu.Menu position="right">
           {links.map(({ text, route }) => (
-            <Menu.Item key={route} as={NavLink} to={`/${route}`}>
+            <Menu.Item onClick={() => toggle(text)} key={route} as={NavLink} to={`/${route}`}>
               {text}
             </Menu.Item>
           ))}
@@ -27,12 +28,18 @@ const Navbar = () => {
 };
 
 export const NavbarWithRouter = withRouter(Navbar);
-
+const token = localStorage.getItem("access");
 /**
  * Data for Navigation Routes
  */
 const links = [
   { text: "Upload", route: "upload" },
   { text: "Maps", route: "maps" },
-  { text: "Login", route: "login"},
+  { text: (token ? "Logout" : "Login"), route: "Login"},
 ];
+
+const toggle = async (text) => {
+  if (text = "Logout" && token) {
+    await logout();
+  }
+}

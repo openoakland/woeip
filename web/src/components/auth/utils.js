@@ -56,7 +56,6 @@ export const login = async (email, password) => {
 
   try {
     const res = await axios.post(apiUrlCreateJWTToken(), body, options);
-    console.debug("login res : {}", res);
     let isAuthenticated = false;
     if (res && res.data && res.data.access) {
       isAuthenticated = checkAuthenticated(res.data.access);
@@ -136,7 +135,7 @@ export const verify = async (uid, token) => {
  * @returns {boolean}
  */
 export const checkAuthenticated = async (token) => {
-  if (localStorage.getItem("access")) {
+  if (token) {
     const options = {
       headers: {
         "Content-Type": "application/json",
@@ -148,7 +147,6 @@ export const checkAuthenticated = async (token) => {
 
     try {
       const res = await axios.post(apiUrlVerifyToken(), body, options);
-      console.debug("check authenticated res : {}", res);
       if (res.data && res.data.code !== "token_not_valid") {
         return true;
       } else {
