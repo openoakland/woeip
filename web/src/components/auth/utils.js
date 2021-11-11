@@ -77,19 +77,19 @@ export const login = async (email, password) => {
 
 /**
  * Registers a user
- * @param {string} firstName the user's first name
- * @param {string} lastName the user's last name
+ * @param {string} first_name the user's first name
+ * @param {string} last_name the user's last name
  * @param {string} email the user's email
  * @param {string} password the user's password
- * @param {string} rePassword the second validation of the user's password against the first password
+ * @param {string} re_password the second validation of the user's password against the first password
  * @returns {User}
  */
 export const register = async (
-  firstName,
-  lastName,
+  first_name,
+  last_name,
   email,
   password,
-  rePassword
+  re_password
 ) => {
   const options = {
     headers: {
@@ -97,11 +97,11 @@ export const register = async (
     },
   };
   const body = JSON.stringify({
-    firstName,
-    lastName,
     email,
+    first_name,
+    last_name,
     password,
-    rePassword,
+    re_password,
   });
 
   try {
