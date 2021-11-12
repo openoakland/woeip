@@ -64,7 +64,7 @@ export const apiUrlVerifyToken = () => apiUrl("auth/jwt/verify");
  * Constructs the api endpoint that verifies user activation
  * @returns {string}
  */
-export const apiUrlVerifyActivation = () => apiUrl("auth/users/activation");
+export const apiUrlVerifyActivation = () => apiUrl("auth/users/activation/");
 /** Removes the protocol from a url so that it is an empty protocol.
  * This prevents mixed content errors (https://developer.mozilla.org/en-US/docs/Web/Security/Mixed_content),
  * when one environment is http and the other is https
