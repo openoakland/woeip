@@ -189,7 +189,7 @@ export const loadUser = async (token) => {
 /**
  * Logs-out a user
  */
-export const logout = async () => {
+export const logout = () => {
   try {
     localStorage.removeItem("access");
   } catch (err) {

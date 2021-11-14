@@ -2,7 +2,28 @@ import { Link, NavLink, withRouter } from "react-router-dom";
 import { Container, Menu } from "../ui";
 import { logout } from "../../../src/components/auth/utils";
 
+let token = localStorage.getItem("access");
+
+export const updateLoginStatus = () => {
+  token = localStorage.getItem("access");
+};
+
 const Navbar = () => {
+  /**
+   * Data for Navigation Routes
+   */
+  const links = [
+    { text: "Upload", route: "upload" },
+    { text: "Maps", route: "maps" },
+    { text: (token ? "Logout" : "Login"), route: "Login"},
+  ];
+  
+  const toggle = (text) => {
+    if (text === "Logout" && token) {
+      logout();
+      updateLoginStatus();
+    }
+  };
   return (
     <Container>
       <Menu pointing secondary style={{ borderBottom: "none" }}>
@@ -28,7 +49,7 @@ const Navbar = () => {
 };
 
 export const NavbarWithRouter = withRouter(Navbar);
-const token = localStorage.getItem("access");
+
 /**
  * Data for Navigation Routes
  */
