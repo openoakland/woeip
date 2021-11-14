@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { AffirmActionButton, Form, ErrorMessage } from "../ui"
 import { Link, useHistory } from "react-router-dom";
+import { updateLoginStatus } from "../nav/bar";
 import { login } from "./utils";
 import "./login.css";
 
@@ -36,6 +37,7 @@ export const Login = () => {
     checkAccessAndSetMsg(isAuthenticated);
 
     if (isAuthenticated) {
+      updateLoginStatus();
       history.push({
         pathname: "/",
       });
