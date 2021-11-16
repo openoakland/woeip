@@ -15,11 +15,11 @@ const Navbar = () => {
   const links = [
     { text: "Upload", route: "upload" },
     { text: "Maps", route: "maps" },
-    { text: (token ? "Logout" : "Login"), route: "Login"},
+    { text: (token ? "Sign out" : "Sign in"), route: "Login"},
   ];
   
   const toggle = (text) => {
-    if (text === "Logout" && token) {
+    if (text === "Sign out" && token) {
       logout();
       updateLoginStatus();
     }
