@@ -46,7 +46,7 @@ export const apiUrlCreateJWTToken = () => apiUrl("auth/jwt/create");
  * Constructs the api endpoint that registers a user
  * @returns {string}
  */
-export const apiUrlRegister = () => apiUrl("auth/users/");
+export const apiUrlRegister = () => apiUrl("auth/users");
 
 /**
  * Constructs the api endpoint that loads a user
