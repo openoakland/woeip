@@ -129,7 +129,7 @@ export const UploadConfirm = ({
   return (
     <Container>
       <SuccessMessage>Success! Your files match.</SuccessMessage>
-      <Container textAlign="center">
+      <Container>
         <h2>Step 2. Confirm your session details</h2>
         <List>
           <List.Item>
