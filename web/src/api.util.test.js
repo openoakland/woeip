@@ -4,6 +4,11 @@ import {
   apiUrlCollectionById,
   apiUrlDevices,
   emptyProtocol,
+  apiUrlCreateJWTToken,
+  apiUrlRegister,
+  apiUrlLoadUser,
+  apiUrlVerifyToken,
+  apiUrlVerifyActivation,
 } from "./api.util";
 
 it("should create the base api url with an endpoint", () => {
@@ -22,6 +27,26 @@ it("should create the url to get a collection by its ID", () => {
 
 it("should create the url to get all devices", () => {
   expect(apiUrlDevices()).toEqual("http://api.lvh.me/devices");
+});
+
+it("should create the url to create jwt token", () => {
+  expect(apiUrlCreateJWTToken()).toEqual("http://api.lvh.me/auth/jwt/create");
+});
+
+it("should create the url to register user", () => {
+  expect(apiUrlRegister()).toEqual("http://api.lvh.me/auth/users");
+});
+
+it("should create the url to load user", () => {
+  expect(apiUrlLoadUser()).toEqual("http://api.lvh.me/auth/users/me");
+});
+
+it("should create the url to verify token", () => {
+  expect(apiUrlVerifyToken()).toEqual("http://api.lvh.me/auth/jwt/verify");
+});
+
+it("should create the url to verify activation", () => {
+  expect(apiUrlVerifyActivation()).toEqual("http://api.lvh.me/auth/users/activation");
 });
 
 describe("empty protocol", () => {
