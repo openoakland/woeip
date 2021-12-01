@@ -129,19 +129,22 @@ export const UploadConfirm = ({
   return (
     <Container>
       <SuccessMessage>Success! Your files match.</SuccessMessage>
-      <Container textAlign="center">
-        <h2>Step 2. Confirm your session details</h2>
+      <Container>
+        <h2>Step 2. Confirm your session details</h2><br />
         <List>
+          <List.Item as="label" htmlFor="collection-date">
+            Collection date
+          </List.Item>
           <List.Item>
             <CalendarInput
+              disabled
               name="collection-date"
               id="collection-date"
               value={dustrakStart.format("MM/DD/YYYY")}
-              disabled
             />
           </List.Item>
-          <List.Item as="label" htmlFor="collection-date">
-            Collection date
+          <List.Item as="label" htmlFor="start-time">
+            Start Time
           </List.Item>
           <List.Item>
             <Input
@@ -151,8 +154,8 @@ export const UploadConfirm = ({
               value={dustrakStart.format("h:mm A")}
             />
           </List.Item>
-          <List.Item as="label" htmlFor="start-time">
-            Start Time
+          <List.Item as="label" htmlFor="device">
+            Device
           </List.Item>
           <List.Item>
             <Input
@@ -161,9 +164,6 @@ export const UploadConfirm = ({
               id="device"
               value={device.name || "unknown"}
             ></Input>
-          </List.Item>
-          <List.Item as="label" htmlFor="device">
-            Device
           </List.Item>
         </List>
 
