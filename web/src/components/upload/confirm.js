@@ -130,7 +130,7 @@ export const UploadConfirm = ({
     <Container>
       <SuccessMessage>Success! Your files match.</SuccessMessage>
       <Container>
-        <h2>Step 2. Confirm your session details</h2>
+        <h2>Step 2. Confirm your session details</h2><br />
         <List>
           <List.Item>
             <CalendarInput
