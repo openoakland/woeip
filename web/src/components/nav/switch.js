@@ -3,6 +3,11 @@ import { Route, Switch } from "react-router-dom";
 import { Map } from "../map";
 import { Upload } from "../upload";
 import { Home } from "../home";
+import { Login } from "../auth/login";
+import { Register } from "../auth/register";
+import { ResetPassword } from "../auth/resetPassword";
+import { ResetPasswordConfirm } from "../auth/resetPasswordConfirm";
+import { Activate } from "../auth/activate";
 
 import { About } from "../about";
 import { Login } from "../auth/login";

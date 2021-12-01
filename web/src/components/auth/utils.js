@@ -47,10 +47,6 @@ const setTokensOnFailure = () => {
  * @returns {boolean}
  */
 export const login = async (email, password) => {
-<<<<<<< HEAD
-  // debugger;
-=======
->>>>>>> fix login page
   const options = {
     headers: {
       "Content-Type": "application/json",

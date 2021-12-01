@@ -20,7 +20,7 @@ describe("findDevice", () => {
     {
       name: "C",
       serial: "9012",
-    },
+    }
   ];
 
   it("should find the device with the serial of interest", () => {
