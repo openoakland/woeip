@@ -15,7 +15,7 @@ export const Home = () => {
   return (
     <Container textAlign="center">
       <h2>Welcome to West Oakland Air Quality!</h2>
-      {!activeUser && Login}
+      {!activeUser && <Login />}
     </Container>
   );
 };
