@@ -8,13 +8,7 @@ import { Register } from "../auth/register";
 import { ResetPassword } from "../auth/resetPassword";
 import { ResetPasswordConfirm } from "../auth/resetPasswordConfirm";
 import { Activate } from "../auth/activate";
-
 import { About } from "../about";
-import { Login } from "../auth/login";
-import { Register } from "../auth/register";
-import { ResetPassword } from "../auth/resetPassword";
-import { ResetPasswordConfirm } from "../auth/resetPasswordConfirm";
-import { Activate } from "../auth/activate";
 
 export const Navswitch = () => {
   return (
