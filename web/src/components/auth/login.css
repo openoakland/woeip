@@ -1,4 +1,4 @@
-h2 {
+h2.sign-in-instructions {
   line-height: 32px;
   font-weight: 500;
   color: #353535;
@@ -13,13 +13,6 @@ h2 {
   margin-bottom: 24px;
   margin-top: 48px;
 }
-
-h2 {
-  line-height: 32px;
-  font-weight: 500;
-  color: #353535;
-} 
-
 
 .register {
   display: flex;

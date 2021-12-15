@@ -50,7 +50,7 @@ export const Login = () => {
   return (
     <div className="login-container">
       <div className="instructions">
-        <h2>Sign in to upload data</h2>
+        <h2 className="sign-in-instructions">Sign in to upload data</h2>
         <div className="register">
           <p>Or&nbsp;</p>
           <Link to="/register" className="register-link">
