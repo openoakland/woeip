@@ -1,8 +1,8 @@
 import { Route, Switch } from "react-router-dom";
 
-import { Map } from "../map";
+import { Map } from "../Map";
 import { Upload } from "../upload";
-import { Home } from "../home";
+import { Home } from "../Home";
 import { Login } from "../auth/login";
 import { Register } from "../auth/register";
 import { ResetPassword } from "../auth/resetPassword";
