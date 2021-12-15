@@ -1,5 +1,5 @@
 import { Navigation } from "./components/nav";
-import { Footer } from "./components/Footer";
+import { Footer } from "./components/footer";
 import { Container } from "./components/ui";
 import "./App.css";
 
