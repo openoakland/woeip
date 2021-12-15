@@ -14,7 +14,7 @@ export const Activate = ({ match }) => {
 
     if (isVerified) {
       history.push({
-        pathname: "/",
+        pathname: "/login",
       });
     }
   };

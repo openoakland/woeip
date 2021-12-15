@@ -17,7 +17,7 @@ import {
  */
 
 /**
- * Shape of JWT Web Token pair
+ * Shape of JSON Web Token pair
  * @typeof WebToken
  * @property {string} refresh
  * @property {string} access
@@ -27,7 +27,7 @@ import {
  * Stores access token in Local Storage
  * @param {string} access the access token
  */
-const setAccessTokenOnSuccess = (access) => {
+export const setAccessToken = (access) => {
   localStorage.setItem("access", access);
 };
 
@@ -35,18 +35,18 @@ const setAccessTokenOnSuccess = (access) => {
  * Sets access token to null on failure in Local Storage
  *
  */
-const setTokensOnFailure = () => {
+export const removeTokens = () => {
   localStorage.removeItem("access");
   localStorage.removeItem("refresh");
 };
 
 /**
- * Logs-in a user
+ * Retrieves the JWT for the user
  * @param {string} email the user's email
  * @param {string} password the user's password
- * @returns {boolean}
+ * @returns {String []}
  */
-export const login = async (email, password) => {
+export const getJWT = async (email, password) => {
   const options = {
     headers: {
       "Content-Type": "application/json",
@@ -56,18 +56,10 @@ export const login = async (email, password) => {
 
   try {
     const res = await axios.post(apiUrlCreateJWTToken(), body, options);
-    let isAuthenticated = false;
-    if (res && res.data && res.data.access) {
-      isAuthenticated = checkAuthenticated(res.data.access);
-    }
-    if (isAuthenticated) {
-      setAccessTokenOnSuccess(res.data.access);
-      loadUser(res.data.access);
-    }
-    return isAuthenticated;
+    return [res.data.access, ""];
   } catch (err) {
     console.error("Logging-in was unsuccessful", err);
-    setTokensOnFailure();
+    return ["", err];
   }
 };
 
@@ -105,6 +97,7 @@ export const register = async (
     return { success: res.data };
   } catch (err) {
     console.error("Registering was unsuccessful", err);
+    return { success: false };
   }
 };
 
@@ -126,6 +119,7 @@ export const verify = async (uid, token) => {
     return { success: res.data };
   } catch (err) {
     console.error("Verification failed", err);
+    return { success: false };
   }
 };
 
@@ -155,9 +149,11 @@ export const checkAuthenticated = async (token) => {
       }
     } catch (err) {
       console.error("Authentication failed", err);
+      return false;
     }
   } else {
     console.error("Authentication failed: no access token");
+    return false;
   }
 };
 
@@ -174,21 +170,11 @@ export const loadUser = async (token) => {
       Accept: "application/json",
     },
   };
-
   try {
-    await axios.get(apiUrlLoadUser(), options);
+    const res = await axios.get(apiUrlLoadUser(), options);
+    return { success: res.data };
   } catch (err) {
     console.error("Loading user was unsuccessful", err);
-  }
-};
-
-/**
- * Logs-out a user
- */
-export const logout = () => {
-  try {
-    localStorage.removeItem("access");
-  } catch (err) {
-    console.error("Logging-out was unsuccessful", err);
+    return { success: false };
   }
 };

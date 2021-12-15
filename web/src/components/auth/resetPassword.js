@@ -1,5 +1,4 @@
-import { Container, Form } from "semantic-ui-react";
-import { AffirmActionButton } from "../ui";
+import { Container, Form, AffirmActionButton } from "../ui";
 
 export const ResetPassword = () => {
   return (

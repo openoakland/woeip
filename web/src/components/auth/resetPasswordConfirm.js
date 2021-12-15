@@ -1,5 +1,4 @@
-import { Container } from "semantic-ui-react";
-import { SuccessMessage } from "../ui";
+import { Container, SuccessMessage } from "../ui";
 
 export const ResetPasswordConfirm = () => {
   return (

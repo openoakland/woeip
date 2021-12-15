@@ -1,29 +1,33 @@
+import React, { useState, useEffect } from "react";
 import { Link, NavLink, withRouter } from "react-router-dom";
 import { Container, Menu } from "../ui";
-import { logout } from "../../../src/components/auth/utils";
-
-let token = localStorage.getItem("access");
-
-export const updateLoginStatus = () => {
-  token = localStorage.getItem("access");
-};
+import { removeTokens } from "../../../src/components/auth/utils";
 
 const Navbar = () => {
+  const [token, setToken] = useState(null);
+
+  useEffect(() => {
+    if (!token) {
+      setToken(localStorage.getItem("access"));
+    }
+  });
+
   /**
    * Data for Navigation Routes
    */
   const links = [
     { text: "Upload", route: "upload" },
     { text: "Maps", route: "maps" },
-    { text: (token ? "Sign out" : "Sign in"), route: "Login"},
+    { text: token ? "Sign out" : "Sign in", route: "Login" },
   ];
-  
+
   const toggle = (text) => {
     if (text === "Sign out" && token) {
-      logout();
-      updateLoginStatus();
+      removeTokens();
+      setToken(null);
     }
   };
+
   return (
     <Container>
       <Menu pointing secondary style={{ borderBottom: "none" }}>
@@ -38,7 +42,12 @@ const Navbar = () => {
         </Menu.Menu>
         <Menu.Menu position="right">
           {links.map(({ text, route }) => (
-            <Menu.Item onClick={() => toggle(text)} key={route} as={NavLink} to={`/${route}`}>
+            <Menu.Item
+              onClick={() => toggle(text)}
+              key={route}
+              as={NavLink}
+              to={`/${route}`}
+            >
               {text}
             </Menu.Item>
           ))}
@@ -49,19 +58,3 @@ const Navbar = () => {
 };
 
 export const NavbarWithRouter = withRouter(Navbar);
-
-/**
- * Data for Navigation Routes
- */
-const links = [
-  { text: "About", route: "about" },
-  { text: "Upload", route: "upload" },
-  { text: "Maps", route: "maps" },
-  { text: (token ? "Logout" : "Login"), route: "Login"},
-];
-
-const toggle = async (text) => {
-  if (text = "Logout" && token) {
-    await logout();
-  }
-}

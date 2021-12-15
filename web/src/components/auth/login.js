@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import { AffirmActionButton, Form, ErrorMessage } from "../ui"
+import { AffirmActionButton, Form, ErrorMessage } from "../ui";
 import { Link, useHistory } from "react-router-dom";
-import { updateLoginStatus } from "../nav/bar";
-import { login } from "./utils";
+import { getJWT, setAccessToken, loadUser } from "./utils";
 import "./login.css";
 
 export const Login = () => {
@@ -19,12 +18,12 @@ export const Login = () => {
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  const checkAccessAndSetMsg = (isAuthenticated) => {
-    if (!isAuthenticated) {
+  const checkAccessAndSetMsg = (token) => {
+    if (!token) {
       setErrorMsg(true);
     }
 
-    if (isAuthenticated && errorMsg) {
+    if (token && errorMsg) {
       setErrorMsg(false);
     }
   };
@@ -32,12 +31,16 @@ export const Login = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    const isAuthenticated = await login(email, password);
+    const [token] = await getJWT(email, password);
 
-    checkAccessAndSetMsg(isAuthenticated);
+    if (token) {
+      setAccessToken(token);
+      await loadUser(token);
+    }
 
-    if (isAuthenticated) {
-      updateLoginStatus();
+    checkAccessAndSetMsg(token);
+
+    if (token) {
       history.push({
         pathname: "/",
       });
