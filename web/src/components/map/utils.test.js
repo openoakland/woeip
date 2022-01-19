@@ -5,13 +5,16 @@ import {
 } from "../../api.util";
 import {
   BLANK_ACTIVE_COLLECTION,
+  comparePollutantValues,
   getCollectionFileByLink,
   getCollectionsOnDate,
   getFirstCollection,
   getPollutantsByCollectionId,
   getThrownCode,
+  mergePollutants,
   parsePollutant,
   parsePollutants,
+  spatializePollutants,
   THROWN_CODE,
 } from "./utils";
 import axios from "axios";
@@ -394,4 +397,109 @@ describe("get first collection from a list of collections", () => {
     expect(getFirstCollection(undefined)).toStrictEqual(
       BLANK_ACTIVE_COLLECTION
     ));
+});
+
+describe("spatializePollutants", () => {
+  it("should format the pollutant readings as into geojson", () => {
+    const pollutants = [
+      {
+        value: "0.05",
+        latitude: "1.5",
+        longitude: "2.7",
+      },
+    ];
+    const spatializedPollutants = spatializePollutants(pollutants);
+    expect(spatializedPollutants.type).toEqual("FeatureCollection");
+    expect(spatializedPollutants.features[0].type).toEqual("Feature");
+    expect(spatializedPollutants.features[0].properties.value).toEqual(
+      pollutants[0].value
+    );
+    expect(spatializedPollutants.features[0].geometry.type).toEqual("Point");
+    expect(spatializedPollutants.features[0].geometry.coordinates[0]).toEqual(
+      pollutants[0].longitude
+    );
+    expect(spatializedPollutants.features[0].geometry.coordinates[1]).toEqual(
+      pollutants[0].latitude
+    );
+  });
+
+  it("should handle an empty pollutants array", () => {
+    const pollutants = [];
+    const spatializedPollutants = spatializePollutants(pollutants);
+    expect(spatializedPollutants.type).toEqual("FeatureCollection");
+    expect(spatializedPollutants.features).toHaveLength(0);
+  });
+});
+
+describe("mergePollutants", () => {
+  const pollutantOne = {
+    id: 1, //id field only exists in test data
+    latitude: 1,
+    longitude: 2,
+    value: 0.1,
+  };
+
+  const pollutantTwo = {
+    id: 2, //id field only exists in test data
+    latitude: 1,
+    longitude: 2,
+    value: 0.2,
+  };
+
+  const pollutantThree = {
+    id: 3, //id field only exists in test data
+    latitude: 2,
+    longitude: 1,
+    value: 0.2,
+  };
+
+  const pollutantFour = {
+    id: 4, //id field only exists in test data
+    latitude: 1,
+    longitude: 2,
+    value: 0.2,
+  };
+
+  it("should merge pollutants at the same location, keeping the higher valued pollutant", () => {
+    const merged = mergePollutants([
+      pollutantOne,
+      pollutantTwo,
+      pollutantThree,
+    ]);
+    expect(merged).toHaveLength(2);
+    expect(merged[0].id).toEqual(2);
+    expect(merged[1].id).toEqual(3);
+  });
+
+  it("should return the later pollutant reading when two values are equal", () => {
+    const merged = mergePollutants([pollutantOne, pollutantTwo, pollutantFour]);
+    expect(merged).toHaveLength(1);
+    expect(merged[0].id).toEqual(4);
+  });
+});
+
+describe("comparePollutants", () => {
+  const pollutantOne = {
+    id: 1, //id field only exists in test data
+    latitude: 1,
+    longitude: 2,
+    value: 0.1,
+  };
+
+  const pollutantTwo = {
+    id: 2, //id field only exists in test data
+    latitude: 1,
+    longitude: 2,
+    value: 0.2,
+  };
+
+  it("should keep the pollutant with the higher reading", () => {
+    const higher = comparePollutantValues(pollutantOne, pollutantTwo);
+    expect(higher).toEqual(pollutantTwo);
+  });
+
+  it("should handle when the first reading is undefined", () => {
+    const higher = comparePollutantValues(undefined, pollutantOne);
+    expect(higher).toEqual(pollutantOne);
+  });
 });

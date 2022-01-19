@@ -23,6 +23,22 @@ import { apiUrlCollectionById, apiUrlCollections } from "../../api.util";
  */
 
 /**
+ * Shape of pollutants in geojson format
+ * @typedef SpatialPollutants
+ * @property {string} type
+ * @property {Array<{
+ *  type: string,
+ *  properties: {
+ *    reading: number,
+ *  }
+ *  geometry: {
+ *    type: string,
+ *    coordinates: Array<number>
+ *  }
+ * }>} features
+ */
+
+/**
  * Meta-data for a collection
  * @typedef Collection
  * @property {number} id
@@ -35,6 +51,11 @@ import { apiUrlCollectionById, apiUrlCollections } from "../../api.util";
  * @typedef CollectionFile
  * @property {string} file
  */
+
+export const EMPTY_POLLUTANTS = {
+  type: "FeatureCollection",
+  features: [],
+};
 
 export const BLANK_ACTIVE_ID = -1;
 export const BLANK_ACTIVE_STARTS_AT = "";
@@ -80,8 +101,60 @@ export const getPollutantsByCollectionId = async (
 };
 
 /**
+ * Create a geojson object for pollutants
+ * @param {Array<Pollutant>} pollutants
+ * @returns {SpatialPollutants}
+ */
+export const spatializePollutants = (pollutants) => {
+  return {
+    type: "FeatureCollection",
+    features: pollutants.map((pollutant) => {
+      return {
+        type: "Feature",
+        properties: { value: pollutant.value },
+        geometry: {
+          type: "Point",
+          coordinates: [pollutant.longitude, pollutant.latitude],
+        },
+      };
+    }),
+  };
+};
+
+/** For all readings taken at the same location,
+ * keep the highest value and discard the rest.
+ * @param {Array<Pollutant>}
+ * @returns {Array<Pollutant>}
+ */
+export const mergePollutants = (pollutants) => {
+  const seenPollutants = {};
+  pollutants.forEach((pollutant) => {
+    const locationKey = `${pollutant.latitude},${pollutant.longitude}`;
+    const higherPollutant = comparePollutantValues(
+      seenPollutants[locationKey],
+      pollutant
+    );
+    seenPollutants[locationKey] = higherPollutant;
+  });
+  return Object.values(seenPollutants);
+};
+
+/**
+ * Find the highest of two pollutant values, with the previous value possibly undefined
+ * @param {Pollutant | undefined} seenPollutant
+ * @param {Pollutant} currentPollutant
+ * @returns {Pollutant}
+ */
+export const comparePollutantValues = (seenPollutant, currentPollutant) => {
+  if (!seenPollutant) return currentPollutant;
+  const maxValue = Math.max(seenPollutant.value, currentPollutant.value);
+  return maxValue === currentPollutant.value ? currentPollutant : seenPollutant;
+};
+
+/**
  * Extract and parse the pollutant values, or return an empty array
  * @param {Array<PollutantValue>} pollutantValueData
+ * @returns {Array<Pollutant>}
  */
 export const parsePollutants = (pollutantValueData) =>
   pollutantValueData?.pollutant_values?.map(parsePollutant) || [];

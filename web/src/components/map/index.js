@@ -15,6 +15,9 @@ import {
   getCollectionFileByLink,
   BLANK_ACTIVE_STARTS_AT,
   THROWN_CODE,
+  mergePollutants,
+  spatializePollutants,
+  EMPTY_POLLUTANTS,
 } from "./utils";
 
 import { emptyProtocol } from "../../api.util";
@@ -40,7 +43,7 @@ export const Map = () => {
   // the direct download link for the file itself
   const [gpsFileUrl, setGpsFileUrl] = useState("");
   const [dustrakFileUrl, setDustrakFileUrl] = useState("");
-  const [pollutants, setPollutants] = useState([]);
+  const [pollutants, setPollutants] = useState(EMPTY_POLLUTANTS);
   const [isLoadingPollutants, setIsLoadingPollutants] = useState(false);
 
   /**
@@ -96,8 +99,12 @@ export const Map = () => {
           pollutants: rawPollutants,
           thrownCode,
         } = await getPollutantsByCollectionId(activeId, source);
-        if (thrownCode === THROWN_CODE.NONE)
-          setPollutants(parsePollutants(rawPollutants));
+        if (thrownCode === THROWN_CODE.NONE) {
+          const parsed = parsePollutants(rawPollutants);
+          const merged = mergePollutants(parsed);
+          const spatialized = spatializePollutants(merged);
+          setPollutants(spatialized);
+        }
         if (thrownCode !== THROWN_CODE.CANCELED) setIsLoadingPollutants(false);
       } else {
         setIsLoadingPollutants(false);
@@ -168,7 +175,7 @@ export const Map = () => {
       setGpsFileUrl("");
       setDustrakFileUrl("");
 
-      setPollutants([]);
+      setPollutants(EMPTY_POLLUTANTS);
     }
   };
 
@@ -199,7 +206,7 @@ export const Map = () => {
       setGpsFileUrl("");
       setDustrakFileUrl("");
 
-      setPollutants([]);
+      setPollutants(EMPTY_POLLUTANTS);
     }
   };
 
