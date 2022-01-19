@@ -77,15 +77,10 @@ MIDDLEWARE = [
 ]
 
 # Origin host/header names that are authorized to send cross-site HTTP requests.
-CORS_ALLOWED_ORIGINS = [
-    "http://api.lvh.me",
-    "http://lvh.me",
-]
+CORS_ALLOWED_ORIGINS = [env("ALLOWED_ORIGINS")]
 
 # Host/domain names that can recieve requests from this Django site.
-ALLOWED_HOSTS = [
-    "api.lvh.me",
-]
+ALLOWED_HOSTS = [env("ALLOWED_HOSTS")]
 
 CORS_ALLOW_CREDENTIALS = True
 
