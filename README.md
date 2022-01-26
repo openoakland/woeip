@@ -2,7 +2,7 @@ West Oakland Air Quality Project (WOAQ) [![TravisCI](https://travis-ci.org/openo
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
 ===========================================================================
 
-West Oakland Air Quality (WOAQ) is a project of [OpenOakland](https://www.openoakland.org/) focused on building digital advocacy tools around air quality data collected by volunteers and citizen scientists.
+West Oakland Air Quality (WOAQ) aims to help West Oaklanders fight for better air by making their local air quality data more accessible and meaningful, and providing the digital advocacy tools needed to drive change in their neighborhood.
 
 WOAQ partners with [West Oakland Environmental Indicators Project](https://www.woeip.org) (WOEIP), a community-based environmental justice organization that has been collecting air quality data for over a decade. WOEIP is dedicated to achieving healthy homes, healthy jobs and healthy neighborhoods for all who live, work, learn and play in West Oakland, California.
 
@@ -22,12 +22,53 @@ To participate in this project, we ask you to abide by the OpenOakland [Code of 
 # Quickstart for developers
 
 Install [Docker](https://www.docker.com/) and [Docker Compose](https://docs.docker.com/compose/)  
-Run Locally  
+### Run locally  
+
 ```
-  git clone https://github.com/openoakland/woeip.git
-  cd woeip
-  docker-compose up -d --build
+git clone https://github.com/openoakland/woeip.git
+cd woeip
+docker-compose up -d --build
 ```
+### To update the front-end locally
+Create and check out new branch based on an existing branch
+
+```
+git status
+git checkout {existing-branch}
+git pull origin develop
+git checkout -b {new-branch-name}
+```
+### Navigate to front-end directory
+
+```
+cd {directory path}
+```
+
+### Open text editor
+File `package.json` contains npm commands under "scripts"
+
+### Run front-end via command line
+
+`npm install` installs all needed libraries
+
+`npm run start` should open in web browser
+
+### In text editor
+
+Make desired changes to files in `/src` folder
+
+### Stage, commit and push changes
+
+`git add .` (don't forget that period!)
+
+```
+git commit -m "{message text}"
+git push origin {new-branch-name}
+```
+
+### Open pull request (PR) in WOEIP repo
+
+Request review from team member(s)
 
 ## Services  
 
