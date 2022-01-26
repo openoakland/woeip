@@ -29,7 +29,7 @@ git clone https://github.com/openoakland/woeip.git
 cd woeip
 docker-compose up -d --build
 ```
-### To update the front-end locally
+## To update the front-end locally
 Create and check out new branch based on an existing branch
 
 ```
@@ -69,6 +69,28 @@ git push origin {new-branch-name}
 ### Open pull request (PR) in WOEIP repo
 
 Request review from team member(s)
+
+## To access the back-end database
+
+Please refer to the **[database schema (1/8/2020)](https://drive.google.com/file/d/1U5tIkROnRMZkQJXmoQan81WKCapi7fOy/view)**
+
+`docker-compose exec db bash` enters the docker container, a mini-linux machine
+
+`psql -U postgres` logs in to the database that is running on the mini-linux machine
+
+`\c woaq` enters the woaq database
+
+`\dn` list all schemas
+
+`\dt` list all tables
+
+Run any needed SQL commands here, like
+
+`SELECT * from air_quality_device;`
+
+`\q` to quit postgres database
+
+`exit` to exit container and get back to shell
 
 ## Services  
 
