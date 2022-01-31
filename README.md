@@ -4,7 +4,7 @@ West Oakland Air Quality Project (WOAQ) [![TravisCI](https://travis-ci.org/openo
 
 West Oakland Air Quality (WOAQ) aims to help West Oaklanders fight for better air by making their local air quality data more accessible and meaningful, and providing the digital advocacy tools needed to drive change in their neighborhood.
 
-WOAQ partners with [West Oakland Environmental Indicators Project](https://www.woeip.org) (WOEIP), a community-based environmental justice organization that has been collecting air quality data for over a decade. WOEIP is dedicated to achieving healthy homes, healthy jobs and healthy neighborhoods for all who live, work, learn and play in West Oakland, California.
+WOAQ is an [OpenOakland](https://openoakland.org/) project, co-created with the [West Oakland Environmental Indicators Project (WOEIP)](https://www.woeip.org), a community-based environmental justice organization that has been collecting air quality data for over a decade.  WOEIP is dedicated to achieving healthy homes, healthy jobs and healthy neighborhoods for all who live, work, learn and play in West Oakland, California.
 
 # Readme contents
 
