@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { PropTypes } from "prop-types";
 import { Dimmer, Loader, Container } from "../ui";
 import "./box.css";
@@ -23,7 +23,7 @@ const pollutantLayer = {
   id: "point",
   type: "circle",
   paint: {
-    "circle-radius": 2,
+    "circle-radius": 5,
     "circle-color": [
       "step",
       ["get", "value"],
@@ -41,6 +41,7 @@ const pollutantLayer = {
     ],
   },
 };
+
 
 const mapStyle = "mapbox://styles/mapbox/streets-v11";
 const mapboxApiAccessToken = process.env.REACT_APP_MAPBOX_TOKEN;
@@ -61,6 +62,25 @@ const initialViewport = {
  */
 export const MapBox = ({ isLoading, pollutants }) => {
   const [viewport, setViewport] = useState(initialViewport);
+  const [hoverInfo, setHoverInfo] = useState(null);
+
+  const onHover = useCallback(event => {
+    const {
+      features,
+      srcEvent: {offsetX, offsetY}
+    } = event;
+    const hoveredFeature = features && features[0];
+    setHoverInfo(
+      hoveredFeature
+        ? {
+            feature: hoveredFeature,
+            x: offsetX,
+            y: offsetY,
+            count: features.length
+          }
+        : null
+    );
+  }, []);
 
   return (
     <Container className="map-view-container">
@@ -74,6 +94,8 @@ export const MapBox = ({ isLoading, pollutants }) => {
         mapStyle={mapStyle}
         onViewStateChange={setViewport}
         mapboxApiAccessToken={mapboxApiAccessToken}
+        interactiveLayerIds={['point']}
+        onHover={onHover}
       >
         <NavigationControl
           showCompass={false}
@@ -82,6 +104,13 @@ export const MapBox = ({ isLoading, pollutants }) => {
         <Source id="pollutant-values" type="geojson" data={pollutants}>
           <Layer {...pollutantLayer} />
         </Source>
+        {hoverInfo && (
+          <div className="hovertip" style={{left: hoverInfo.x, top: hoverInfo.y}}>
+            <div>X,Y: {hoverInfo.x}, {hoverInfo.y}</div>
+            <div>Points: {hoverInfo.count}</div>
+            <div>Data: {hoverInfo.feature.properties.value}</div>
+          </div>
+        )}
       </ReactMapGL>
     </Container>
   );
