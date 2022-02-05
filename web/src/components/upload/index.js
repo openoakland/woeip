@@ -5,6 +5,7 @@ import { UploadDrop } from "./drop";
 import { UploadConfirm } from "./confirm";
 import { Container } from "../ui";
 import { findDevice, getDevices } from "./utils";
+import { getAccessToken } from "../auth/utils";
 
 export const Upload = () => {
   const [files, setFiles] = useState([]);
@@ -17,7 +18,7 @@ export const Upload = () => {
   useEffect(() => {
     (async () => {
       try {
-        const devices = await getDevices();
+        const devices = await getDevices(getAccessToken());
         setDevice(findDevice(devices, dustrakSerial));
       } catch (err) {
         console.error(err);

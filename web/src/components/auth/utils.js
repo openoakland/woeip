@@ -32,6 +32,14 @@ export const setAccessToken = (access) => {
 };
 
 /**
+ * Get access token in Local Storage
+ * @returns {string} access token
+ */
+export const getAccessToken = () => {
+  localStorage.getItem("access");
+};
+
+/**
  * Sets access token to null on failure in Local Storage
  *
  */
