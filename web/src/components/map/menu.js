@@ -6,23 +6,26 @@ import "react-semantic-ui-datepickers/dist/react-semantic-ui-datepickers.css";
 import SemanticDatepicker from "react-semantic-ui-datepickers";
 import { Container, List, WarningMessage } from "../ui";
 import "./menu.css";
+import { BLANK_ACTIVE_ID } from "./utils";
 
 /**
  * Menu for Dates and Collections to map
- * @property {moment} mapDate Day viewed on mapped
- * @property {Array<Collection>} collectionsOnDate Collections from the viewed day
- * @property {Collection} activeCollection collection actively viewed on map
- * @property {function} stageLoadingDate start the process to load collections on date
- * @property {function} stageLoadingCollection start the process to load pollutants from a colletion
- * @property {string} gpsFileUrl url to a gps file
- * @property {string} dustrakFileUrl url to a dustrak file
+ * @param {moment} mapDate Day viewed on mapped
+ * @param {Array<import('./utils.js').Collection>} collectionsOnDate Collections from the viewed day
+ * @param {number} activeId id of collection actively viewed on map
+ * @param {string} activeStartsAt start time of the collection as it is stored in the database
+ * @param {function} changeMapDate start the process to load collections on date
+ * @param {function} changeActiveCollection start the process to load pollutants from a colletion
+ * @param {string} gpsFileUrl url to a gps file
+ * @param {string} dustrakFileUrl url to a dustrak file
  */
 export const MapMenu = ({
   mapDate,
   collectionsOnDate,
-  activeCollection,
-  stageLoadingDate,
-  stageLoadingCollection,
+  activeId,
+  activeStartsAt,
+  changeMapDate,
+  changeActiveCollection,
   gpsFileUrl,
   dustrakFileUrl,
 }) => {
@@ -30,16 +33,16 @@ export const MapMenu = ({
    * From the collections, composed React Components to display each collection
    * Exclude the active collection
    */
-  const collectionsDisplay = collectionsOnDate
-    .filter((eachCollection) => eachCollection.id !== activeCollection.id)
-    .map((eachCollection) => {
-      const id = eachCollection.id;
-      const startsAt = eachCollection.starts_at;
+  const otherCollectionsDisplay = collectionsOnDate
+    .filter((collection) => collection.id !== activeId)
+    .map((collection) => {
+      const id = collection.id;
+      const startsAt = collection.starts_at;
       return (
         <List.Item
           as="a"
           key={`${id}-${startsAt}`}
-          onClick={() => stageLoadingCollection(eachCollection)}
+          onClick={() => changeActiveCollection(collection)}
           data-arg={id}
         >
           <b>Session: </b>
@@ -52,7 +55,7 @@ export const MapMenu = ({
       <h2>{mapDate.format("LL")}</h2>
       <p>View a different day:</p>
       <SemanticDatepicker
-        onChange={stageLoadingDate}
+        onChange={changeMapDate}
         format="YYYY-MM-DD"
         value={mapDate.toDate()}
         clearable={false}
@@ -60,50 +63,52 @@ export const MapMenu = ({
       <h3>Collection Details</h3>
       <List>
         <List.Item>
-          <b>Session:</b> {activeCollection.id || "None"}
+          <b>Session:</b> {activeId !== BLANK_ACTIVE_ID ? activeId : "None"}
         </List.Item>
         <b>Start Time:</b>{" "}
-        {activeCollection.starts_at
-          ? moment(activeCollection.starts_at).format("h:mm A")
-          : "None"}
-        {gpsFileUrl ? (
+        {activeStartsAt ? moment(activeStartsAt).format("h:mm A") : "None"}
+        {gpsFileUrl && (
           <List.Item as="a" href={gpsFileUrl}>
             Download GPS File
           </List.Item>
-        ) : (
-          <List.Item>No GPS File</List.Item>
         )}
-        {dustrakFileUrl ? (
+        {dustrakFileUrl && (
           <List.Item as="a" href={dustrakFileUrl}>
             Download DusTrak File
           </List.Item>
-        ) : (
-          <List.Item>No Dustrak File</List.Item>
         )}
       </List>
       <h4>Other Collections from this day:</h4>
       <List>
-        {collectionsDisplay.length ? (
-          collectionsDisplay
+        {otherCollectionsDisplay.length ? (
+          otherCollectionsDisplay
         ) : (
           <List.Item>None</List.Item>
         )}
       </List>
-      {!collectionsOnDate.length && 
+      {activeId === BLANK_ACTIVE_ID && (
         <WarningMessage>
-          We haven't collected data for this time period. Please select another date.
+          We haven't collected data for this time period. Please select another
+          date.
         </WarningMessage>
-      }
+      )}
     </Container>
   );
 };
 
 MapMenu.propTypes = {
   mapDate: PropTypes.object,
-  collectionsOnDate: PropTypes.array,
-  activeCollection: PropTypes.object,
-  stageLoadingDate: PropTypes.func,
-  stageLoadingCollection: PropTypes.func,
+  collectionsOnDate: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number,
+      collection_files: PropTypes.arrayOf(PropTypes.string),
+      starts_at: PropTypes.string,
+    })
+  ),
+  activeId: PropTypes.number,
+  activeStartsAt: PropTypes.string,
+  changeMapDate: PropTypes.func,
+  changeActiveCollection: PropTypes.func,
   gpsFileUrl: PropTypes.string,
   dustrakFileUrl: PropTypes.string,
 };

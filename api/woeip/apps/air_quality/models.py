@@ -108,6 +108,20 @@ class CollectionFile(models.Model):
         return self.file.name
 
 
+class FileHash(models.Model):
+    """A file hash is the hash of a file, eg. DusTrak or GPS files.
+    There should be no duplicate file hashes.
+    """
+
+    collection = models.ForeignKey(
+        Collection, related_name="file_hashes", on_delete=models.CASCADE
+    )
+    hash = models.CharField(max_length=256, null=True)
+
+    def __str__(self):
+        return self.hash
+
+
 class TimeGeo(models.Model):
     """Timegeo location datapoints are timestamped lonlat values. Each location
     is extracted from a single collection file.

@@ -32,6 +32,7 @@ export const NavbarWithRouter = withRouter(Navbar);
  * Data for Navigation Routes
  */
 const links = [
+  { text: "About", route: "about" },
   { text: "Upload", route: "upload" },
   { text: "Maps", route: "maps" },
 ];

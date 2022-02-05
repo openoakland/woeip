@@ -23,10 +23,62 @@ import { apiUrlCollectionById, apiUrlCollections } from "../../api.util";
  */
 
 /**
+ * Shape of pollutants in geojson format
+ * @typedef SpatialPollutants
+ * @property {string} type
+ * @property {Array<{
+ *  type: string,
+ *  properties: {
+ *    reading: number,
+ *  }
+ *  geometry: {
+ *    type: string,
+ *    coordinates: Array<number>
+ *  }
+ * }>} features
+ */
+
+/**
+ * Meta-data for a collection
+ * @typedef Collection
+ * @property {number} id
+ * @property {Array<string>} collection_files
+ * @property {number} starts_at
+ */
+
+/**
+ * Link to the Collection File
+ * @typedef CollectionFile
+ * @property {string} file
+ */
+
+export const EMPTY_POLLUTANTS = {
+  type: "FeatureCollection",
+  features: [],
+};
+
+export const BLANK_ACTIVE_ID = -1;
+export const BLANK_ACTIVE_STARTS_AT = "";
+export const BLANK_ACTIVE_COLLECTION = {
+  id: BLANK_ACTIVE_ID,
+  collection_files: ["", ""],
+  starts_at: BLANK_ACTIVE_STARTS_AT,
+};
+
+export const THROWN_CODE = {
+  NONE: 0,
+  FAILED: 1,
+  CANCELED: 2,
+};
+
+/**
  * Retrieve the pollutants that were detected by a given collection session
  * @param {string} collectionId the integer-like database id of the collection
  * @param {axios.CancelToken} cancelTokenSource an axios token to cancel the request
- * @returns {Array<PollutantValue>} pollutants as they are stored in the database
+ * @returns {{
+ * pollutants: {pollutant_values: Array<PollutantValue>},
+ * thrownCode: number
+ * }} pollutants as they are stored in the database. If the response threw, the code for its reason
  */
 export const getPollutantsByCollectionId = async (
   collectionId,
@@ -35,15 +87,76 @@ export const getPollutantsByCollectionId = async (
   const options = {
     cancelToken: cancelTokenSource.token,
   };
-  if (!collectionId) return [];
-  return (await axios.get(apiUrlCollectionById(collectionId), options)).data;
+  try {
+    const response = await axios.get(
+      apiUrlCollectionById(collectionId),
+      options
+    );
+    const pollutants = response?.data;
+    if (!pollutants) throw new Error("Failed to get pollutants data");
+    return { pollutants: pollutants, thrownCode: THROWN_CODE.NONE };
+  } catch (thrown) {
+    return { pollutants: {}, thrownCode: getThrownCode(thrown) };
+  }
+};
+
+/**
+ * Create a geojson object for pollutants
+ * @param {Array<Pollutant>} pollutants
+ * @returns {SpatialPollutants}
+ */
+export const spatializePollutants = (pollutants) => {
+  return {
+    type: "FeatureCollection",
+    features: pollutants.map((pollutant) => {
+      return {
+        type: "Feature",
+        properties: { value: pollutant.value },
+        geometry: {
+          type: "Point",
+          coordinates: [pollutant.longitude, pollutant.latitude],
+        },
+      };
+    }),
+  };
+};
+
+/** For all readings taken at the same location,
+ * keep the highest value and discard the rest.
+ * @param {Array<Pollutant>}
+ * @returns {Array<Pollutant>}
+ */
+export const mergePollutants = (pollutants) => {
+  const seenPollutants = {};
+  pollutants.forEach((pollutant) => {
+    const locationKey = `${pollutant.latitude},${pollutant.longitude}`;
+    const higherPollutant = comparePollutantValues(
+      seenPollutants[locationKey],
+      pollutant
+    );
+    seenPollutants[locationKey] = higherPollutant;
+  });
+  return Object.values(seenPollutants);
+};
+
+/**
+ * Find the highest of two pollutant values, with the previous value possibly undefined
+ * @param {Pollutant | undefined} seenPollutant
+ * @param {Pollutant} currentPollutant
+ * @returns {Pollutant}
+ */
+export const comparePollutantValues = (seenPollutant, currentPollutant) => {
+  if (!seenPollutant) return currentPollutant;
+  const maxValue = Math.max(seenPollutant.value, currentPollutant.value);
+  return maxValue === currentPollutant.value ? currentPollutant : seenPollutant;
 };
 
 /**
  * Extract and parse the pollutant values, or return an empty array
  * @param {Array<PollutantValue>} pollutantValueData
+ * @returns {Array<Pollutant>}
  */
-export const fallbackPollutants = (pollutantValueData) =>
+export const parsePollutants = (pollutantValueData) =>
   pollutantValueData?.pollutant_values?.map(parsePollutant) || [];
 
 /**
@@ -52,71 +165,86 @@ export const fallbackPollutants = (pollutantValueData) =>
  * @returns {Pollutant} the shape of the pollutant as the client wants to consume it
  */
 export const parsePollutant = (item) => {
-  const timeGeoSplit = item.time_geo.split("(");
-  const coordsSplit = timeGeoSplit[1].split(", ");
+  const timeGeoSplit = item?.time_geo && item.time_geo.split("(");
+  const coordsSplit = timeGeoSplit && timeGeoSplit[1].split(", ");
   return {
-    timestamp: timeGeoSplit[0].trim(),
-    longitude: Number(coordsSplit[0].trim()),
-    latitude: Number(coordsSplit[1].replace(")", "").trim()),
-    name: item.pollutant,
-    value: item.value,
+    timestamp: timeGeoSplit && timeGeoSplit[0].trim(),
+    longitude: coordsSplit && Number(coordsSplit[0].trim()),
+    latitude: coordsSplit && Number(coordsSplit[1].replace(")", "").trim()),
+    name: item?.pollutant,
+    value: item?.value,
   };
 };
 
 /**
- * Retrieve all of the collections that occured on the given date
- * @param {moment} mapDate
+ * Retrieve all of the collections that occurred on the given date
+ * @param {string} formattedDate requested date, already in expected format
  * @param {CancelToken} cancelTokenSource
- * @returns {Array<Collection>}
+ * @returns {
+ *  {collectionsOnDate: Array<Collection>, thrownCode: THROWN_CODE}
+ * }
  */
-export const getCollectionsOnDate = async (mapDate, cancelTokenSource) => {
+export const getCollectionsOnDate = async (
+  formattedDate,
+  cancelTokenSource
+) => {
   const options = {
     params: {
-      start_date: mapDate.format("YYYY-MM-DD"),
+      start_date: formattedDate,
     },
     cancelToken: cancelTokenSource.token,
   };
-  return (await axios.get(apiUrlCollections(), options)).data;
-};
-
-/**
- * Retrieve data about the collection file, gps or dustrak
- * @param {string} fileLink the full url to the file
- * @returns {CollectionFile} data about the collection file
- */
-export const getCollectionFileByLink = async (fileLink) => {
-  if (!fileLink) return "";
-  return (await axios.get(fileLink)).data;
-};
-
-/**
- * Return the collection that was last added to a date.
- * If no collections were returned for a date, fall back to using an empty object
- * @param {Array<Collection>} pendingCollections possible collections
- * @returns {Collection || Object } Lastest collection or an empty object
- */
-export const fallbackCollection = (pendingCollections) =>
-  pendingCollections[pendingCollections.length - 1] || {};
-
-/**
- * Handle axios throw that may have been a cancel request
- * @param {string} dataRequested type of request being made when error occurred
- * @param {Error} thrown type of error thrown
- */
-export const canceledRequestMessage = (dataRequested) => (thrown) => {
-  if (axios.isCancel(thrown)) {
-    console.log(`Canceled request for ${dataRequested}`);
-  } else {
-    console.error(`Failed to get data for ${dataRequested}`);
+  try {
+    const response = await axios.get(apiUrlCollections(), options);
+    const collectionsOnDate = response.data;
+    if (!collectionsOnDate)
+      throw new Error("Failed to retrieve collection data for day");
+    if (!Array.isArray(collectionsOnDate))
+      throw new Error(
+        "Retrieved collection data for day failed to conform to array structure"
+      );
+    return {
+      collectionsOnDate: collectionsOnDate,
+      thrownCode: THROWN_CODE.NONE,
+    };
+  } catch (thrown) {
+    return { collectionsOnDate: [], thrownCode: getThrownCode(thrown) };
   }
 };
 
 /**
- * Overload cancel request message with collections
+ * Retrieve data about the collection file, gps or dustrak
+ * @param {string} fileLink the url to the file
+ * @param {CancelToken} cancelTokenSource
+ * @returns {{ file: CollectionFile || null, thrownCode: THROWN_CODE}} data about the collection file
  */
-export const canceledCollectionsMessage = canceledRequestMessage("collections");
+export const getCollectionFileByLink = async (fileLink, cancelTokenSource) => {
+  const options = {
+    cancelToken: cancelTokenSource.token,
+  };
+  try {
+    const file = (await axios.get(fileLink, options)).data;
+    if (!file) throw new Error("Failed to retrieve file data");
+    return { file: file, thrownCode: THROWN_CODE.NONE };
+  } catch (thrown) {
+    return { file: null, thrownCode: getThrownCode(thrown) };
+  }
+};
 
 /**
- * Overload cancel request message with collections
+ * Return a code for axios catch block depending on whether the request failed because it was canceled
+ * @param {Error} thrown error sent to a catch block after
+ * @returns {THROWN_CODE} the number associated with a type of failure
  */
-export const canceledPollutantsMessage = canceledRequestMessage("pollutants");
+export const getThrownCode = (thrown) =>
+  axios.isCancel(thrown) ? THROWN_CODE.CANCELED : THROWN_CODE.FAILED;
+
+/**
+ * Return the collection that was last added to a date.
+ * If no collections were returned for a date, fall back to using an empty object
+ * @param {Array<Collection>} collections possible collections
+ * @returns { Collection } Latest collection or an empty object
+ */
+export const getFirstCollection = (collections) =>
+  (collections && collections[collections.length - 1]) ||
+  BLANK_ACTIVE_COLLECTION;

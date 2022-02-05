@@ -23,7 +23,7 @@ import { apiUrlCollections } from "../../api.util";
 /**
  * Allow the user to view data about their files
  * The may choose whether to proceed with saving their files on the server
- * @property {Object} device device Meta-data for the device 
+ * @property {Object} device device Meta-data for the device
  * @property {Array<FileWithPath} files GPS and Dustrak Pair, validated during drop phase
  * @property {Moment} dustrakStart Reference point to when the data collection session started
  * @property {Moment} dustrakEnd Reference point to when the data collection session ended
@@ -82,7 +82,11 @@ export const UploadConfirm = ({
           if (axios.isCancel(thrown)) {
             alert("Canceled request to save uploads");
           } else {
-            alert("Failed to save uploads");
+            if (thrown.response) {
+              alert(`Failed to save uploads: ${thrown.response.data}`);
+            } else {
+              alert("Failed to save uploads");
+            }
           }
         }
         setIsSaving(false);
@@ -125,19 +129,22 @@ export const UploadConfirm = ({
   return (
     <Container>
       <SuccessMessage>Success! Your files match.</SuccessMessage>
-      <Container textAlign="center">
-        <h2>Step 2. Confirm your session details</h2>
+      <Container>
+        <h2>Step 2. Confirm your session details</h2><br />
         <List>
+          <List.Item as="label" htmlFor="collection-date">
+            Collection date
+          </List.Item>
           <List.Item>
             <CalendarInput
+              disabled
               name="collection-date"
               id="collection-date"
               value={dustrakStart.format("MM/DD/YYYY")}
-              disabled
             />
           </List.Item>
-          <List.Item as="label" htmlFor="collection-date">
-            Collection date
+          <List.Item as="label" htmlFor="start-time">
+            Start Time
           </List.Item>
           <List.Item>
             <Input
@@ -147,19 +154,16 @@ export const UploadConfirm = ({
               value={dustrakStart.format("h:mm A")}
             />
           </List.Item>
-          <List.Item as="label" htmlFor="start-time">
-            Start Time
+          <List.Item as="label" htmlFor="device">
+            Device
           </List.Item>
           <List.Item>
             <Input
               disabled
               name="device"
               id="device"
-              value={device.name || 'unknown'}
+              value={device.name || "unknown"}
             ></Input>
-          </List.Item>
-          <List.Item as="label" htmlFor="device">
-            Device
           </List.Item>
         </List>
 
