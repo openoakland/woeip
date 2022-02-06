@@ -36,7 +36,7 @@ export const setAccessToken = (access) => {
  * @returns {string} access token
  */
 export const getAccessToken = () => {
-  localStorage.getItem("access");
+  return localStorage.getItem("access");
 };
 
 /**
@@ -110,7 +110,7 @@ export const register = async (
 };
 
 /**
- * 
+ *
  * @returns
  */
 export const verify = async (uid, token) => {

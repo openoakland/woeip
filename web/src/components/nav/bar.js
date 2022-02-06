@@ -2,13 +2,14 @@ import React, { useState, useEffect } from "react";
 import { Link, NavLink, withRouter } from "react-router-dom";
 import { Container, Menu } from "../ui";
 import { removeTokens } from "../../../src/components/auth/utils";
+import { getAccessToken } from "../auth/utils";
 
 const Navbar = () => {
   const [token, setToken] = useState(null);
 
   useEffect(() => {
     if (!token) {
-      setToken(localStorage.getItem("access"));
+      setToken(getAccessToken());
     }
   });
 
