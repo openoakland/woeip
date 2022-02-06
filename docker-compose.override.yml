@@ -27,6 +27,19 @@ services:
     stdin_open: true
     tty: true
 
+  web:
+    build:
+      dockerfile: Dockerfile
+    environment:
+      VIRTUAL_HOST: lvh.me
+      VIRTUAL_PORT: 3000
+      CHOKIDAR_USEPOLLING: 'true'
+    ports:
+      - 3000:3000
+    volumes:
+      - ./web:/usr/src/app:rw
+      - '/usr/src/app/node_modules'
+
   db:
     environment:
       - POSTGRES_USER=postgres
