@@ -11,16 +11,15 @@ A configuration suitable for development
 Steps:
 1. docker-compose up --build
 
-## Api Docker Build
-A basic configuration to allow user to interact with a live site.
-API is hosted on Digital Ocean. Front end is hosted on Netlify.
+## Livewire
+A basic configuration to allow user to interact with a live site
 - All data served on an Amazon EC2 machine
 - Files saved using Django's file manager
 - React uses production build
 - Routes traffic from outside the machine
 
 Steps
-1. docker-compose -f docker-compose.yml -f docker-compose.api.yml up --build
+1. docker-compose -f docker-compose.yml -f docker-compose.livewire.yml up --build
 
 ## WIP: Development
 A basic configuration to allow experimental changes to be hosted and testing remotely.
