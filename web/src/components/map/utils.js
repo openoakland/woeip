@@ -1,5 +1,5 @@
 import axios from "axios";
-
+import { getAccessToken } from "../auth/utils";
 import { apiUrlCollectionById, apiUrlCollections } from "../../api.util";
 
 /**
@@ -64,6 +64,9 @@ export const getPollutantsByCollectionId = async (
   cancelTokenSource
 ) => {
   const options = {
+    headers: {
+      Authorization: `JWT ${getAccessToken()}`
+    },
     cancelToken: cancelTokenSource.token,
   };
   try {
@@ -116,6 +119,9 @@ export const getCollectionsOnDate = async (
   cancelTokenSource
 ) => {
   const options = {
+    headers: {
+      Authorization: `JWT ${getAccessToken()}`
+    },
     params: {
       start_date: formattedDate,
     },
@@ -147,6 +153,9 @@ export const getCollectionsOnDate = async (
  */
 export const getCollectionFileByLink = async (fileLink, cancelTokenSource) => {
   const options = {
+    headers: {
+      Authorization: `JWT ${getAccessToken()}`
+    },
     cancelToken: cancelTokenSource.token,
   };
   try {
