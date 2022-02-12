@@ -1,8 +1,9 @@
-from rest_framework import serializers
-from woeip.apps.core.models import User
+from djoser.serializers import UserCreateSerializer
+from django.contrib.auth import get_user_model
 
+User = get_user_model()
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
+class UserCreateSerializer(UserCreateSerializer):
+    class Meta(UserCreateSerializer.Meta):
         model = User
-        fields = ["username", "first_name", "last_name", "email"]
+        fields = ('id', 'email', 'first_name', 'last_name', 'password')

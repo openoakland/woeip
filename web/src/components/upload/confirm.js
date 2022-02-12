@@ -19,6 +19,7 @@ import {
 import { UploadCancelModal } from "./cancelModal";
 import { Form } from "semantic-ui-react";
 import { apiUrlCollections } from "../../api.util";
+import { getAccessToken } from "../auth/utils";
 
 /**
  * Allow the user to view data about their files
@@ -67,6 +68,7 @@ export const UploadConfirm = ({
         const options = {
           headers: {
             "Content-Type": "multipart/form-data",
+            Authorization: `JWT ${getAccessToken()}`
           },
           cancelToken: cancelTokenSource.token,
         };
@@ -175,7 +177,7 @@ export const UploadConfirm = ({
           >
             Save
           </PositiveActionButton>
-          {/* Turn off the ability to cancel once the upload has started. 
+          {/* Turn off the ability to cancel once the upload has started.
           While we support cancel tokens, they may leave the data in a half-uploaded state.
           Activate the ability once we have the functionality to rollback "half-uploads" */}
           <NeutralActionButton

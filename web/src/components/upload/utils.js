@@ -13,8 +13,11 @@ import { apiUrlDevices } from "../../api.util";
  * Retrieve all of the devices
  * @returns {Array<Device>}
  */
-export const getDevices = async () => {
-  return (await axios.get(apiUrlDevices())).data;
+export const getDevices = async (token) => {
+  const config = {
+    headers: { Authorization: `JWT ${token}` }
+  };
+  return (await axios.get(apiUrlDevices(), config)).data;
 };
 
 /**

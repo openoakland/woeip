@@ -1,8 +1,8 @@
 from django.contrib import admin
-from django.urls import include
-from django.urls import path
+from django.urls import path, include, re_path
 from django.conf.urls.static import static
 from django.conf import settings
+from django.views.generic import TemplateView
 from rest_framework import routers
 
 from .apps.air_quality import views
@@ -18,13 +18,12 @@ router.register(r"pollutant", views.PollutantViewSet)
 router.register(r"pollutant_values", views.PollutantValueViewSet)
 router.register(r"sensors", views.SensorViewSet)
 router.register(r"timegeo", views.TimeGeoViewSet)
-router.register(r"users", core_views.UserViewSet)
-
 
 urlpatterns = [
     path("", include(router.urls)),
     path("admin/", admin.site.urls),
-    path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
+    path("auth/", include("djoser.urls")),
+    path("auth/", include("djoser.urls.jwt")),
 ]
 
 urlpatterns += swagger_urlpatterns

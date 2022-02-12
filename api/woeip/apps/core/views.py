@@ -2,11 +2,12 @@
 from rest_framework import viewsets
 from woeip.apps.core import models
 from woeip.apps.core import serializers
+from django.shortcuts import redirect, render
 
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = models.User.objects.all()
-    serializer_class = serializers.UserSerializer
+    serializer_class = serializers.UserCreateSerializer
 
     def get_queryset(self):
         queryset = models.User.objects.all()
