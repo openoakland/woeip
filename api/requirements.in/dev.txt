@@ -1,7 +1,0 @@
--r prod.txt
-astroid
-coverage
-django-debug-toolbar
-factory-boy
-mypy
-pytest-django
