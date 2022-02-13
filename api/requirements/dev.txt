@@ -34,7 +34,7 @@ markupsafe==1.1.1         # via jinja2
 more-itertools==7.1.0     # via pytest
 mypy-extensions==0.4.1    # via mypy
 mypy==0.720
-numpy==1.16.4
+numpy==1.21.0
 packaging==19.0           # via drf-yasg, pytest
 pandas==0.24.2
 pluggy==0.12.0            # via pytest
