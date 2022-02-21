@@ -1,0 +1,51 @@
+.container {
+  margin: 0px;
+  padding: 2px;
+}
+
+#decoration {
+  width: 200px;
+}
+
+#pointer {
+  width: 0; 
+  height: 0; 
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid red;
+  transform: translateX(400%);
+}
+
+div.hover {
+  height: 15px;
+  width: calc(100% / 6);
+  background: black;
+  display: inline-block;
+}
+
+/*from https://www.airnow.gov/sites/default/files/2020-05/aqi-technical-assistance-document-sept2018.pdf*/
+
+div#green {
+  background: #00E400;
+}
+
+div#yellow {
+  background: #FFFF00;
+}
+
+div#orange {
+  background: #FF7E00;
+}
+
+div#red {
+  background: #FF0000;
+}
+
+div#blue {
+  background: #8F3F97;
+}
+
+div#purple {
+  background: #7E0023;
+}
+

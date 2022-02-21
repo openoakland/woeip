@@ -14,8 +14,9 @@
     position: absolute;
     margin: 8px;
     padding: 4px;
-    background: rgba(0, 0, 0, 0.8);
-    color: #fff;
+    border-radius: 10px;
+    background: rgba(237, 237, 237, 0.9);
+    /*color: #000;*/
     max-width: 300px;
     font-size: 10px;
     z-index: 9;

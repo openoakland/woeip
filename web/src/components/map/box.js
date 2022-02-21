@@ -1,6 +1,7 @@
 import { useState, useCallback } from "react";
 import { PropTypes } from "prop-types";
 import { Dimmer, Loader, Container } from "../ui";
+import { Hover } from "./hover"
 import "./box.css";
 
 import ReactMapGL, { Layer, NavigationControl, Source } from "react-map-gl";
@@ -103,13 +104,7 @@ export const MapBox = ({ isLoading, pollutants }) => {
         <Source id="pollutant-values" type="geojson" data={pollutants}>
           <Layer {...pollutantLayer} />
         </Source>
-        {hoverInfo && (
-          <div className="hovertip" style={{left: hoverInfo.x, top: hoverInfo.y}}>
-            <div>X,Y: {hoverInfo.x}, {hoverInfo.y}</div>
-            <div>Points: {hoverInfo.count}</div>
-            <div>Data: {hoverInfo.feature.properties.value}</div>
-          </div>
-        )}
+        {hoverInfo && <Hover hoverInfo={hoverInfo} />}
       </ReactMapGL>
     </Container>
   );
