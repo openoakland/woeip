@@ -15,8 +15,8 @@
     margin: 8px;
     padding: 4px;
     border-radius: 10px;
-    background: rgba(237, 237, 237, 0.9);
-    /*color: #000;*/
+    background: rgba(0,0,0, 0.8);
+    color: #fff;
     max-width: 300px;
     font-size: 10px;
     z-index: 9;
