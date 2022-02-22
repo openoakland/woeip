@@ -8,12 +8,17 @@
 }
 
 #pointer {
+  --pointer-width:  10px;
   width: 0; 
   height: 0; 
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
+  border-left: var(--pointer-width) solid transparent;
+  border-right: var(--pointer-width) solid transparent;
   border-bottom: 10px solid red;
-  transform: translateX(000%);
+  /*transform: translateX(000%);*/
+  left: -webkit-calc(50% - var(--pointer-width));
+  left: -moz-calc(50% - var(--pointer-width));
+  left: calc(50% - var(--pointer-width));
+  position:  relative;
 }
 
 div.hover {

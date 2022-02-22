@@ -1,7 +1,7 @@
 import { useState, useCallback } from "react";
 import { PropTypes } from "prop-types";
 import { Dimmer, Loader, Container } from "../ui";
-import { Hover } from "./hover"
+import { Hover, ArrowPosition } from "./hover"
 import "./box.css";
 
 import ReactMapGL, { Layer, NavigationControl, Source } from "react-map-gl";
@@ -63,15 +63,6 @@ const initialViewport = {
 export const MapBox = ({ isLoading, pollutants }) => {
   const [viewport, setViewport] = useState(initialViewport);
   const [hoverInfo, setHoverInfo] = useState(null);
-  
-/**
- * Attempt to linearize the curve of EPA pollutant thresholds as symbolized
- * by the values in PM25_CATEGORY_COLORS, so that a pollutant value can be converted 
- * to a position along the colorbar
- */
-  const positionCalc = (val) => {
-    return (1390*Math.pow(val,1/2.1))-50 
-  }
 
   const onHover = useCallback(event => {
     const {
@@ -86,7 +77,6 @@ export const MapBox = ({ isLoading, pollutants }) => {
             x: offsetX,
             y: offsetY,
             time: hoveredFeature.properties.timestamp,
-            translate: positionCalc(hoveredFeature.properties.value),
             count: features.length
           }
         : null
