@@ -3,8 +3,6 @@ import { PM25_CATEGORY_COLORS } from './box'
 
 export const Hover = ({hoverInfo}) => {
 
-  const val = hoverInfo.feature.properties.value
-
   const assignColor = (val) => {
     if (val >= 0 && val <= 0.012) {return PM25_CATEGORY_COLORS.GOOD}
     if (val > 0.012 && val <= 0.035) {return PM25_CATEGORY_COLORS.MODERATE}
@@ -14,6 +12,7 @@ export const Hover = ({hoverInfo}) => {
     if (val > 0.25) {return PM25_CATEGORY_COLORS.HAZARDOUS}
   }
 
+  const val = hoverInfo.feature.properties.value
   const pointerColor = assignColor(val)
 
   return (
@@ -21,6 +20,7 @@ export const Hover = ({hoverInfo}) => {
       <div>X,Y: {hoverInfo.x}, {hoverInfo.y}</div>
       <div>Points: {hoverInfo.count}</div>
       <div>Data: {val}</div>
+      <div>Time: {hoverInfo.time}</div>
       <div class="container">
         <div id="decoration">
           <div class="arrow-up" id="pointer" style={{transform: `translateX(${hoverInfo.translate}%)`, borderBottomColor: `${pointerColor}`}}></div>

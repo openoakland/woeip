@@ -61,12 +61,18 @@ const initialViewport = {
  * @property {Array<Pollutant>} pollutants
  */
 export const MapBox = ({ isLoading, pollutants }) => {
-  const positionCalc = (val) => {
-    return (1390*Math.pow(val,1/2.1))-50 
-  }
   const [viewport, setViewport] = useState(initialViewport);
   const [hoverInfo, setHoverInfo] = useState(null);
   
+/**
+ * Attempt to linearize the curve of EPA pollutant thresholds as symbolized
+ * by the values in PM25_CATEGORY_COLORS, so that a pollutant value can be converted 
+ * to a position along the colorbar
+ */
+  const positionCalc = (val) => {
+    return (1390*Math.pow(val,1/2.1))-50 
+  }
+
   const onHover = useCallback(event => {
     const {
       features,
@@ -79,6 +85,7 @@ export const MapBox = ({ isLoading, pollutants }) => {
             feature: hoveredFeature,
             x: offsetX,
             y: offsetY,
+            time: hoveredFeature.properties.timestamp,
             translate: positionCalc(hoveredFeature.properties.value),
             count: features.length
           }
@@ -121,7 +128,10 @@ MapBox.protoTypes = {
     features: PropTypes.arrayOf(
       PropTypes.shape({
         type: PropTypes.oneOf(["Feature"]),
-        properties: PropTypes.shape({ value: PropTypes.number }),
+        properties: PropTypes.shape({
+          value: PropTypes.number,
+          timestamp:  PropTypes.string,
+        }),
         geometry: PropTypes.shape({
           type: PropTypes.oneOf(["Point"]),
           coordinates: PropTypes.arrayOf(PropTypes.number),

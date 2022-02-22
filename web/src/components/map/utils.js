@@ -111,7 +111,10 @@ export const spatializePollutants = (pollutants) => {
     features: pollutants.map((pollutant) => {
       return {
         type: "Feature",
-        properties: { value: pollutant.value },
+        properties: { 
+          value: pollutant.value,
+          timestamp: pollutant.timestamp
+        },
         geometry: {
           type: "Point",
           coordinates: [pollutant.longitude, pollutant.latitude],
