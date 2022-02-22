@@ -61,6 +61,9 @@ const initialViewport = {
  * @property {Array<Pollutant>} pollutants
  */
 export const MapBox = ({ isLoading, pollutants }) => {
+  const positionCalc = (val) => {
+    return (1390*Math.pow(val,1/2.1))-50 
+  }
   const [viewport, setViewport] = useState(initialViewport);
   const [hoverInfo, setHoverInfo] = useState(null);
   
@@ -76,6 +79,7 @@ export const MapBox = ({ isLoading, pollutants }) => {
             feature: hoveredFeature,
             x: offsetX,
             y: offsetY,
+            translate: positionCalc(hoveredFeature.properties.value),
             count: features.length
           }
         : null
