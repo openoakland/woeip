@@ -9,6 +9,29 @@ const ArrowPosition = (val, oldMax, oldMin, newMax, newMin) => {
   return (((val - oldMin) * newRange) / oldRange) + newMin
 }
 
+const FormatTime = (date) => {
+  let d = new Date(date);
+  let hh = d.getHours();
+  let m = d.getMinutes();
+  let s = d.getSeconds();
+  let dd = "am";
+  let h = hh;
+  if (h >= 12) {
+    h = hh - 12;
+    dd = "pm";
+  }
+  if (h == 0) {
+    h = 12;
+  }
+  m = m < 10 ? "0" + m : m;
+  s = s < 10 ? "0" + s : s;
+  let pattern = new RegExp("0?" + hh + ":" + m + ":" + s);
+  let replacement = h + ":" + m;
+  replacement += ":"+s;
+  replacement += " " + dd;
+  return date.replace(pattern, replacement).split(' ').slice(1).join(' ');
+}
+
 export const Hover = ({hoverInfo}) => {
 
   const val = hoverInfo.feature.properties.value
@@ -53,19 +76,18 @@ export const Hover = ({hoverInfo}) => {
   }
 
   const [ pointerColor, pointerPosition ] = ArrowProps(val)
+  const PPM = val * 1000
 
   return (
     <div className="hovertip" style={{left: hoverInfo.x, top: hoverInfo.y}}>
-      <div>X,Y: {hoverInfo.x}, {hoverInfo.y}</div>
-      <div>Points: {hoverInfo.count}</div>
-      <div>Data: {val}</div>
-      <div>Time: {hoverInfo.time}</div>
+      <div><b>{PPM} PPM</b> at {FormatTime(hoverInfo.time)} </div>
       <div class="container">
         <div id="decoration">
           <div class="arrow-up" id="pointer" style={{borderBottomColor: `${pointerColor}`, left: `calc(${pointerPosition}% - var(--pointer-width)`}}></div>
           <div class="hover" id="green"></div><div class="hover" id="yellow"></div><div class="hover" id="orange"></div><div class="hover" id="red"></div><div class="hover" id="blue"></div><div class="hover" id="purple"></div>
         </div>
       </div>
+      <div>{hoverInfo.count} total point(s)</div>
     </div>
   );
 }
