@@ -3,10 +3,10 @@ import { PM25_CATEGORY_COLORS } from './box'
 
 /* Converts nonlinear EPA color category ranges to linear colorbar ranges
 */
-const ArrowPosition = (val, oldMax, oldMin, newMax, newMin) => {
-  const oldRange = oldMax - oldMin 
-  const newRange = newMax - newMin
-  return (((val - oldMin) * newRange) / oldRange) + newMin
+const ArrowPosition = (val, epaMin, epaMax, colorbarMin, colorbarMax) => {
+  const epaRange = epaMax - epaMin 
+  const colorbarRange = colorbarMax - colorbarMin
+  return (((val - epaMin) * colorbarRange) / epaRange) + colorbarMin
 }
 
 const FormatTime = (date) => {
@@ -76,11 +76,12 @@ export const Hover = ({hoverInfo}) => {
   }
 
   const [ pointerColor, pointerPosition ] = ArrowProps(val)
-  const PPM = val * 1000
+  const micrograms = val * 1000  // val is in units of milligrams per cubic meter
 
   return (
     <div className="hovertip" style={{left: hoverInfo.x, top: hoverInfo.y}}>
-      <div><b>{PPM} PPM</b> at {FormatTime(hoverInfo.time)} </div>
+{/*      <div><b>{micrograms} &#181;g/m<sup>3</sup></b> at {FormatTime(hoverInfo.time)} </div>
+*/}      <div><b>{micrograms} PM<sub>2.5</sub></b> at {FormatTime(hoverInfo.time)} </div>
       <div class="container">
         <div id="decoration">
           <div class="arrow-up" id="pointer" style={{borderBottomColor: `${pointerColor}`, left: `calc(${pointerPosition}% - var(--pointer-width)`}}></div>
