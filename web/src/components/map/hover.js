@@ -80,8 +80,7 @@ export const Hover = ({hoverInfo}) => {
 
   return (
     <div className="hovertip" style={{left: hoverInfo.x, top: hoverInfo.y}}>
-{/*      <div><b>{micrograms} &#181;g/m<sup>3</sup></b> at {FormatTime(hoverInfo.time)} </div>
-*/}      <div><b>{micrograms} PM<sub>2.5</sub></b> at {FormatTime(hoverInfo.time)} </div>
+      <div><b>{micrograms} &#181;g/m<sup>3</sup> of PM<sub>2.5</sub></b> at {FormatTime(hoverInfo.time)} </div>
       <div class="container">
         <div id="decoration">
           <div class="arrow-up" id="pointer" style={{borderBottomColor: `${pointerColor}`, left: `calc(${pointerPosition}% - var(--pointer-width)`}}></div>
