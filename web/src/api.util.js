@@ -6,14 +6,8 @@
  * @returns {string} url for  the api
  */
 export const apiUrl = (endpoint) => {
-  const baseUrl =
-    process.env.NODE_ENV === "production"
-      ? process.env.REACT_APP_API_DOMAIN
-      : `http://api.lvh.me`;
-  // const protocol = process.env.REACT_APP_PROTOCOL || "http";
-  // const domain = process.env.REACT_APP_API_DOMAIN || "api.lvh.me";
-  // return `${protocol}://${domain}/${endpoint}`;
-  return `${baseUrl}/${endpoint}`;
+  const domain = process.env.REACT_APP_API_DOMAIN || "api.lvh.me";
+  return `//${domain}/${endpoint}`;
 };
 
 /**
