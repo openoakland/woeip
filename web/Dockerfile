@@ -1,4 +1,4 @@
-FROM node:14-alpine
+FROM node:16.14.0-alpine
 
 # set working directory
 WORKDIR /usr/src/app
@@ -9,7 +9,7 @@ ENV PATH usr/src/app/node_modules/.bin:$PATH
 # install app dependencies
 COPY package*.json ./
 RUN npm i
-RUN npm i react-scripts@4.0.3 -g
+RUN mkdir -p node_modules/.cache && chmod -R 777 node_modules/.cache
 
 # add app
 COPY . .
