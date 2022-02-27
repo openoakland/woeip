@@ -14,7 +14,6 @@ export const About = () => (
       */}
     <div class="ui container about-container">
       <h2 className="ui header">About WOAQ</h2>
-
       <p>
         West Oakland Air Quality (WOAQ) helps West Oaklanders like you
         understand your local air quality and fight for cleaner air.
@@ -35,9 +34,7 @@ export const About = () => (
         neighbors, explore the environmental issues that directly impact your
         health and well-being, and reclaim the air you breathe every day.
       </p>
-
       <h3 className="ui header">Tools for the community</h3>
-
       <p>
         For decades, the West Oakland Environmental Indicators Project, a
         community-led nonprofit, has led a groundbreaking process of{" "}
@@ -71,9 +68,7 @@ export const About = () => (
         so WOEIP can empower another generation of residents to continue this
         critical work.
       </p>
-
       <h3 className="ui header">Acknowledgments</h3>
-
       <p>
         WOAQ is the result of years of hard work and contributions by many, many
         people. We’re thankful for and inspired by those who have contributed
@@ -81,9 +76,7 @@ export const About = () => (
         and advocacy. We’re especially grateful for the many WOEIP volunteers
         who spent hours collecting air quality data in West Oakland.
       </p>
-
       <div class="ui grid container">
-
         <div class="three wide column">
           <h4 className="ui header">Core team</h4>
           <div class="ui bulleted list">
@@ -140,11 +133,15 @@ export const About = () => (
           </div>
         </div>
 
-        <p>If you've contributed to WOAQ and would like to have your name listed here (or removed), please email woaq@openoakland.org (<a href="mailto:woaq@openoakland.org">send email</a>).</p>
-
-      </div> {/* close ui grid container */}
-    </div> {/* close ui container about-container */}
-
+        <p>
+          If you've contributed to WOAQ and would like to have your name listed
+          here (or removed), please email woaq@openoakland.org (
+          <a href="mailto:woaq@openoakland.org">send email</a>).
+        </p>
+      </div>{" "}
+      {/* close ui grid container */}
+    </div>{" "}
+    {/* close ui container about-container */}
     {/* Made the color red in the "./index.css" file, just to show how it's all linked up */}
   </Container>
 );
