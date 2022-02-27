@@ -36,6 +36,8 @@ LOCAL_APPS = ["woeip.apps.core", "woeip.apps.air_quality"]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 DEFAULT_FILE_STORAGE = env(
     "DEFAULT_FILE_STORAGE", default="storages.backends.s3boto.S3BotoStorage"
 )
