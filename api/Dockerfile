@@ -1,4 +1,4 @@
-FROM python:3.7
+FROM python:3.9.10
 ENV PYTHONUNBUFFERED 1
 WORKDIR /usr/src/app
 

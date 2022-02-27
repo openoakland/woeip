@@ -40,7 +40,7 @@ class Provider(PythonProvider):
 factory.Faker.add_provider(Provider)
 
 
-class DeviceFactory(factory.DjangoModelFactory):
+class DeviceFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = models.Device
 
@@ -49,14 +49,14 @@ class DeviceFactory(factory.DjangoModelFactory):
     firmware = factory.Faker("pyint")
 
 
-class FileHashFactory(factory.DjangoModelFactory):
+class FileHashFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = models.FileHash
 
     hash = factory.Faker("hash")
 
 
-class PollutantFactory(factory.DjangoModelFactory):
+class PollutantFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = models.Pollutant
 
@@ -64,7 +64,7 @@ class PollutantFactory(factory.DjangoModelFactory):
     description = factory.Faker("sentence", nb_words=3)
 
 
-class SensorFactory(factory.DjangoModelFactory):
+class SensorFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = models.Sensor
 
@@ -74,7 +74,7 @@ class SensorFactory(factory.DjangoModelFactory):
     unit = factory.Faker("sentence", nb_words=2)
 
 
-class CalibrationFactory(factory.DjangoModelFactory):
+class CalibrationFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = models.Calibration
 
@@ -83,7 +83,7 @@ class CalibrationFactory(factory.DjangoModelFactory):
     calibrated_at = factory.Faker("past_datetime", tzinfo=pytz.utc)
 
 
-class CollectionFactory(factory.DjangoModelFactory):
+class CollectionFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = models.Collection
 
@@ -91,7 +91,7 @@ class CollectionFactory(factory.DjangoModelFactory):
     ends_at = factory.Faker("past_datetime", tzinfo=pytz.utc)
 
 
-class CollectionFileFactory(factory.DjangoModelFactory):
+class CollectionFileFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = models.CollectionFile
 
@@ -104,7 +104,7 @@ class CollectionFileFactory(factory.DjangoModelFactory):
     processed_at = factory.Faker("past_datetime", tzinfo=pytz.utc)
 
 
-class TimeGeoFactory(factory.DjangoModelFactory):
+class TimeGeoFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = models.TimeGeo
 
@@ -113,7 +113,7 @@ class TimeGeoFactory(factory.DjangoModelFactory):
     time = factory.Faker("past_datetime", tzinfo=pytz.utc)
 
 
-class PollutantValueFactory(factory.DjangoModelFactory):
+class PollutantValueFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = models.PollutantValue
 
