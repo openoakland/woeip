@@ -15,9 +15,7 @@ it("should create the url to get all collections", () => {
 });
 
 it("should create the url to get a collection by its ID", () => {
-  expect(apiUrlCollectionById(1)).toEqual(
-    "//api.lvh.me/collection/1/data"
-  );
+  expect(apiUrlCollectionById(1)).toEqual("//api.lvh.me/collection/1/data");
 });
 
 it("should create the url to get all devices", () => {
