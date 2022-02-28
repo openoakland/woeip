@@ -41,7 +41,7 @@ export const clearAuthTokenItem = () => localStorage.removeItem("authToken");
  *
  * @returns {string} auth token
  */
-export const getAuthTokenItem = () => localStorage.getItem("authToken");
+export const getAuthTokenItem = () => localStorage.getItem("authToken") ?? '';
 
 /**
  *
