@@ -4,6 +4,7 @@ import { Map } from "../map";
 import { Upload } from "../upload";
 import { Home } from "../home";
 import { About } from "../about";
+import { Auth } from "../auth";
 
 export const Navswitch = () => {
   return (
@@ -38,5 +39,10 @@ export const routes = [
     path: "/about",
     exact: true,
     component: About,
+  },
+  {
+    path: "/auth",
+    exact: true,
+    component: Auth,
   },
 ];
