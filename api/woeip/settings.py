@@ -30,7 +30,7 @@ DJANGO_APPS = [
     "django.contrib.gis",
 ]
 
-THIRD_PARTY_APPS = ["django_extensions", "rest_framework", "storages", "drf_yasg"]
+THIRD_PARTY_APPS = ["django_extensions", "corsheaders", "rest_framework", "storages", "drf_yasg"]
 
 LOCAL_APPS = ["woeip.apps.core", "woeip.apps.air_quality"]
 
@@ -57,6 +57,7 @@ if DEFAULT_FILE_STORAGE == "storages.backends.s3boto.S3BotoStorage" and (
 
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware"
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -75,6 +76,8 @@ WSGI_APPLICATION = "woeip.wsgi.application"
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
 DATABASES = {"default": env.db()}
+
+CORS_ORIGIN_ALLOW_ALL = True # TODO: Be more restrictive
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
