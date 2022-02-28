@@ -1,14 +1,27 @@
 import './colorbar.css'
 import { PM25_CATEGORY_COLORS } from './box'
 
-/* Converts nonlinear EPA color category ranges to linear colorbar ranges
-*/
+/**
+ * Any given EPA color category contains a variable amount of air quality readings.
+ * For example, the green GOOD category is 0 to 0.012 or 0.012 values long, while the orange 
+ * UNHEALTHY_SENSITIVE category is 0.035 to 0.055, or 0.02 values long.  We're using a colorbar 
+ * where each category is of the same length.  To represent these values on a color bar where 
+ * each color is the same length, each air quality value must be converted to a percentage
+ * of the total linear distance along the single category it appears in.
+ * The following calculation spreads the possible readings of each category along a range for just 
+ * that category's color, i.e., converting the nonlinear EPA color category ranges to linear colorbar ranges.
+ * See https://www.airnow.gov/sites/default/files/2020-05/aqi-technical-assistance-document-sept2018.pdf
+ */
 const ArrowPosition = (val, epaMin, epaMax, colorbarMin, colorbarMax) => {
   const epaRange = epaMax - epaMin 
   const colorbarRange = colorbarMax - colorbarMin
   return (((val - epaMin) * colorbarRange) / epaRange) + colorbarMin
 }
 
+/**
+ * Turns "2014-08-04 21:05:30" into "9:05:30 pm"
+ * from https://stackoverflow.com/questions/4898574/converting-24-hour-time-to-12-hour-time-w-am-pm-using-javascript
+ */
 const FormatTime = (date) => {
   let d = new Date(date);
   let hh = d.getHours();
@@ -35,6 +48,12 @@ const FormatTime = (date) => {
 export const Hover = ({hoverInfo}) => {
 
   const val = hoverInfo.feature.properties.value
+  const maxReading = 0.5
+        /* This value is used as a guess of the maximum possible (i.e. 100%) value of 
+         * any air sample reading in order to correctly position the hover's arrow along 
+         * the last (purple) color in the colorbar.  Edit to match or exceed the max value 
+         * in any given collection.
+         */
 
   const ArrowProps = (val) => {
     if (val >= 0 && val <= 0.012) {
@@ -70,7 +89,7 @@ export const Hover = ({hoverInfo}) => {
     if (val > 0.25) {
       return [
         PM25_CATEGORY_COLORS.HAZARDOUS,
-        ArrowPosition(val,0.25,0.5,83.333,100)
+        ArrowPosition(val,0.25,maxReading,83.333,100)  
         ]
       }
   }

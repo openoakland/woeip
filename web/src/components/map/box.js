@@ -64,6 +64,11 @@ export const MapBox = ({ isLoading, pollutants }) => {
   const [viewport, setViewport] = useState(initialViewport);
   const [hoverInfo, setHoverInfo] = useState(null);
 
+/**
+ * Return points from the data layer on hover
+ * Inspired by https://github.com/visgl/react-map-gl/blob/7.0-release/examples/geojson/src/app.tsx
+ *   and https://visgl.github.io/react-map-gl/examples/controls
+ */
   const onHover = useCallback(event => {
     const {
       features,

@@ -14,7 +14,6 @@
   border-left: var(--pointer-width) solid transparent;
   border-right: var(--pointer-width) solid transparent;
   border-bottom: 10px solid red;
-  /*transform: translateX(000%);*/
   left: -webkit-calc(50% - var(--pointer-width));
   left: -moz-calc(50% - var(--pointer-width));
   left: calc(50% - var(--pointer-width));
