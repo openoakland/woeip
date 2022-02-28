@@ -43,14 +43,17 @@ Next, to start the app, use either Method 1 or Method 2 to get the project runni
 
 ## Starting the app locally with NPM (Method 1)
 
-Check to see if already have Node.js installed.
+The current recommendation to avoid compatibilty issues is to use Node.js version **16.14.0**.  Check to see if already have it installed.  
 
 ```
-npm --version
+node --version
 ```
-If you get a response like `8.3.0`, you have Node.js and the Node Package Manager (NPM) installed and can continue below.  If not, see [Node Downloads](https://nodejs.org/en/download/) to download and install Node.js and NPM.
+* If you get no response, Node.js is not yet on your system; see [Node Downloads](https://nodejs.org/en/download/) to download and install Node.js and the Node Package Manager (NPM).  
+* If you get a number lower than 16.14.0, please upgrade to the version recommended for our project: `nvm install 16.14.0`
+* If you get a number higher than 16.14.0, you may wish to switch to this version: `nvm use 16.14.0` See above to install if necessary.
+* If you get a response of 16.14.0, you have the correct version of Node.js and NPM installed; continue below.
 
-Once NPM is installed, simply do the following to go to the `..\web` front-end directory, install all the needed libraries the app requires as listed in `package.json`, and then open up the app in a web browser locally with a script also defined in `package.json`
+Once Node.js and NPM are installed, simply do the following to go to the `..\web` front-end directory, install all the needed libraries the app requires as listed in `package.json`, and then open up the app in a web browser locally with a script also defined in `package.json`
 
 ```
 cd web
