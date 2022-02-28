@@ -95,7 +95,7 @@ export const Hover = ({hoverInfo}) => {
   }
 
   const [ pointerColor, pointerPosition ] = ArrowProps(val)
-  const micrograms = val * 1000  // val is in units of milligrams per cubic meter
+  const micrograms = val * 1000  // val is stored in units of milligrams per cubic meter but displayed in micrograms per cubic meter
 
   return (
     <div className="hovertip" style={{left: hoverInfo.x, top: hoverInfo.y}}>
