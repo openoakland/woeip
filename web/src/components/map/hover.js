@@ -51,7 +51,7 @@ export const Hover = ({hoverInfo}) => {
   const maxReading = 0.5
         /* This value is used as a guess of the maximum possible (i.e. 100%) value of 
          * any air sample reading in order to correctly position the hover's arrow along 
-         * the last (purple) color in the colorbar.  Edit to match or exceed the max value 
+         * the last (darkred) color in the colorbar.  Edit to match or exceed the max value 
          * in any given collection.
          */
 
@@ -103,7 +103,7 @@ export const Hover = ({hoverInfo}) => {
       <div class="container">
         <div id="decoration">
           <div class="arrow-up" id="pointer" style={{borderBottomColor: `${pointerColor}`, left: `calc(${pointerPosition}% - var(--pointer-width)`}}></div>
-          <div class="hover" id="green"></div><div class="hover" id="yellow"></div><div class="hover" id="orange"></div><div class="hover" id="red"></div><div class="hover" id="blue"></div><div class="hover" id="purple"></div>
+          <div class="hover" id="green"></div><div class="hover" id="yellow"></div><div class="hover" id="orange"></div><div class="hover" id="red"></div><div class="hover" id="violet"></div><div class="hover" id="darkred"></div>
         </div>
       </div>
       <div>{hoverInfo.count} total point(s)</div>
