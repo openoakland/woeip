@@ -14,11 +14,11 @@ class Provider(PythonProvider):
     """
 
     def random_value_in_range(self, min_value, max_value, digits=6):
-        # min_value and max_value apply to left-of-decimal value
-        # to get [0,1), need to set both to 0
         base_val = self.pyfloat(
-            min_value=0, max_value=0, positive=True, right_digits=digits
+            min_value=0, max_value=1, right_digits=digits
         )
+        print("base value")
+        print(base_val)
         return round(base_val * (max_value - min_value) + min_value, digits)
 
     def west_oakland_geo_point(self):
