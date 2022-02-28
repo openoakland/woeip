@@ -29,27 +29,27 @@ div.hover {
 
 /*from https://www.airnow.gov/sites/default/files/2020-05/aqi-technical-assistance-document-sept2018.pdf*/
 
-div#green {
+div.green {
   background: #00E400;
 }
 
-div#yellow {
+div.yellow {
   background: #FFFF00;
 }
 
-div#orange {
+div.orange {
   background: #FF7E00;
 }
 
-div#red {
+div.red {
   background: #FF0000;
 }
 
-div#violet {
+div.violet {
   background: #8F3F97;
 }
 
-div#darkred {
+div.darkred {
   background: #7E0023;
 }
 
