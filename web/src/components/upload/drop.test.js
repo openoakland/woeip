@@ -75,7 +75,9 @@ describe("Actions after extracting files", () => {
     // Files are pending
     expect(screen.getByText(/Pending Files/)).toBeInTheDocument();
     // Remove button is a trash icon
-    expect(screen.getAllByRole("button")[1].childNodes[0].className).toMatch("trash");
+    expect(screen.getAllByRole("button")[1].childNodes[0].className).toMatch(
+      "trash"
+    );
   });
 
   it("should have an error message for three files", () => {

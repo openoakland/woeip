@@ -35,4 +35,5 @@ const links = [
   { text: "About", route: "about" },
   { text: "Upload", route: "upload" },
   { text: "Maps", route: "maps" },
+  { text: "Account", route: "auth" },
 ];

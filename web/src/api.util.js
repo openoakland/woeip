@@ -30,6 +30,8 @@ export const apiUrlCollectionById = (collectionId) =>
  */
 export const apiUrlDevices = () => apiUrl("devices");
 
+export const apiUrlAuthLogin = () => apiUrl("api-auth/login/");
+
 /**
  * Removes the protocol from a url so that it is an empty protocol.
  * This prevents mixed content errors (https://developer.mozilla.org/en-US/docs/Web/Security/Mixed_content),
