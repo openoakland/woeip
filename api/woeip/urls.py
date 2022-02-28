@@ -18,7 +18,7 @@ router.register(r"pollutant", views.PollutantViewSet)
 router.register(r"pollutant_values", views.PollutantValueViewSet)
 router.register(r"sensors", views.SensorViewSet)
 router.register(r"timegeo", views.TimeGeoViewSet)
-router.register(r"users", core_views.UserViewSet)
+# router.register(r"users", core_views.UserViewSet) # Disable to prevent personal information leaking
 
 
 urlpatterns = [
