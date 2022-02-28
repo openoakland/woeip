@@ -1,9 +1,18 @@
 import axios from "axios";
 import { apiUrlAuthLogin } from "../../api.util";
 
-export const login = (username, password) => {
+/**
+ * 
+ * @param {*} email 
+ * @param {*} password 
+ * @returns 
+ */
+export const login = async (email, password) => {
+  let token = '';
+  let code = 100;
+  let errored = false;
   const data = {
-    username,
+    email,
     password,
   };
   const options = {
@@ -11,5 +20,13 @@ export const login = (username, password) => {
     data,
   };
   console.log(options);
-  axios.post(apiUrlAuthLogin(), data);
+  try{
+    const response = await axios.post(apiUrlAuthLogin(), data);
+    code = response.status;
+    if(code === 200) token = response.data.key;
+  } catch {
+    errored = true;
+  } finally {
+    return {token, code, errored}
+  }
 };
