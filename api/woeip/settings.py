@@ -113,6 +113,12 @@ PASSWORD_HASHERS = [
     "django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher",
 ]
 
+SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_AGE = 43200 # 12 hours in seconds
+SESSION_COOKIE_DOMAIN = ".lvh.me"
+SESSION_COOKIE_SECURE = False # True in production
+
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
