@@ -1,21 +1,22 @@
-import { useState } from "react";
-import { Container } from "../ui";
+import { useContext, useState } from "react";
+import { AuthTokenContext } from "./tokenContext";
 import { login, setAuthTokenItem } from "./utils";
+import { useHistory } from "react-router-dom";
+import { Container } from "../ui";
 
-// TODO: setToken -> setAuthToken
-export const Login = ({ setToken }) => {
+export const Login = () => {
+  const { setAuthToken } = useContext(AuthTokenContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const history = useHistory();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { errored, code, token } = await login(email, password);
-    console.error("errored", errored);
-    console.warn("code", code);
-    console.log("token", token);
-    if (code === 200) {
-      setToken(token);
+    if (!errored && code === 200) {
+      setAuthToken(token);
       setAuthTokenItem(token);
+      history.push("/upload");
     }
   };
 

@@ -1,29 +1,31 @@
-import { useEffect, useState } from "react";
-import { Container } from "../ui";
+import { useContext, useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
+import { AuthTokenContext } from "./tokenContext";
 import { clearAuthTokenItem, logout } from "./utils";
+import { Container } from "../ui";
 
-// TODO: logout and return to Login page
-export const Logout = ({authToken, setAuthToken}) => {
+export const Logout = () => {
+  const { authToken, setAuthToken } = useContext(AuthTokenContext);
   const [pending, setPending] = useState(true);
   const [errored, setErrored] = useState(false);
-
+  const history = useHistory(); // TODO: push history to login
 
   useEffect(() => {
     (async () => {
-      console.log('authToken', authToken);
-      const {errored, code} = await logout(authToken);
-      console.log('logout errored', errored);
-      console.log('logout code', code);
+      const { errored, code } = await logout(authToken);
       setErrored(errored);
       setPending(false);
       clearAuthTokenItem();
-      setAuthToken('');
+      setAuthToken("");
+      if (!errored && code === 200) history.push("/auth/login");
     })();
-  }, []);
+  }, [authToken, history, setAuthToken]);
 
-
-  return (<Container textAlign="center">
-    pending: {pending}
-    errored: {errored}
-  </Container>);
+  return (
+    // TODO: Loading and Error feedback
+    <Container textAlign="center">
+      {pending ? "pending\n" : "not pending"}
+      {errored ? "errored" : "not errored "}
+    </Container>
+  );
 };

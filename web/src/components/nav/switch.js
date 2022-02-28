@@ -4,17 +4,16 @@ import { Map } from "../map";
 import { Upload } from "../upload";
 import { Home } from "../home";
 import { About } from "../about";
-import { Auth } from "../auth";
+import { Login } from "../auth/login";
+import { Logout } from "../auth/logout";
 
-export const Navswitch = () => {
-  return (
-    <Switch>
-      {routes.map((route) => (
-        <Route key={route.path} {...route} />
-      ))}
-    </Switch>
-  );
-};
+export const Navswitch = () => (
+  <Switch>
+    {routes.map((route) => (
+      <Route key={route.path} {...route} />
+    ))}
+  </Switch>
+);
 
 /**
  * Route data: includes the components to render
@@ -41,8 +40,13 @@ export const routes = [
     component: About,
   },
   {
-    path: "/auth",
+    path: "/auth/login",
     exact: true,
-    component: Auth,
+    component: Login,
+  },
+  {
+    path: "/auth/logout",
+    exact: true,
+    component: Logout,
   },
 ];

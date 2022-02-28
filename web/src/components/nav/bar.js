@@ -1,7 +1,13 @@
+import { useContext, useEffect, useState } from "react";
 import { Link, NavLink, withRouter } from "react-router-dom";
+import { AuthTokenContext } from "../auth/tokenContext";
 import { Container, Menu } from "../ui";
 
 const Navbar = () => {
+  const { authToken } = useContext(AuthTokenContext);
+  const [links, setLinks] = useState([]);
+  useEffect(() => setLinks(activeHeaderLinks(authToken)), [authToken]);
+
   return (
     <Container>
       <Menu pointing secondary style={{ borderBottom: "none" }}>
@@ -31,9 +37,15 @@ export const NavbarWithRouter = withRouter(Navbar);
 /**
  * Data for Navigation Routes
  */
-const links = [
+const allHeaderLinks = [
   { text: "About", route: "about" },
   { text: "Upload", route: "upload" },
   { text: "Maps", route: "maps" },
-  { text: "Account", route: "auth" },
+  { text: "Login", route: "auth/login" },
+  { text: "Logout", route: "auth/logout" },
 ];
+
+const activeHeaderLinks = (authToken) => {
+  const filteredLink = authToken ? "Login" : "Logout";
+  return allHeaderLinks.filter((link) => link.text !== filteredLink);
+};

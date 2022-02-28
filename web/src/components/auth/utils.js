@@ -28,27 +28,27 @@ export const login = async (email, password) => {
 };
 
 /**
- * 
- * @param {*} Authorization 
+ *
+ * @param {*} Authorization
  * @modifies
- * @returns 
+ * @returns
  */
 export const logout = async (Authorization) => {
   let errored = false;
   let code = 0;
   const options = {
-    headers: {Authorization}
-  }
+    headers: { Authorization },
+  };
 
-  try{
+  try {
     const response = await axios.post(apiUrlAuthLogout(), options);
     code = response.status;
   } catch {
     errored = true;
   } finally {
-    return {code, errored};
+    return { code, errored };
   }
-}
+};
 
 /**
  *
@@ -60,7 +60,7 @@ export const clearAuthTokenItem = () => localStorage.removeItem("authToken");
  *
  * @returns {string} auth token
  */
-export const getAuthTokenItem = () => localStorage.getItem("authToken") ?? '';
+export const getAuthTokenItem = () => localStorage.getItem("authToken") ?? "";
 
 /**
  *
