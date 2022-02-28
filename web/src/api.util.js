@@ -30,7 +30,7 @@ export const apiUrlCollectionById = (collectionId) =>
  */
 export const apiUrlDevices = () => apiUrl("devices");
 
-export const apiUrlAuthLogin = () => apiUrl("api-auth/login/");
+export const apiUrlAuthLogin = () => apiUrl("auth/login/");
 
 /**
  * Removes the protocol from a url so that it is an empty protocol.

@@ -24,7 +24,8 @@ router.register(r"users", core_views.UserViewSet)
 urlpatterns = [
     path("", include(router.urls)),
     path("admin/", admin.site.urls),
-    path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
+    path("auth/", include("rest_auth.urls")),
+    path("auth/register/", include('rest_auth.registration.urls'))
 ]
 
 urlpatterns += swagger_urlpatterns

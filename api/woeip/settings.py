@@ -30,7 +30,7 @@ DJANGO_APPS = [
     "django.contrib.gis",
 ]
 
-THIRD_PARTY_APPS = ["corsheaders", "django_extensions", "rest_framework", "storages", "drf_yasg"]
+THIRD_PARTY_APPS = ["corsheaders", "django_extensions", "rest_framework", 'rest_framework.authtoken', "rest_auth", "allauth", 'allauth.account', 'allauth.socialaccount', 'rest_auth.registration', "storages", "drf_yasg"]
 
 LOCAL_APPS = ["woeip.apps.core", "woeip.apps.air_quality"]
 
@@ -67,6 +67,24 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django.contrib.flatpages.middleware.FlatpageFallbackMiddleware",
 ]
+
+REST_FRAMEWORK = {
+    'DATETIME_FORMAT': "%m/%d/%Y %I:%M%P",
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+        ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+    ]
+}
+
+AUTHENTICATION_BACKENDS = (
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
+)
+
+CORS_ALLOW_ALL_ORIGINS = True
+CSRF_TRUSTED_ORIGINS = ['api.lvh.me','lvh.me']
 
 ROOT_URLCONF = "woeip.urls"
 
@@ -192,9 +210,6 @@ LOGGING = {
         "django": {"handlers": ["console"], "propagate": True},
     },
 }
-
-LOGIN_REDIRECT_URL = "upload"
-LOGOUT_REDIRECT_URL = "login"
 
 EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
 EMAIL_FILE_PATH = str(project_root.path("sent_emails"))
