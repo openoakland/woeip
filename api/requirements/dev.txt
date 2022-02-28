@@ -12,6 +12,7 @@ coreschema==0.0.4
 coverage==6.3.2
 Django==3.2.12
 django-boto==0.3.12
+django-cors-headers==3.11.0
 django-debug-toolbar==3.2.4
 django-environ==0.8.1
 django-extensions==3.1.5
