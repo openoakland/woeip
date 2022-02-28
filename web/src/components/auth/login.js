@@ -13,9 +13,9 @@ export const Login = ({ setToken }) => {
     console.error("errored", errored);
     console.warn("code", code);
     console.log("token", token);
-    if(code === 200){
-        setToken(token);
-        setAuthTokenItem(token);
+    if (code === 200) {
+      setToken(token);
+      setAuthTokenItem(token);
     }
   };
 

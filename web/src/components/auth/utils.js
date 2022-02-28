@@ -32,20 +32,21 @@ export const login = async (email, password) => {
 };
 
 /**
- * 
+ *
  * @modifies
  */
-export const clearAuthTokenItem = () => localStorage.removeItem('authToken');
+export const clearAuthTokenItem = () => localStorage.removeItem("authToken");
 
 /**
- * 
+ *
  * @returns {string} auth token
  */
-export const getAuthTokenItem = () => localStorage.getItem('authToken');
+export const getAuthTokenItem = () => localStorage.getItem("authToken");
 
 /**
- * 
- * @param {string} authToken 
- * @modifies 
+ *
+ * @param {string} authToken
+ * @modifies
  */
-export const setAuthTokenItem = (authToken) => localStorage.setItem('authToken', authToken)
+export const setAuthTokenItem = (authToken) =>
+  localStorage.setItem("authToken", authToken);
