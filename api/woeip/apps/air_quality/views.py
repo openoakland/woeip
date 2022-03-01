@@ -35,7 +35,7 @@ class CollectionViewSet(viewsets.ModelViewSet):
         if start_date:
             try:
                 start = list(map(int, start_date.split('-')))
-                return queryset.filter(starts_at__date=datetime.date(*start))
+                queryset = queryset.filter(starts_at__date=datetime.date(*start))
             except (TypeError, ValueError) as e:
                 """Incorrect number of values,
                 Values are not valid dates,
