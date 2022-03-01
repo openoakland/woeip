@@ -2,3 +2,18 @@
   position: absolute;
   bottom: 12px;
 }
+
+button.clndr-cell {
+  background-color: lightblue;
+  border-radius: 50%;
+}
+
+button.clndr-cell-disabled {
+  background-color: white;
+  border-radius: 0;
+}
+
+button.clndr-cell-selected {
+  background-color: royalblue;
+  color: white;
+}
