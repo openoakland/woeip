@@ -1,5 +1,5 @@
 import { PropTypes } from "prop-types";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 
@@ -19,6 +19,7 @@ import {
 import { UploadCancelModal } from "./cancelModal";
 import { Form } from "semantic-ui-react";
 import { apiUrlCollections } from "../../api.util";
+import { AuthTokenContext } from "../auth/tokenContext";
 
 /**
  * Allow the user to view data about their files
@@ -43,6 +44,7 @@ export const UploadConfirm = ({
   clearDustrakSerial,
   returnToDrop,
 }) => {
+  const { authToken } = useContext(AuthTokenContext);
   const [shouldShowCancelModal, setShouldShowCancelModal] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [filesForm, setFilesForm] = useState(new Form());
@@ -66,6 +68,7 @@ export const UploadConfirm = ({
       if (isSaving) {
         const options = {
           headers: {
+            Authorization: `Token ${authToken}`,
             "Content-Type": "multipart/form-data",
           },
           cancelToken: cancelTokenSource.token,
@@ -92,7 +95,14 @@ export const UploadConfirm = ({
         setIsSaving(false);
       }
     })();
-  }, [filesForm, dustrakStart, history, cancelTokenSource, isSaving]);
+  }, [
+    authToken,
+    filesForm,
+    dustrakStart,
+    history,
+    cancelTokenSource,
+    isSaving,
+  ]);
 
   /**
    * @modifies {isSaving} Notify component we are saving

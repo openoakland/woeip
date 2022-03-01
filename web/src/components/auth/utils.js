@@ -33,15 +33,15 @@ export const login = async (email, password) => {
 
 /**
  *
- * @param {string} Authorization
+ * @param {string} authToken
  * @modifies {API}
  * @returns response code, presence of error
  */
-export const logout = async (Authorization) => {
+export const logout = async (authToken) => {
   let errored = false;
   let code = 0;
   const options = {
-    headers: { Authorization },
+    headers: { Authorization: `Token ${authToken}` },
   };
 
   try {

@@ -8,7 +8,7 @@ export const Logout = () => {
   const { authToken, setAuthToken } = useContext(AuthTokenContext);
   const [pending, setPending] = useState(true);
   const [errored, setErrored] = useState(false);
-  const history = useHistory(); // TODO: push history to login
+  const history = useHistory();
 
   useEffect(() => {
     (async () => {
@@ -19,7 +19,8 @@ export const Logout = () => {
       setAuthToken("");
       if (!errored && code === 200) history.push("/auth/login");
     })();
-  }, [authToken, history, setAuthToken]);
+    // Run once on mount
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     // TODO: Loading and Error feedback
