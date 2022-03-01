@@ -21,6 +21,7 @@ import { BLANK_ACTIVE_ID } from "./utils";
  */
 export const MapMenu = ({
   mapDate,
+  setOfDates,
   collectionsOnDate,
   activeId,
   activeStartsAt,
@@ -59,6 +60,7 @@ export const MapMenu = ({
         format="YYYY-MM-DD"
         value={mapDate.toDate()}
         clearable={false}
+        filterDate={date => setOfDates.has(moment(date).format('YYYY-MM-DD'))}
       />
       <h3>Collection Details</h3>
       <List>
