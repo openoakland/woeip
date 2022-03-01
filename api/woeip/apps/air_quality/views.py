@@ -42,8 +42,13 @@ class CollectionViewSet(viewsets.ModelViewSet):
                 Fail to convert strings to integers
                 """
                 logger.error(e)
-                raise ValidationError(detail=e)            
-        return queryset
+                raise ValidationError(detail=e)
+        # can I juse the Python objects True and False somehow?
+        # not sure what happens if I pass the JS values true and false
+        if self.request.query_params.get("one_per_date", "False") == "True":
+            # https://stackoverflow.com/questions/2466496/select-distinct-values-from-a-table-field
+            return queryset.distinct("starts_at")
+        else: return queryset
 
 
     @action(detail=True, methods=["GET"])
