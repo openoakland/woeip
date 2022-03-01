@@ -49,7 +49,7 @@ export const Map = () => {
   /**
    * Load the collections that happened on a date
    * @param {string} formattedDate
-   * @modifies {api} calls to get collections on a data
+   * @modifies {api} calls to get collections on a date
    * @modifies {collectionsOnDate}
    * @modifies {activeId}
    * @modifies {activeStartsAt}
