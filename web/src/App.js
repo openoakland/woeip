@@ -9,15 +9,19 @@ import "./App.css";
 // All components for the application are organized here.
 export const App = () => {
   const [authToken, setAuthToken] = useState("");
+  const [tokenLoading, setTokenLoading] = useState(true);
   /**
    * Check local storage for auth token on initial application load.
    */
   useEffect(() => {
     setAuthToken(getAuthTokenItem());
+    setTokenLoading(false);
   }, []);
 
   return (
-    <AuthTokenContext.Provider value={{ authToken, setAuthToken }}>
+    <AuthTokenContext.Provider
+      value={{ authToken, tokenLoading, setAuthToken }}
+    >
       <Container className={"app-container"}>
         {/* Components that can be mounted via the Router are nested in Navigation */}
         <Navigation />
