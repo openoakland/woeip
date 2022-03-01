@@ -52,7 +52,7 @@ export const Hover = ({hoverInfo}) => {
         /* This value is used as a guess of the maximum possible (i.e. 100%) value of 
          * any air sample reading in order to correctly position the hover's arrow along 
          * the last (darkred) color in the colorbar.  Edit to match or exceed the max value 
-         * in any given collection.
+         * of all collections.
          */
 
   const ArrowProps = (val) => {
@@ -95,25 +95,30 @@ export const Hover = ({hoverInfo}) => {
   }
 
   const [ pointerColor, pointerPosition ] = ArrowProps(val)
+  const pointerStyle = {
+    borderBottomColor: `${pointerColor}`, 
+    left: `calc(${pointerPosition}% - var(--pointer-width)`
+  }
   const micrograms = val * 1000  // val is stored in units of milligrams per cubic meter but displayed in micrograms per cubic meter
-  const otherHoverKeys = hoverInfo.features.slice(1)
-
+  const otherHoverPts = hoverInfo.features.slice(1,5)
+  var moreThanSixHoverPts = hoverInfo.features.slice(6,).length 
+  if (!moreThanSixHoverPts) {var moreThanSixHoverPts = null}
 
   return (
     <div className="hovertip" style={{left: hoverInfo.x, top: hoverInfo.y}}>
       <div><b>{micrograms} &#181;g/m<sup>3</sup> of PM<sub>2.5</sub></b> at {FormatTime(hoverInfo.time)} </div>
       <div class="container">
         <div id="decoration">
-          <div class="arrow-up" id="pointer" style={{borderBottomColor: `${pointerColor}`, left: `calc(${pointerPosition}% - var(--pointer-width)`}}></div>
+          <div class="arrow-up" id="pointer" style={pointerStyle}></div>
           <div class="hover green"></div><div class="hover yellow"></div><div class="hover orange"></div><div class="hover red"></div><div class="hover violet"></div><div class="hover darkred"></div>
         </div>
       </div>
-      {otherHoverKeys && otherHoverKeys.map(({properties}) => (
-          <div key={properties}>
-            <b>{properties.value * 1000} &#181;g/m<sup>3</sup> of PM<sub>2.5</sub></b> {FormatTime(properties.timestamp)}
-          </div>
+      {otherHoverPts && otherHoverPts.map(({properties}) => (
+        <div key={properties}>
+          <b>{properties.value * 1000} &#181;g/m<sup>3</sup> of PM<sub>2.5</sub></b> at {FormatTime(properties.timestamp)}
+        </div>
         ))}
-      <div>{otherHoverKeys.length} remaining point(s)</div>
+      {moreThanSixHoverPts && <div>and {moreThanSixHoverPts} additional point(s)</div>}
     </div>
   );
 }
