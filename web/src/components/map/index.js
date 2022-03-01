@@ -29,7 +29,7 @@ import { Grid } from "../ui";
  */
 export const Map = () => {
   const location = useLocation(); // location for the url
-  const initialDate = moment(location?.state?.date) || moment(); // Date either from upload or current day
+  const initialDate = moment(location?.state?.date); // Date either from upload or current day (moment(undefined) gives now)
   const [mapDate, setMapDate] = useState(initialDate);
   const [formattedDate, setFormattedDate] = useState(
     initialDate.format("YYYY-MM-DD")
