@@ -30,9 +30,23 @@ export const apiUrlCollectionById = (collectionId) =>
  */
 export const apiUrlDevices = () => apiUrl("devices");
 
+/**
+ * Constructs the api endpoint to login
+ * @returns {string}
+ */
 export const apiUrlAuthLogin = () => apiUrl("auth/login/");
 
+/**
+ * Constructs the api endpoint to logout
+ * @returns {string}
+ */
 export const apiUrlAuthLogout = () => apiUrl("auth/logout/");
+
+/**
+ * Constructs the api endpoint to register a user
+ * @returns {string}
+ */
+export const apiUrlAuthRegister = () => apiUrl("auth/register/");
 
 /**
  * Removes the protocol from a url so that it is an empty protocol.

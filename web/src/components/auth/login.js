@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { AuthTokenContext } from "./tokenContext";
 import { login, setAuthTokenItem } from "./utils";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { Container } from "../ui";
 
 export const Login = () => {
@@ -20,15 +20,16 @@ export const Login = () => {
     }
   };
 
-  const changeUsername = (e) => setEmail(e.target.value);
+  const changeEmail = (e) => setEmail(e.target.value);
   const changePassword = (e) => setPassword(e.target.value);
 
   return (
     <Container textAlign="center">
       <h2>Login to continue</h2>
+      <Link to={"/auth/register"}>Create an Account</Link>
       <form onSubmit={handleSubmit}>
         <label>
-          Email: <input type="text" value={email} onChange={changeUsername} />
+          Email: <input type="email" value={email} onChange={changeEmail} />
         </label>
         <label>
           Password:{" "}

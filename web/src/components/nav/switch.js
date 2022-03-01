@@ -6,6 +6,7 @@ import { Home } from "../home";
 import { About } from "../about";
 import { Login } from "../auth/login";
 import { Logout } from "../auth/logout";
+import { Register } from "../auth/register";
 
 export const Navswitch = () => (
   <Switch>
@@ -48,5 +49,10 @@ export const routes = [
     path: "/auth/logout",
     exact: true,
     component: Logout,
+  },
+  {
+    path: "/auth/register",
+    exact: true,
+    component: Register,
   },
 ];

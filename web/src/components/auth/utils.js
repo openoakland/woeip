@@ -1,12 +1,16 @@
 import axios from "axios";
-import { apiUrlAuthLogin, apiUrlAuthLogout } from "../../api.util";
+import {
+  apiUrlAuthLogin,
+  apiUrlAuthLogout,
+  apiUrlAuthRegister,
+} from "../../api.util";
 
 /**
  *
- * @param {*} email
- * @param {*} password
- * @modifies
- * @returns
+ * @param {string} email
+ * @param {string} password
+ * @modifies {API}
+ * @returns auth token, response code, and presence of error
  */
 export const login = async (email, password) => {
   let token = "";
@@ -29,9 +33,9 @@ export const login = async (email, password) => {
 
 /**
  *
- * @param {*} Authorization
- * @modifies
- * @returns
+ * @param {string} Authorization
+ * @modifies {API}
+ * @returns response code, presence of error
  */
 export const logout = async (Authorization) => {
   let errored = false;
@@ -52,20 +56,48 @@ export const logout = async (Authorization) => {
 
 /**
  *
- * @modifies
+ * @param {string} email
+ * @param {string} password1
+ * @param {string} password2
+ * @modifies {API}
+ * @returns auth token, response code, and presence of error
+ */
+export const register = async (email, password1, password2) => {
+  let token = "";
+  let code = 0;
+  let errored = false;
+  const data = {
+    email,
+    password1,
+    password2,
+  };
+  try {
+    const response = await axios.post(apiUrlAuthRegister(), data);
+    code = response.status;
+    if (code === 201) token = response.data.key;
+  } catch {
+    errored = true;
+  } finally {
+    return { token, code, errored };
+  }
+};
+
+/**
+ * Removes auth token from local storage
+ * @modifies {LocalStorage}
  */
 export const clearAuthTokenItem = () => localStorage.removeItem("authToken");
 
 /**
- *
+ * Retrieve auth token from local storage
  * @returns {string} auth token
  */
 export const getAuthTokenItem = () => localStorage.getItem("authToken") ?? "";
 
 /**
- *
+ * Place auth token into local storage
  * @param {string} authToken
- * @modifies
+ * @modifies {LocalStorage}
  */
 export const setAuthTokenItem = (authToken) =>
   localStorage.setItem("authToken", authToken);
