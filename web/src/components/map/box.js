@@ -74,15 +74,16 @@ export const MapBox = ({ isLoading, pollutants }) => {
       features,
       srcEvent: {offsetX, offsetY}
     } = event;
-    const hoveredFeature = features && features[0];
+    const hoveredFeatures = features && features[0];
     setHoverInfo(
-      hoveredFeature
+      hoveredFeatures
         ? {
-            feature: hoveredFeature,
+            feature: hoveredFeatures,
             x: offsetX,
             y: offsetY,
-            time: hoveredFeature.properties.timestamp,
-            count: features.length
+            time: hoveredFeatures.properties.timestamp,
+            count: features.length,
+            features: features
           }
         : null
     );

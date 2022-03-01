@@ -96,6 +96,8 @@ export const Hover = ({hoverInfo}) => {
 
   const [ pointerColor, pointerPosition ] = ArrowProps(val)
   const micrograms = val * 1000  // val is stored in units of milligrams per cubic meter but displayed in micrograms per cubic meter
+  const otherHoverKeys = hoverInfo.features.slice(1)
+
 
   return (
     <div className="hovertip" style={{left: hoverInfo.x, top: hoverInfo.y}}>
@@ -106,7 +108,12 @@ export const Hover = ({hoverInfo}) => {
           <div class="hover green"></div><div class="hover yellow"></div><div class="hover orange"></div><div class="hover red"></div><div class="hover violet"></div><div class="hover darkred"></div>
         </div>
       </div>
-      <div>{hoverInfo.count} total point(s)</div>
+      {otherHoverKeys && otherHoverKeys.map(({properties}) => (
+          <div key={properties}>
+            <b>{properties.value * 1000} &#181;g/m<sup>3</sup> of PM<sub>2.5</sub></b> {FormatTime(properties.timestamp)}
+          </div>
+        ))}
+      <div>{otherHoverKeys.length} remaining point(s)</div>
     </div>
   );
 }

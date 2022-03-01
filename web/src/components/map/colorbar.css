@@ -53,3 +53,29 @@ div.darkred {
   background: #7E0023;
 }
 
+/*.swatch {
+  position: relative;
+  margin-left: calc( 2 * var(--swatch-size));
+}
+.swatch:before{
+  position: absolute;
+  left: calc( -2 * var(--swatch-size));
+  content: "";
+  height:var(--swatch-size);
+  width:var(--swatch-size);
+  margin-top: calc( ( 15px - var(--swatch-size) ) / 2 );
+}
+.swatch.red:before{
+  background-color:red;
+}*/
+
+.swatch {
+  position: relative;
+  float: left;
+  height: 10px;
+  width: 10px;
+  margin-bottom: 7px;
+  clear: both;
+  background-color: red;
+  }
+
