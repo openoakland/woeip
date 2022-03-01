@@ -16,7 +16,7 @@ export const Login = () => {
     if (!errored && code === 200) {
       setAuthToken(token);
       setAuthTokenItem(token);
-      history.push("/upload");
+      history.push("/");
     }
   };
 
