@@ -222,6 +222,23 @@ export const getCollectionsOnDate = async (
   } = await getCollections({ start_date: formattedDate }, cancelTokenSource);
   return { collectionsOnDate, thrownCode };
 };
+
+/**
+ * Retrieve list of dates with at least one collection. Wrapper for getCollections
+ * @param {CancelToken} cancelTokenSource
+ * @returns {
+ *  {listOfDates: Array<String>, thrownCode: THROWN_CODE}
+ * }
+ */
+export const getAllDates = async (cancelTokenSource) => {
+  const {
+    collections: oneCollectionPerDate,
+    thrownCode
+  } = await getCollections({ one_per_date: "True" }, cancelTokenSource);
+  const listOfDates = oneCollectionPerDate.map(collection => collection["starts_at"].slice(0, 10));
+  return { listOfDates, thrownCode };
+};
+
 /**
  * Retrieve data about the collection file, gps or dustrak
  * @param {string} fileLink the url to the file
