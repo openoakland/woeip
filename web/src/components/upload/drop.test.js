@@ -75,7 +75,7 @@ describe("Actions after extracting files", () => {
     // Files are pending
     expect(screen.getByText(/Pending Files/)).toBeInTheDocument();
     // Remove button is a trash icon
-    expect(screen.getByRole("button").childNodes[0].className).toMatch("trash");
+    expect(screen.getAllByRole("button")[1].childNodes[0].className).toMatch("trash");
   });
 
   it("should have an error message for three files", () => {
@@ -110,8 +110,8 @@ describe("Actions after extracting files", () => {
     const setFiles = jest.fn();
     renderUploadDrop({ files, setFiles });
     const trashButtons = screen.getAllByRole("button");
-    expect(trashButtons).toHaveLength(3);
-    fireEvent.click(trashButtons[0]);
+    expect(trashButtons).toHaveLength(4);
+    fireEvent.click(trashButtons[1]);
     expect(setFiles).toHaveBeenCalledWith([files[1], files[2]]);
   });
 
