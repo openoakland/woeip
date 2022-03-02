@@ -69,7 +69,7 @@ div.darkred {
   background-color:red;
 }*/
 
-.swatch {
+/*.swatch {
   position: relative;
   float: left;
   height: 10px;
@@ -77,5 +77,13 @@ div.darkred {
   margin-bottom: 7px;
   clear: both;
   background-color: red;
-  }
+  }*/
+
+.swatch {
+  float: left;
+  font-size: 20pt;
+  margin-top: -2px;
+  color: rgb(42, 170, 82)
+}
+
 

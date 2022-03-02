@@ -100,6 +100,7 @@ export const Hover = ({hoverInfo}) => {
     left: `calc(${pointerPosition}% - var(--pointer-width)`
   }
   const micrograms = val * 1000  // val is stored in units of milligrams per cubic meter but displayed in micrograms per cubic meter
+
   const otherHoverPts = hoverInfo.features.slice(1,5)
   var moreThanSixHoverPts = hoverInfo.features.slice(6,).length 
   if (!moreThanSixHoverPts) {var moreThanSixHoverPts = null}
@@ -113,11 +114,13 @@ export const Hover = ({hoverInfo}) => {
           <div class="hover green"></div><div class="hover yellow"></div><div class="hover orange"></div><div class="hover red"></div><div class="hover violet"></div><div class="hover darkred"></div>
         </div>
       </div>
-      {otherHoverPts && otherHoverPts.map(({properties}) => (
+      {(otherHoverPts.length != 0) && <div>Other nearby readings:</div>}
+      {otherHoverPts && (otherHoverPts.map(({properties}) => (
         <div key={properties}>
-          <b>{properties.value * 1000} &#181;g/m<sup>3</sup> of PM<sub>2.5</sub></b> at {FormatTime(properties.timestamp)}
+          <div class='swatch' style={{ color: ArrowProps(properties.value)[0] }}>&#9632;</div>
+          <div><b>{properties.value * 1000} &#181;g/m<sup>3</sup> of PM<sub>2.5</sub></b> at {FormatTime(properties.timestamp)}</div>
         </div>
-        ))}
+        )))}
       {moreThanSixHoverPts && <div>and {moreThanSixHoverPts} additional point(s)</div>}
     </div>
   );
