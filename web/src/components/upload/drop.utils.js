@@ -8,9 +8,9 @@ import moment from "moment-timezone";
 export const messageForFileCount = (fileCount) => {
   if ([0, 2].includes(fileCount)) return "";
   if (fileCount < 2)
-    return "We need one GPS log file and one DusTrak cvs file. Please add a file to continue.";
+    return "We need one GPS log file and one DusTrak csv file. Please add a file to continue.";
   if (fileCount > 2)
-    return "We need exactly one GPS log file and one DusTrak cvs file. Please remove additional files.";
+    return "We need exactly one GPS log file and one DusTrak csv file. Please remove additional files.";
 };
 
 /**
