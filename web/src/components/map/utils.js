@@ -111,9 +111,9 @@ export const spatializePollutants = (pollutants) => {
     features: pollutants.map((pollutant) => {
       return {
         type: "Feature",
-        properties: { 
+        properties: {
           value: pollutant.value,
-          timestamp: pollutant.timestamp
+          timestamp: pollutant.timestamp,
         },
         geometry: {
           type: "Point",

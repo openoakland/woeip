@@ -1,7 +1,7 @@
 import { useState, useCallback } from "react";
 import { PropTypes } from "prop-types";
 import { Dimmer, Loader, Container } from "../ui";
-import { Hover, ArrowPosition } from "./hover"
+import { Hover } from "./hover";
 import "./box.css";
 
 import ReactMapGL, { Layer, NavigationControl, Source } from "react-map-gl";
@@ -9,8 +9,7 @@ import "mapbox-gl/dist/mapbox-gl.css";
 // Hack: https://github.com/mapbox/mapbox-gl-js/issues/10173#issuecomment-753662795
 import mapboxgl from "mapbox-gl";
 /* eslint-disable import/no-webpack-loader-syntax */
-mapboxgl.workerClass =
-  require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
+mapboxgl.workerClass = require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
 /* eslint-enable import/no-webpack-loader-syntax */
 
 export const PM25_CATEGORY_COLORS = {
@@ -66,15 +65,15 @@ export const MapBox = ({ isLoading, pollutants }) => {
   const [viewport, setViewport] = useState(initialViewport);
   const [hoverInfo, setHoverInfo] = useState(null);
 
-/**
- * Return points from the data layer on hover
- * Inspired by https://github.com/visgl/react-map-gl/blob/7.0-release/examples/geojson/src/app.tsx
- *   and https://visgl.github.io/react-map-gl/examples/controls
- */
-  const onHover = useCallback(event => {
+  /**
+   * Return points from the data layer on hover
+   * Inspired by https://github.com/visgl/react-map-gl/blob/7.0-release/examples/geojson/src/app.tsx
+   *   and https://visgl.github.io/react-map-gl/examples/controls
+   */
+  const onHover = useCallback((event) => {
     const {
       features,
-      srcEvent: {offsetX, offsetY}
+      srcEvent: { offsetX, offsetY },
     } = event;
     const hoveredFeatures = features && features[0];
     setHoverInfo(
@@ -85,7 +84,7 @@ export const MapBox = ({ isLoading, pollutants }) => {
             y: offsetY,
             time: hoveredFeatures.properties.timestamp,
             count: features.length,
-            features: features
+            features: features,
           }
         : null
     );
@@ -103,7 +102,7 @@ export const MapBox = ({ isLoading, pollutants }) => {
         mapStyle={mapStyle}
         onViewStateChange={setViewport}
         mapboxApiAccessToken={mapboxApiAccessToken}
-        interactiveLayerIds={['point']}
+        interactiveLayerIds={["point"]}
         onHover={onHover}
       >
         <NavigationControl
@@ -128,7 +127,7 @@ MapBox.protoTypes = {
         type: PropTypes.oneOf(["Feature"]),
         properties: PropTypes.shape({
           value: PropTypes.number,
-          timestamp:  PropTypes.string,
+          timestamp: PropTypes.string,
         }),
         geometry: PropTypes.shape({
           type: PropTypes.oneOf(["Point"]),
