@@ -89,8 +89,8 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 
-CORS_ALLOW_ALL_ORIGINS = True
-CSRF_TRUSTED_ORIGINS = ['api.lvh.me','lvh.me']
+CORS_ALLOW_ALL_ORIGINS = True # TODO: Be more restrictive
+CSRF_TRUSTED_ORIGINS = ['api.lvh.me','lvh.me'] # TODO: Check effect
 
 ROOT_URLCONF = "woeip.urls"
 

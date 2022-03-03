@@ -64,6 +64,8 @@ export const UploadConfirm = ({
    * @modifies {isSaving} sets to false if upload fails
    */
   useEffect(() => {
+    // TODO: Transfer request to utility functions
+    // TODO: Consolidate utility functions to single file within folder
     (async () => {
       if (isSaving) {
         const options = {
@@ -75,6 +77,7 @@ export const UploadConfirm = ({
         };
         try {
           await axios.post(apiUrlCollections(), filesForm, options);
+          //TODO: Handle when the session has expired
           history.push({
             pathname: "/maps",
             state: {
