@@ -21,7 +21,6 @@ export const Logout = () => {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    // TODO: Loading and Error feedback
     <Container textAlign="center">
       <Dimmer active={pending}>
         <Loader indeterminate>Logging out...</Loader>
