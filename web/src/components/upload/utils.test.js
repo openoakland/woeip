@@ -1,6 +1,6 @@
 import fs from "fs";
 import moment from "moment-timezone";
-import { 
+import {
   findDevice,
   getFilesForm,
   messageForFileCount,
@@ -13,8 +13,7 @@ import {
   getDustrakStart,
   getDustrakEnd,
   extractFileMetaContent,
- } from "./utils";
-
+} from "./utils";
 
 //TODO: use mock service worker to test
 describe.skip("getDevices", () => {
@@ -72,7 +71,6 @@ describe("getFilesForm", () => {
     expect(filesForm.get("pollutant")).toEqual("1");
   });
 });
-
 
 describe("Message for File Count", () => {
   it("should return an empty error when count is zero or two", () => {
@@ -376,4 +374,3 @@ describe("process gps and dustrak files", () => {
     });
   });
 });
-

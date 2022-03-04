@@ -52,13 +52,12 @@ export const getFilesForm = ({
   return filesForm;
 };
 
-
 /**
  * If there are files, there must be exactly two. Otherwise, return an error message
  * @param {number} fileCount derived from the length of the array of files
  * @return {string} error message associated with count. empty if two
  */
- export const messageForFileCount = (fileCount) => {
+export const messageForFileCount = (fileCount) => {
   if ([0, 2].includes(fileCount)) return "";
   if (fileCount < 2)
     return "We need one GPS log file and one DusTrak cvs file. Please add a file to continue.";
