@@ -1,6 +1,6 @@
 import axios from "axios";
 import moment from "moment-timezone";
-import { apiUrlDevices } from "../../api.util";
+import { apiUrlCollections, apiUrlDevices, authTokenHeaderFormat } from "../../api.util";
 
 /**
  * Shape of device data stored in database
@@ -195,3 +195,24 @@ export const extractFileMetaContent = async (file, endLine = 10) => {
     return [""];
   }
 };
+
+
+// TODO: Integrate cancellation logic
+export const saveCollection = (filesForm, authToken, cancelTokenSource) => {
+  const options = {
+    headers: {
+      Authorization: authTokenHeaderFormat(authToken),
+      "Content-Type": "multipart/form-data",
+      cancelToken: cancelTokenSource.token,
+    },
+  }
+  try{
+    const response = await axios.post(apiUrlCollections, filesForm, options);
+    code = response.code;
+
+  } catch {
+    error = true;
+  } finally {
+    return {code, error}
+  }
+}

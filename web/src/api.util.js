@@ -1,3 +1,22 @@
+import axios from "axios";
+
+/**
+ * TODO: JSDoc
+ */
+export const RESPONSE_THROWN_CODE = {
+  NONE: 0,
+  FAILED: 1,
+  CANCELED: 2,
+};
+
+/**
+ * Return a code for axios catch block depending on whether the request failed because it was canceled
+ * @param {Error} thrown error sent to a catch block after
+ * @returns {RESPONSE_THROWN_CODE} the number associated with a type of failure
+ */
+ export const getThrownCode = (thrown) =>
+ axios.isCancel(thrown) ? RESPONSE_THROWN_CODE.CANCELED : RESPONSE_THROWN_CODE.FAILED;
+
 /**
  * Base function to construct requests to the api
  * All Available API endpoints are available on
@@ -56,3 +75,5 @@ export const apiUrlAuthRegister = () => apiUrl("auth/register/");
  * @returns {string} the link in the form "//domain.io"
  */
 export const emptyProtocol = (link) => link.replace(/^(https?|ftp):/, "");
+
+export const authTokenHeaderFormat = (authToken) => `Token ${authToken}`;

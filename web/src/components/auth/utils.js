@@ -3,6 +3,7 @@ import {
   apiUrlAuthLogin,
   apiUrlAuthLogout,
   apiUrlAuthRegister,
+  authTokenHeaderFormat,
 } from "../../api.util";
 
 /**
@@ -41,7 +42,7 @@ export const logout = async (authToken) => {
   let errored = false;
   let code = 0;
   const options = {
-    headers: { Authorization: `Token ${authToken}` },
+    headers: { Authorization: authTokenHeaderFormat(authToken) },
   };
 
   try {

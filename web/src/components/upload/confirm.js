@@ -65,7 +65,6 @@ export const UploadConfirm = ({
    */
   useEffect(() => {
     // TODO: Transfer request to utility functions
-    // TODO: Consolidate utility functions to single file within folder
     (async () => {
       if (isSaving) {
         const options = {
