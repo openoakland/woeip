@@ -3,7 +3,7 @@ import { useState, useEffect, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 
-import { getFilesForm } from "./confirm.utils";
+import { getFilesForm } from "./utils";
 
 import {
   Segment,
