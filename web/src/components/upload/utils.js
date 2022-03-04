@@ -1,6 +1,6 @@
 import axios from "axios";
 import moment from "moment-timezone";
-import { apiUrlCollections, apiUrlDevices, authTokenHeaderFormat } from "../../api.util";
+import { apiUrlCollections, apiUrlDevices, authTokenHeaderFormat, getThrownCode, RESPONSE_THROWN_CODE } from "../../api.util";
 
 /**
  * Shape of device data stored in database
@@ -196,9 +196,14 @@ export const extractFileMetaContent = async (file, endLine = 10) => {
   }
 };
 
-
-// TODO: Integrate cancellation logic
-export const saveCollection = (filesForm, authToken, cancelTokenSource) => {
+/**
+ * Save uploaded data to a collection
+ * @param {*} filesForm 
+ * @param {*} authToken 
+ * @param {*} cancelTokenSource 
+ * @returns 
+ */
+export const saveCollection = async (filesForm, authToken, cancelTokenSource) => {
   const options = {
     headers: {
       Authorization: authTokenHeaderFormat(authToken),
@@ -207,12 +212,9 @@ export const saveCollection = (filesForm, authToken, cancelTokenSource) => {
     },
   }
   try{
-    const response = await axios.post(apiUrlCollections, filesForm, options);
-    code = response.code;
-
-  } catch {
-    error = true;
-  } finally {
-    return {code, error}
-  }
+    await axios.post(apiUrlCollections, filesForm, options);
+    return {thrownCode: RESPONSE_THROWN_CODE.NONE};
+  } catch (thrown) {
+    return {thrownCode: getThrownCode(thrown)};
+  };
 }

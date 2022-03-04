@@ -3,7 +3,7 @@ import { useState, useEffect, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 
-import { getFilesForm } from "./utils";
+import { getFilesForm, saveCollection } from "./utils";
 
 import {
   Segment,
@@ -18,7 +18,7 @@ import {
 
 import { UploadCancelModal } from "./cancelModal";
 import { Form } from "semantic-ui-react";
-import { apiUrlCollections } from "../../api.util";
+import { apiUrlCollections, RESPONSE_THROWN_CODE } from "../../api.util";
 import { AuthTokenContext } from "../auth/tokenContext";
 
 /**
@@ -44,7 +44,7 @@ export const UploadConfirm = ({
   clearDustrakSerial,
   returnToDrop,
 }) => {
-  const { authToken } = useContext(AuthTokenContext);
+  const { authToken, setAuthToken } = useContext(AuthTokenContext);
   const [shouldShowCancelModal, setShouldShowCancelModal] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [filesForm, setFilesForm] = useState(new Form());
@@ -65,38 +65,34 @@ export const UploadConfirm = ({
    */
   useEffect(() => {
     // TODO: Transfer request to utility functions
+    const source = axios.CancelToken.source();
     (async () => {
       if (isSaving) {
-        const options = {
-          headers: {
-            Authorization: `Token ${authToken}`,
-            "Content-Type": "multipart/form-data",
-          },
-          cancelToken: cancelTokenSource.token,
-        };
-        try {
-          await axios.post(apiUrlCollections(), filesForm, options);
-          //TODO: Handle when the session has expired
-          history.push({
-            pathname: "/maps",
-            state: {
-              date: dustrakStart.format("MM/DD/YYYY"),
-            },
-          });
-        } catch (thrown) {
-          if (axios.isCancel(thrown)) {
-            alert("Canceled request to save uploads");
-          } else {
-            if (thrown.response) {
-              alert(`Failed to save uploads: ${thrown.response.data}`);
-            } else {
-              alert("Failed to save uploads");
-            }
+          // NEXT STEP: Get code from api when uploading duplicate files
+          //TODO: Create path for duplicate files
+          //TODO: Create path for unauthenticated//session expired
+          const { thrownCode } = await saveCollection(filesForm, authToken, source);
+          if(thrownCode === RESPONSE_THROWN_CODE.NONE) {
+            history.push({
+              pathname: "/maps",
+              state: {
+                date: dustrakStart.format("MM/DD/YYYY"),
+              },
+            });
+          } else if (thrownCode === RESPONSE_THROWN_CODE.CANCELED) {
+            alert("Canceled Request to save uploads");
+          } else if (thrownCode === RESPONSE_THROWN_CODE.UNAUTHORIZED) {
+            // TODO: provide flow to easily log back in.
+            alert("Unauthorized Request. User session may have expired.")
+          } else if(thrownCode === RESPONSE_THROWN_CODE.CONFLICT) {
+            alert("Failed to save uploads. Files may have already been uploaded.");
           }
+          } else if (thrownCode === RESPONSE_THROWN_CODE.FAILED){
+            alert("Failed to save uploads");
         }
         setIsSaving(false);
       }
-    })();
+    )();
   }, [
     authToken,
     filesForm,

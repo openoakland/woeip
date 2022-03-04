@@ -7,6 +7,8 @@ export const RESPONSE_THROWN_CODE = {
   NONE: 0,
   FAILED: 1,
   CANCELED: 2,
+  UNAUTHORIZED: 3,
+  CONFLICT: 4,
 };
 
 /**
