@@ -60,6 +60,8 @@ export const MapMenu = ({
         format="YYYY-MM-DD"
         value={mapDate.toDate()}
         clearable={false}
+        showToday={false}
+        datePickerOnly={true}
         filterDate={date => setOfDates.has(moment(date).format('YYYY-MM-DD'))}
       />
       <h3>Collection Details</h3>

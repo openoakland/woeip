@@ -3,17 +3,49 @@
   bottom: 12px;
 }
 
+/* include "button" selector so other month dates are excluded
+ * (.clndr-cell-other-month seems not to be working; those spans
+ * don't have that class)
+ */
 button.clndr-cell {
   background-color: lightblue;
   border-radius: 50%;
+  opacity: 100%;
 }
 
-button.clndr-cell-disabled {
+button.clndr-cell:hover {
+  background-color: azure;
+}
+
+/* include "button" and "disabled" selectors to override "hover" above */
+button.clndr-cell-disabled:disabled {
   background-color: white;
+  color: black;
   border-radius: 0;
 }
 
+/* include "button" selector to override above */
 button.clndr-cell-selected {
   background-color: royalblue;
   color: white;
 }
+
+.clndr-days {
+  background-color: rgba(255, 255, 255, 1);
+  border: 1px solid white; /* hack to get rid of border */
+}
+
+/* Report tonight:
+ * * Keep today button? Helps get to present day, and
+ *   it's possible to type a no-data date in anyway (unless we set
+ *   datePickerOnly={true}). Otherwise the only way to get to the present
+ *   is by clicking the arrow button a bunch of times. But maybe this
+ *   problem should be solved in another issue by showing a zoomed-out view
+ *   of some sort
+ * * gray background shows through as gridlines; how to redesign
+ *   dates with data so they're obvious and stylish?
+ * * help running tests
+ *   - "panic: the handle is invalid"
+ *   - doesn't recognize command "make"
+ *   - npm isn't installed
+ */
