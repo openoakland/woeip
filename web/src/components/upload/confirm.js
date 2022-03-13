@@ -18,7 +18,6 @@ import {
 
 import { UploadCancelModal } from "./cancelModal";
 import { Form } from "semantic-ui-react";
-import { apiUrlCollections, RESPONSE_THROWN_CODE } from "../../api.util";
 import { AuthTokenContext } from "../auth/tokenContext";
 
 /**
@@ -44,7 +43,7 @@ export const UploadConfirm = ({
   clearDustrakSerial,
   returnToDrop,
 }) => {
-  const { authToken, setAuthToken } = useContext(AuthTokenContext);
+  const { authToken } = useContext(AuthTokenContext);
   const [shouldShowCancelModal, setShouldShowCancelModal] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [filesForm, setFilesForm] = useState(new Form());
@@ -71,28 +70,18 @@ export const UploadConfirm = ({
           // NEXT STEP: Get code from api when uploading duplicate files
           //TODO: Create path for duplicate files
           //TODO: Create path for unauthenticated//session expired
-          const { thrownCode } = await saveCollection(filesForm, authToken, source);
-          if(thrownCode === RESPONSE_THROWN_CODE.NONE) {
+          const { errored } = await saveCollection(filesForm, authToken, source);
+          if( !errored ) {
             history.push({
               pathname: "/maps",
               state: {
                 date: dustrakStart.format("MM/DD/YYYY"),
               },
             });
-          } else if (thrownCode === RESPONSE_THROWN_CODE.CANCELED) {
-            alert("Canceled Request to save uploads");
-          } else if (thrownCode === RESPONSE_THROWN_CODE.UNAUTHORIZED) {
-            // TODO: provide flow to easily log back in.
-            alert("Unauthorized Request. User session may have expired.")
-          } else if(thrownCode === RESPONSE_THROWN_CODE.CONFLICT) {
-            alert("Failed to save uploads. Files may have already been uploaded.");
           }
-          } else if (thrownCode === RESPONSE_THROWN_CODE.FAILED){
-            alert("Failed to save uploads");
-        }
         setIsSaving(false);
       }
-    )();
+    })();
   }, [
     authToken,
     filesForm,

@@ -14,6 +14,7 @@ jest.mock("../map", () => () => <></>);
 jest.mock("../upload", () => () => <></>);
 
 describe("Navigation", () => {
+  // TODO: Fix, accounting for unauthed view
   it("should stay on home page", () => {
     render(<Navigation />);
     // Use quotes to get exact match, avoiding conflict with "WOAQ" in welcome message.

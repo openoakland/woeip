@@ -14,12 +14,14 @@ import {
   getPollutantsByCollectionId,
   getCollectionFileByLink,
   BLANK_ACTIVE_STARTS_AT,
+  THROWN_CODE,
   mergePollutants,
   spatializePollutants,
   EMPTY_POLLUTANTS,
 } from "./utils";
 
-import { emptyProtocol, RESPONSE_THROWN_CODE } from "../../api.util";
+import { emptyProtocol } from "../../api.util";
+
 import { Grid } from "../ui";
 
 /**
@@ -60,7 +62,7 @@ export const Map = () => {
     (async () => {
       const { collectionsOnDate: localCollectionsOnDate, thrownCode } =
         await getCollectionsOnDate(formattedDate, source);
-      if (thrownCode === RESPONSE_THROWN_CODE.NONE) {
+      if (thrownCode === THROWN_CODE.NONE) {
         setCollectionsOnDate(localCollectionsOnDate);
         const {
           id,
@@ -93,13 +95,13 @@ export const Map = () => {
         setIsLoadingPollutants(true);
         const { pollutants: rawPollutants, thrownCode } =
           await getPollutantsByCollectionId(activeId, source);
-        if (thrownCode === RESPONSE_THROWN_CODE.NONE) {
+        if (thrownCode === THROWN_CODE.NONE) {
           const parsed = parsePollutants(rawPollutants);
           const merged = mergePollutants(parsed);
           const spatialized = spatializePollutants(merged);
           setPollutants(spatialized);
         }
-        if (thrownCode !== RESPONSE_THROWN_CODE.CANCELED) setIsLoadingPollutants(false);
+        if (thrownCode !== THROWN_CODE.CANCELED) setIsLoadingPollutants(false);
       } else {
         setIsLoadingPollutants(false);
       }
@@ -128,9 +130,9 @@ export const Map = () => {
           getCollectionFileByLink(emptyProtocol(dustrakFile), source),
         ]);
 
-        if (thrownCodeGps === RESPONSE_THROWN_CODE.NONE)
+        if (thrownCodeGps === THROWN_CODE.NONE)
           setGpsFileUrl(emptyProtocol(localGpsFile.file));
-        if (thrownCodeDustrak === RESPONSE_THROWN_CODE.NONE)
+        if (thrownCodeDustrak === THROWN_CODE.NONE)
           setDustrakFileUrl(emptyProtocol(localDustrakFile.file));
       }
     })();

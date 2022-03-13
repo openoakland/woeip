@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { apiUrlCollectionById, apiUrlCollections, getThrownCode, RESPONSE_THROWN_CODE } from "../../api.util";
+import { apiUrlCollectionById, apiUrlCollections } from "../../api.util";
 
 /**
  * Shape of pollutant data stored in database
@@ -65,7 +65,11 @@ export const BLANK_ACTIVE_COLLECTION = {
   starts_at: BLANK_ACTIVE_STARTS_AT,
 };
 
-
+export const THROWN_CODE = {
+  NONE: 0,
+  FAILED: 1,
+  CANCELED: 2,
+};
 
 /**
  * Retrieve the pollutants that were detected by a given collection session
@@ -90,7 +94,7 @@ export const getPollutantsByCollectionId = async (
     );
     const pollutants = response?.data;
     if (!pollutants) throw new Error("Failed to get pollutants data");
-    return { pollutants: pollutants, thrownCode: RESPONSE_THROWN_CODE.NONE };
+    return { pollutants: pollutants, thrownCode: THROWN_CODE.NONE };
   } catch (thrown) {
     return { pollutants: {}, thrownCode: getThrownCode(thrown) };
   }
@@ -180,7 +184,7 @@ export const parsePollutant = (item) => {
  * @param {string} formattedDate requested date, already in expected format
  * @param {CancelToken} cancelTokenSource
  * @returns {
- *  {collectionsOnDate: Array<Collection>, thrownCode: RESPONSE_THROWN_CODE }
+ *  {collectionsOnDate: Array<Collection>, thrownCode: THROWN_CODE}
  * }
  */
 export const getCollectionsOnDate = async (
@@ -204,7 +208,7 @@ export const getCollectionsOnDate = async (
       );
     return {
       collectionsOnDate: collectionsOnDate,
-      thrownCode: RESPONSE_THROWN_CODE.NONE,
+      thrownCode: THROWN_CODE.NONE,
     };
   } catch (thrown) {
     return { collectionsOnDate: [], thrownCode: getThrownCode(thrown) };
@@ -215,7 +219,7 @@ export const getCollectionsOnDate = async (
  * Retrieve data about the collection file, gps or dustrak
  * @param {string} fileLink the url to the file
  * @param {CancelToken} cancelTokenSource
- * @returns {{ file: CollectionFile || null, thrownCode: RESPONSE_THROWN_CODE}} data about the collection file
+ * @returns {{ file: CollectionFile || null, thrownCode: THROWN_CODE}} data about the collection file
  */
 export const getCollectionFileByLink = async (fileLink, cancelTokenSource) => {
   const options = {
@@ -224,11 +228,19 @@ export const getCollectionFileByLink = async (fileLink, cancelTokenSource) => {
   try {
     const file = (await axios.get(fileLink, options)).data;
     if (!file) throw new Error("Failed to retrieve file data");
-    return { file: file, thrownCode: RESPONSE_THROWN_CODE.NONE };
+    return { file: file, thrownCode: THROWN_CODE.NONE };
   } catch (thrown) {
     return { file: null, thrownCode: getThrownCode(thrown) };
   }
 };
+
+/**
+ * Return a code for axios catch block depending on whether the request failed because it was canceled
+ * @param {Error} thrown error sent to a catch block after
+ * @returns {THROWN_CODE} the number associated with a type of failure
+ */
+export const getThrownCode = (thrown) =>
+  axios.isCancel(thrown) ? THROWN_CODE.CANCELED : THROWN_CODE.FAILED;
 
 /**
  * Return the collection that was last added to a date.

@@ -1,6 +1,6 @@
 import axios from "axios";
 import moment from "moment-timezone";
-import { apiUrlCollections, apiUrlDevices, authTokenHeaderFormat, getThrownCode, RESPONSE_THROWN_CODE } from "../../api.util";
+import { apiUrlCollections, apiUrlDevices, authTokenHeaderFormat } from "../../api.util";
 
 /**
  * Shape of device data stored in database
@@ -204,17 +204,19 @@ export const extractFileMetaContent = async (file, endLine = 10) => {
  * @returns 
  */
 export const saveCollection = async (filesForm, authToken, cancelTokenSource) => {
+  let errored = false
   const options = {
     headers: {
       Authorization: authTokenHeaderFormat(authToken),
       "Content-Type": "multipart/form-data",
-      cancelToken: cancelTokenSource.token,
+      // TODO: Remove cancelToken  out of  headers
+      // cancelToken: cancelTokenSource.token,
     },
   }
   try{
-    await axios.post(apiUrlCollections, filesForm, options);
-    return {thrownCode: RESPONSE_THROWN_CODE.NONE};
+    await axios.post(apiUrlCollections(), filesForm, options);
+    return { errored };
   } catch (thrown) {
-    return {thrownCode: getThrownCode(thrown)};
+    return {errored: true };
   };
 }

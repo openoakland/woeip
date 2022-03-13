@@ -16,6 +16,7 @@ describe("Application should includes parts of each major section", () => {
     expect(screen.getByText(/Upload/).href).toMatch("/upload");
   });
 
+  // TODO: FIX, accounting for anon view
   it("should have part of the body", () => {
     render(<App />);
     expect(screen.getByText(/Welcome/)).toBeInTheDocument();
