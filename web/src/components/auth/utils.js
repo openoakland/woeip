@@ -11,7 +11,7 @@ import {
  * @param {string} email
  * @param {string} password
  * @modifies {API}
- * @returns {string} auth token
+ * @returns {{token: string}} auth token
  */
 export const login = async (email, password) => {
   let token = "";
@@ -31,11 +31,10 @@ export const login = async (email, password) => {
  *
  * @param {string} authToken
  * @modifies {API}
- * @returns response code, presence of error
+ * @returns {{code: number}} response code
  */
 export const logout = async (authToken) => {
-  let errored = false;
-  let code = 0;
+  let code = -1;
   const options = {
     headers: { Authorization: authTokenHeaderFormat(authToken) },
   };
@@ -43,10 +42,8 @@ export const logout = async (authToken) => {
   try {
     const response = await axios.post(apiUrlAuthLogout(), options);
     code = response.status;
-  } catch {
-    errored = true;
   } finally {
-    return { code, errored };
+    return { code };
   }
 };
 
@@ -56,7 +53,7 @@ export const logout = async (authToken) => {
  * @param {string} password1
  * @param {string} password2
  * @modifies {API}
- * @returns {string} auth token
+ * @returns {{token: string}} auth token
  */
 export const register = async (email, password1, password2) => {
   let token = "";

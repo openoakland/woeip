@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 import { AuthTokenContext } from "./tokenContext";
 import { clearAuthTokenItem, logout } from "./utils";
 import { Container, Dimmer, Loader } from "../ui";
+import { isRequestSuccessful } from "../../api.util";
 
 export const Logout = () => {
   const { authToken, setAuthToken } = useContext(AuthTokenContext);
@@ -11,11 +12,15 @@ export const Logout = () => {
 
   useEffect(() => {
     (async () => {
-      const { errored, code } = await logout(authToken);
+      const { code } = await logout(authToken);
       setPending(false);
       clearAuthTokenItem();
       setAuthToken("");
-      if (!errored && code === 200) history.push("/auth/login");
+      if (isRequestSuccessful(code)) {
+        history.push("/auth/login");
+      } else {
+        alert("Unable to logout. Please try again.");
+      }
     })();
     // Run once on mount
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
