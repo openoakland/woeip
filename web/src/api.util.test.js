@@ -42,5 +42,6 @@ describe("empty protocol", () => {
 });
 
 describe("authTokenHeaderFormat", () => {
-  it('should pair the token itself with the work "Token"', () => expect(authTokenHeaderFormat('tokenItself')).toBe("Token tokenItself"))
+  it('should pair the token itself with the work "Token"', () =>
+    expect(authTokenHeaderFormat("tokenItself")).toBe("Token tokenItself"));
 });

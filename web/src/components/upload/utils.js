@@ -1,6 +1,10 @@
 import axios from "axios";
 import moment from "moment-timezone";
-import { apiUrlCollections, apiUrlDevices, authTokenHeaderFormat } from "../../api.util";
+import {
+  apiUrlCollections,
+  apiUrlDevices,
+  authTokenHeaderFormat,
+} from "../../api.util";
 
 /**
  * Shape of device data stored in database
@@ -198,13 +202,17 @@ export const extractFileMetaContent = async (file, endLine = 10) => {
 
 /**
  * Save uploaded data to a collection
- * @param {*} filesForm 
- * @param {*} authToken 
- * @param {*} cancelTokenSource 
- * @returns 
+ * @param {*} filesForm
+ * @param {*} authToken
+ * @param {*} cancelTokenSource
+ * @returns
  */
-export const saveCollection = async (filesForm, authToken, cancelTokenSource) => {
-  let errored = false
+export const saveCollection = async (
+  filesForm,
+  authToken,
+  cancelTokenSource
+) => {
+  let errored = false;
   const options = {
     headers: {
       Authorization: authTokenHeaderFormat(authToken),
@@ -212,11 +220,11 @@ export const saveCollection = async (filesForm, authToken, cancelTokenSource) =>
       // TODO: Remove cancelToken  out of  headers
       // cancelToken: cancelTokenSource.token,
     },
-  }
-  try{
+  };
+  try {
     await axios.post(apiUrlCollections(), filesForm, options);
     return { errored };
   } catch (thrown) {
-    return {errored: true };
-  };
-}
+    return { errored: true };
+  }
+};

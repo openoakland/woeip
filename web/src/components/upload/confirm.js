@@ -67,18 +67,18 @@ export const UploadConfirm = ({
     const source = axios.CancelToken.source();
     (async () => {
       if (isSaving) {
-          // NEXT STEP: Get code from api when uploading duplicate files
-          //TODO: Create path for duplicate files
-          //TODO: Create path for unauthenticated//session expired
-          const { errored } = await saveCollection(filesForm, authToken, source);
-          if( !errored ) {
-            history.push({
-              pathname: "/maps",
-              state: {
-                date: dustrakStart.format("MM/DD/YYYY"),
-              },
-            });
-          }
+        // NEXT STEP: Get code from api when uploading duplicate files
+        //TODO: Create path for duplicate files
+        //TODO: Create path for unauthenticated//session expired
+        const { errored } = await saveCollection(filesForm, authToken, source);
+        if (!errored) {
+          history.push({
+            pathname: "/maps",
+            state: {
+              date: dustrakStart.format("MM/DD/YYYY"),
+            },
+          });
+        }
         setIsSaving(false);
       }
     })();
