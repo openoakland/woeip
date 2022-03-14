@@ -14,11 +14,13 @@ export const Login = () => {
   const handleSubmit = async (e) => {
     setIsLoading(true);
     e.preventDefault();
-    const { errored, code, token } = await login(email, password);
-    if (!errored && code === 200) {
+    const { token } = await login(email, password);
+    if (token) {
       setAuthToken(token);
       setAuthTokenItem(token);
       history.push("/");
+    } else {
+      alert("Unable to login. Please check your credentials and try again.");
     }
     setIsLoading(false);
   };
