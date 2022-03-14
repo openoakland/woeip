@@ -5,6 +5,7 @@ import {
   apiUrlDevices,
   authTokenHeaderFormat,
   emptyProtocol,
+  isRequestSuccessful,
 } from "./api.util";
 
 it("should create the base api url with an endpoint", () => {
@@ -44,4 +45,13 @@ describe("empty protocol", () => {
 describe("authTokenHeaderFormat", () => {
   it('should pair the token itself with the work "Token"', () =>
     expect(authTokenHeaderFormat("tokenItself")).toBe("Token tokenItself"));
+});
+
+describe("isRequestSuccessful", () => {
+  it("should be successful on 200", () =>
+    expect(isRequestSuccessful(200)).toBe(true));
+  it("should be successful on 201", () =>
+    expect(isRequestSuccessful(201)).toBe(true));
+  it("should be a failure on 400", () =>
+    expect(isRequestSuccessful(400)).toBe(false));
 });

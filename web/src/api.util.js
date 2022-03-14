@@ -63,3 +63,11 @@ export const emptyProtocol = (link) => link.replace(/^(https?|ftp):/, "");
  * @returns {string} token formatted for use in headers
  */
 export const authTokenHeaderFormat = (authToken) => `Token ${authToken}`;
+
+/**
+ * Determines whether the response code is in the 200 series and therefore successful
+ * @param {number} statusCode
+ * @returns {boolean}
+ */
+export const isRequestSuccessful = (statusCode) =>
+  String(statusCode).startsWith("2");
