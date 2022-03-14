@@ -2,11 +2,12 @@ import { useState, useContext, useEffect } from "react";
 import { AuthTokenContext } from "./tokenContext";
 import { register, setAuthTokenItem } from "./utils";
 import { Link, useHistory } from "react-router-dom";
-import { Container } from "../ui";
+import { Container, Dimmer, Loader } from "../ui";
 
 export const Register = () => {
   const history = useHistory();
   const { setAuthToken } = useContext(AuthTokenContext);
+  const [isRegistering, setIsRegistering] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -22,8 +23,9 @@ export const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsRegistering(true);
     const { token } = await register(email, password, confirmPassword);
-
+    setIsRegistering(false);
     if (token) {
       setAuthToken(token);
       setAuthTokenItem(token);
@@ -35,6 +37,10 @@ export const Register = () => {
 
   return (
     <Container textAlign="center">
+      <Dimmer active={isRegistering}>
+        <Loader indeterminate />
+        Registering...
+      </Dimmer>
       <h2>Register</h2>
       <Link to={"/auth/login"}>Login with existing account</Link>
       <form onSubmit={handleSubmit}>
