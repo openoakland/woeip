@@ -22,17 +22,14 @@ export const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { errored, code, token } = await register(
-      email,
-      password,
-      confirmPassword
-    );
+    const { token } = await register(email, password, confirmPassword);
 
-    if (!errored && code === 201) {
-      console.log("set token");
+    if (token) {
       setAuthToken(token);
       setAuthTokenItem(token);
       history.push("/about");
+    } else {
+      alert("Unable to register. Please check your credentials and try again.");
     }
   };
 

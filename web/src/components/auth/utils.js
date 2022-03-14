@@ -61,12 +61,10 @@ export const logout = async (authToken) => {
  * @param {string} password1
  * @param {string} password2
  * @modifies {API}
- * @returns auth token, response code, and presence of error
+ * @returns {string} auth token
  */
 export const register = async (email, password1, password2) => {
   let token = "";
-  let code = 0;
-  let errored = false;
   const data = {
     email,
     password1,
@@ -74,12 +72,9 @@ export const register = async (email, password1, password2) => {
   };
   try {
     const response = await axios.post(apiUrlAuthRegister(), data);
-    code = response.status;
-    if (code === 201) token = response.data.key;
-  } catch {
-    errored = true;
+    if (response.status === 201) token = response.data.key;
   } finally {
-    return { token, code, errored };
+    return { token };
   }
 };
 
