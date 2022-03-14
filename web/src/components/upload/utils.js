@@ -205,10 +205,10 @@ export const extractFileMetaContent = async (file, endLine = 10) => {
  * @param {FormData} filesForm
  * @param {string} authToken
  * @modifies {API} creates a new collection entry
- * @returns {{errored: boolean}}
+ * @returns {{errorMessage: string}}
  */
 export const saveCollection = async (filesForm, authToken) => {
-  let errored = false;
+  let errorMessage = "";
   const options = {
     headers: {
       Authorization: authTokenHeaderFormat(authToken),
@@ -216,9 +216,19 @@ export const saveCollection = async (filesForm, authToken) => {
     },
   };
   try {
+    // Axios throws when outside 200 because of 'ValidateStatus'
     await axios.post(apiUrlCollections(), filesForm, options);
-    return { errored };
-  } catch (thrown) {
-    return { errored: true };
+  } catch (e) {
+    // Case where there are duplicate files
+    if (
+      e.response.status === 400 &&
+      e.response.data[0] === "Dustrak file already in database"
+    ) {
+      errorMessage = "Dustrak file already in database";
+    } else {
+      errorMessage = "Unable to upload collection. An unknown error occurred.";
+    }
+  } finally {
+    return { errorMessage };
   }
 };
