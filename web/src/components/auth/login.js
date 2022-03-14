@@ -12,9 +12,10 @@ export const Login = () => {
   const history = useHistory();
 
   const handleSubmit = async (e) => {
-    setIsLoading(true);
     e.preventDefault();
+    setIsLoading(true);
     const { token } = await login(email, password);
+    setIsLoading(false);
     if (token) {
       setAuthToken(token);
       setAuthTokenItem(token);
@@ -22,7 +23,6 @@ export const Login = () => {
     } else {
       alert("Unable to login. Please check your credentials and try again.");
     }
-    setIsLoading(false);
   };
 
   const changeEmail = (e) => setEmail(e.target.value);
