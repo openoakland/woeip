@@ -14,19 +14,18 @@ export const Logout = () => {
     (async () => {
       const { code } = await logout(authToken);
       setPending(false);
-      clearAuthTokenItem();
-      setAuthToken("");
       if (isRequestSuccessful(code)) {
+        clearAuthTokenItem();
+        setAuthToken("");
         history.push("/auth/login");
       } else {
-        alert("Unable to logout. Please try again.");
+        alert("Unable to logout. Please reload page to try again.");
       }
     })();
     // Run once on mount
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    // TODO: Loading and Error feedback
     <Container textAlign="center">
       <Dimmer active={pending}>
         <Loader indeterminate>Logging out...</Loader>
