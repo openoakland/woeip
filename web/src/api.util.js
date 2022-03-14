@@ -57,4 +57,9 @@ export const apiUrlAuthRegister = () => apiUrl("auth/register/");
  */
 export const emptyProtocol = (link) => link.replace(/^(https?|ftp):/, "");
 
+/**
+ * Passing the auth token to the server in the header requires preceding it with "Token"
+ * @param {string} authToken
+ * @returns {string} token formatted for use in headers
+ */
 export const authTokenHeaderFormat = (authToken) => `Token ${authToken}`;
