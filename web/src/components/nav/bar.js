@@ -4,9 +4,13 @@ import { AuthTokenContext } from "../auth/tokenContext";
 import { Container, Menu } from "../ui";
 
 const Navbar = () => {
-  const { authToken } = useContext(AuthTokenContext);
+  const { authToken, isTokenLoading } = useContext(AuthTokenContext);
   const [links, setLinks] = useState([]);
-  useEffect(() => setLinks(activeHeaderLinks(authToken)), [authToken]);
+  // Wait to return navigation links until token finishes loading
+  useEffect(
+    () => setLinks(isTokenLoading ? [] : activeHeaderLinks(authToken)),
+    [isTokenLoading, authToken]
+  );
 
   return (
     <Container>
