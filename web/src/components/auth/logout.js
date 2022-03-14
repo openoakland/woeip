@@ -12,6 +12,7 @@ export const Logout = () => {
 
   useEffect(() => {
     (async () => {
+      // TODO: Rethink in a world where axios ValidateStatus exists
       const { code } = await logout(authToken);
       setPending(false);
       if (isRequestSuccessful(code)) {

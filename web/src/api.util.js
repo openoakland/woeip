@@ -69,5 +69,6 @@ export const authTokenHeaderFormat = (authToken) => `Token ${authToken}`;
  * @param {number} statusCode
  * @returns {boolean}
  */
+// TODO: Rethink in a world where axios ValidateStatus exists
 export const isRequestSuccessful = (statusCode) =>
   String(statusCode).startsWith("2");

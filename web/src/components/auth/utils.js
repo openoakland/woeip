@@ -33,6 +33,7 @@ export const login = async (email, password) => {
  * @modifies {API}
  * @returns {{code: number}} response code
  */
+// TODO: Rethink in a world where axios ValidateStatus exists
 export const logout = async (authToken) => {
   let code = -1;
   const options = {
