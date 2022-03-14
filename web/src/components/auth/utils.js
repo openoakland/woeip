@@ -7,7 +7,7 @@ import {
 } from "../../api.util";
 
 /**
- *
+ * Request to start user session and receive auth token
  * @param {string} email
  * @param {string} password
  * @modifies {API}
@@ -28,7 +28,7 @@ export const login = async (email, password) => {
 };
 
 /**
- *
+ * Request to end user session
  * @param {string} authToken
  * @modifies {API}
  * @returns {{code: number}} response code
@@ -48,7 +48,7 @@ export const logout = async (authToken) => {
 };
 
 /**
- *
+ * Request to create user, start user session, and receive auth token
  * @param {string} email
  * @param {string} password1
  * @param {string} password2
