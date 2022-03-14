@@ -38,7 +38,7 @@ export const findDevice = (devices, serial) =>
  * @param {moment} dustrakStart Starting moment of session, to be stored as formatted string
  * @param {moment} dustrakEnd Ending moment of session, to be stored as formatted string
  * @param {string} pollutantId database id for the type of pollutant, coercible to an integer
- * @returns {FromData} Files and Meta Data, to be send through API and to Database
+ * @returns {FormData} Files and Meta Data, to be send through API and to Database
  */
 export const getFilesForm = ({
   firstFile,
@@ -202,23 +202,17 @@ export const extractFileMetaContent = async (file, endLine = 10) => {
 
 /**
  * Save uploaded data to a collection
- * @param {*} filesForm
- * @param {*} authToken
- * @param {*} cancelTokenSource
- * @returns
+ * @param {FormData} filesForm
+ * @param {string} authToken
+ * @modifies {API} creates a new collection entry
+ * @returns {{errored: boolean}}
  */
-export const saveCollection = async (
-  filesForm,
-  authToken,
-  cancelTokenSource
-) => {
+export const saveCollection = async (filesForm, authToken) => {
   let errored = false;
   const options = {
     headers: {
       Authorization: authTokenHeaderFormat(authToken),
       "Content-Type": "multipart/form-data",
-      // TODO: Remove cancelToken  out of  headers
-      // cancelToken: cancelTokenSource.token,
     },
   };
   try {

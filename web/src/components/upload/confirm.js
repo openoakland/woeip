@@ -63,14 +63,12 @@ export const UploadConfirm = ({
    * @modifies {isSaving} sets to false if upload fails
    */
   useEffect(() => {
-    // TODO: Transfer request to utility functions
-    const source = axios.CancelToken.source();
     (async () => {
       if (isSaving) {
         // NEXT STEP: Get code from api when uploading duplicate files
         //TODO: Create path for duplicate files
         //TODO: Create path for unauthenticated//session expired
-        const { errored } = await saveCollection(filesForm, authToken, source);
+        const { errored } = await saveCollection(filesForm, authToken);
         if (!errored) {
           history.push({
             pathname: "/maps",
