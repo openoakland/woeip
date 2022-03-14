@@ -31,20 +31,17 @@ export const login = async (email, password) => {
  * Request to end user session
  * @param {string} authToken
  * @modifies {API}
- * @returns {{code: number}} response code
+ * @returns {{succeeded: boolean}}
  */
-// TODO: Rethink in a world where axios ValidateStatus exists
 export const logout = async (authToken) => {
-  let code = -1;
   const options = {
     headers: { Authorization: authTokenHeaderFormat(authToken) },
   };
-
   try {
-    const response = await axios.post(apiUrlAuthLogout(), options);
-    code = response.status;
-  } finally {
-    return { code };
+    await axios.post(apiUrlAuthLogout(), options);
+    return { succeeded: true}
+  } catch {
+    return { succeeded: false };
   }
 };
 

@@ -3,7 +3,6 @@ import { useHistory } from "react-router-dom";
 import { AuthTokenContext } from "./tokenContext";
 import { clearAuthTokenItem, logout } from "./utils";
 import { Container, Dimmer, Loader } from "../ui";
-import { isRequestSuccessful } from "../../api.util";
 
 export const Logout = () => {
   const { authToken, setAuthToken } = useContext(AuthTokenContext);
@@ -12,10 +11,9 @@ export const Logout = () => {
 
   useEffect(() => {
     (async () => {
-      // TODO: Rethink in a world where axios ValidateStatus exists
-      const { code } = await logout(authToken);
+      const { succeeded } = await logout(authToken);
       setPending(false);
-      if (isRequestSuccessful(code)) {
+      if (succeeded) {
         clearAuthTokenItem();
         setAuthToken("");
         history.push("/auth/login");
