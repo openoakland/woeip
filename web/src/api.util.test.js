@@ -5,7 +5,6 @@ import {
   apiUrlDevices,
   authTokenHeaderFormat,
   emptyProtocol,
-  isRequestSuccessful,
 } from "./api.util";
 
 it("should create the base api url with an endpoint", () => {

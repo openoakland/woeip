@@ -39,7 +39,7 @@ export const logout = async (authToken) => {
   };
   try {
     await axios.post(apiUrlAuthLogout(), options);
-    return { succeeded: true}
+    return { succeeded: true };
   } catch {
     return { succeeded: false };
   }

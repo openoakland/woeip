@@ -216,19 +216,27 @@ export const saveCollection = async (filesForm, authToken) => {
     },
   };
   try {
-    // Axios throws when outside 200 because of 'ValidateStatus'
     await axios.post(apiUrlCollections(), filesForm, options);
   } catch (e) {
-    // Case where there are duplicate files
-    if (
-      e.response.status === 400 &&
-      e.response.data[0] === "Dustrak file already in database"
-    ) {
-      errorMessage = "Dustrak file already in database";
-    } else {
-      errorMessage = "Unable to upload collection. An unknown error occurred.";
-    }
+    errorMessage = getCollectionErrorMessage(
+      e.response.status,
+      e.response.data
+    );
   } finally {
     return { errorMessage };
   }
+};
+
+/**
+ * Error message from failing to save the collection files
+ * @param {number} statusCode
+ * @param {Array<string>} data
+ * @returns {string}
+ */
+export const getCollectionErrorMessage = (statusCode, data) => {
+  if (statusCode === 401)
+    return "Authorization error. Please try logging in again.";
+  if (statusCode === 400 && data[0] === "Dustrak file already in database")
+    return "Dustrak file already in database";
+  return "An unknown error occurred.";
 };
