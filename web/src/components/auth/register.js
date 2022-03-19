@@ -2,7 +2,14 @@ import { useState, useContext, useEffect } from "react";
 import { AuthTokenContext } from "./tokenContext";
 import { register, setAuthTokenItem } from "./utils";
 import { Link, useHistory } from "react-router-dom";
-import { Container, Dimmer, Loader } from "../ui";
+import { AffirmActionButton, Container, Form } from "../ui";
+import Welcome from "../home/welcome";
+import './register.css'
+
+const passwordMismatchError = {
+  content: "passwords do not match",
+  pointing: "above"
+}
 
 export const Register = () => {
   const history = useHistory();
@@ -36,33 +43,20 @@ export const Register = () => {
   };
 
   return (
-    <Container textAlign="center">
-      <Dimmer active={isRegistering}>
-        <Loader indeterminate />
-        Registering...
-      </Dimmer>
-      <h2>Register</h2>
-      <Link to={"/auth/login"}>Login with existing account</Link>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Email:
-          <input type="email" value={email} onChange={changeEmail} />
-        </label>
-        <label>
-          Password:
-          <input type="password" value={password} onChange={changePassword} />
-        </label>
-        <label>
-          Confirm Password:
-          <input
-            type="password"
-            value={confirmPassword}
-            onChange={changeConfirmPassword}
-          />
-          <p>{passwordsMismatched && "passwords do not match"}</p>
-        </label>
-        <input type="submit" value="Register" />
-      </form>
+    <Container>
+      <Welcome/>
+      <Container className="register-container">
+        <Container className="register-instructions">
+          <h2>Create an Account</h2>
+          Or <Link to={"/auth/login"}>Sign in with existing account</Link>
+        </Container>
+        <Form loading={isRegistering} onSubmit={handleSubmit}>
+          <Form.Input type="email" label="Email" width={6} value={email} onChange={changeEmail} />
+          <Form.Input type="password" label="Password" width={6} value={password} onChange={changePassword} />
+          <Form.Input type="password" label="Confirm Password" width={6} value={confirmPassword} onChange={changeConfirmPassword} error={passwordsMismatched ? passwordMismatchError : null}/>
+          <AffirmActionButton type="submit">Create Account</AffirmActionButton> 
+          </Form>
+      </Container>
     </Container>
   );
 };
