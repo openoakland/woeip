@@ -18,7 +18,7 @@ export const Logout = () => {
         setAuthToken("");
         history.push("/auth/login");
       } else {
-        alert("Unable to logout. Please reload page to try again.");
+        alert("Unable to sign out. Please reload page to try again.");
       }
     })();
     // Run once on mount
@@ -27,7 +27,7 @@ export const Logout = () => {
   return (
     <Container textAlign="center">
       <Dimmer active={pending}>
-        <Loader indeterminate>Logging out...</Loader>
+        <Loader indeterminate>Signing out...</Loader>
       </Dimmer>
     </Container>
   );
