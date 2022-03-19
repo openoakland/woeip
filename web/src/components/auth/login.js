@@ -3,6 +3,7 @@ import { AuthTokenContext } from "./tokenContext";
 import { login, setAuthTokenItem } from "./utils";
 import { Link, useHistory } from "react-router-dom";
 import { Container, Dimmer, Loader } from "../ui";
+import Welcome from "../home/welcome";
 
 export const Login = () => {
   const { setAuthToken } = useContext(AuthTokenContext);
@@ -34,6 +35,7 @@ export const Login = () => {
         <Loader indeterminate />
         Logging In...
       </Dimmer>
+      <Welcome />
       <h2>Login to continue</h2>
       <Link to={"/auth/register"}>Create an Account</Link>
       <form onSubmit={handleSubmit}>
