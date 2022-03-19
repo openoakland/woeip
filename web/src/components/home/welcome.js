@@ -1,5 +1,5 @@
 import { Container } from "../ui";
-import './welcome.css';
+import "./welcome.css";
 
 export default function Welcome() {
   return (
