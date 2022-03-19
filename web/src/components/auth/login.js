@@ -21,8 +21,7 @@ export const Login = () => {
     if (token) {
       setAuthToken(token);
       setAuthTokenItem(token);
-      // TODO: redirect to upload
-      history.push("/");
+      history.push("/upload");
     } else {
       alert("Unable to login. Please check your credentials and try again.");
     }
