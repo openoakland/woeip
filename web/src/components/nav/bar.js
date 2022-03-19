@@ -45,11 +45,11 @@ const allHeaderLinks = [
   { text: "About", route: "about" },
   { text: "Upload", route: "upload" },
   { text: "Maps", route: "maps" },
-  { text: "Login", route: "auth/login" },
-  { text: "Logout", route: "auth/logout" },
+  { text: "Sign In", route: "auth/login" },
+  { text: "Log Out", route: "auth/logout" },
 ];
 
 const activeHeaderLinks = (authToken) => {
-  const filteredLink = authToken ? "Login" : "Logout";
+  const filteredLink = authToken ? "Sign In" : "Log Out";
   return allHeaderLinks.filter((link) => link.text !== filteredLink);
 };
