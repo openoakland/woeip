@@ -2,8 +2,9 @@ import { useContext, useState } from "react";
 import { AuthTokenContext } from "./tokenContext";
 import { login, setAuthTokenItem } from "./utils";
 import { Link, useHistory } from "react-router-dom";
-import { Container, Dimmer, Loader } from "../ui";
+import { Container, Form, AffirmActionButton } from "../ui";
 import Welcome from "../home/welcome";
+import "./login.css";
 
 export const Login = () => {
   const { setAuthToken } = useContext(AuthTokenContext);
@@ -20,6 +21,7 @@ export const Login = () => {
     if (token) {
       setAuthToken(token);
       setAuthTokenItem(token);
+      // TODO: redirect to upload
       history.push("/");
     } else {
       alert("Unable to login. Please check your credentials and try again.");
@@ -30,24 +32,31 @@ export const Login = () => {
   const changePassword = (e) => setPassword(e.target.value);
 
   return (
-    <Container textAlign="center">
-      <Dimmer active={isLoading}>
-        <Loader indeterminate />
-        Logging In...
-      </Dimmer>
+    <Container>
       <Welcome />
-      <h2>Login to continue</h2>
-      <Link to={"/auth/register"}>Create an Account</Link>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Email: <input type="email" value={email} onChange={changeEmail} />
-        </label>
-        <label>
-          Password:{" "}
-          <input type="password" value={password} onChange={changePassword} />
-        </label>
-        <input type="submit" value="Login" />
-      </form>
+      <Container className="login-container">
+        <Container className="login-instructions">
+          <h2>Sign in to upload data</h2>
+          Or <Link to={"/auth/register"}>Create an Account</Link>
+        </Container>
+        <Form loading={isLoading} onSubmit={handleSubmit}>
+          <Form.Input
+            type="email"
+            label="Email"
+            width={6}
+            value={email}
+            onChange={changeEmail}
+          />
+          <Form.Input
+            type="password"
+            label="Password"
+            width={6}
+            value={password}
+            onChange={changePassword}
+          />
+          <AffirmActionButton type="submit">Sign In</AffirmActionButton>
+        </Form>
+      </Container>
     </Container>
   );
 };

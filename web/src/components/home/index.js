@@ -1,5 +1,5 @@
 import { AuthBoundary } from "../auth/boundary";
-import Welcome from './welcome';
+import Welcome from "./welcome";
 
 export const Home = () => {
   return (
