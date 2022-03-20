@@ -10,12 +10,11 @@ import { App } from "./App";
  */
 jest.mock("./components/map/box", () => () => <></>);
 
-
-describe('Application should includes parts of each major section', () => {
+describe("Application should includes parts of each major section", () => {
   beforeEach(() => {
     const fakeLocalStorage = (function () {
       let store = {};
-    
+
       return {
         getItem: function (key) {
           return store[key] || null;
@@ -28,23 +27,25 @@ describe('Application should includes parts of each major section', () => {
         },
         clear: function () {
           store = {};
-        }
+        },
       };
     })();
 
-    Object.defineProperty(window, 'localStorage', {
+    Object.defineProperty(window, "localStorage", {
       value: fakeLocalStorage,
     });
   });
 
   afterEach(() => {
     localStorage.clear();
-  })
+  });
 
   it("should not show a login screen", () => {
-    localStorage.setItem('authToken', 'fakeToken');
+    localStorage.setItem("authToken", "fakeToken");
     render(<App />);
-    expect(screen.queryByText(/Sign in to upload data/)).not.toBeInTheDocument();
+    expect(
+      screen.queryByText(/Sign in to upload data/)
+    ).not.toBeInTheDocument();
   });
 
   it("should have part of the header", () => {
@@ -64,6 +65,6 @@ describe('Application should includes parts of each major section', () => {
 
   it("should show a login screen", () => {
     render(<App />);
-    expect(screen.getByText(/Sign in to upload data/));
+    expect(screen.getByText(/Sign in to upload data/)).toBeInTheDocument();
   });
-})
+});

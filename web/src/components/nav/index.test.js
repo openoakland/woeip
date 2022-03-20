@@ -1,6 +1,6 @@
-import { render, screen, fireEvent, act, waitFor } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import { Navigation } from "./";
-import { AuthTokenContext } from '../auth/tokenContext';
+import { AuthTokenContext } from "../auth/tokenContext";
 
 /**
  * gl-js used in "box" component has hard requirements for browser apis. it cannot run in jest
@@ -23,12 +23,12 @@ describe("Navigation", () => {
     expect(screen.queryByText(/Sign in to upload/)).not.toBeInTheDocument();
   });
 
-  it('should redirect to sign in from home when logged out', () => {
-    renderNavigation({authToken: ''});
+  it("should redirect to sign in from home when logged out", () => {
+    renderNavigation({ authToken: "" });
     fireEvent.click(screen.getByText("WOAQ"));
     expect(window.location.pathname).toEqual("/auth/login");
     expect(screen.queryByText(/Sign in to upload/)).toBeInTheDocument();
-  })
+  });
 
   it("should navigate to upload page when signed in", () => {
     renderNavigation();
@@ -36,13 +36,13 @@ describe("Navigation", () => {
     expect(window.location.pathname).toEqual("/upload");
   });
 
-  // FIXME: Upload page is failing to redirect 
-  it.skip('should redirect to sign in from upload when logged out', async () => {
-    renderNavigation({authToken: ''});
+  // FIXME: Upload page is failing to redirect
+  it.skip("should redirect to sign in from upload when logged out", async () => {
+    renderNavigation({ authToken: "" });
     fireEvent.click(screen.getByText(/Upload/));
     expect(window.location.pathname).toEqual("/auth/login");
     expect(screen.queryByText(/Sign in to upload/)).toBeInTheDocument();
-  })
+  });
 
   it("should navigate to map page when signed in", () => {
     renderNavigation();
@@ -51,17 +51,15 @@ describe("Navigation", () => {
   });
 
   it("should show map even when logged out", () => {
-    renderNavigation({authToken: ''});
+    renderNavigation({ authToken: "" });
     fireEvent.click(screen.getByText(/Maps/));
     expect(window.location.pathname).toEqual("/maps");
-  })
+  });
 });
 
-const renderNavigation = ({authToken = 'fakeToken'} = {}) => 
+const renderNavigation = ({ authToken = "fakeToken" } = {}) =>
   render(
-  <AuthTokenContext.Provider value={{authToken}}>
-    <Navigation />
-  </AuthTokenContext.Provider>
-);
-
-
+    <AuthTokenContext.Provider value={{ authToken }}>
+      <Navigation />
+    </AuthTokenContext.Provider>
+  );
