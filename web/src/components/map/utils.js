@@ -190,13 +190,15 @@ export const parsePollutant = (item) => {
 export const getCollections = async (params, cancelTokenSource) => {
   const options = {
     params,
-    cancelToken: cancelTokenSource.token
+    cancelToken: cancelTokenSource.token,
   };
   try {
     const response = await axios.get(apiUrlCollections(), options);
     const collections = response.data;
     if (!collections)
-      throw new Error(`Failed to retrieve collection data matching parameters ${params}`);
+      throw new Error(
+        `Failed to retrieve collection data matching parameters ${params}`
+      );
     if (!Array.isArray(collections))
       throw new Error(
         `Retrieved collection data failed to conform to array structure. Parameters given: ${params}`
@@ -222,10 +224,10 @@ export const getCollectionsOnDate = async (
   formattedDate,
   cancelTokenSource
 ) => {
-  const {
-    collections: collectionsOnDate,
-    thrownCode
-  } = await getCollections({ start_date: formattedDate }, cancelTokenSource);
+  const { collections: collectionsOnDate, thrownCode } = await getCollections(
+    { start_date: formattedDate },
+    cancelTokenSource
+  );
   return { collectionsOnDate, thrownCode };
 };
 
@@ -239,9 +241,11 @@ export const getCollectionsOnDate = async (
 export const getAllDates = async (cancelTokenSource) => {
   const {
     collections: oneCollectionPerDate,
-    thrownCode
+    thrownCode,
   } = await getCollections({ one_per_date: "True" }, cancelTokenSource);
-  const listOfDates = oneCollectionPerDate.map(collection => collection["starts_at"].slice(0, 10));
+  const listOfDates = oneCollectionPerDate.map((collection) =>
+    collection["starts_at"].slice(0, 10)
+  );
   return { listOfDates, thrownCode };
 };
 
