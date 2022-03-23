@@ -28,7 +28,8 @@ describe("get a list of dates with at least one collection", () => {
     const { listOfDates, thrownCode } = await getAllDates(
       axios.CancelToken.source()
     );
-    expect(listOfDates).toEqual(testData['collectionDates'])
+    expect(listOfDates).toEqual(testData["collectionDates"]);
+    expect(thrownCode).toEqual(THROWN_CODE.NONE);
   });
 });
 
@@ -38,7 +39,7 @@ describe("get collections from a specific date", () => {
       moment(),
       axios.CancelToken.source()
     );
-    expect(collectionsOnDate).toEqual(testData['collections']);
+    expect(collectionsOnDate).toEqual(testData["collections"]);
     expect(thrownCode).toEqual(THROWN_CODE.NONE);
   });
 });
@@ -48,18 +49,18 @@ describe("get any data from the collections table", () => {
     getCollections: {
       fn: getCollections,
       args: [{}], // args: params (and cancelTokenSource)
-      dataKey: "collections" // returned object has key "collections" (and "thrownCode")
+      dataKey: "collections", // returned object has key "collections" (and "thrownCode")
     },
     getCollectionsOnDate: {
       fn: getCollectionsOnDate,
       args: [moment()], // args: formattedDate (and cancelTokenSource)
-      dataKey: "collectionsOnDate" // returned object has key "collectionsOnDate" (and "thrownCode")
+      dataKey: "collectionsOnDate", // returned object has key "collectionsOnDate" (and "thrownCode")
     },
     getAllDates: {
       fn: getAllDates,
       args: [], // args: none except cancelTokenSource
-      dataKey: "listOfDates" // returned object has key "listOfDates" (and "thrownCode")
-    }
+      dataKey: "listOfDates", // returned object has key "listOfDates" (and "thrownCode")
+    },
   };
   for (let fnName in collectionsFns) {
     const fn = collectionsFns[fnName].fn;
@@ -72,10 +73,7 @@ describe("get any data from the collections table", () => {
           return res(ctx.status(200), ctx.json({}));
         })
       );
-      const returned = await fn(
-        ...args,
-        axios.CancelToken.source()
-      );
+      const returned = await fn(...args, axios.CancelToken.source());
       expect(returned[dataKey]).toEqual([]);
       expect(returned["thrownCode"]).toEqual(THROWN_CODE.FAILED);
     });
@@ -87,10 +85,7 @@ describe("get any data from the collections table", () => {
         })
       );
 
-      const returned = await fn(
-        ...args,
-        axios.CancelToken.source()
-      );
+      const returned = await fn(...args, axios.CancelToken.source());
       expect(returned[dataKey]).toEqual([]);
       expect(returned["thrownCode"]).toEqual(THROWN_CODE.FAILED);
     });
@@ -100,10 +95,7 @@ describe("get any data from the collections table", () => {
         rest.get(apiUrlCollections(), (_req, res, _ctx) => res.networkError())
       );
 
-      const returned = await fn(
-        ...args,
-        axios.CancelToken.source()
-      );
+      const returned = await fn(...args, axios.CancelToken.source());
       expect(returned[dataKey]).toEqual([]);
       expect(returned["thrownCode"]).toEqual(THROWN_CODE.FAILED);
     });
@@ -111,14 +103,11 @@ describe("get any data from the collections table", () => {
     it(`should handle canceling a request in ${fnName}`, async () => {
       const cancelTokenSource = axios.CancelToken.source();
       cancelTokenSource.cancel();
-      const returned = await fn(
-        ...args,
-        cancelTokenSource
-      );
+      const returned = await fn(...args, cancelTokenSource);
       expect(returned[dataKey]).toEqual([]);
       expect(returned["thrownCode"]).toEqual(THROWN_CODE.CANCELED);
     });
-  };
+  }
 });
 
 describe("get pollutants for a specific collection", () => {
