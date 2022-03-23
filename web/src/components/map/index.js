@@ -55,23 +55,21 @@ export const Map = () => {
    * @modifies {mapDate}
    * @returns {axios.CancelToken.source().cancel} cancel the api call
    */
-   useEffect(() => {
+  useEffect(() => {
     const source = axios.CancelToken.source();
     (async () => {
-      const {
-        listOfDates,
-        thrownCode
-      } = await getAllDates(source);
+      const { listOfDates, thrownCode } = await getAllDates(source);
       if (thrownCode === THROWN_CODE.NONE) {
         setSetOfDates(new Set(listOfDates));
         const latestDate = listOfDates.reduce(
-          (maxDate, dateStr) => dateStr > maxDate ? dateStr : maxDate, // alphabetical comparison
-        "0000-00-00")
+          (maxDate, dateStr) => (dateStr > maxDate ? dateStr : maxDate), // alphabetical comparison
+          "0000-00-00"
+        );
         setMapDate(moment(location?.state?.date ?? latestDate));
       }
     })();
     return source.cancel;
-   }, [])
+  }, [location]);
 
   /**
    * Load the collections that happened on a date
