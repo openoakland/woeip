@@ -58,7 +58,13 @@ export const CalendarInput = ({ ...props }) => (
 
 export const SuccessMessage = ({ ...props }) => <Message success {...props} />;
 
-export const WarningMessage = ({ ...props }) => <Message warning {...props} />;
+export const WarningMessage = ({ ...props }) => (
+  <Message
+    warning
+    style={props.absolute ? { position: "absolute", bottom: "12px" } : {}}
+    {...props}
+  />
+);
 
 export const DismissableMessage = ({ ...props }) => {
   const [visible, setVisible] = useState(true);

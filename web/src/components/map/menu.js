@@ -87,7 +87,7 @@ export const MapMenu = ({
         )}
       </List>
       {activeId === BLANK_ACTIVE_ID && (
-        <WarningMessage>
+        <WarningMessage absolute>
           We haven't collected data for this time period. Please select another
           date.
         </WarningMessage>
