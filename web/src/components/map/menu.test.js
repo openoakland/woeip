@@ -7,27 +7,32 @@ import { BLANK_ACTIVE_ID } from "./utils";
 describe("MapMenu", () => {
   let mapDate;
   let setOfDates;
+  let collections;
   let firstCollection;
   let secondCollection;
-  let thirdCollection;
   beforeAll(() => {
     mapDate = moment("2014-07-17");
     setOfDates = new Set(["2014-07-17", "2014-07-19"]);
-    firstCollection = {
-      id: 0,
-      collection_files: ["//gps.io", "//dustrak.io"],
-      starts_at: "2014-07-17T19:40:35Z",
+    collections = {
+      firstCollection: {
+        id: 0,
+        collection_files: ["//gps.io", "//dustrak.io"],
+        starts_at: "2014-07-17T19:40:35Z",
+      },
+      secondCollection: {
+        id: 1,
+        collection_files: ["//gps-second.io", "//dustrak-second.io"],
+        starts_at: "2014-07-17T12:40:35Z",
+      },
+      thirdCollection: {
+        id: 2,
+        collection_files: ["//gps-third.io", "//dustrak-third.io"],
+        starts_at: "2014-07-19T13:40:35Z",
+      },
     };
-    secondCollection = {
-      id: 1,
-      collection_files: ["//gps-second.io", "//dustrak-second.io"],
-      starts_at: "2014-07-17T12:40:35Z",
-    };
-    thirdCollection = {
-      id: 2,
-      collection_files: ["//gps-third.io", "//dustrak-third.io"],
-      starts_at: "2014-07-19T13:40:35Z"
-    };
+    firstCollection = collections["firstCollection"];
+    secondCollection = collections["secondCollection"];
+    // thirdCollection is not currently in use; included to match setOfDates
   });
 
   it("should render the default map menu, with no collections", () => {
