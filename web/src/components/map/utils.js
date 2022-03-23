@@ -188,7 +188,10 @@ export const parsePollutant = (item) => {
  * }
  */
 export const getCollections = async (params, cancelTokenSource) => {
-  const options = { params, cancelTokenSource };
+  const options = {
+    params,
+    cancelToken: cancelTokenSource.token
+  };
   try {
     const response = await axios.get(apiUrlCollections(), options);
     const collections = response.data;
