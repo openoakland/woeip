@@ -7,7 +7,9 @@ import {
   BLANK_ACTIVE_COLLECTION,
   comparePollutantValues,
   getCollectionFileByLink,
+  getCollections,
   getCollectionsOnDate,
+  getAllDates,
   getFirstCollection,
   getPollutantsByCollectionId,
   getThrownCode,
@@ -19,7 +21,16 @@ import {
 } from "./utils";
 import axios from "axios";
 import moment from "moment-timezone";
-import { server, rest } from "../../serverHandlers";
+import { server, rest, testData } from "../../serverHandlers";
+
+describe("get a list of dates with at least one collection", () => {
+  it("should successfully receive a list of dates from the api", async () => {
+    const { listOfDates, thrownCode } = await getAllDates(
+      axios.CancelToken.source()
+    );
+    expect(listOfDates).toEqual(testData['collectionDates'])
+  });
+});
 
 describe("get collections from a specific date", () => {
   it("should successfully receive a list of collections from the data", async () => {
@@ -27,62 +38,87 @@ describe("get collections from a specific date", () => {
       moment(),
       axios.CancelToken.source()
     );
-    expect(collectionsOnDate).toEqual([1, 2, 3]);
+    expect(collectionsOnDate).toEqual(testData['collections']);
     expect(thrownCode).toEqual(THROWN_CODE.NONE);
   });
+});
 
-  it("should handle corrupt data response", async () => {
-    server.use(
-      rest.get(apiUrlCollections(), (_req, res, ctx) => {
-        return res(ctx.status(200), ctx.json({}));
-      })
-    );
-    const { collectionsOnDate, thrownCode } = await getCollectionsOnDate(
-      moment(),
-      axios.CancelToken.source()
-    );
-    expect(collectionsOnDate).toEqual([]);
-    expect(thrownCode).toEqual(THROWN_CODE.FAILED);
-  });
+describe("get any data from the collections table", () => {
+  const collectionsFns = {
+    getCollections: {
+      fn: getCollections,
+      args: [{}], // args: params (and cancelTokenSource)
+      dataKey: "collections" // returned object has key "collections" (and "thrownCode")
+    },
+    getCollectionsOnDate: {
+      fn: getCollectionsOnDate,
+      args: [moment()], // args: formattedDate (and cancelTokenSource)
+      dataKey: "collectionsOnDate" // returned object has key "collectionsOnDate" (and "thrownCode")
+    },
+    getAllDates: {
+      fn: getAllDates,
+      args: [], // args: none except cancelTokenSource
+      dataKey: "listOfDates" // returned object has key "listOfDates" (and "thrownCode")
+    }
+  };
+  for (let fnName in collectionsFns) {
+    const fn = collectionsFns[fnName].fn;
+    const args = collectionsFns[fnName].args;
+    const dataKey = collectionsFns[fnName].dataKey;
 
-  it("should handle error responses", async () => {
-    server.use(
-      rest.get(apiUrlCollections(), (_req, res, ctx) => {
-        return res(ctx.status(503));
-      })
-    );
+    it(`should handle corrupt data response in ${fnName}`, async () => {
+      server.use(
+        rest.get(apiUrlCollections(), (_req, res, ctx) => {
+          return res(ctx.status(200), ctx.json({}));
+        })
+      );
+      const returned = await fn(
+        ...args,
+        axios.CancelToken.source()
+      );
+      expect(returned[dataKey]).toEqual([]);
+      expect(returned["thrownCode"]).toEqual(THROWN_CODE.FAILED);
+    });
 
-    const { collectionsOnDate, thrownCode } = await getCollectionsOnDate(
-      moment(),
-      axios.CancelToken.source()
-    );
-    expect(collectionsOnDate).toEqual([]);
-    expect(thrownCode).toEqual(THROWN_CODE.FAILED);
-  });
+    it(`should handle error responses in ${fnName}`, async () => {
+      server.use(
+        rest.get(apiUrlCollections(), (_req, res, ctx) => {
+          return res(ctx.status(503));
+        })
+      );
 
-  it("should handle network error", async () => {
-    server.use(
-      rest.get(apiUrlCollections(), (_req, res, _ctx) => res.networkError())
-    );
+      const returned = await fn(
+        ...args,
+        axios.CancelToken.source()
+      );
+      expect(returned[dataKey]).toEqual([]);
+      expect(returned["thrownCode"]).toEqual(THROWN_CODE.FAILED);
+    });
 
-    const { collectionsOnDate, thrownCode } = await getCollectionsOnDate(
-      moment(),
-      axios.CancelToken.source()
-    );
-    expect(collectionsOnDate).toEqual([]);
-    expect(thrownCode).toEqual(THROWN_CODE.FAILED);
-  });
+    it(`should handle network error in ${fnName}`, async () => {
+      server.use(
+        rest.get(apiUrlCollections(), (_req, res, _ctx) => res.networkError())
+      );
 
-  it("should handle canceling a request", async () => {
-    const cancelTokenSource = axios.CancelToken.source();
-    cancelTokenSource.cancel();
-    const { collectionsOnDate, thrownCode } = await getCollectionsOnDate(
-      moment(),
-      cancelTokenSource
-    );
-    expect(collectionsOnDate).toEqual([]);
-    expect(thrownCode).toEqual(THROWN_CODE.CANCELED);
-  });
+      const returned = await fn(
+        ...args,
+        axios.CancelToken.source()
+      );
+      expect(returned[dataKey]).toEqual([]);
+      expect(returned["thrownCode"]).toEqual(THROWN_CODE.FAILED);
+    });
+
+    it(`should handle canceling a request in ${fnName}`, async () => {
+      const cancelTokenSource = axios.CancelToken.source();
+      cancelTokenSource.cancel();
+      const returned = await fn(
+        ...args,
+        cancelTokenSource
+      );
+      expect(returned[dataKey]).toEqual([]);
+      expect(returned["thrownCode"]).toEqual(THROWN_CODE.CANCELED);
+    });
+  };
 });
 
 describe("get pollutants for a specific collection", () => {
