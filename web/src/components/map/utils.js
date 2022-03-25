@@ -242,7 +242,7 @@ export const getAllDates = async (cancelTokenSource) => {
   const {
     collections: oneCollectionPerDate,
     thrownCode,
-  } = await getCollections({ one_per_date: "True" }, cancelTokenSource);
+  } = await getCollections({ one_per_date: "1" }, cancelTokenSource);
   const listOfDates = oneCollectionPerDate.map((collection) =>
     collection["starts_at"].slice(0, 10)
   );
