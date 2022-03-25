@@ -64,7 +64,7 @@ class TestCollection(WoaqAPITestCase):
         assert response.status_code == 200
 
     def test_get_collection_list_one_per_date(self):
-        request = request_factory.get("/collection?one_per_date=True")
+        request = request_factory.get("/collection?one_per_date=1")
         view = views.CollectionViewSet.as_view({"get": "list"})
         response = view(request)
         assert response.status_code == 200
