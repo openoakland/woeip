@@ -43,12 +43,23 @@ class CollectionViewSet(viewsets.ModelViewSet):
                 """
                 logger.error(e)
                 raise ValidationError(detail=e)
-        # can I juse the Python objects True and False somehow?
-        # not sure what happens if I pass the JS values true and false
-        if self.request.query_params.get("one_per_date", "False") == "True":
+        one_per_date = self.request.query_params.get("one_per_date", None):
+        if one_per_date:
+            try:
+                one_per_date = int(one_per_date)
+                assert one_per_date in (0, 1)
+            except (ValueError, AssertionError) as e:
+                """Fail to convert strings to boolean"""
+                logger.error(e)
+                raise ValidationError(detail=e)
+        else:
+            one_per_date = 0
+
+        if one_per_date:
             # https://stackoverflow.com/questions/2466496/select-distinct-values-from-a-table-field
             return queryset.distinct("starts_at")
-        else: return queryset
+        else:
+            return queryset
 
 
     @action(detail=True, methods=["GET"])
