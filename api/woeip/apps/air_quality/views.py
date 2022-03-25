@@ -43,7 +43,7 @@ class CollectionViewSet(viewsets.ModelViewSet):
                 """
                 logger.error(e)
                 raise ValidationError(detail=e)
-        one_per_date = self.request.query_params.get("one_per_date", None):
+        one_per_date = self.request.query_params.get("one_per_date", None)
         if one_per_date:
             try:
                 one_per_date = int(one_per_date)
