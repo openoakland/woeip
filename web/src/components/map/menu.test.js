@@ -54,9 +54,6 @@ describe("MapMenu", () => {
     );
   });
 
-  it("should automatically set the date to the most recent data-having date", () =>
-    "Test not yet implemented. How to? This behavior is caused by an effect hook in index.js");
-
   it("should render a single collection", () => {
     const collectionsOnDate = [firstCollection];
     const activeId = firstCollection.id;
