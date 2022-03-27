@@ -1,21 +1,47 @@
+import { server, rest } from "../../serverHandlers";
 import {
   clearAuthTokenItem,
   getAuthTokenItem,
+  login,
   setAuthTokenItem,
 } from "./utils";
+import {
+  apiUrlAuthLogin,
+  apiUrlAuthLogout,
+  apiUrlAuthRegister,
+} from "../../api.util";
 
 describe("login", () => {
-  it.todo("should return a token on success");
-  it.todo("should return an empty string on failure");
+  it("should return a token on success", async () => {
+    server.use(
+      rest.post(apiUrlAuthLogin(), (_req, res, ctx) => {
+        return res(ctx.status(200), ctx.json({ key: "fakeToken" }));
+      })
+    );
+    const { token } = await login("user@place.com", "password");
+    expect(token).toBe("fakeToken");
+  });
+
+  it("should return an empty string on failure", async () => {
+    server.use(
+      rest.post(apiUrlAuthLogin(), (_req, res, ctx) => {
+        return res(ctx.status(400));
+      })
+    );
+    const { token } = await login("user@place.com", "password");
+    expect(token).toBe("");
+  });
 });
 
 describe("logout", () => {
   it.todo("should return true on success");
+
   it.todo("should return false on failure");
 });
 
 describe("register", () => {
   it.todo("should return token on success");
+
   it.todo("should return empty string on failure");
 });
 
