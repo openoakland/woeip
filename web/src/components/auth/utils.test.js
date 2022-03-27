@@ -3,6 +3,7 @@ import {
   clearAuthTokenItem,
   getAuthTokenItem,
   login,
+  logout,
   setAuthTokenItem,
 } from "./utils";
 import {
@@ -34,9 +35,25 @@ describe("login", () => {
 });
 
 describe("logout", () => {
-  it.todo("should return true on success");
+  it("should return true on success", async () => {
+    server.use(
+      rest.post(apiUrlAuthLogout(), (_req, res, ctx) => {
+        return res(ctx.status(200));
+      })
+    );
+    const { succeeded } = await logout("fakeToken");
+    expect(succeeded).toBe(true);
+  });
 
-  it.todo("should return false on failure");
+  it("should return false on failure", async () => {
+    server.use(
+      rest.post(apiUrlAuthLogout(), (_req, res, ctx) => {
+        return res(ctx.status(400));
+      })
+    );
+    const { succeeded } = await logout("fakeToken");
+    expect(succeeded).toBe(false);
+  });
 });
 
 describe("register", () => {
