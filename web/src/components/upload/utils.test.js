@@ -30,7 +30,7 @@ describe("getCollectionErrorMessage", () => {
 //TODO: as part of auth changes
 describe("saveCollection", () => {
   it.todo("should successfully upload data");
-  it.todo("should handle failed upload")
+  it.todo("should handle failed upload");
 });
 
 describe("findDevice", () => {
