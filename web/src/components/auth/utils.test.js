@@ -4,6 +4,7 @@ import {
   getAuthTokenItem,
   login,
   logout,
+  register,
   setAuthTokenItem,
 } from "./utils";
 import {
@@ -57,9 +58,26 @@ describe("logout", () => {
 });
 
 describe("register", () => {
-  it.todo("should return token on success");
+  it("should return token on success", async () => {
+    server.use(
+      rest.post(apiUrlAuthRegister(), (_req, res, ctx) => {
+        return res(ctx.status(200), ctx.json({ key: "fakeToken" }));
+      })
+    );
 
-  it.todo("should return empty string on failure");
+    const { token } = await register("user@place.com", "password", "password");
+    expect(token).toBe("fakeToken");
+  });
+
+  it("should return empty string on failure", async () => {
+    server.use(
+      rest.post(apiUrlAuthRegister(), (_req, res, ctx) => {
+        return res(ctx.status(500));
+      })
+    );
+    const { token } = await register();
+    expect(token).toBe("");
+  });
 });
 
 describe("token local storage manipulation", () => {
