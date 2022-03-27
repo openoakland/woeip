@@ -21,6 +21,18 @@ describe.skip("getDevices", () => {
   it.todo("failed to fetch devices");
 });
 
+//TODO: as part of auth changes
+describe("getCollectionErrorMessage", () => {
+  it.todo("should get auth error");
+  it.todo("should get duplicate error");
+});
+
+//TODO: as part of auth changes
+describe("saveCollection", () => {
+  it.todo("should successfully upload data");
+  it.todo("should handle failed upload")
+});
+
 describe("findDevice", () => {
   const devices = [
     {
