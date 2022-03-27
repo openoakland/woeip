@@ -3,7 +3,6 @@ import { Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
 import { AuthBoundary } from "./boundary";
 import { AuthTokenContext } from "./tokenContext";
-import { Component } from "react";
 
 describe("boundary", () => {
   let history;
