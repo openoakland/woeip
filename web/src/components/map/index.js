@@ -51,7 +51,7 @@ export const Map = () => {
   /**
    * Load a Set of all dates with at least one collection
    * @modifies {api} calls to get one collection per date that has any
-   * @modifies {setOfDates}
+   * @modifies {allDatesUnique}
    * @modifies {mapDate}
    * @returns {axios.CancelToken.source().cancel} cancel the api call
    */
@@ -60,8 +60,8 @@ export const Map = () => {
     (async () => {
       const { listOfDates, thrownCode } = await getAllDates(source);
       if (thrownCode === THROWN_CODE.NONE) {
-        setSetOfDates(new Set(listOfDates));
-        const latestDate = listOfDates.reduce(
+        setAllDatesUnique(new Set(allDates));
+        const latestDate = allDates.reduce(
           (maxDate, dateStr) => (dateStr > maxDate ? dateStr : maxDate), // alphabetical comparison
           "0000-00-00"
         );

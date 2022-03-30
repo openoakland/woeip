@@ -25,10 +25,10 @@ import { server, rest, testData } from "../../serverHandlers";
 
 describe("get a list of dates with at least one collection", () => {
   it("should successfully receive a list of dates from the api", async () => {
-    const { listOfDates, thrownCode } = await getAllDates(
+    const { allDates, thrownCode } = await getAllDates(
       axios.CancelToken.source()
     );
-    expect(listOfDates).toEqual(testData["collectionDates"]);
+    expect(allDates).toEqual(testData["collectionDates"]);
     expect(thrownCode).toEqual(THROWN_CODE.NONE);
   });
 });
@@ -59,7 +59,7 @@ describe("get any data from the collections table", () => {
     getAllDates: {
       fn: getAllDates,
       args: [], // args: none except cancelTokenSource
-      dataKey: "listOfDates", // returned object has key "listOfDates" (and "thrownCode")
+      dataKey: "allDates", // returned object has key "allDates" (and "thrownCode")
     },
   };
   for (let fnName in collectionsFns) {

@@ -235,7 +235,7 @@ export const getCollectionsOnDate = async (
  * Retrieve list of dates with at least one collection. Wrapper for getCollections
  * @param {CancelToken} cancelTokenSource
  * @returns {
- *  {listOfDates: Array<String>, thrownCode: THROWN_CODE}
+ *  {allDates: Array<String>, thrownCode: THROWN_CODE}
  * }
  */
 export const getAllDates = async (cancelTokenSource) => {
@@ -243,10 +243,10 @@ export const getAllDates = async (cancelTokenSource) => {
     collections: oneCollectionPerDate,
     thrownCode,
   } = await getCollections({ one_per_date: "1" }, cancelTokenSource);
-  const listOfDates = oneCollectionPerDate.map((collection) =>
+  const allDates = oneCollectionPerDate.map((collection) =>
     collection["starts_at"].slice(0, 10)
   );
-  return { listOfDates, thrownCode };
+  return { allDates, thrownCode };
 };
 
 /**
