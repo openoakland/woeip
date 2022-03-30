@@ -8,6 +8,7 @@ import { MapMenu } from "./menu";
 
 import {
   BLANK_ACTIVE_ID,
+  getAllDates,
   getCollectionsOnDate,
   getFirstCollection,
   parsePollutants,
@@ -29,11 +30,12 @@ import { Grid } from "../ui";
  */
 export const Map = () => {
   const location = useLocation(); // location for the url
-  const initialDate = moment(location?.state?.date) || moment(); // Date either from upload or current day
+  const initialDate = moment(location?.state?.date); // Date either from upload or current day (moment(undefined) gives now)
   const [mapDate, setMapDate] = useState(initialDate);
   const [formattedDate, setFormattedDate] = useState(
     initialDate.format("YYYY-MM-DD")
   );
+  const [allDatesUnique, setAllDatesUnique] = useState(() => new Set()); // Lazy initial render
   const [collectionsOnDate, setCollectionsOnDate] = useState([]);
   const [activeId, setActiveId] = useState(BLANK_ACTIVE_ID);
   const [activeStartsAt, setActiveStartsAt] = useState(BLANK_ACTIVE_STARTS_AT);
@@ -47,9 +49,39 @@ export const Map = () => {
   const [isLoadingPollutants, setIsLoadingPollutants] = useState(false);
 
   /**
+   * Load a Set of all dates with at least one collection
+   * @modifies {api} calls to get one collection per date that has any
+   * @modifies {allDatesUnique}
+   * @modifies {mapDate}
+   * @returns {axios.CancelToken.source().cancel} cancel the api call
+   */
+  useEffect(() => {
+    const source = axios.CancelToken.source();
+    (async () => {
+      const { allDates, thrownCode } = await getAllDates(source);
+      if (thrownCode === THROWN_CODE.NONE) {
+        setAllDatesUnique(new Set(allDates));
+        const latestDate = allDates.reduce(
+          (maxDate, dateStr) => (dateStr > maxDate ? dateStr : maxDate), // alphabetical comparison
+          "0000-00-00"
+        );
+        /* If there's at least one collection date, go automatically to either
+         * the date of the most recent upload (preferred) or the most recent
+         * collection date. `latestDate`` should only be "0000-00-00" if the
+         * collections table is empty.
+         */
+        if (latestDate !== "0000-00-00") {
+          setMapDate(moment(location?.state?.date ?? latestDate));
+        }
+      }
+    })();
+    return source.cancel;
+  }, [location]);
+
+  /**
    * Load the collections that happened on a date
    * @param {string} formattedDate
-   * @modifies {api} calls to get collections on a data
+   * @modifies {api} calls to get collections on a date
    * @modifies {collectionsOnDate}
    * @modifies {activeId}
    * @modifies {activeStartsAt}
@@ -60,10 +92,8 @@ export const Map = () => {
   useEffect(() => {
     const source = axios.CancelToken.source();
     (async () => {
-      const {
-        collectionsOnDate: localCollectionsOnDate,
-        thrownCode,
-      } = await getCollectionsOnDate(formattedDate, source);
+      const { collectionsOnDate: localCollectionsOnDate, thrownCode } =
+        await getCollectionsOnDate(formattedDate, source);
       if (thrownCode === THROWN_CODE.NONE) {
         setCollectionsOnDate(localCollectionsOnDate);
         const {
@@ -95,10 +125,8 @@ export const Map = () => {
     (async () => {
       if (activeId !== BLANK_ACTIVE_ID) {
         setIsLoadingPollutants(true);
-        const {
-          pollutants: rawPollutants,
-          thrownCode,
-        } = await getPollutantsByCollectionId(activeId, source);
+        const { pollutants: rawPollutants, thrownCode } =
+          await getPollutantsByCollectionId(activeId, source);
         if (thrownCode === THROWN_CODE.NONE) {
           const parsed = parsePollutants(rawPollutants);
           const merged = mergePollutants(parsed);
@@ -218,6 +246,7 @@ export const Map = () => {
       <Grid.Column>
         <MapMenu
           mapDate={mapDate}
+          allDatesUnique={allDatesUnique}
           collectionsOnDate={collectionsOnDate}
           activeId={activeId}
           activeStartsAt={activeStartsAt}

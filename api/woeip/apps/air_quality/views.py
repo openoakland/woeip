@@ -35,15 +35,31 @@ class CollectionViewSet(viewsets.ModelViewSet):
         if start_date:
             try:
                 start = list(map(int, start_date.split('-')))
-                return queryset.filter(starts_at__date=datetime.date(*start))
+                queryset = queryset.filter(starts_at__date=datetime.date(*start))
             except (TypeError, ValueError) as e:
                 """Incorrect number of values,
                 Values are not valid dates,
                 Fail to convert strings to integers
                 """
                 logger.error(e)
-                raise ValidationError(detail=e)            
-        return queryset
+                raise ValidationError(detail=e)
+        one_per_date = self.request.query_params.get("one_per_date", None)
+        if one_per_date:
+            try:
+                one_per_date = int(one_per_date)
+                assert one_per_date in (0, 1)
+            except (ValueError, AssertionError) as e:
+                """Fail to convert strings to boolean"""
+                logger.error(e)
+                raise ValidationError(detail=e)
+        else:
+            one_per_date = 0
+
+        if one_per_date:
+            # https://stackoverflow.com/questions/2466496/select-distinct-values-from-a-table-field
+            return queryset.distinct("starts_at")
+        else:
+            return queryset
 
 
     @action(detail=True, methods=["GET"])
