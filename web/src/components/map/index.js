@@ -58,7 +58,7 @@ export const Map = () => {
   useEffect(() => {
     const source = axios.CancelToken.source();
     (async () => {
-      const { listOfDates, thrownCode } = await getAllDates(source);
+      const { allDates, thrownCode } = await getAllDates(source);
       if (thrownCode === THROWN_CODE.NONE) {
         setAllDatesUnique(new Set(allDates));
         const latestDate = allDates.reduce(
