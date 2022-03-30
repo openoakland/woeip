@@ -239,10 +239,8 @@ export const getCollectionsOnDate = async (
  * }
  */
 export const getAllDates = async (cancelTokenSource) => {
-  const {
-    collections: oneCollectionPerDate,
-    thrownCode,
-  } = await getCollections({ one_per_date: "1" }, cancelTokenSource);
+  const { collections: oneCollectionPerDate, thrownCode } =
+    await getCollections({ one_per_date: "1" }, cancelTokenSource);
   const allDates = oneCollectionPerDate.map((collection) =>
     collection["starts_at"].slice(0, 10)
   );
