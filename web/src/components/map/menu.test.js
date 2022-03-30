@@ -6,13 +6,13 @@ import { BLANK_ACTIVE_ID } from "./utils";
 
 describe("MapMenu", () => {
   let mapDate;
-  let setOfDates;
+  let allDatesUnique;
   let collections;
   let firstCollection;
   let secondCollection;
   beforeAll(() => {
     mapDate = moment("2014-07-17");
-    setOfDates = new Set(["2014-07-17", "2014-07-19"]);
+    allDatesUnique = new Set(["2014-07-17", "2014-07-19"]);
     collections = {
       firstCollection: {
         id: 0,
@@ -32,7 +32,7 @@ describe("MapMenu", () => {
     };
     firstCollection = collections["firstCollection"];
     secondCollection = collections["secondCollection"];
-    // thirdCollection is not currently in use; included to match setOfDates
+    // thirdCollection is not currently in use; included to match allDatesUnique
   });
 
   it("should render the default map menu, with no collections", () => {
@@ -125,7 +125,7 @@ describe("MapMenu", () => {
 
   it("should change the collection date only when a date with data is clicked", () => {
     const changeMapDate = jest.fn();
-    renderMapMenu({ mapDate, setOfDates, changeMapDate });
+    renderMapMenu({ mapDate, allDatesUnique, changeMapDate });
     userEvent.click(screen.getByTestId("datepicker-input"));
     // the event is fired when the day changes- not when the datepicker is clicked.
     expect(changeMapDate).not.toHaveBeenCalled();
@@ -141,7 +141,7 @@ describe("MapMenu", () => {
 
 const renderMapMenu = ({
   mapDate = moment(),
-  setOfDates = new Set(),
+  allDatesUnique = new Set(),
   collectionsOnDate = [],
   activeId = BLANK_ACTIVE_ID,
   activeStartsAt = "",
@@ -154,7 +154,7 @@ const renderMapMenu = ({
     <MapMenu
       {...{
         mapDate,
-        setOfDates,
+        allDatesUnique,
         collectionsOnDate,
         activeId,
         activeStartsAt,

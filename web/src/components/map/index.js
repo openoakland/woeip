@@ -35,7 +35,7 @@ export const Map = () => {
   const [formattedDate, setFormattedDate] = useState(
     initialDate.format("YYYY-MM-DD")
   );
-  const [setOfDates, setSetOfDates] = useState(() => new Set()); // Lazy initial render
+  const [allDatesUnique, setAllDatesUnique] = useState(() => new Set()); // Lazy initial render
   const [collectionsOnDate, setCollectionsOnDate] = useState([]);
   const [activeId, setActiveId] = useState(BLANK_ACTIVE_ID);
   const [activeStartsAt, setActiveStartsAt] = useState(BLANK_ACTIVE_STARTS_AT);
@@ -243,7 +243,7 @@ export const Map = () => {
       <Grid.Column>
         <MapMenu
           mapDate={mapDate}
-          setOfDates={setOfDates}
+          allDatesUnique={allDatesUnique}
           collectionsOnDate={collectionsOnDate}
           activeId={activeId}
           activeStartsAt={activeStartsAt}
