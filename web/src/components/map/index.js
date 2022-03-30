@@ -65,7 +65,14 @@ export const Map = () => {
           (maxDate, dateStr) => (dateStr > maxDate ? dateStr : maxDate), // alphabetical comparison
           "0000-00-00"
         );
-        setMapDate(moment(location?.state?.date ?? latestDate));
+        /* If there's at least one collection date, go automatically to either
+         * the date of the most recent upload (preferred) or the most recent
+         * collection date. `latestDate`` should only be "0000-00-00" if the
+         * collections table is empty.
+         */
+        if (latestDate !== "0000-00-00") {
+          setMapDate(moment(location?.state?.date ?? latestDate));
+        }
       }
     })();
     return source.cancel;
