@@ -22,7 +22,7 @@ describe("boundary", () => {
     expect(container.querySelector(".container")).toBeInTheDocument();
   });
 
-  // TODO: FIXME for auth issue
+  // FIXME: Redirect is causing overflow of renders
   it.skip("should redirect to login for anon user", () => {
     renderAuthBoundaryWithHistory({ tokenLoading: false });
     screen.debug();
