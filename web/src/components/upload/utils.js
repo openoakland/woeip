@@ -219,8 +219,8 @@ export const saveCollection = async (filesForm, authToken) => {
     await axios.post(apiUrlCollections(), filesForm, options);
   } catch (e) {
     errorMessage = getCollectionErrorMessage(
-      e.response.status,
-      e.response.data
+      e?.response?.status,
+      e?.response?.data
     );
   } finally {
     return { errorMessage };
