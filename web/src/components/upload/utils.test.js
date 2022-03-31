@@ -13,18 +13,29 @@ import {
   getDustrakStart,
   getDustrakEnd,
   extractFileMetaContent,
+  getCollectionErrorMessage,
 } from "./utils";
 
-//TODO: use mock service worker to test
 describe.skip("getDevices", () => {
   it.todo("successfully fetch devices");
   it.todo("failed to fetch devices");
 });
 
-//TODO: as part of auth changes
 describe("getCollectionErrorMessage", () => {
-  it.todo("should get auth error");
-  it.todo("should get duplicate error");
+  it("should get auth error", () =>
+    expect(getCollectionErrorMessage(401, [])).toBe(
+      "Authorization error. Please try logging in again."
+    ));
+
+  it("should get duplicate error", () =>
+    expect(
+      getCollectionErrorMessage(400, ["Dustrak file already in database"])
+    ).toBe("Dustrak file already in database"));
+
+  it("should get an unknown error", () =>
+    expect(getCollectionErrorMessage(400, [])).toBe(
+      "An unknown error occurred."
+    ));
 });
 
 //TODO: as part of auth changes
