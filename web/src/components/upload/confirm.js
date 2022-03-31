@@ -65,7 +65,6 @@ export const UploadConfirm = ({
   useEffect(() => {
     (async () => {
       if (isSaving) {
-        //TODO: Create path for unauthenticated//session expired
         const { errorMessage } = await saveCollection(filesForm, authToken);
         if (!errorMessage) {
           history.push({
