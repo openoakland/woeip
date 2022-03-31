@@ -52,6 +52,8 @@ export const Register = () => {
         </Container>
         <Form loading={isRegistering} onSubmit={handleSubmit}>
           <Form.Input
+            id="registerEmail"
+            htmlFor="registerEmail"
             type="email"
             label="Email"
             width={6}
@@ -59,6 +61,8 @@ export const Register = () => {
             onChange={changeEmail}
           />
           <Form.Input
+            id="registerPassword"
+            htmlFor="registerPassword"
             type="password"
             label="Password"
             width={6}
@@ -66,6 +70,8 @@ export const Register = () => {
             onChange={changePassword}
           />
           <Form.Input
+            id="registerConfirmPassword"
+            htmlFor="registerConfirmPassword"
             type="password"
             label="Confirm Password"
             width={6}

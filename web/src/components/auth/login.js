@@ -40,6 +40,8 @@ export const Login = () => {
         </Container>
         <Form loading={isLoading} onSubmit={handleSubmit}>
           <Form.Input
+            id="loginEmail"
+            htmlFor="loginEmail"
             type="email"
             label="Email"
             width={6}
@@ -47,6 +49,8 @@ export const Login = () => {
             onChange={changeEmail}
           />
           <Form.Input
+            id="loginEmail"
+            htmlFor="loginEmail"
             type="password"
             label="Password"
             width={6}
