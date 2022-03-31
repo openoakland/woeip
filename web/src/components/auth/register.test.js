@@ -1,5 +1,5 @@
-import { fireEvent, render,screen, waitFor } from "@testing-library/react";
-import userEvent from '@testing-library/user-event'
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
 import { Register } from "./register";
@@ -42,13 +42,13 @@ describe("register", () => {
 
     localStorage.clear();
     jest.restoreAllMocks();
-  })
+  });
 
   it("should have needed fields", () => {
     render(
-      <AuthTokenContext.Provider value={{setAuthToken: jest.fn()}}>
+      <AuthTokenContext.Provider value={{ setAuthToken: jest.fn() }}>
         <Router history={history}>
-          <Register/>
+          <Register />
         </Router>
       </AuthTokenContext.Provider>
     );
@@ -60,35 +60,37 @@ describe("register", () => {
 
   it("should show message on password mismatch", () => {
     render(
-      <AuthTokenContext.Provider value={{setAuthToken: jest.fn()}}>
+      <AuthTokenContext.Provider value={{ setAuthToken: jest.fn() }}>
         <Router history={history}>
-          <Register/>
+          <Register />
         </Router>
       </AuthTokenContext.Provider>
     );
 
     const password = screen.getByLabelText("Password");
     const confirmPassword = screen.getByLabelText("Confirm Password");
-    userEvent.type(password, 'abc');
-    expect(screen.queryByText("passwords do not match")).not.toBeInTheDocument();
-    userEvent.type(confirmPassword, 'a');
+    userEvent.type(password, "abc");
+    expect(
+      screen.queryByText("passwords do not match")
+    ).not.toBeInTheDocument();
+    userEvent.type(confirmPassword, "a");
     expect(screen.getByText("passwords do not match")).toBeInTheDocument();
   });
 
   it("should should show loading styling when creating account", async () => {
     server.use(
       rest.post(apiUrlAuthRegister(), (_req, res, ctx) => {
-        return res(ctx.status(200), ctx.json({ key: "fakeToken"}));
+        return res(ctx.status(200), ctx.json({ key: "fakeToken" }));
       })
     );
 
-    const {container} = render(
-      <AuthTokenContext.Provider value={{setAuthToken : jest.fn()}}>
-      <Router history={history}>
-        <Register/>
-      </Router>
-    </AuthTokenContext.Provider>
-    )
+    const { container } = render(
+      <AuthTokenContext.Provider value={{ setAuthToken: jest.fn() }}>
+        <Router history={history}>
+          <Register />
+        </Router>
+      </AuthTokenContext.Provider>
+    );
 
     expect(container.querySelector(".loading")).not.toBeInTheDocument();
 
@@ -96,11 +98,11 @@ describe("register", () => {
 
     await waitFor(() => {
       expect(container.querySelector(".loading")).toBeInTheDocument();
-    })
+    });
 
     await waitFor(() => {
       expect(container.querySelector(".loading")).not.toBeInTheDocument();
-    })
+    });
   });
 
   it("should set token and direct to about page, on registration success", async () => {
@@ -109,17 +111,17 @@ describe("register", () => {
 
     server.use(
       rest.post(apiUrlAuthRegister(), (_req, res, ctx) => {
-        return res(ctx.status(200), ctx.json({key: "fakeToken"}));
+        return res(ctx.status(200), ctx.json({ key: "fakeToken" }));
       })
     );
 
     render(
       <AuthTokenContext.Provider value={{ setAuthToken }}>
-      <Router history={history}>
-        <Register/>
-      </Router>
-    </AuthTokenContext.Provider>
-    )
+        <Router history={history}>
+          <Register />
+        </Router>
+      </AuthTokenContext.Provider>
+    );
 
     fireEvent.click(screen.getByText("Create Account"));
     await waitFor(() => {
@@ -131,7 +133,7 @@ describe("register", () => {
 
   it("should show an alert on registration failure", async () => {
     const alertSpy = jest.spyOn(window, "alert").mockImplementation(() => {});
-    const setAuthToken  = jest.fn();
+    const setAuthToken = jest.fn();
 
     server.use(
       rest.post(apiUrlAuthRegister(), (_req, res, ctx) => {
@@ -141,11 +143,11 @@ describe("register", () => {
 
     render(
       <AuthTokenContext.Provider value={{ setAuthToken }}>
-      <Router history={history}>
-        <Register/>
-      </Router>
-    </AuthTokenContext.Provider>
-    )
+        <Router history={history}>
+          <Register />
+        </Router>
+      </AuthTokenContext.Provider>
+    );
 
     fireEvent.click(screen.getByText("Create Account"));
 
