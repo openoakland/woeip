@@ -55,7 +55,7 @@
   "devDependencies": {
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
-    "@testing-library/user-event": "^12.7.1",
+    "@testing-library/user-event": "^12.8.3",
     "@types/react": "^17.0.39",
     "@types/react-router-dom": "^5.3.3",
     "@typescript-eslint/parser": "^4.15.1",
