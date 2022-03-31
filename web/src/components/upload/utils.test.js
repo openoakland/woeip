@@ -1,5 +1,7 @@
 import fs from "fs";
 import moment from "moment-timezone";
+import { apiUrlCollections } from "../../api.util";
+import { server, rest } from "../../serverHandlers";
 import {
   findDevice,
   getFilesForm,
@@ -14,6 +16,7 @@ import {
   getDustrakEnd,
   extractFileMetaContent,
   getCollectionErrorMessage,
+  saveCollection,
 } from "./utils";
 
 describe.skip("getDevices", () => {
@@ -40,8 +43,27 @@ describe("getCollectionErrorMessage", () => {
 
 //TODO: as part of auth changes
 describe("saveCollection", () => {
-  it.todo("should successfully upload data");
-  it.todo("should handle failed upload");
+  it("should successfully upload data", async () => {
+    server.use(
+      rest.post(apiUrlCollections(), (_req, res, ctx) => {
+        return res(ctx.status(200));
+      })
+    );
+
+    const { errorMessage } = await saveCollection({}, "fakeToken");
+    expect(errorMessage).toBe("");
+  });
+
+  it("should handle failed upload", async () => {
+    server.use(
+      rest.post(apiUrlCollections(), (_req, res, ctx) => {
+        return res(ctx.status(400));
+      })
+    );
+
+    const { errorMessage } = await saveCollection({}, "fakeToken");
+    expect(errorMessage).toBe("An unknown error occurred.");
+  });
 });
 
 describe("findDevice", () => {
