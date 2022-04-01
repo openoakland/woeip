@@ -130,7 +130,8 @@ export const UploadConfirm = ({
     <Container>
       <SuccessMessage>Success! Your files match.</SuccessMessage>
       <Container>
-        <h2>Step 2. Confirm your session details</h2><br />
+        <h2>Step 2. Confirm your session details</h2>
+        <br />
         <List>
           <List.Item as="label" htmlFor="collection-date">
             Collection date

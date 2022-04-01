@@ -1,0 +1,89 @@
+.container {
+  margin: 0px;
+  padding: 2px;
+}
+
+#decoration {
+  width: 200px;
+}
+
+#pointer {
+  --pointer-width:  10px;
+  width: 0; 
+  height: 0; 
+  border-left: var(--pointer-width) solid transparent;
+  border-right: var(--pointer-width) solid transparent;
+  border-bottom: 10px solid red;
+  left: -webkit-calc(50% - var(--pointer-width));
+  left: -moz-calc(50% - var(--pointer-width));
+  left: calc(50% - var(--pointer-width));
+  position:  relative;
+}
+
+div.hover {
+  height: 15px;
+  width: calc(100% / 6);
+  background: black;
+  display: inline-block;
+}
+
+/*from https://www.airnow.gov/sites/default/files/2020-05/aqi-technical-assistance-document-sept2018.pdf*/
+
+div.green {
+  background: #00E400;
+}
+
+div.yellow {
+  background: #FFFF00;
+}
+
+div.orange {
+  background: #FF7E00;
+}
+
+div.red {
+  background: #FF0000;
+}
+
+div.violet {
+  background: #8F3F97;
+}
+
+div.darkred {
+  background: #7E0023;
+}
+
+/*.swatch {
+  position: relative;
+  margin-left: calc( 2 * var(--swatch-size));
+}
+.swatch:before{
+  position: absolute;
+  left: calc( -2 * var(--swatch-size));
+  content: "";
+  height:var(--swatch-size);
+  width:var(--swatch-size);
+  margin-top: calc( ( 15px - var(--swatch-size) ) / 2 );
+}
+.swatch.red:before{
+  background-color:red;
+}*/
+
+/*.swatch {
+  position: relative;
+  float: left;
+  height: 10px;
+  width: 10px;
+  margin-bottom: 7px;
+  clear: both;
+  background-color: red;
+  }*/
+
+.swatch {
+  float: left;
+  font-size: 20pt;
+  margin-top: -2px;
+  color: rgb(42, 170, 82)
+}
+
+

@@ -6,20 +6,33 @@ import { BLANK_ACTIVE_ID } from "./utils";
 
 describe("MapMenu", () => {
   let mapDate;
+  let allDatesUnique;
+  let collections;
   let firstCollection;
   let secondCollection;
   beforeAll(() => {
     mapDate = moment("2014-07-17");
-    firstCollection = {
-      id: 0,
-      collection_files: ["//gps.io", "//dustrak.io"],
-      starts_at: "2014-07-17T19:40:35Z",
+    allDatesUnique = new Set(["2014-07-17", "2014-07-19"]);
+    collections = {
+      firstCollection: {
+        id: 0,
+        collection_files: ["//gps.io", "//dustrak.io"],
+        starts_at: "2014-07-17T19:40:35Z",
+      },
+      secondCollection: {
+        id: 1,
+        collection_files: ["//gps-second.io", "//dustrak-second.io"],
+        starts_at: "2014-07-17T12:40:35Z",
+      },
+      thirdCollection: {
+        id: 2,
+        collection_files: ["//gps-third.io", "//dustrak-third.io"],
+        starts_at: "2014-07-19T13:40:35Z",
+      },
     };
-    secondCollection = {
-      id: 1,
-      collection_files: ["//gps-second.io", "//dustrak-second.io"],
-      starts_at: "2014-07-17T12:40:35Z",
-    };
+    firstCollection = collections["firstCollection"];
+    secondCollection = collections["secondCollection"];
+    // thirdCollection is not currently in use; included to match allDatesUnique
   });
 
   it("should render the default map menu, with no collections", () => {
@@ -110,13 +123,17 @@ describe("MapMenu", () => {
     expect(changeActiveCollection).toHaveBeenCalled();
   });
 
-  it("should change the collection date when clicking the map", () => {
+  it("should change the collection date only when a date with data is clicked", () => {
     const changeMapDate = jest.fn();
-    renderMapMenu({ changeMapDate });
+    renderMapMenu({ mapDate, allDatesUnique, changeMapDate });
     userEvent.click(screen.getByTestId("datepicker-input"));
     // the event is fired when the day changes- not when the datepicker is clicked.
     expect(changeMapDate).not.toHaveBeenCalled();
-    // the 19th is a day that should always be in the month and not conflict with other text values
+    // the starting date should be July 17th, 2014
+    // there is no data on the 18th and it should not conflict with other text values
+    userEvent.click(screen.getByText("18"));
+    expect(changeMapDate).not.toHaveBeenCalled();
+    // the 19th is another day with test data and should not conflict with other text values
     userEvent.click(screen.getByText("19"));
     expect(changeMapDate).toHaveBeenCalled();
   });
@@ -124,6 +141,7 @@ describe("MapMenu", () => {
 
 const renderMapMenu = ({
   mapDate = moment(),
+  allDatesUnique = new Set(),
   collectionsOnDate = [],
   activeId = BLANK_ACTIVE_ID,
   activeStartsAt = "",
@@ -136,6 +154,7 @@ const renderMapMenu = ({
     <MapMenu
       {...{
         mapDate,
+        allDatesUnique,
         collectionsOnDate,
         activeId,
         activeStartsAt,

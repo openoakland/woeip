@@ -111,7 +111,10 @@ export const spatializePollutants = (pollutants) => {
     features: pollutants.map((pollutant) => {
       return {
         type: "Feature",
-        properties: { value: pollutant.value },
+        properties: {
+          value: pollutant.value,
+          timestamp: pollutant.timestamp,
+        },
         geometry: {
           type: "Point",
           coordinates: [pollutant.longitude, pollutant.latitude],
@@ -177,7 +180,40 @@ export const parsePollutant = (item) => {
 };
 
 /**
- * Retrieve all of the collections that occurred on the given date
+ * Generic api call to get metadata about collections
+ * @param {CancelToken} cancelTokenSource
+ * @param {object} params parameters to pass to api
+ * @returns {
+ *   {collections: Array<Collection>, thrownCode: THROWN_CODE}
+ * }
+ */
+export const getCollections = async (params, cancelTokenSource) => {
+  const options = {
+    params,
+    cancelToken: cancelTokenSource.token,
+  };
+  try {
+    const response = await axios.get(apiUrlCollections(), options);
+    const collections = response.data;
+    if (!collections)
+      throw new Error(
+        `Failed to retrieve collection data matching parameters ${params}`
+      );
+    if (!Array.isArray(collections))
+      throw new Error(
+        `Retrieved collection data failed to conform to array structure. Parameters given: ${params}`
+      );
+    return {
+      collections,
+      thrownCode: THROWN_CODE.NONE,
+    };
+  } catch (thrown) {
+    return { collections: [], thrownCode: getThrownCode(thrown) };
+  }
+};
+
+/**
+ * Retrieve all of the collections that occurred on the given date. Wrapper for getCollections
  * @param {string} formattedDate requested date, already in expected format
  * @param {CancelToken} cancelTokenSource
  * @returns {
@@ -188,28 +224,27 @@ export const getCollectionsOnDate = async (
   formattedDate,
   cancelTokenSource
 ) => {
-  const options = {
-    params: {
-      start_date: formattedDate,
-    },
-    cancelToken: cancelTokenSource.token,
-  };
-  try {
-    const response = await axios.get(apiUrlCollections(), options);
-    const collectionsOnDate = response.data;
-    if (!collectionsOnDate)
-      throw new Error("Failed to retrieve collection data for day");
-    if (!Array.isArray(collectionsOnDate))
-      throw new Error(
-        "Retrieved collection data for day failed to conform to array structure"
-      );
-    return {
-      collectionsOnDate: collectionsOnDate,
-      thrownCode: THROWN_CODE.NONE,
-    };
-  } catch (thrown) {
-    return { collectionsOnDate: [], thrownCode: getThrownCode(thrown) };
-  }
+  const { collections: collectionsOnDate, thrownCode } = await getCollections(
+    { start_date: formattedDate },
+    cancelTokenSource
+  );
+  return { collectionsOnDate, thrownCode };
+};
+
+/**
+ * Retrieve list of dates with at least one collection. Wrapper for getCollections
+ * @param {CancelToken} cancelTokenSource
+ * @returns {
+ *  {allDates: Array<String>, thrownCode: THROWN_CODE}
+ * }
+ */
+export const getAllDates = async (cancelTokenSource) => {
+  const { collections: oneCollectionPerDate, thrownCode } =
+    await getCollections({ one_per_date: "1" }, cancelTokenSource);
+  const allDates = oneCollectionPerDate.map((collection) =>
+    collection["starts_at"].slice(0, 10)
+  );
+  return { allDates, thrownCode };
 };
 
 /**
