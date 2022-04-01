@@ -14,8 +14,6 @@
   border-left: var(--pointer-width) solid transparent;
   border-right: var(--pointer-width) solid transparent;
   border-bottom: 10px solid red;
-  left: -webkit-calc(50% - var(--pointer-width));
-  left: -moz-calc(50% - var(--pointer-width));
   left: calc(50% - var(--pointer-width));
   position:  relative;
 }
@@ -83,7 +81,7 @@ div.darkred {
   float: left;
   font-size: 20pt;
   margin-top: -2px;
-  color: rgb(42, 170, 82)
+  color: rgb(42, 170, 82);
 }
 
 
