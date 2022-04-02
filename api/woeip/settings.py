@@ -30,7 +30,7 @@ DJANGO_APPS = [
     "django.contrib.gis",
 ]
 
-THIRD_PARTY_APPS = ["corsheaders", "django_extensions", "rest_framework", 'rest_framework.authtoken', "dj_rest_auth", "allauth", 'allauth.account', 'allauth.socialaccount', 'dj_rest_auth.registration', "storages", "drf_yasg"]
+THIRD_PARTY_APPS = ["django_extensions", "rest_framework", "storages", "drf_yasg"]
 
 LOCAL_APPS = ["woeip.apps.core", "woeip.apps.air_quality"]
 
@@ -57,7 +57,6 @@ if DEFAULT_FILE_STORAGE == "storages.backends.s3boto.S3BotoStorage" and (
 
 
 MIDDLEWARE = [
-    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -66,33 +65,6 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django.contrib.flatpages.middleware.FlatpageFallbackMiddleware",
-]
-
-REST_FRAMEWORK = {
-    'DATETIME_FORMAT': "%m/%d/%Y %I:%M%P",
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',
-        ],
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
-    ]
-}
-
-AUTHENTICATION_BACKENDS = (
-    "django.contrib.auth.backends.ModelBackend",
-    "allauth.account.auth_backends.AuthenticationBackend",
-)
-
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_UNIQUE_EMAIL = True
-ACCOUNT_USERNAME_REQUIRED = False
-ACCOUNT_AUTHENTICATION_METHOD = 'email'
-
-CORS_ALLOWED_ORIGINS = [
-    "http://lvh.me",
-    "https://woaq.org",
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
 ]
 
 ROOT_URLCONF = "woeip.urls"
@@ -219,6 +191,9 @@ LOGGING = {
         "django": {"handlers": ["console"], "propagate": True},
     },
 }
+
+LOGIN_REDIRECT_URL = "upload"
+LOGOUT_REDIRECT_URL = "login"
 
 EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
 EMAIL_FILE_PATH = str(project_root.path("sent_emails"))
