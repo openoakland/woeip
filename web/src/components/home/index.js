@@ -1,9 +1,10 @@
-import { Container } from "../ui";
+import { AuthBoundary } from "../auth/boundary";
+import Welcome from "./welcome";
 
 export const Home = () => {
   return (
-    <Container textAlign="center">
-      <h2>Welcome to West Oakland Air Quality!</h2>
-    </Container>
+    <AuthBoundary>
+      <Welcome />
+    </AuthBoundary>
   );
 };

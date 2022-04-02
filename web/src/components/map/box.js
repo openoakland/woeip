@@ -9,7 +9,8 @@ import "mapbox-gl/dist/mapbox-gl.css";
 // Hack: https://github.com/mapbox/mapbox-gl-js/issues/10173#issuecomment-753662795
 import mapboxgl from "mapbox-gl";
 /* eslint-disable import/no-webpack-loader-syntax */
-mapboxgl.workerClass = require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
+mapboxgl.workerClass =
+  require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
 /* eslint-enable import/no-webpack-loader-syntax */
 
 export const PM25_CATEGORY_COLORS = {

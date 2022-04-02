@@ -5,6 +5,7 @@ import { UploadDrop } from "./drop";
 import { UploadConfirm } from "./confirm";
 import { Container } from "../ui";
 import { findDevice, getDevices } from "./utils";
+import { AuthBoundary } from "../auth/boundary";
 
 export const Upload = () => {
   const [files, setFiles] = useState([]);
@@ -26,32 +27,34 @@ export const Upload = () => {
   }, [dustrakSerial]);
 
   return (
-    <Container>
-      {phase === "drop" && (
-        <UploadDrop
-          files={files}
-          setFiles={setFiles}
-          proceedToConfirm={() => setPhase("confirm")}
-          setDustrakStart={setDustrakStart}
-          setDustrakEnd={setDustrakEnd}
-          setDustrakSerial={setDustrakSerial}
-        />
-      )}
-      {phase === "confirm" && (
-        <UploadConfirm
-          device={device}
-          files={files}
-          dustrakStart={dustrakStart}
-          dustrakEnd={dustrakEnd}
-          clearFiles={() => setFiles([])}
-          clearDustrakTimes={() => {
-            setDustrakStart(moment(""));
-            setDustrakEnd(moment(""));
-          }}
-          clearDustrakSerial={() => setDustrakSerial("")}
-          returnToDrop={() => setPhase("drop")}
-        />
-      )}
-    </Container>
+    <AuthBoundary>
+      <Container>
+        {phase === "drop" && (
+          <UploadDrop
+            files={files}
+            setFiles={setFiles}
+            proceedToConfirm={() => setPhase("confirm")}
+            setDustrakStart={setDustrakStart}
+            setDustrakEnd={setDustrakEnd}
+            setDustrakSerial={setDustrakSerial}
+          />
+        )}
+        {phase === "confirm" && (
+          <UploadConfirm
+            device={device}
+            files={files}
+            dustrakStart={dustrakStart}
+            dustrakEnd={dustrakEnd}
+            clearFiles={() => setFiles([])}
+            clearDustrakTimes={() => {
+              setDustrakStart(moment(""));
+              setDustrakEnd(moment(""));
+            }}
+            clearDustrakSerial={() => setDustrakSerial("")}
+            returnToDrop={() => setPhase("drop")}
+          />
+        )}
+      </Container>
+    </AuthBoundary>
   );
 };
