@@ -31,6 +31,24 @@ export const apiUrlCollectionById = (collectionId) =>
 export const apiUrlDevices = () => apiUrl("devices");
 
 /**
+ * Constructs the api endpoint to login
+ * @returns {string}
+ */
+export const apiUrlAuthLogin = () => apiUrl("auth/login/");
+
+/**
+ * Constructs the api endpoint to logout
+ * @returns {string}
+ */
+export const apiUrlAuthLogout = () => apiUrl("auth/logout/");
+
+/**
+ * Constructs the api endpoint to register a user
+ * @returns {string}
+ */
+export const apiUrlAuthRegister = () => apiUrl("auth/register/");
+
+/**
  * Removes the protocol from a url so that it is an empty protocol.
  * This prevents mixed content errors (https://developer.mozilla.org/en-US/docs/Web/Security/Mixed_content),
  * when one environment is http and the other is https
@@ -38,3 +56,10 @@ export const apiUrlDevices = () => apiUrl("devices");
  * @returns {string} the link in the form "//domain.io"
  */
 export const emptyProtocol = (link) => link.replace(/^(https?|ftp):/, "");
+
+/**
+ * Passing the auth token to the server in the header requires preceding it with "Token"
+ * @param {string} authToken
+ * @returns {string} token formatted for use in headers
+ */
+export const authTokenHeaderFormat = (authToken) => `Token ${authToken}`;

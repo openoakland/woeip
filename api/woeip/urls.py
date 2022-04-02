@@ -18,13 +18,14 @@ router.register(r"pollutant", views.PollutantViewSet)
 router.register(r"pollutant_values", views.PollutantValueViewSet)
 router.register(r"sensors", views.SensorViewSet)
 router.register(r"timegeo", views.TimeGeoViewSet)
-router.register(r"users", core_views.UserViewSet)
+# router.register(r"users", core_views.UserViewSet) # Disable to prevent personal information leaking
 
 
 urlpatterns = [
     path("", include(router.urls)),
     path("admin/", admin.site.urls),
-    path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
+    path("auth/", include("dj_rest_auth.urls")),
+    path("auth/register/", include('dj_rest_auth.registration.urls')),
 ]
 
 urlpatterns += swagger_urlpatterns
