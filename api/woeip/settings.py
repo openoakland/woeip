@@ -30,7 +30,7 @@ DJANGO_APPS = [
     "django.contrib.gis",
 ]
 
-THIRD_PARTY_APPS = ["corsheaders", "django_extensions", "rest_framework", 'rest_framework.authtoken', "rest_auth", "allauth", 'allauth.account', 'allauth.socialaccount', 'rest_auth.registration', "storages", "drf_yasg"]
+THIRD_PARTY_APPS = ["corsheaders", "django_extensions", "rest_framework", 'rest_framework.authtoken', "dj_rest_auth", "allauth", 'allauth.account', 'allauth.socialaccount', 'dj_rest_auth.registration', "storages", "drf_yasg"]
 
 LOCAL_APPS = ["woeip.apps.core", "woeip.apps.air_quality"]
 

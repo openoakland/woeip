@@ -24,8 +24,8 @@ router.register(r"timegeo", views.TimeGeoViewSet)
 urlpatterns = [
     path("", include(router.urls)),
     path("admin/", admin.site.urls),
-    path("auth/", include("rest_auth.urls")),
-    path("auth/register/", include('rest_auth.registration.urls')),
+    path("auth/", include("dj_rest_auth.urls")),
+    path("auth/register/", include('dj_rest_auth.registration.urls')),
 ]
 
 urlpatterns += swagger_urlpatterns
