@@ -3,7 +3,6 @@ import {
   apiUrlCollections,
   apiUrlCollectionById,
   apiUrlDevices,
-  authTokenHeaderFormat,
   emptyProtocol,
 } from "./api.util";
 
@@ -39,9 +38,4 @@ describe("empty protocol", () => {
     expect(emptyProtocol(`ftp:${emptyProtocolLink}`)).toEqual(
       emptyProtocolLink
     ));
-});
-
-describe("authTokenHeaderFormat", () => {
-  it('should pair the token itself with the work "Token"', () =>
-    expect(authTokenHeaderFormat("tokenItself")).toBe("Token tokenItself"));
 });

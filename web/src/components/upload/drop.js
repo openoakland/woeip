@@ -28,7 +28,7 @@ import {
   getGpsStart,
   getDustrakSerial,
   getDustrakEnd,
-} from "./utils";
+} from "./drop.utils";
 
 /**
  * @property {Array<File>} files Array of files uploaded by user

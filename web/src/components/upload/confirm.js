@@ -1,9 +1,9 @@
 import { PropTypes } from "prop-types";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 
-import { getFilesForm, saveCollection } from "./utils";
+import { getFilesForm } from "./confirm.utils";
 
 import {
   Segment,
@@ -18,7 +18,7 @@ import {
 
 import { UploadCancelModal } from "./cancelModal";
 import { Form } from "semantic-ui-react";
-import { AuthTokenContext } from "../auth/tokenContext";
+import { apiUrlCollections } from "../../api.util";
 
 /**
  * Allow the user to view data about their files
@@ -43,7 +43,6 @@ export const UploadConfirm = ({
   clearDustrakSerial,
   returnToDrop,
 }) => {
-  const { authToken } = useContext(AuthTokenContext);
   const [shouldShowCancelModal, setShouldShowCancelModal] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [filesForm, setFilesForm] = useState(new Form());
@@ -65,28 +64,35 @@ export const UploadConfirm = ({
   useEffect(() => {
     (async () => {
       if (isSaving) {
-        const { errorMessage } = await saveCollection(filesForm, authToken);
-        if (!errorMessage) {
+        const options = {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          cancelToken: cancelTokenSource.token,
+        };
+        try {
+          await axios.post(apiUrlCollections(), filesForm, options);
           history.push({
             pathname: "/maps",
             state: {
               date: dustrakStart.format("MM/DD/YYYY"),
             },
           });
-        } else {
-          alert(`Unable to upload files. ${errorMessage}`);
+        } catch (thrown) {
+          if (axios.isCancel(thrown)) {
+            alert("Canceled request to save uploads");
+          } else {
+            if (thrown.response) {
+              alert(`Failed to save uploads: ${thrown.response.data}`);
+            } else {
+              alert("Failed to save uploads");
+            }
+          }
         }
         setIsSaving(false);
       }
     })();
-  }, [
-    authToken,
-    filesForm,
-    dustrakStart,
-    history,
-    cancelTokenSource,
-    isSaving,
-  ]);
+  }, [filesForm, dustrakStart, history, cancelTokenSource, isSaving]);
 
   /**
    * @modifies {isSaving} Notify component we are saving
