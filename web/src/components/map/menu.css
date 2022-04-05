@@ -30,7 +30,11 @@ button.clndr-cell-selected {
   color: white;
 }
 
-.clndr-days {
+/* the `div` selector is needed for the production build, in
+ * which certain semantic-ui-react-datepicker styles are duplicated
+ * in a <style> tag that overrides this css.
+ */
+div.clndr-days {
   background-color: rgba(255, 255, 255, 1);
   border: 1px solid white; /* hack to get rid of border */
 }
