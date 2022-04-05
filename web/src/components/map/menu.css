@@ -10,7 +10,7 @@
 button.clndr-cell {
   background-color: lightblue;
   border-radius: 50%;
-  opacity: 100%;
+  opacity: 1;
 }
 
 button.clndr-cell:hover {
