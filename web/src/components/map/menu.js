@@ -64,11 +64,11 @@ export const MapMenu = ({
         showToday={false}
         datePickerOnly={true}
         filterDate={(date) => {
-            date = moment(date).format("YYYY-MM-DD");
-            return date != mapDate.format("YYYY-MM-DD") &&
-            allDatesUnique.has(date);
-          }
-        }
+          date = moment(date).format("YYYY-MM-DD");
+          return (
+            date !== mapDate.format("YYYY-MM-DD") && allDatesUnique.has(date)
+          );
+        }}
       />
       <h3>Collection Details</h3>
       <List>
