@@ -7,7 +7,7 @@ cffi==1.15.0
 charset-normalizer==2.0.12
 coreapi==2.3.3
 coreschema==0.0.4
-Django==3.2.12
+Django==3.2.13
 django-boto==0.3.12
 django-environ==0.8.1
 django-extensions==3.1.5
