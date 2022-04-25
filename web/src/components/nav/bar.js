@@ -1,7 +1,7 @@
 import { Link, NavLink, withRouter } from "react-router-dom";
 import { Container, Menu } from "../ui";
-import logo from './logo.svg';
-import './bar.css'
+import logo from "./logo.svg";
+import "./bar.css";
 
 const Navbar = () => {
   return (
