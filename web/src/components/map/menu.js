@@ -60,11 +60,15 @@ export const MapMenu = ({
         format="YYYY-MM-DD"
         value={mapDate.toDate()}
         clearable={false}
+        clearOnSameDateClick={false}
         showToday={false}
         datePickerOnly={true}
-        filterDate={(date) =>
-          allDatesUnique.has(moment(date).format("YYYY-MM-DD"))
-        }
+        filterDate={(date) => {
+          date = moment(date).format("YYYY-MM-DD");
+          return (
+            date !== mapDate.format("YYYY-MM-DD") && allDatesUnique.has(date)
+          );
+        }}
       />
       <h3>Collection Details</h3>
       <List>

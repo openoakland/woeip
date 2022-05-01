@@ -21,11 +21,13 @@ button.clndr-cell:hover {
 button.clndr-cell-disabled:disabled {
   background-color: white;
   color: black;
-  border-radius: 0;
 }
 
-/* include "button" selector to override above */
-button.clndr-cell-selected {
+/* include "button" and "disabled" selectors to override above. the
+ * currently selected date is disabled because otherwise it behaves
+ * unexpectedly when clicked (it clears the map).
+ */
+button.clndr-cell-selected:disabled {
   background-color: royalblue;
   color: white;
 }
