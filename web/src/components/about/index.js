@@ -96,7 +96,10 @@ export const About = () => (
             <div class="item">Ife Ajiboye</div>
             <div class="item">Natalia Bilenko</div>
             <div class="item">Clinton Blackburn</div>
+            <div class="item">Anna Keyser Bola&#241;os</div>
             <div class="item">Ethan Bradley</div>
+            <div class="item">Brian</div>
+            <div class="item">Gabriel Ehrlich</div>
             <div class="item">Robert Gibboni</div>
             <div class="item">Kabirdas Henry</div>
             <div class="item">Brooks Jessup</div>
