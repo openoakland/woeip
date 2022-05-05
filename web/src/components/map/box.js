@@ -64,6 +64,7 @@ const initialViewport = {
 export const MapBox = ({ isLoading, pollutants }) => {
   const [viewport, setViewport] = useState(initialViewport);
   const [hoverInfo, setHoverInfo] = useState(null);
+  const [hoverPinned, setHoverPinned] = useState(false);
 
   /**
    * Return points from the data layer on hover
@@ -71,6 +72,7 @@ export const MapBox = ({ isLoading, pollutants }) => {
    *   and https://visgl.github.io/react-map-gl/examples/controls
    */
   const onHover = useCallback((event) => {
+    if (hoverPinned) return;
     const {
       features,
       srcEvent: { offsetX, offsetY },
@@ -88,7 +90,11 @@ export const MapBox = ({ isLoading, pollutants }) => {
           }
         : null
     );
-  }, []);
+  }, [hoverPinned]);
+
+  const onClick = useCallback((event) => {
+    setHoverPinned(!hoverPinned);
+  }, [hoverPinned]);
 
   return (
     <Container className="map-view-container">
@@ -104,6 +110,7 @@ export const MapBox = ({ isLoading, pollutants }) => {
         mapboxApiAccessToken={mapboxApiAccessToken}
         interactiveLayerIds={["point"]}
         onHover={onHover}
+        onClick={onClick}
       >
         <NavigationControl
           showCompass={false}
