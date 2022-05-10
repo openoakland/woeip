@@ -63,22 +63,25 @@ const initialViewport = {
  */
 export const MapBox = ({ isLoading, pollutants }) => {
   const [viewport, setViewport] = useState(initialViewport);
-  const [hoverInfo, setHoverInfo] = useState(null);
-  const [hoverPinned, setHoverPinned] = useState(false);
+  const [info, setInfo] = useState({
+    displayedInfo: null,
+    hoverInfo: null,
+    mouseIsDownForClick: false,
+    pinned: false
+  });
 
   /**
    * Return points from the data layer on hover
    * Inspired by https://github.com/visgl/react-map-gl/blob/7.0-release/examples/geojson/src/app.tsx
    *   and https://visgl.github.io/react-map-gl/examples/controls
    */
-  const onHover = useCallback((event) => {
-    if (hoverPinned) return;
+  const getInfo = (event) => {
     const {
       features,
       srcEvent: { offsetX, offsetY },
     } = event;
     const hoveredFeatures = features && features[0];
-    setHoverInfo(
+    return (
       hoveredFeatures
         ? {
             feature: hoveredFeatures,
@@ -88,13 +91,90 @@ export const MapBox = ({ isLoading, pollutants }) => {
             count: features.length,
             features: features,
           }
-        : null
-    );
-  }, [hoverPinned]);
+        : null);
+  }
 
-  const onClick = useCallback((event) => {
-    setHoverPinned(!hoverPinned);
-  }, [hoverPinned]);
+  /**
+   * onHover has access to info from the data layer. Update it as appropriate 
+   */
+  const onHover = useCallback((event) => {
+    // passing a function to setInfo updates info based on current state
+    setInfo((info) => {
+      const newInfo = getInfo(event);
+      if (info.pinned) {
+        // previously clicked info pinned open -> store info but don't display
+        return {
+          ...info,
+          hoverInfo: newInfo,
+        };
+      }
+      if (info.mouseIsDownForClick) {
+        // mouse was down and has now moved -> drag, not click -> store info but don't display
+        return {
+          ...info,
+          hoverInfo: newInfo
+        }
+      }
+      // mouse was not down when new point was hovered over and nothing is pinned open -> display hover info
+      return {
+        ...info,
+        displayedInfo: newInfo,
+        hoverInfo: newInfo,
+      };
+    });
+  }, []);
+
+  const onMouseMove = useCallback((event) =>
+    setInfo((info) => {
+      if (info.mouseIsDownForClick){
+        // mouse was down to drag -> not a click
+        return {
+          ...info,
+          mouseIsDownForClick: false
+        };
+      }
+      // mouse was up -> hover will handle this
+      return info;
+    }), []);
+
+  // for some reason onMouseDown has no access to features, so
+  // borrow them from previous event
+  const onMouseDown = useCallback((event) => {
+    // don't display new info until we know if this is a click or not
+    setInfo((info) => {
+      return {
+        ...info,
+        mouseIsDownForClick: true
+      }
+    });
+  }, []);
+
+  const onMouseUp = useCallback((event) => {
+    setInfo((info) => {
+      if (info.mouseIsDownForClick) {
+        // mouse has not moved since mouseDown -> this is a click
+        if (info.hoverInfo) {
+          // the click happened on a point, so pin that info
+          return {
+            ...info,
+            pinned: true,
+            displayedInfo: info.hoverInfo,
+            mouseIsDownForClick: false
+          }
+        }
+        // the click happened on a blank part of the map, so make sure nothing is pinned
+        // and nothing is displayed
+        return {
+          ...info,
+          pinned: false,
+          displayedInfo: null,
+          mouseIsDownForClick: false
+        }
+      }
+      // mouse has moved while down -> this was a drag -> don't do anything
+      return info;
+    });
+  }, []);
 
   return (
     <Container className="map-view-container">
@@ -110,7 +190,9 @@ export const MapBox = ({ isLoading, pollutants }) => {
         mapboxApiAccessToken={mapboxApiAccessToken}
         interactiveLayerIds={["point"]}
         onHover={onHover}
-        onClick={onClick}
+        onMouseMove={onMouseMove}
+        onMouseDown={onMouseDown}
+        onMouseUp={onMouseUp}
       >
         <NavigationControl
           showCompass={false}
@@ -119,7 +201,7 @@ export const MapBox = ({ isLoading, pollutants }) => {
         <Source id="pollutant-values" type="geojson" data={pollutants}>
           <Layer {...pollutantLayer} />
         </Source>
-        {hoverInfo && <Hover hoverInfo={hoverInfo} />}
+        {info.displayedInfo && <Hover info={info.displayedInfo}/>}
       </ReactMapGL>
     </Container>
   );

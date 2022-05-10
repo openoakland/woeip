@@ -45,8 +45,8 @@ const FormatTime = (date) => {
   return date.replace(pattern, replacement).split(" ").slice(1).join(" ");
 };
 
-export const Hover = ({ hoverInfo }) => {
-  const val = hoverInfo.feature.properties.value;
+export const Hover = ({ info }) => {
+  const val = info.feature.properties.value;
   const maxReading = 0.5;
   /* This value is used as a guess of the maximum possible (i.e. 100%) value of
    * any air sample reading in order to correctly position the hover's arrow along
@@ -100,19 +100,19 @@ export const Hover = ({ hoverInfo }) => {
   };
   const micrograms = val * 1000; // val is stored in units of milligrams per cubic meter but displayed in micrograms per cubic meter
 
-  const otherHoverPts = hoverInfo.features.slice(1, 5);
-  var moreThanSixHoverPts = hoverInfo.features.slice(6).length;
+  const otherHoverPts = info.features.slice(1, 5);
+  var moreThanSixHoverPts = info.features.slice(6).length;
   if (!moreThanSixHoverPts) {
     moreThanSixHoverPts = null;
   }
 
   return (
-    <div className="hovertip" style={{ left: hoverInfo.x, top: hoverInfo.y }}>
+    <div className="hovertip" style={{ left: info.x, top: info.y }}>
       <div>
         <b>
           {micrograms} &#181;g/m<sup>3</sup> of PM<sub>2.5</sub>
         </b>{" "}
-        at {FormatTime(hoverInfo.time)}{" "}
+        at {FormatTime(info.time)}{" "}
       </div>
       <div class="container">
         <div id="decoration">
@@ -128,7 +128,7 @@ export const Hover = ({ hoverInfo }) => {
       {otherHoverPts.length !== 0 && <div>Other nearby readings:</div>}
       {otherHoverPts &&
         otherHoverPts.map(({ properties }) => (
-          <div key={properties}>
+          <div key={properties.timestamp}>
             <div
               class="swatch"
               style={{ color: ArrowProps(properties.value)[0] }}
