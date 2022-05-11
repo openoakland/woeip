@@ -60,10 +60,8 @@ export const Map = () => {
   useEffect(() => {
     const source = axios.CancelToken.source();
     (async () => {
-      const {
-        collectionsOnDate: localCollectionsOnDate,
-        thrownCode,
-      } = await getCollectionsOnDate(formattedDate, source);
+      const { collectionsOnDate: localCollectionsOnDate, thrownCode } =
+        await getCollectionsOnDate(formattedDate, source);
       if (thrownCode === THROWN_CODE.NONE) {
         setCollectionsOnDate(localCollectionsOnDate);
         const {
@@ -95,10 +93,8 @@ export const Map = () => {
     (async () => {
       if (activeId !== BLANK_ACTIVE_ID) {
         setIsLoadingPollutants(true);
-        const {
-          pollutants: rawPollutants,
-          thrownCode,
-        } = await getPollutantsByCollectionId(activeId, source);
+        const { pollutants: rawPollutants, thrownCode } =
+          await getPollutantsByCollectionId(activeId, source);
         if (thrownCode === THROWN_CODE.NONE) {
           const parsed = parsePollutants(rawPollutants);
           const merged = mergePollutants(parsed);
