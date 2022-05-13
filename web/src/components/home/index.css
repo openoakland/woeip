@@ -1,0 +1,13 @@
+.hero {
+  border-radius: 5px;
+  background-image: url(./WOCAP-AzibuikeAkaba-2000p.png);
+}
+
+.spacer {
+  margin-top:2em;
+  margin-bottom:2em;
+}
+
+.spacer-button {
+  margin-top:2em;
+}
