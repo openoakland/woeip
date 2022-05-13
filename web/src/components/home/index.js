@@ -13,7 +13,7 @@ export const Home = () => {
           West Oakland Air Quality Project
         </h1>
         <h2>Explore local air quality to understand the impact on you, your family, and your neighborhood.</h2>
-        <div class="spacer-button"><a href="/maps" class="ui button test">Explore the map <i class="right arrow icon"></i></a></div>
+        <div class="spacer-button"><a href="/maps" class="ui button violet">Explore the map <i class="right arrow icon"></i></a></div>
       </div>
     </div>
 
@@ -26,8 +26,11 @@ export const Home = () => {
           <div class="ui text-container about-container">
             <h2 className="ui header">Start collecting data yourself</h2>
             <p>
-              Want to join our team of volunteer data collectors?
-              <div class="spacer-button"><a href="/maps" class="ui button violet">Sign up for WOEIP's next training</a></div>
+              Want to join WOEIP's team of volunteer data collectors?
+
+              <div class="spacer-button"><a href="http://eepurl.com/hqw6RD" target="_blank" class="ui button">Sign up for volunteer opportunities &nbsp;<i class="external square alternate icon"></i></a></div>
+
+
             </p>
           </div>
         </div>
