@@ -11,3 +11,7 @@
 .spacer-button {
   margin-top:2em;
 }
+
+.borderless {
+  border:0;
+}
