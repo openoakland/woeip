@@ -124,6 +124,7 @@ export const Hover = ({ info }) => {
           <div class="hover violet"></div>
           <div class="hover darkred"></div>
         </div>
+        <a href="https://epa.gov"><div id="questionmark">?</div></a>
       </div>
       {otherHoverPts.length !== 0 && <div>Other nearby readings:</div>}
       {otherHoverPts &&

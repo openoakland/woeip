@@ -1,10 +1,12 @@
 .container {
   margin: 0px;
   padding: 2px;
+  width: 225px;
 }
 
 #decoration {
   width: 200px;
+  display: inline-block;
 }
 
 #pointer {
@@ -16,6 +18,20 @@
   border-bottom: 10px solid red;
   left: calc(50% - var(--pointer-width));
   position:  relative;
+}
+
+#questionmark {
+  background-color: white;
+  color: black;
+  font-weight: bolder;
+  border-radius: 50%;
+  height: 15px;
+  width: 15px;
+  line-height: 15px;
+  text-align: center;
+  margin: 10px 0 0 5px;
+  display: inline-block;
+  vertical-align: top;
 }
 
 div.hover {
