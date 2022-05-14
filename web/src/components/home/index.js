@@ -1,19 +1,18 @@
 import { Container } from "../ui";
 import "./index.css";
 
-
 export const Home = () => {
   return (
 
     <Container>
 
-    <div class="ui container inverted vertical masthead center aligned segment teal">
+    <div class="ui container inverted vertical masthead center aligned segment hero">
       <div class="ui text container spacer">
         <h1 class="ui inverted header">
           West Oakland Air Quality Project
         </h1>
         <h2>Explore local air quality to understand the impact on you, your family, and your neighborhood.</h2>
-        <div class="spacer-button"><a href="/maps" class="ui button violet">Explore the map <i class="right arrow icon"></i></a></div>
+        <div class="spacer-button"><a href="/maps" class="ui button teal">Explore the map <i class="right arrow icon"></i></a></div>
       </div>
     </div>
 
