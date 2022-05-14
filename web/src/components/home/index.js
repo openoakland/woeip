@@ -1,12 +1,11 @@
-import { Container, Image } from "../ui";
+import { Container } from "../ui";
 import "./index.css";
-import woeipLogo from './WOEIP-mark-2020-transp-225x220px.png';
+import woeipLogo from "./WOEIP-mark-2020-transp-225x220px.png";
 
 export const Home = () => {
   return (
 
-    <Container>
-
+<Container>
     <div class="ui container inverted vertical masthead left aligned segment hero">
       <div class="ui text container spacer">
         <h1 class="ui inverted header">West Oakland Air Quality Project</h1>
@@ -27,12 +26,6 @@ export const Home = () => {
 
     </div>
 
-
-
-
-
-
-
-    </Container>
+</Container>
   );
 };
