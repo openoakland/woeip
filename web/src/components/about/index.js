@@ -76,8 +76,8 @@ export const About = () => (
         and advocacy. We’re especially grateful for the many WOEIP volunteers
         who spent hours collecting air quality data in West Oakland.
       </p>
-      <div class="ui grid container">
-        <div class="three wide column">
+      <div class="ui three column grid container">
+        <div class="column">
           <h4 className="ui header">Core team</h4>
           <div class="ui bulleted list">
             <div class="item">Brian Beveridge</div>
@@ -90,13 +90,16 @@ export const About = () => (
           </div>
         </div>
 
-        <div class="three wide column">
+        <div class="column">
           <h4 className="ui header">Additional contributors</h4>
           <div class="ui bulleted list">
             <div class="item">Ife Ajiboye</div>
             <div class="item">Natalia Bilenko</div>
             <div class="item">Clinton Blackburn</div>
+            <div class="item">Anna Keyser Bola&#241;os</div>
             <div class="item">Ethan Bradley</div>
+            <div class="item">Brian</div>
+            <div class="item">Gabriel Ehrlich</div>
             <div class="item">Robert Gibboni</div>
             <div class="item">Kabirdas Henry</div>
             <div class="item">Brooks Jessup</div>
@@ -104,14 +107,16 @@ export const About = () => (
             <div class="item">Joshua Ling</div>
             <div class="item">Kimberly Low</div>
             <div class="item">Jonathan Mitchell</div>
-            <div class="item">Luke Travis</div>
+            <div class="item">Frances Nadine</div>
+            <div class="item">Michael Norelli</div>
             <div class="item">Jay Qi</div>
             <div class="item">Robert Soden</div>
             <div class="item">Ki Song</div>
+            <div class="item">Luke Travis</div>
           </div>
         </div>
 
-        <div class="three wide column">
+        <div class="column">
           <h4 className="ui header">Foundational inspiration and expertise</h4>
           <div class="ui bulleted list">
             <div class="item">Ms. Margaret Gordon and Brian Beveridge</div>

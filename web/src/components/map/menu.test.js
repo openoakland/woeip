@@ -123,13 +123,15 @@ describe("MapMenu", () => {
     expect(changeActiveCollection).toHaveBeenCalled();
   });
 
-  it("should change the collection date only when a date with data is clicked", () => {
+  it("should change the collection date only when another date with data is clicked", () => {
     const changeMapDate = jest.fn();
     renderMapMenu({ mapDate, allDatesUnique, changeMapDate });
     userEvent.click(screen.getByTestId("datepicker-input"));
     // the event is fired when the day changes- not when the datepicker is clicked.
     expect(changeMapDate).not.toHaveBeenCalled();
-    // the starting date should be July 17th, 2014
+    // the starting date should be July 17th, 2014. the currently selected date should be disabled
+    userEvent.click(screen.getByText("17"));
+    expect(changeMapDate).not.toHaveBeenCalled();
     // there is no data on the 18th and it should not conflict with other text values
     userEvent.click(screen.getByText("18"));
     expect(changeMapDate).not.toHaveBeenCalled();

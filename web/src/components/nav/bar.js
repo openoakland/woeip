@@ -1,5 +1,7 @@
 import { Link, NavLink, withRouter } from "react-router-dom";
 import { Container, Menu } from "../ui";
+import logo from "./logo.svg";
+import "./bar.css";
 
 const Navbar = () => {
   return (
@@ -7,11 +9,7 @@ const Navbar = () => {
       <Menu pointing secondary style={{ borderBottom: "none" }}>
         <Menu.Menu position="left">
           <Menu.Item as={Link} to={"/"}>
-            <h1>
-              WO
-              <br />
-              AQ
-            </h1>
+            <img src={logo} alt="WOAQ logo" id="navlogo" />
           </Menu.Item>
         </Menu.Menu>
         <Menu.Menu position="right">

@@ -15,9 +15,9 @@ jest.mock("../upload", () => () => <></>);
 
 describe("Navigation", () => {
   it("should stay on home page", () => {
-    render(<Navigation />);
-    // Use quotes to get exact match, avoiding conflict with "WOAQ" in welcome message.
-    fireEvent.click(screen.getByText("WOAQ"));
+    const result = render(<Navigation />);
+    // from https://stackoverflow.com/questions/53003594/find-element-by-id-in-react-testing-library
+    fireEvent.click(result.container.querySelector("#navlogo"));
     expect(window.location.pathname).toEqual("/");
     expect(screen.getByText(/Welcome/)).toBeInTheDocument();
   });
