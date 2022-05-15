@@ -110,7 +110,7 @@ export const Hover = ({ hoverInfo }) => {
     <div className="hovertip" style={{ left: hoverInfo.x, top: hoverInfo.y }}>
       <div>
         <b>
-          {micrograms} &#181;g/m<sup>3</sup> of PM<sub>2.5</sub>
+          {micrograms} PM<sub>2.5</sub>
         </b>{" "}
         at {FormatTime(hoverInfo.time)}{" "}
       </div>
@@ -137,8 +137,7 @@ export const Hover = ({ hoverInfo }) => {
             </div>
             <div>
               <b>
-                {properties.value * 1000} &#181;g/m<sup>3</sup> of PM
-                <sub>2.5</sub>
+                {properties.value * 1000} PM<sub>2.5</sub>
               </b>{" "}
               at {FormatTime(properties.timestamp)}
             </div>
