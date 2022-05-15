@@ -18,11 +18,13 @@ describe("Application should includes parts of each major section", () => {
 
   it("should have part of the body", () => {
     render(<App />);
-    expect(screen.getByText(/Welcome/)).toBeInTheDocument();
+    expect(screen.getByText(/West Oakland Air Quality/)).toBeInTheDocument();
   });
 
   it("should have part of the footer", () => {
     render(<App />);
-    expect(screen.getByText(/WOEIP/).href).toEqual("https://woeip.org/");
+    expect(screen.getByText(/OpenOakland/).href).toEqual(
+      "https://openoakland.org/"
+    );
   });
 });
