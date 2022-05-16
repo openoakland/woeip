@@ -1,7 +1,7 @@
 html, body, #root, .app-container {
-    font-family: Verdana, Geneva, Tahoma, sans-serif, Helvetica, sans-serif;
     height: 100%;
     width: 100%;
     padding: 0;
     margin: 0;
+    font-size: 1.1em;
 }

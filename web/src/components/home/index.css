@@ -1,0 +1,35 @@
+.ui.masthead.segment {
+  border-radius: 10px;
+  background-color: #013743;
+  z-index: 1;
+}
+
+.hero::before {
+  content: '';
+  background-image: url(./WOCAP-AzibuikeAkaba-2000p.png);
+  background-position:center;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  background-repeat: no-repeat;
+  background-size: cover;
+  opacity:.2;
+  border-radius: 10px;
+  z-index: -1;
+}
+
+
+.spacer {
+  margin-top:2em;
+  margin-bottom:2em;
+}
+
+.spacer-button {
+  margin-top:2em;
+}
+
+.borderless {
+  border:0;
+}
