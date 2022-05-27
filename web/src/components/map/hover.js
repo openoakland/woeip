@@ -47,7 +47,7 @@ const FormatTime = (date) => {
   return date.replace(pattern, replacement).split(" ").slice(1).join(" ");
 };
 
-export const Hover = ({ info }) => {
+export const Hover = ({ info, closePopup }) => {
   const val = info.feature.properties.value;
   const maxReading = 0.5;
   /* This value is used as a guess of the maximum possible (i.e. 100%) value of
@@ -116,6 +116,9 @@ export const Hover = ({ info }) => {
       closeOnClick={false}
       closeButton={false}
     >
+      <div className="close-button" onClick={closePopup}>
+        &times;
+      </div>
       <div>
         <b>
           {micrograms} &#181;g/m<sup>3</sup> of PM<sub>2.5</sub>

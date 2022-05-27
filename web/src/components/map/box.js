@@ -174,6 +174,13 @@ export const MapBox = ({ isLoading, pollutants }) => {
     });
   }, []);
 
+  const closePopup = useCallback((event) => {
+    setInfo((info) => ({
+      pinned: false,
+      displayedInfo: null,
+    }));
+  }, []);
+
   return (
     <Container className="map-view-container">
       <Dimmer active={isLoading}>
@@ -199,7 +206,9 @@ export const MapBox = ({ isLoading, pollutants }) => {
         <Source id="pollutant-values" type="geojson" data={pollutants}>
           <Layer {...pollutantLayer} />
         </Source>
-        {info.displayedInfo && <Hover info={info.displayedInfo}/>}
+        {info.displayedInfo && (
+          <Hover info={info.displayedInfo} closePopup={closePopup} />
+        )}
       </ReactMapGL>
     </Container>
   );
