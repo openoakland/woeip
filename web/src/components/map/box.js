@@ -138,6 +138,8 @@ export const MapBox = ({ isLoading, pollutants }) => {
   // for some reason onMouseDown has no access to features, so
   // borrow them from previous event
   const onMouseDown = useCallback((event) => {
+    // don't do anything unless this mouseDown happened on the canvas (not the popup)
+    if (event.target.className !== "overlays") return;
     // don't display new info until we know if this is a click or not
     setInfo((info) => {
       return {
