@@ -96,27 +96,29 @@ export const MapBox = ({ isLoading, pollutants }) => {
   const onHover = useCallback((event) => {
     // passing a function to setInfo updates info based on current state
     setInfo((info) => {
-      const newInfo = getInfo(event);
+      const newHoverInfo = getHoverInfo(event);
       if (info.pinned) {
         // previously clicked info pinned open -> store info but don't display
         return {
           ...info,
-          hoverInfo: newInfo,
+          hoverInfo: newHoverInfo,
         };
       }
       if (info.mouseIsDownForClick) {
         // mouse was down and has now moved -> drag, not click -> store info but don't display
         return {
           ...info,
-          hoverInfo: newInfo
-        }
+          hoverInfo: newHoverInfo,
+        };
       }
       // mouse was not down when new point was hovered over and nothing is pinned open -> display hover info
-      return {
-        ...info,
-        displayedInfo: newInfo,
-        hoverInfo: newInfo,
-      };
+      else {
+        return {
+          ...info,
+          displayedInfo: newHoverInfo,
+          hoverInfo: newHoverInfo,
+        };
+      }
     });
   }, []);
 
