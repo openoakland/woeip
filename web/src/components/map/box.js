@@ -122,21 +122,6 @@ export const MapBox = ({ isLoading, pollutants }) => {
     });
   }, []);
 
-  const onMouseMove = useCallback((event) =>
-    setInfo((info) => {
-      if (info.mouseIsDownForClick){
-        // mouse was down to drag -> not a click
-        return {
-          ...info,
-          mouseIsDownForClick: false
-        };
-      }
-      // mouse was up -> hover will handle this
-      return info;
-    }), []);
-
-  // for some reason onMouseDown has no access to features, so
-  // borrow them from previous event
   const onMouseDown = useCallback((event) => {
     // don't do anything unless this mouseDown happened on the canvas (not the popup)
     if (event.target.className !== "overlays") return;
@@ -146,6 +131,21 @@ export const MapBox = ({ isLoading, pollutants }) => {
         ...info,
         mouseIsDownForClick: true
       }
+    });
+  }, []);
+
+  const onMouseMove = useCallback((event) => {
+    setInfo((info) => {
+      if (info.mouseIsDownForClick) {
+        // mouse was down to drag -> not a click
+        return {
+          ...info,
+          mouseIsDownForClick: false,
+        };
+      // Either the mouse was up and onHover will handle this, or the mouseDown happened
+      // on the popup. In either case, don't do anything
+      else return info;
+      };
     });
   }, []);
 
