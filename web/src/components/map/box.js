@@ -75,24 +75,20 @@ export const MapBox = ({ isLoading, pollutants }) => {
    * Inspired by https://github.com/visgl/react-map-gl/blob/7.0-release/examples/geojson/src/app.tsx
    *   and https://visgl.github.io/react-map-gl/examples/controls
    */
-  const getInfo = (event) => {
-    const {
-      features,
-      srcEvent: { offsetX, offsetY },
-    } = event;
+  const getHoverInfo = (event) => {
+    const { features, lngLat } = event;
     const hoveredFeatures = features && features[0];
-    return (
-      hoveredFeatures
-        ? {
-            feature: hoveredFeatures,
-            x: offsetX,
-            y: offsetY,
-            time: hoveredFeatures.properties.timestamp,
-            count: features.length,
-            features: features,
-          }
-        : null);
-  }
+    return hoveredFeatures
+      ? {
+          feature: hoveredFeatures,
+          lng: lngLat[0],
+          lat: lngLat[1],
+          time: hoveredFeatures.properties.timestamp,
+          count: features.length,
+          features: features,
+        }
+      : null;
+  };
 
   /**
    * onHover has access to info from the data layer. Update it as appropriate 

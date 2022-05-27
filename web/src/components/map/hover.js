@@ -1,6 +1,8 @@
 import "./colorbar.css";
 import { PM25_CATEGORY_COLORS } from "./box";
 
+import { Popup } from "react-map-gl";
+
 /**
  * Any given EPA color category contains a variable amount of air quality readings.
  * For example, the green GOOD category is 0 to 0.012 or 0.012 values long, while the orange
@@ -107,7 +109,13 @@ export const Hover = ({ info }) => {
   }
 
   return (
-    <div className="hovertip" style={{ left: info.x, top: info.y }}>
+    <Popup
+      longitude={info.lng}
+      latitude={info.lat}
+      anchor="top-left"
+      closeOnClick={false}
+      closeButton={false}
+    >
       <div>
         <b>
           {micrograms} &#181;g/m<sup>3</sup> of PM<sub>2.5</sub>
@@ -150,6 +158,6 @@ export const Hover = ({ info }) => {
       {moreThanSixHoverPts && (
         <div>and {moreThanSixHoverPts} additional point(s)</div>
       )}
-    </div>
+    </Popup>
   );
 };
