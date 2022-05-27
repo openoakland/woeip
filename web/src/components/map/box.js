@@ -67,7 +67,7 @@ export const MapBox = ({ isLoading, pollutants }) => {
     displayedInfo: null,
     hoverInfo: null,
     mouseIsDownForClick: false,
-    pinned: false
+    pinned: false,
   });
 
   /**
@@ -153,8 +153,8 @@ export const MapBox = ({ isLoading, pollutants }) => {
     setInfo((info) => {
       return {
         ...info,
-        mouseIsDownForClick: true
-      }
+        mouseIsDownForClick: true,
+      };
     });
   }, []);
 
@@ -199,23 +199,24 @@ export const MapBox = ({ isLoading, pollutants }) => {
             ...info,
             pinned: true,
             displayedInfo: info.hoverInfo,
-            mouseIsDownForClick: false
-          }
+            mouseIsDownForClick: false,
+          };
         }
         // the click happened on a blank part of the map, so make sure nothing is pinned
         // and nothing is displayed
-        return {
-          ...info,
-          pinned: false,
-          displayedInfo: null,
-          mouseIsDownForClick: false
-        }
+        else
+          return {
+            ...info,
+            pinned: false,
+            displayedInfo: null,
+            mouseIsDownForClick: false,
+          };
       }
       // This handles the last two cases.
       // - The click happened on a popup, so mouseIsDownForClick was never set to true.
       // - The mouse was moved while it was down, so this was a drag and mouseIsDownForClick was set back to false.
       // In either case, don't do anything.
-      return info;
+      else return info;
     });
   }, []);
 
