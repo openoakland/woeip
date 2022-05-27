@@ -114,15 +114,15 @@ export const Hover = ({ info }) => {
         </b>{" "}
         at {FormatTime(info.time)}{" "}
       </div>
-      <div class="container">
+      <div className="container">
         <div id="decoration">
-          <div class="arrow-up" id="pointer" style={pointerStyle}></div>
-          <div class="hover green"></div>
-          <div class="hover yellow"></div>
-          <div class="hover orange"></div>
-          <div class="hover red"></div>
-          <div class="hover violet"></div>
-          <div class="hover darkred"></div>
+          <div className="arrow-up" id="pointer" style={pointerStyle}></div>
+          <div className="hover green"></div>
+          <div className="hover yellow"></div>
+          <div className="hover orange"></div>
+          <div className="hover red"></div>
+          <div className="hover violet"></div>
+          <div className="hover darkred"></div>
         </div>
         <a href="https://epa.gov" target="_new" id="questionmark">
           ?
@@ -133,7 +133,7 @@ export const Hover = ({ info }) => {
         otherHoverPts.map(({ properties }) => (
           <div key={properties.timestamp}>
             <div
-              class="swatch"
+              className="swatch"
               style={{ color: ArrowProps(properties.value)[0] }}
             >
               &#9632;
