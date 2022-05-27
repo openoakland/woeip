@@ -1,3 +1,100 @@
+/**
+ * found .mapboxgl-popup-_____ classes in web/node-modules/mapbox-gl/dist/mapbox-gl.css
+ *
+ * Default styles pertaining to the popup:
+ *
+ * .mapboxgl-popup{position:absolute;top:0;left:0;display:flex;will-change:transform;pointer-events:none}
+ * .mapboxgl-popup-anchor-top,.mapboxgl-popup-anchor-top-left,.mapboxgl-popup-anchor-top-right{flex-direction:column}
+ * .mapboxgl-popup-anchor-bottom,.mapboxgl-popup-anchor-bottom-left,.mapboxgl-popup-anchor-bottom-right{flex-direction:column-reverse}
+ * .mapboxgl-popup-anchor-left{flex-direction:row}
+ * .mapboxgl-popup-tip{width:0;height:0;border:10px solid transparent;z-index:1}
+ * .mapboxgl-popup-anchor-top .mapboxgl-popup-tip{align-self:center;border-top:none;border-bottom-color:#fff}
+ * .mapboxgl-popup-anchor-top-left .mapboxgl-popup-tip{align-self:flex-start;border-top:none;border-left:none;border-bottom-color:#fff}
+ * .mapboxgl-popup-anchor-top-right .mapboxgl-popup-tip{align-self:flex-end;border-top:none;border-right:none;border-bottom-color:#fff}
+ * .mapboxgl-popup-anchor-bottom .mapboxgl-popup-tip{align-self:center;border-bottom:none;border-top-color:#fff}
+ * .mapboxgl-popup-anchor-bottom-left .mapboxgl-popup-tip{align-self:flex-start;border-bottom:none;border-left:none;border-top-color:#fff}
+ * .mapboxgl-popup-anchor-bottom-right .mapboxgl-popup-tip{align-self:flex-end;border-bottom:none;border-right:none;border-top-color:#fff}
+ * .mapboxgl-popup-anchor-left .mapboxgl-popup-tip{align-self:center;border-left:none;border-right-color:#fff}
+ * .mapboxgl-popup-anchor-right .mapboxgl-popup-tip{align-self:center;border-right:none;border-left-color:#fff}
+ * .mapboxgl-popup-close-button{position:absolute;right:0;top:0;border:0;border-radius:0 3px 0 0;cursor:pointer;background-color:transparent}
+ * .mapboxgl-popup-close-button:hover{background-color:rgba(0,0,0,.05)}
+ * .mapboxgl-popup-content{position:relative;background:#fff;border-radius:3px;box-shadow:0 1px 2px rgba(0,0,0,.1);padding:10px 10px 15px;pointer-events:auto}
+ * .mapboxgl-popup-anchor-top-left .mapboxgl-popup-content{border-top-left-radius:0}
+ * .mapboxgl-popup-anchor-top-right .mapboxgl-popup-content{border-top-right-radius:0}
+ * .mapboxgl-popup-anchor-bottom-left .mapboxgl-popup-content{border-bottom-left-radius:0}
+ * .mapboxgl-popup-anchor-bottom-right .mapboxgl-popup-content{border-bottom-right-radius:0}
+ * .mapboxgl-popup-track-pointer{display:none}
+ * .mapboxgl-popup-track-pointer *{pointer-events:none;user-select:none}
+ */
+
+/**
+ * I couldn't find anywhere except the root pseudoelement that would successfully apply
+ * this custom property to all the popup-related classes below.
+ */
+:root {
+  --main-bg-color: rgba(0,0,0, 0.8);
+}
+
+/**
+ * Style the pointer triangle that tells the user the popup's anchor point. This sets the
+ * color to match the popup. The triangle is sideways on corners using the default style;
+ * I don't know why this guess-and-check solution fixes it. Setting the corners to 14 pt
+ * makes the corners' triangles the same size as the sides'.
+ */
+.mapboxgl-popup-anchor-top .mapboxgl-popup-tip {
+  border-bottom-color: var(--main-bg-color) !important;
+}
+.mapboxgl-popup-anchor-bottom .mapboxgl-popup-tip {
+  border-top-color: var(--main-bg-color) !important;
+}
+.mapboxgl-popup-anchor-left .mapboxgl-popup-tip {
+  border-right-color: var(--main-bg-color) !important;
+}
+.mapboxgl-popup-anchor-right .mapboxgl-popup-tip {
+  border-left-color: var(--main-bg-color) !important;
+}
+.mapboxgl-popup-anchor-top-left .mapboxgl-popup-tip,
+.mapboxgl-popup-anchor-top-right .mapboxgl-popup-tip {
+  border-top: 14px solid var(--main-bg-color) !important;
+  border-bottom: none;
+}
+.mapboxgl-popup-anchor-bottom-left .mapboxgl-popup-tip,
+.mapboxgl-popup-anchor-bottom-right .mapboxgl-popup-tip {
+  border-bottom: 14px solid var(--main-bg-color) !important;
+  border-top: none;
+}
+.mapboxgl-popup-anchor-top-right .mapboxgl-popup-tip,
+.mapboxgl-popup-anchor-bottom-right .mapboxgl-popup-tip {
+  border-left: 14px solid transparent !important;
+}
+.mapboxgl-popup-anchor-top-left .mapboxgl-popup-tip,
+.mapboxgl-popup-anchor-bottom-left .mapboxgl-popup-tip {
+  border-right: 14px solid transparent !important;
+}
+
+.mapboxgl-popup-content {
+  margin: 8px;
+  padding: 4px;
+  border-radius: 10px !important;
+  background: var(--main-bg-color) !important;
+  color: #fff;
+  max-width: 300px;
+  font-size: 11px;
+  z-index: 9;
+  cursor: auto;
+}
+
+.close-button{
+  color: white;
+  font-size: 12pt;
+  position: absolute;
+  right: 4px;
+  top: 0;
+  border: 0;
+  border-radius: 0 3px 0 0;
+  cursor: pointer;
+}
+
 .container {
   margin: 0px;
   padding: 2px;
