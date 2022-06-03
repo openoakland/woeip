@@ -47,7 +47,7 @@ const FormatTime = (date) => {
   return date.replace(pattern, replacement).split(" ").slice(1).join(" ");
 };
 
-export const Hover = ({ info, closePopup, showHideUnitInfo }) => {
+export const Hover = ({ info, closePopup, setUnitInfoDisplayed }) => {
   const val = info.feature.properties.value;
   const maxReading = 0.5;
   /* This value is used as a guess of the maximum possible (i.e. 100%) value of
@@ -135,8 +135,14 @@ export const Hover = ({ info, closePopup, showHideUnitInfo }) => {
           <div className="hover violet"></div>
           <div className="hover darkred"></div>
         </div>
-        <a href="https://www.airnow.gov/aqi/aqi-basics/" target="_blank" rel="noopener" id="questionmark"
-        onMouseEnter={showHideUnitInfo.showUnitInfo} onMouseLeave={showHideUnitInfo.hideUnitInfo}>
+        <a
+          href="https://www.airnow.gov/aqi/aqi-basics/"
+          target="_blank"
+          rel="noopener noreferrer"
+          id="questionmark"
+          onMouseEnter={() => setUnitInfoDisplayed(true)}
+          onMouseLeave={() => setUnitInfoDisplayed(false)}
+        >
           ?
         </a>
       </div>

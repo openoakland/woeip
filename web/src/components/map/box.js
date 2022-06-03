@@ -231,14 +231,6 @@ export const MapBox = ({ isLoading, pollutants }) => {
     }));
   }, []);
 
-  const showUnitInfo = (event) => {
-    setUnitInfoDisplayed(true);
-  }
-
-  const hideUnitInfo = (event) => {
-    setUnitInfoDisplayed(false);
-  }
-
   return (
     <Container className="map-view-container">
       <Dimmer active={isLoading}>
@@ -265,13 +257,19 @@ export const MapBox = ({ isLoading, pollutants }) => {
           <Layer {...pollutantLayer} />
         </Source>
         {info.displayedInfo && (
-          <Hover info={info.displayedInfo} closePopup={closePopup} showHideUnitInfo={{showUnitInfo, hideUnitInfo}}/>
+          <Hover
+            info={info.displayedInfo}
+            closePopup={closePopup}
+            setUnitInfoDisplayed={setUnitInfoDisplayed}
+          />
         )}
       </ReactMapGL>
       {unitInfoDisplayed && (
         <div className="unit-info">
-          <p>PM<sub>2.5</sub> given in units of &#956;g/m<sup>3</sup> (different from AQI).
-          The color shows the corresponding AQI range.</p>
+          <p>
+            PM<sub>2.5</sub> given in units of &#956;g/m<sup>3</sup> (different
+            from AQI). The color shows the corresponding AQI range.
+          </p>
           <p>Click for more information from the EPA website.</p>
         </div>
       )}
