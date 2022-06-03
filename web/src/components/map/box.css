@@ -9,3 +9,19 @@
     top: 10px;
     right: 10px;
 }
+
+.unit-info {
+    position: absolute;
+    top: 25px;
+    left: 0px;
+    right: 0px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 290px;
+    background-color: rgba(0,0,0, 0.8);
+    color: #fff;
+    font-size: 11px;
+    text-align: center;
+    border-radius: 10px;
+    padding: 5px;
+}
