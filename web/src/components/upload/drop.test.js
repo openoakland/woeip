@@ -117,11 +117,11 @@ describe("Actions after extracting files", () => {
     expect(setFiles).toHaveBeenCalledWith([files[1], files[2]]);
   });
 
-  it("should proceed to the confirm page when there are two valid files", () => {
+  it("should proceed to the confirm page when there are two valid files", async () => {
     const files = [csvFileValid, logFile];
     const proceedToConfirm = jest.fn();
     renderUploadDrop({ files, proceedToConfirm });
-    expect(proceedToConfirm).toHaveBeenCalled();
+    await waitFor(() => expect(proceedToConfirm).toHaveBeenCalled());
   });
 });
 
