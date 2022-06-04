@@ -4,6 +4,6 @@ import { Home } from "./";
 describe("Home", () => {
   it("should show welcome message", () => {
     render(<Home />);
-    expect(screen.getByText(/Welcome/)).toBeInTheDocument();
+    expect(screen.getByText(/West Oakland Air Quality/)).toBeInTheDocument();
   });
 });

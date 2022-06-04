@@ -1,6 +1,8 @@
 import "./colorbar.css";
 import { PM25_CATEGORY_COLORS } from "./box";
 
+import { Popup } from "react-map-gl";
+
 /**
  * Any given EPA color category contains a variable amount of air quality readings.
  * For example, the green GOOD category is 0 to 0.012 or 0.012 values long, while the orange
@@ -45,8 +47,8 @@ const FormatTime = (date) => {
   return date.replace(pattern, replacement).split(" ").slice(1).join(" ");
 };
 
-export const Hover = ({ hoverInfo }) => {
-  const val = hoverInfo.feature.properties.value;
+export const Hover = ({ info, closePopup, setUnitInfoDisplayed }) => {
+  const val = info.feature.properties.value;
   const maxReading = 0.5;
   /* This value is used as a guess of the maximum possible (i.e. 100%) value of
    * any air sample reading in order to correctly position the hover's arrow along
@@ -100,45 +102,63 @@ export const Hover = ({ hoverInfo }) => {
   };
   const micrograms = val * 1000; // val is stored in units of milligrams per cubic meter but displayed in micrograms per cubic meter
 
-  const otherHoverPts = hoverInfo.features.slice(1, 5);
-  var moreThanSixHoverPts = hoverInfo.features.slice(6).length;
+  const otherHoverPts = info.features.slice(1, 5);
+  var moreThanSixHoverPts = info.features.slice(6).length;
   if (!moreThanSixHoverPts) {
     moreThanSixHoverPts = null;
   }
 
   return (
-    <div className="hovertip" style={{ left: hoverInfo.x, top: hoverInfo.y }}>
+    <Popup
+      longitude={info.lng}
+      latitude={info.lat}
+      anchor="top-left"
+      closeOnClick={false}
+      closeButton={false}
+    >
+      <div className="close-button" onClick={closePopup}>
+        &times;
+      </div>
       <div>
         <b>
-          {micrograms} &#181;g/m<sup>3</sup> of PM<sub>2.5</sub>
+          {micrograms} PM<sub>2.5</sub>
         </b>{" "}
-        at {FormatTime(hoverInfo.time)}{" "}
+        at {FormatTime(info.time)}{" "}
       </div>
-      <div class="container">
+      <div className="container">
         <div id="decoration">
-          <div class="arrow-up" id="pointer" style={pointerStyle}></div>
-          <div class="hover green"></div>
-          <div class="hover yellow"></div>
-          <div class="hover orange"></div>
-          <div class="hover red"></div>
-          <div class="hover violet"></div>
-          <div class="hover darkred"></div>
+          <div className="arrow-up" id="pointer" style={pointerStyle}></div>
+          <div className="hover green"></div>
+          <div className="hover yellow"></div>
+          <div className="hover orange"></div>
+          <div className="hover red"></div>
+          <div className="hover violet"></div>
+          <div className="hover darkred"></div>
         </div>
+        <a
+          href="https://www.airnow.gov/aqi/aqi-basics/"
+          target="_blank"
+          rel="noopener noreferrer"
+          id="questionmark"
+          onMouseEnter={() => setUnitInfoDisplayed(true)}
+          onMouseLeave={() => setUnitInfoDisplayed(false)}
+        >
+          ?
+        </a>
       </div>
       {otherHoverPts.length !== 0 && <div>Other nearby readings:</div>}
       {otherHoverPts &&
         otherHoverPts.map(({ properties }) => (
-          <div key={properties}>
+          <div key={properties.timestamp}>
             <div
-              class="swatch"
+              className="swatch"
               style={{ color: ArrowProps(properties.value)[0] }}
             >
               &#9632;
             </div>
             <div>
               <b>
-                {properties.value * 1000} &#181;g/m<sup>3</sup> of PM
-                <sub>2.5</sub>
+                {properties.value * 1000} PM<sub>2.5</sub>
               </b>{" "}
               at {FormatTime(properties.timestamp)}
             </div>
@@ -147,6 +167,6 @@ export const Hover = ({ hoverInfo }) => {
       {moreThanSixHoverPts && (
         <div>and {moreThanSixHoverPts} additional point(s)</div>
       )}
-    </div>
+    </Popup>
   );
 };

@@ -1,0 +1,16 @@
+.about-container {
+  padding: 3em;
+}
+
+.woa-button {
+  color:#fff;
+}
+
+.woa-button:hover {
+  color:#c4f9fb;
+}
+
+.image {
+  margin-top:2rem;
+  margin-bottom:2rem;
+}

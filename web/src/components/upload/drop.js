@@ -47,6 +47,7 @@ export const UploadDrop = ({
   proceedToConfirm,
 }) => {
   const [errorMessage, setErrorMessage] = useState("");
+  const [filesMatch, setFilesMatch] = useState(false);
   const { getRootProps, getInputProps } = useDropzone({
     onDrop: (acceptedFiles) => {
       setFiles([...files, ...acceptedFiles]);
@@ -63,6 +64,7 @@ export const UploadDrop = ({
    * @modifies {dustrakStart} dustrak start time is used for user feedback on confirmation page
    * @modifies {dustrakEnd} dustrak end time is used for user feedback on confirmation page
    * @modifies {dustrakSerial} dustrak serial is used for user feedback on confirmation page
+   * @modifies {filesMatch} if the end is reached with no errors, trigger the confirmation page effect
    */
   useEffect(() => {
     (async () => {
@@ -72,6 +74,7 @@ export const UploadDrop = ({
        * But the defualt values evaluate to falsy or invalid, to be handled by downstream logic
        * We can then always set state in the same order, with default or meaningful values
        */
+      setFilesMatch(false);
       let potentialMessage = "";
       let potentialDustrakStart = moment("");
       let potentialDustrakEnd = moment("");
@@ -110,6 +113,7 @@ export const UploadDrop = ({
               potentialDustrakStart = dustrakStart;
               potentialDustrakEnd = dustrakEnd;
               potentialDustrakSerial = getDustrakSerial(dustrakTextLines);
+              setFilesMatch(true);
             }
           }
         }
@@ -125,6 +129,7 @@ export const UploadDrop = ({
     setDustrakStart,
     setDustrakEnd,
     setDustrakSerial,
+    setFilesMatch,
   ]);
 
   /**
@@ -132,8 +137,8 @@ export const UploadDrop = ({
    * @modifies {prop} sets parent property of "phase" to value of "confirm"
    */
   useEffect(() => {
-    (files.length === 2) & !errorMessage && proceedToConfirm();
-  }, [files, errorMessage, proceedToConfirm]);
+    (files.length === 2) & filesMatch && proceedToConfirm();
+  }, [files, filesMatch, proceedToConfirm]);
 
   /**
    * Remove a file from the list by its index

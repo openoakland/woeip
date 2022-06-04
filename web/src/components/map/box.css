@@ -10,15 +10,18 @@
     right: 10px;
 }
 
- .hovertip {
+.unit-info {
     position: absolute;
-    margin: 8px;
-    padding: 4px;
-    border-radius: 10px;
-    background: rgba(0,0,0, 0.8);
+    top: 25px;
+    left: 0px;
+    right: 0px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 290px;
+    background-color: rgba(0,0,0, 0.8);
     color: #fff;
-    max-width: 300px;
-    font-size: 10px;
-    z-index: 9;
-    pointer-events: none;
+    font-size: 11px;
+    text-align: center;
+    border-radius: 10px;
+    padding: 5px;
 }
