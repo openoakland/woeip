@@ -41,9 +41,10 @@ A scalable configuration
 1. Request write access to the GitHub repository
 2. Install Docker & Docker-Compose
    - Mac and WSL2 users should install Docker Desktop, which includes Docker-Compose
-3. Checkout out a local branch
+3. Checkout out a local branch 
 4. Run a local instance of WOAQ
 5. Push the local changes to the repo 
 6. Make a pull request against the `develop` branch
-7. Once changes have accumulated and stablized on `develop`, there will be a PR to place cumulative changes onto `livewire`
-8. Once on `livewire`, the changes will be available for live use.
+7. Once changes have accumulated and stablized on `develop`, there will be a PR to place cumulative changes onto `main` branch
+8. Cumulative changes pushed to `main` branch will consequently be deployed to DigitalOcean
+9. Once on DigitalOcean, the changes will be available for live use.
