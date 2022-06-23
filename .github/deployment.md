@@ -52,7 +52,7 @@ A scalable configuration
 # Deploying to DigitalOcean Using the Terminal
 1. Open your terminal
 2. Run the `ssh root@<ipaddress>` command, then enter the password when prompted to gain access into the WOAQ server
-> :memo: **Note**: Contact the admins for the WOAQ Anchor IP address and password.
+> :memo: **Info**: Contact the admins for the WOAQ IP address and password. Alternatively, you can log into the WOAQ dashboard. The IP address can be optained from Droplets. It is labeled "IPv4" in the Droplets interface.
 3. Navigate into woeip directory
 > :bulb: **Info**: Use the `git status` command to confirm you are in the `main branch`. Use the `git checkout main` command to switch to `main branch` if you are not in the `main branch`.
 
