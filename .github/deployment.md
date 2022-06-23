@@ -46,5 +46,21 @@ A scalable configuration
 5. Push the local changes to the repo 
 6. Make a pull request against the `develop` branch
 7. Once changes have accumulated and stablized on `develop`, there will be a PR to place cumulative changes onto `main` branch
-8. Cumulative changes pushed to `main` branch will consequently be deployed to DigitalOcean
+8. Cumulative changes pushed to `main` branch will consequently be deployed to DigitalOcean (see next section on how to)
 9. Once on DigitalOcean, the changes will be available for live use.
+
+# Deploying to DigitalOcean Using the Terminal
+1. Open your terminal
+2. Run the `ssh root@<ipaddress>` command, then enter the password when prompted to gain access into the WOAQ server
+> :memo: **Note**: Contact the admins for the WOAQ Anchor IP address and password.
+3. Navigate into woeip directory
+> :bulb: **Info**: Use the `git status` command to confirm you are in the `main branch`. Use the `git checkout main` command to switch to `main branch` if you are not in the `main branch`.
+
+> :bulb: **Info**: Use the `docker ps` command to view all the running containers.
+4. Run the `docker-compose -f docker-compose.yml -f docker-compose.livewire.yml down` command to stop the running of the production environment.
+> :memo: **Note**: The WOAQ website would be inaccessible after running this command (except a cached version).
+5. Run the `git fetch origin main` command
+6. Run the `git pull origin main` command
+7. Run the `docker-compose -f docker-compose.yml -f docker-compose.livewire.yml build` command to rebuild the production environment incorporating the new changes from the `main branch`
+8. Run the `docker-compose -f docker-compose.yml -f docker-compose.livewire.yml up -d` to bring back up the production environment 
+9. The WOAQ website should now be live and accessible
