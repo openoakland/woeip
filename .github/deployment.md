@@ -52,13 +52,13 @@ A scalable configuration
 # Deploying to DigitalOcean Using the Terminal
 1. Open your terminal
 2. Run the `ssh root@<ipaddress>` command, then enter the password when prompted to gain access into the WOAQ server
-> :bulb: **Info**: Contact the admins for the WOAQ IP address and password. Alternatively, you can log into the WOAQ dashboard. The IP address can be optained from Droplets. It is labeled "IPv4" in the Droplets interface.
+> :information_source: **Info**: Contact the admins for the WOAQ IP address and password. Alternatively, you can log into the WOAQ dashboard. The IP address can be optained from Droplets. It is labeled "IPv4" in the Droplets interface.
 3. Navigate into woeip directory
-> :bulb: **Info**: Use the `git status` command to confirm you are in the `main branch`. Use the `git checkout main` command to switch to `main branch` if you are not in the `main branch`.
+> :information_source: **Info**: Use the `git status` command to confirm you are in the `main branch`. Use the `git checkout main` command to switch to `main branch` if you are not in the `main branch`.
 
-> :bulb: **Info**: Use the `docker ps` command to view all the running containers.
+> :information_source: **Info**: Use the `docker ps` command to view all the running containers.
 4. Run the `docker-compose -f docker-compose.yml -f docker-compose.livewire.yml down` command to stop the running of the production environment.
-> :memo: **Note**: The WOAQ website would be inaccessible after running this command (except a cached version).
+> :notebook: **Note**: The WOAQ website would be inaccessible after running this command (except a cached version).
 5. Run the `git fetch origin main` command
 6. Run the `git pull origin main` command
 7. Run the `docker-compose -f docker-compose.yml -f docker-compose.livewire.yml build` command to rebuild the production environment incorporating the new changes from the `main branch`
