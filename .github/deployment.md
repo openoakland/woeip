@@ -55,6 +55,7 @@ A scalable configuration
 > :memo: **Note**: Contact the admins for the WOAQ Anchor IP address and password.
 3. Navigate into woeip directory
 > :bulb: **Info**: Use the `git status` command to confirm you are in the `main branch`. Use the `git checkout main` command to switch to `main branch` if you are not in the `main branch`.
+
 > :bulb: **Info**: Use the `docker ps` command to view all the running containers.
 4. Run the `docker-compose -f docker-compose.yml -f docker-compose.livewire.yml down` command to stop the running of the production environment.
 > :memo: **Note**: The WOAQ website would be inaccessible after running this command (except a cached version).
