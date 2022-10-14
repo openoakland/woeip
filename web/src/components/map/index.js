@@ -6,6 +6,8 @@ import axios from "axios";
 import { MapBox } from "./box";
 import { MapMenu } from "./menu";
 
+import "./index.css"
+
 import {
   BLANK_ACTIVE_ID,
   getAllDates,
@@ -23,7 +25,7 @@ import {
 
 import { emptyProtocol } from "../../api.util";
 
-import { Grid } from "../ui";
+import { Container } from "../ui";
 
 /**
  * View Map of data sessions and related meta-data
@@ -239,23 +241,27 @@ export const Map = () => {
   };
 
   return (
-    <Grid columns={2} textAlign="left">
-      <Grid.Column size="massive">
-        <MapBox isLoading={isLoadingPollutants} pollutants={pollutants} />
-      </Grid.Column>
-      <Grid.Column>
-        <MapMenu
-          mapDate={mapDate}
-          allDatesUnique={allDatesUnique}
-          collectionsOnDate={collectionsOnDate}
-          activeId={activeId}
-          activeStartsAt={activeStartsAt}
-          changeMapDate={changeMapDate}
-          changeActiveCollection={changeActiveCollection}
-          gpsFileUrl={gpsFileUrl}
-          dustrakFileUrl={dustrakFileUrl}
-        />
-      </Grid.Column>
-    </Grid>
+    <Container>
+      <div className="mapColumns">
+        <div className="mapBoxColumn">
+          <div className="mapBoxSquare">
+            <MapBox isLoading={isLoadingPollutants} pollutants={pollutants} />
+          </div>
+        </div>
+        <div className="mapMenuColumn">
+          <MapMenu
+            mapDate={mapDate}
+            allDatesUnique={allDatesUnique}
+            collectionsOnDate={collectionsOnDate}
+            activeId={activeId}
+            activeStartsAt={activeStartsAt}
+            changeMapDate={changeMapDate}
+            changeActiveCollection={changeActiveCollection}
+            gpsFileUrl={gpsFileUrl}
+            dustrakFileUrl={dustrakFileUrl}
+          />
+        </div>
+      </div>
+    </Container>
   );
 };
