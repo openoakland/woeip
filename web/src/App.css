@@ -1,5 +1,0 @@
-.app-container {
-    min-height: 100%;
-    display: grid !important;
-    grid-template-rows: auto 1fr auto;
-}

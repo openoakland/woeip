@@ -4,7 +4,7 @@ import { PropTypes } from "prop-types";
 import "react-semantic-ui-datepickers/dist/react-semantic-ui-datepickers.css";
 
 import SemanticDatepicker from "react-semantic-ui-datepickers";
-import { Container, List, WarningMessage } from "../ui";
+import { List, WarningMessage } from "../ui";
 import "./menu.css";
 import { BLANK_ACTIVE_ID } from "./utils";
 
@@ -52,7 +52,7 @@ export const MapMenu = ({
       );
     });
   return (
-    <Container>
+    <div id="mapMenu">
       <h2>{mapDate.format("LL")}</h2>
       <p>View a different day:</p>
       <SemanticDatepicker
@@ -102,7 +102,7 @@ export const MapMenu = ({
           date.
         </WarningMessage>
       )}
-    </Container>
+    </div>
   );
 };
 

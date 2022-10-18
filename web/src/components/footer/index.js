@@ -13,11 +13,9 @@ export const Footer = () => {
   ));
 
   return (
-    <div className="footer-container">
-      <Container>
-        <List>{footerLinks}</List>
-      </Container>
-    </div>
+    <Container>
+      <List>{footerLinks}</List>
+    </Container>
   );
 };
 
