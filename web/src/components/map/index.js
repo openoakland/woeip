@@ -241,14 +241,14 @@ export const Map = () => {
   };
 
   return (
-    <Container>
-      <Grid relaxed='very'>
-        <Grid.Column width={10}>
+    <Container id="mapIndex">
+      <Grid relaxed="very">
+        <Grid.Column width={10} foated="left">
           <div className="mapBoxSquare">
             <MapBox isLoading={isLoadingPollutants} pollutants={pollutants} />
           </div>
         </Grid.Column>
-        <Grid.Column width={6}>
+        <Grid.Column width={6} floated="right">
           <MapMenu
             mapDate={mapDate}
             allDatesUnique={allDatesUnique}

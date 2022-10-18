@@ -1,6 +1,3 @@
-.footer-container{
-    width: 100%;
-    display: flex;
-    justify-content: left;
-    margin: 0.3rem;
+#footer {
+    background-color: #EDEDED;
 }
