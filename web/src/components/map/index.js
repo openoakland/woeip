@@ -25,7 +25,7 @@ import {
 
 import { emptyProtocol } from "../../api.util";
 
-import { Container } from "../ui";
+import { Container, Grid } from "../ui";
 
 /**
  * View Map of data sessions and related meta-data
@@ -242,13 +242,13 @@ export const Map = () => {
 
   return (
     <Container>
-      <div className="mapColumns">
-        <div className="mapBoxColumn">
+      <Grid relaxed='very'>
+        <Grid.Column width={10}>
           <div className="mapBoxSquare">
             <MapBox isLoading={isLoadingPollutants} pollutants={pollutants} />
           </div>
-        </div>
-        <div className="mapMenuColumn">
+        </Grid.Column>
+        <Grid.Column width={6}>
           <MapMenu
             mapDate={mapDate}
             allDatesUnique={allDatesUnique}
@@ -260,8 +260,8 @@ export const Map = () => {
             gpsFileUrl={gpsFileUrl}
             dustrakFileUrl={dustrakFileUrl}
           />
-        </div>
-      </div>
+        </Grid.Column>
+      </Grid>
     </Container>
   );
 };
