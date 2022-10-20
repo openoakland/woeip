@@ -1,3 +1,9 @@
 #footer {
     background-color: #EDEDED;
+    margin-top: auto;
+}
+
+/* Menu.Item elements with class "footerLink" */
+.ui.secondary.menu .item.footerLink {
+    padding: 3em;
 }

@@ -1,0 +1,8 @@
+/* 
+ * Position footer at bottom: https://stackoverflow.com/a/39613036/5173084
+ */
+#app-container {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+}

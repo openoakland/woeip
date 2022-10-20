@@ -1,40 +1,34 @@
-import { Segment, Grid } from "../ui";
+import { Menu } from "../ui";
 import "./index.css";
 
 export const Footer = () => {
-  /**
-   * Construct the Elements for the Links
-   * @returns {Array<Element>}
-   */
-  const footerLinks = links.map(({ name, url, textAlign }) => (
-    <Grid.Column key={name} as="a" href={url} textAlign={textAlign}>
-      {name}
-    </Grid.Column>
-  ));
+  const sharedProps = {
+    target: "_blank",
+    className: "footerLink"
+  }
 
   return (
-    <Segment id="footer">
-        <Grid columns={3}>{footerLinks}</Grid>
-    </Segment>
+    <Menu secondary style={{ paddingTop: "auto" }} id="footer">
+      <Menu.Item
+        href="https://github.com/openoakland/woeip"
+        position="left"
+        {...sharedProps}
+      >
+        [WOAQ logo] on [GitHub logo]
+      </Menu.Item>
+      <Menu.Item
+        href="https://openoakland.org"
+        {...sharedProps}
+      >
+        Created by [OpenOakland logo]
+      </Menu.Item>
+      <Menu.Item
+        href="https://woeip.org"
+        position="right"
+        {...sharedProps}
+      >
+        [WOEIP logo]
+      </Menu.Item>
+    </Menu>
   );
 };
-
-/**
- * Store the data for the footer links
- */
-const links = [
-  {
-    name: "WOAQ on GitHub",
-    url: "https://github.com/openoakland/woeip",
-    textAlign: "left" },
-  {
-    name: "OpenOakland",
-    url: "https://openoakland.org",
-    textAlign: "center"
-  },
-  {
-    name: "WOEIP",
-    url: "https://woeip.org",
-    textAlign: "right"
-  },
-];

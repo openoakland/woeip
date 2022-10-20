@@ -1,4 +1,4 @@
-html, body, #root, .app-container {
+html, body, #root {
     height: 100%;
     width: 100%;
     padding: 0;
