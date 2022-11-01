@@ -17,6 +17,7 @@ export {
   Icon,
   Label,
   Grid,
+  Image,
 } from "semantic-ui-react";
 
 export const LinkedHeader = ({ ...props }) => (
