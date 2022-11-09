@@ -1,3 +1,11 @@
 #navlogo {
 	width: 6rem;
 }
+
+.ui.secondary.pointing.menu{
+	display: flex;
+	align-items: flex-start;
+}
+
+
+

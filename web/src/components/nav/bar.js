@@ -12,7 +12,7 @@ const Navbar = () => {
             <img src={logo} alt="WOAQ logo" id="navlogo" />
           </Menu.Item>
         </Menu.Menu>
-        <Menu.Menu position="right">
+        <Menu.Menu position = "right">
           {links.map(({ text, route }) => (
             <Menu.Item key={route} as={NavLink} to={`/${route}`}>
               {text}
