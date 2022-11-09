@@ -14,24 +14,25 @@
     margin-bottom: 0;
 }
 
+#footer>.column {
+    padding: 0;
+}
+
+#footer .ui.menu {
+    margin-left: 0;
+    margin-right: 0;
+}
+
 #footer .ui.menu .item {
-    padding: 1.5em;
+    margin-left: 0;
+    margin-right: 0;
+    padding: 1.5em 3.5em;
     height: 6em;
 }
 
 #footer .ui.menu .item.center {
     margin-right: auto!important;
     margin-left: auto!important;
-}
-
-#footer>.column {
-    padding: 0 2em;
-}
-
-#footer .ui.menu,
-#footer .ui.menu .item {
-    margin-left: 0;
-    margin-right: 0;
 }
 
 #footer img {
