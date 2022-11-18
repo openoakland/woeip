@@ -7,7 +7,9 @@ describe("Footer", () => {
     expect(screen.getByTestId("footer-link-github").href).toEqual(
       "https://github.com/openoakland/woeip"
     );
-    expect(screen.getByTestId("footer-link-oo").href).toEqual("https://openoakland.org/");
+    expect(screen.getByTestId("footer-link-oo").href).toEqual(
+      "https://openoakland.org/"
+    );
     expect(screen.getByTestId("footer-link-woeip").href).toEqual(
       "https://woeip.org/"
     );

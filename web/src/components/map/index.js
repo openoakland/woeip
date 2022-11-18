@@ -6,7 +6,7 @@ import axios from "axios";
 import { MapBox } from "./box";
 import { MapMenu } from "./menu";
 
-import "./index.css"
+import "./index.css";
 
 import {
   BLANK_ACTIVE_ID,

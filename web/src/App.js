@@ -1,6 +1,6 @@
 import { Navigation } from "./components/nav";
 import { Footer } from "./components/footer";
-import './App.css'
+import "./App.css";
 
 // All components for the application are organized here.
 export const App = () => {

@@ -1,15 +1,15 @@
 import { Grid, Menu, Image } from "../ui";
 import "./index.css";
 
-import woaqLogo from '../../images/WOAQ - Light Theme.svg'
-import gitHubLogo from '../../images/GitHub_Logo_ Light_Theme.svg'
-import ooLogo from '../../images/OpenOakland-logo-color.svg'
-import woeipLogo from '../../images/cropped-WOEIP-logo-unofficial.png'
+import woaqLogo from "../../images/WOAQ - Light Theme.svg";
+import gitHubLogo from "../../images/GitHub_Logo_ Light_Theme.svg";
+import ooLogo from "../../images/OpenOakland-logo-color.svg";
+import woeipLogo from "../../images/cropped-WOEIP-logo-unofficial.png";
 
 export const Footer = () => {
   const sharedMenuItemProps = {
     target: "_blank",
-  }
+  };
 
   return (
     <Grid columns={3} id="footer">
@@ -21,7 +21,13 @@ export const Footer = () => {
             position="left"
             {...sharedMenuItemProps}
           >
-            <Image src={woaqLogo} spaced="right" alt="WOAQ logo"/> on <Image src={gitHubLogo} spaced="left" id="footerImgGithub" alt="GitHub logo"/>
+            <Image src={woaqLogo} spaced="right" alt="WOAQ logo" /> on{" "}
+            <Image
+              src={gitHubLogo}
+              spaced="left"
+              id="footerImgGithub"
+              alt="GitHub logo"
+            />
           </Menu.Item>
         </Menu>
       </Grid.Column>
@@ -33,7 +39,7 @@ export const Footer = () => {
             href="https://openoakland.org"
             {...sharedMenuItemProps}
           >
-            Created by <Image src={ooLogo} alt="Open Oakland logo"/>
+            Created by <Image src={ooLogo} alt="Open Oakland logo" />
           </Menu.Item>
         </Menu>
       </Grid.Column>
@@ -45,7 +51,7 @@ export const Footer = () => {
             position="right"
             {...sharedMenuItemProps}
           >
-            <Image src={woeipLogo} alt="WOEIP name and weathervane logo"/>
+            <Image src={woeipLogo} alt="WOEIP name and weathervane logo" />
           </Menu.Item>
         </Menu>
       </Grid.Column>
