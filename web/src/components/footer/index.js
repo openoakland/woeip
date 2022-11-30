@@ -44,7 +44,7 @@ export const Footer = () => {
         </Menu>
       </Grid.Column>
       <Grid.Column>
-        <Menu fluid secondary>
+        <Menu secondary>
           <Menu.Item
             data-testid="footer-link-woeip"
             href="https://woeip.org"

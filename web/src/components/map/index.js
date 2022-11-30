@@ -243,7 +243,7 @@ export const Map = () => {
   return (
     <Container id="mapIndex">
       <Grid relaxed="very">
-        <Grid.Column width={10} foated="left">
+        <Grid.Column width={10} floated="left">
           <div className="mapBoxSquare">
             <MapBox isLoading={isLoadingPollutants} pollutants={pollutants} />
           </div>
