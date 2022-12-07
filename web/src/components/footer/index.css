@@ -1,6 +1,52 @@
-.footer-container{
-    width: 100%;
-    display: flex;
-    justify-content: left;
-    margin: 0.3rem;
+#footer {
+    background-color: #EDEDED;
+
+    /* Footer's parent has `height: 100%;`. For the footer, set
+     * `margin-top: auto;` to take up whatever space the content
+     * above it does not, i.e. put it at the bottom of the page if
+     * the content is shorter than the page height.
+     */
+    margin-top: auto;
+
+    /* Semantic UI Grid default is -1rem */
+    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+}
+
+#footer>.column {
+    padding: 0;
+}
+
+#footer .ui.menu {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+#footer .ui.menu .item {
+    margin-left: 0;
+    margin-right: 0;
+    padding: 1.5em 3.5em;
+    height: 6em;
+}
+
+#footer .ui.menu .item.center {
+    margin-right: auto!important;
+    margin-left: auto!important;
+}
+
+#footer img {
+    height: 100%;
+
+    /* Semantic UI adds in margins we don't need here */
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+#footer img#footerImgGithub {
+    height: 35%;
+    /*
+     * Doesn't work
+     *vertical-align: baseline;
+     */
 }

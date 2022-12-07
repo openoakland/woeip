@@ -1,31 +1,60 @@
-import { Container, List } from "../ui";
+import { Grid, Menu, Image } from "../ui";
 import "./index.css";
 
+import woaqLogo from "../../images/WOAQ - Light Theme.svg";
+import gitHubLogo from "../../images/GitHub_Logo_ Light_Theme.svg";
+import ooLogo from "../../images/OpenOakland-logo-color.svg";
+import woeipLogo from "../../images/cropped-WOEIP-logo-unofficial.png";
+
 export const Footer = () => {
-  /**
-   * Construct the Elements for the Links
-   * @returns {Array<Element>}
-   */
-  const footerLinks = links.map(({ name, url }) => (
-    <List.Item key={name} as="a" href={url}>
-      {name}
-    </List.Item>
-  ));
+  const sharedMenuItemProps = {
+    target: "_blank",
+  };
 
   return (
-    <div className="footer-container">
-      <Container>
-        <List>{footerLinks}</List>
-      </Container>
-    </div>
+    <Grid columns={3} id="footer">
+      <Grid.Column>
+        <Menu secondary>
+          <Menu.Item
+            data-testid="footer-link-github"
+            href="https://github.com/openoakland/woeip"
+            position="left"
+            {...sharedMenuItemProps}
+          >
+            <Image src={woaqLogo} spaced="right" alt="WOAQ logo" /> on{" "}
+            <Image
+              src={gitHubLogo}
+              spaced="left"
+              id="footerImgGithub"
+              alt="GitHub logo"
+            />
+          </Menu.Item>
+        </Menu>
+      </Grid.Column>
+      <Grid.Column>
+        <Menu secondary>
+          <Menu.Item
+            data-testid="footer-link-oo"
+            className="center" // could add this to UI
+            href="https://openoakland.org"
+            {...sharedMenuItemProps}
+          >
+            Created by <Image src={ooLogo} alt="Open Oakland logo" />
+          </Menu.Item>
+        </Menu>
+      </Grid.Column>
+      <Grid.Column>
+        <Menu secondary>
+          <Menu.Item
+            data-testid="footer-link-woeip"
+            href="https://woeip.org"
+            position="right"
+            {...sharedMenuItemProps}
+          >
+            <Image src={woeipLogo} alt="WOEIP name and weathervane logo" />
+          </Menu.Item>
+        </Menu>
+      </Grid.Column>
+    </Grid>
   );
 };
-
-/**
- * Store the data for the footer links
- */
-const links = [
-  { name: "WOAQ on GitHub", url: "https://github.com/openoakland/woeip" },
-  { name: "OpenOakland", url: "https://openoakland.org" },
-  { name: "WOEIP", url: "https://woeip.org" },
-];

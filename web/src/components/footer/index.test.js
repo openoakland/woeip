@@ -4,12 +4,14 @@ import { Footer } from "./";
 describe("Footer", () => {
   it("should have three external links", () => {
     render(<Footer />);
-    expect(screen.getByText(/WOAQ on GitHub/).href).toEqual(
+    expect(screen.getByTestId("footer-link-github").href).toEqual(
       "https://github.com/openoakland/woeip"
     );
-    expect(screen.getByText(/WOEIP/).href).toEqual("https://woeip.org/");
-    expect(screen.getByText(/OpenOakland/).href).toEqual(
+    expect(screen.getByTestId("footer-link-oo").href).toEqual(
       "https://openoakland.org/"
+    );
+    expect(screen.getByTestId("footer-link-woeip").href).toEqual(
+      "https://woeip.org/"
     );
   });
 });

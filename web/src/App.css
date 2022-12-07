@@ -1,5 +1,8 @@
-.app-container {
+/* 
+ * Position footer at bottom: https://stackoverflow.com/a/39613036/5173084
+ */
+#app-container {
     min-height: 100%;
-    display: grid !important;
-    grid-template-rows: auto 1fr auto;
+    display: flex;
+    flex-direction: column;
 }

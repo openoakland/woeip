@@ -23,8 +23,8 @@ describe("Application should includes parts of each major section", () => {
 
   it("should have part of the footer", () => {
     render(<App />);
-    expect(screen.getByText(/OpenOakland/).href).toEqual(
-      "https://openoakland.org/"
+    expect(screen.getByTestId("footer-link-github").href).toEqual(
+      "https://github.com/openoakland/woeip"
     );
   });
 });

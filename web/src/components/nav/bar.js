@@ -1,6 +1,6 @@
 import { Link, NavLink, withRouter } from "react-router-dom";
 import { Container, Menu } from "../ui";
-import logo from "./logo.svg";
+import logo from "../../images/WOAQ-logo-2.svg";
 import "./bar.css";
 
 const Navbar = () => {

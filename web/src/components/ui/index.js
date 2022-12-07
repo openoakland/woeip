@@ -17,6 +17,7 @@ export {
   Icon,
   Label,
   Grid,
+  Image,
 } from "semantic-ui-react";
 
 export const LinkedHeader = ({ ...props }) => (
@@ -64,7 +65,7 @@ export const WarningMessage = ({ ...props }) => {
   return (
     <Message
       warning
-      style={absolute ? { position: "absolute", bottom: "12px" } : {}}
+      style={absolute ? { position: "absolute", bottom: "0px" } : {}}
       {...props}
     />
   );
